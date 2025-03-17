@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/1.0.1738743">
+  <PropertyGroup>
+    <StartupCommand>npm run dev</StartupCommand>
+    <JavaScriptTestRoot>src\</JavaScriptTestRoot>
+    <JavaScriptTestFramework>Jest</JavaScriptTestFramework>
+    <!-- Allows the build (or compile) script located on package.json to run on Build -->
+    <ShouldRunBuildScript>false</ShouldRunBuildScript>
+    <!-- Folder where production build objects will be placed -->
+    <BuildOutputFolder>$(MSBuildProjectDirectory)\dist</BuildOutputFolder>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="node_modules\" />
+    <Folder Include="public\" />
+    <Folder Include="src\components\Landing Page\" />
+    <Folder Include="src\models\" />
+    <Folder Include="src\viewModels\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="jsconfig.json" />
+  </ItemGroup>
+</Project>
