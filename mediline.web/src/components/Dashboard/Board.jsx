@@ -7,7 +7,7 @@ import BaseIcon from '../General/BaseIcon';
 export default function Board() {
     return (
         <div className="dashboardContainer">
-            <Topbar>
+            <Topbar text={"MEDILINE"}>
             </Topbar>
             <Sidebar>
                 <SidebarItem

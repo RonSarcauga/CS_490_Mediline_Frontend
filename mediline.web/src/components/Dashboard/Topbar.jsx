@@ -22,9 +22,11 @@ export default function Topbar({ height = 50, width = 50, fillColor = "#1B2B32",
 }
 
 {/* This is a base component for items to be added to the navbar */}
-export function TopbarItem({ icon, text, to = "/" }) {
+export function TopbarItem({ icon, text, to = "/", customClass = '' }) {
+    const baseClass = 'topbarItem';
+
     return (
-        <Link to={ to } className="topbarItem">
+        <Link to={to} className={`${baseClass} ${customClass}`}>
             {icon}
             <span className="topbarText">
                 {text}

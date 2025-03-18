@@ -2,30 +2,24 @@ body {
     overflow: hidden;
 }
 
-/* Landing Page Section */
-.sectionContent {
-    height: 1024px;
-    width: 100vw;
-    top: 0;
-    left: 0;
+/* Landing Page */
+.page {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: 100px 100px 40px;
-    background-color: #f5f5f5;
 }
 
     /* Navigation Bar */
     .pageHeader .topbar {
-        display: grid;
-        grid-template-columns: 275px 30vw 100px 100px 100px 100px auto;
+        position: relative;
+        grid-template-columns: 500px auto 125px 125px 125px 140px 100px;
         align-items: center;
         justify-items: center;
-        padding: 20px 400px 20px 0px;
+        padding: 20px 0px 20px 0px;
         background-color: transparent;
         box-shadow: none;
     }
 
     .pageHeader .logo-text {
+        font-size: 45px;
         color: #3F6BB3;
         padding: 0px 0px 0px 15px;
     }
@@ -33,7 +27,118 @@ body {
     .pageHeader .topbarItem {
         color: #707070;
         text-decoration: none;
+        transition: all 0.2s ease-out;
     }
+
+    .pageHeader .topbarItem:hover {
+        font-weight: 500;
+        color: rgba(80, 150, 255, 1);
+    }
+
+    .pageHeader .customBtn {
+        color: #E3E3E3;
+        background: #3F6BB3;
+        border-radius: 5px;
+        padding: 10px 15px 10px 15px;
+    }
+
+    .pageHeader .customBtn:hover {
+        color: #E3E3E3;
+        box-shadow: 0px 0px 5px 0.5px rgba(80, 150, 255, 1);
+    }
+
     /* End of navigation bar */
+
+    /* Page Section*/
+    .sectionContainer {
+        height: 1024px;
+        width: 100vw;
+        top: 0;
+        left: 0;
+        position: relative;
+        /*background-color: #f5f5f5;*/
+        border-bottom: 1px solid black;
+    }
+
+    .sectionContainer .sectionContent {
+        display: grid;
+        height: 80vh;
+        grid-template-columns: repeat(2, 1fr);
+        align-items: center;
+        justify-items: center;
+    }
+
+    .sectionContent .textBlock h1,
+    .sectionContent .textBlock p
+    {
+        margin: 0.5rem 0rem 0.5rem 0rem;
+    }
+
+    .sectionContent .textBlock h1 {
+        font-size: 36px;
+    }
+
+    .sectionContent .textBlock p {
+        font-size: 20px;
+    }
+
+    /* End of Page Section */
+
+    /* Find Doctor Section */
+    #findDoctorSection .sectionContent {
+        grid-template-columns: 40vw auto;
+    }
+
+    #findDoctorSection .sectionContent img {
+        justify-self: start;
+        margin: 0rem 0rem 0rem 5rem;
+    }
+
+    #findDoctorSection .sectionContent .textBlock {
+        justify-self: end;
+        transform: translate(0rem, -2rem);
+    }
+    
+        /* Searchbar */
+        .input-bar {
+            height: 50px;
+            width: 430px;
+            border: 1px solid rgba(0, 0, 0, 0.3);
+            border-radius: 50px;
+            position: absolute;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            align-items: center;
+            margin: 1rem 0rem 0rem 0rem;
+            padding: 0rem 1rem 0rem 1rem;
+            transition: all 0.2s ease-in;
+        }
+
+        .input-bar input {
+            height: 100%;
+            width: 90%;
+            font-family: 'Montserrat', sans-serif;
+            padding: 0rem 0rem 0rem 1rem;
+            outline: none;
+            border: none;
+        }
+
+        .input-bar input, 
+        .input-bar input::placeholder {
+            color: #CECECE;
+        }
+
+        #findDoctorSection .input-bar {
+            border: none;
+             box-shadow: 0px 0px 5px 0.5px rgba(0, 0, 0, 0.25);
+        }
+
+        #findDoctorSection .input-bar:focus-within {
+            box-shadow: 0px 0px 5px 0.5px rgba(80, 150, 255, 1);
+        }
+
+        /* End of Searchbar */
+
+    /* End of Find Doctor Section */
 
 /* End of Landing Page */

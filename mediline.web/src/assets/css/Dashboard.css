@@ -10,8 +10,8 @@
 
 /* Topbar */
 .topbar {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    align-content: center;
     align-items: center;
     position: fixed;
     height: 10vh;
@@ -29,7 +29,7 @@
 /* Logo */
 .logoContainer {
     left: 0;
-    padding: 0px 0px 0px 8.5rem;
+    padding: 0rem 0rem 0rem 0rem;
     display: flex;
     align-items: center;
 }
