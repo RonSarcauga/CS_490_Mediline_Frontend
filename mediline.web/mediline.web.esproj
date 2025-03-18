@@ -11,7 +11,7 @@
   <ItemGroup>
     <Folder Include="node_modules\" />
     <Folder Include="public\" />
-    <Folder Include="src\components\Landing Page\" />
+    <Folder Include="src\components\LandingPage\" />
     <Folder Include="src\models\" />
     <Folder Include="src\viewModels\" />
   </ItemGroup>

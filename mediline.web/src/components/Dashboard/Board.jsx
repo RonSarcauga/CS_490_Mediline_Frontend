@@ -1,14 +1,14 @@
-import Navbar from './Navbar';
+import Topbar, { TopbarItem } from './Topbar';
 import Sidebar, { SidebarItem } from './Sidebar';
-import BaseIcon from '../BaseIcon'
+import BaseIcon from '../General/BaseIcon';
 
 {/* This is the navigation bar for the dashboards specifically.
     A separate navigation bar will be used for the landing page */}
 export default function Board() {
     return (
         <div className="dashboardContainer">
-            <Navbar>
-            </Navbar>
+            <Topbar>
+            </Topbar>
             <Sidebar>
                 <SidebarItem
                     icon={
