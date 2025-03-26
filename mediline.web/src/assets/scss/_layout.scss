@@ -1,0 +1,172 @@
+/* Home Page Layout */
+.home-page {
+    height: auto;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+    /* Find Doctor Section Layout */
+    #findDoctorSection .sectionContent {
+        align-items: center;
+    }
+
+    .findDoctorContainer {
+        line-height: 1.2rem;
+        font-size: 20px;
+    }
+    /* End of Find Doctor Section Layout*/
+
+    /* Resource Section Layout */
+    #resourcesSection .sectionContent {
+        align-items: center;
+        justify-items: center;
+    }
+
+    #resourcesSection > .sectionContent > .resourceContent {
+        max-width: 450px;
+        text-align: justify;
+        justify-self: start;
+    }
+
+    .resourceContent h2,
+    .resourceContent p {
+        font-size: 25px;
+    }
+
+    .resourceContent h2 {
+        color: #3F6BB3;
+        font-weight: 700;
+    }
+
+    .baseCard .customHeader {
+        display: flex;
+        align-items: center;
+        height: fit-content;
+        width: auto;
+        max-height: 100%;
+        max-width: 100%;
+        background: #C5D8E8;
+        border-radius: 10px;
+        padding: 1rem 1.5rem 1rem 1.5rem;
+        color: #677382;
+        gap: 1rem;
+    }
+
+    .baseCard .customHeader h3 {
+        font-weight: 600;
+    }
+
+    #resourcesSection .baseCard .cardBody {
+        gap: 1em;
+    }
+
+    .sectionContent .baseCard .cardBody .message {
+        height: fit-content;
+        max-width: 50%;
+        border-radius: 20px;
+        padding: 1rem 1.5rem 1rem 1.5rem;
+    }
+
+    .sectionContent .baseCard .cardBody .message p {
+        font-size: 19.5px;
+        margin: 0;
+    }
+
+    .sectionContent .baseCard .cardBody .system-message {
+        justify-self: flex-start;
+        background: #C5D8E3;
+        color: #575B73;
+    }
+
+    .sectionContent .baseCard .cardBody .user-message {
+        justify-self: flex-end;
+        background: #5695DD;
+        color: #FFFFFF;
+    }
+
+    .item-group .baseCard {
+        max-width: 730px;
+    }
+
+    .item-group .resourceContent {
+        max-width: 460px;
+    }
+    /* End of Resource Section Layout*/
+
+    /* Services Section Layout */
+    #servicesSection .sectionContent {
+        justify-items: center;
+        align-items: start;
+    }
+
+    #servicesSection .sectionHeader .serviceHeader {
+        text-align: center;
+        margin: 4em 0em 4em 0em;
+    }
+    #servicesSection .sectionHeader .serviceHeader h1 {
+        font-size: 34px;
+    }
+
+    #servicesSection .sectionHeader .serviceHeader p {
+        font-size: 28px;
+    }
+
+    #servicesSection .item-group {
+        width: 460px;
+        text-align: center;
+        gap: 15vw;
+    }
+
+    #servicesSection .item-group h3 {
+        font-size: 28px;
+        font-weight: 600;
+    }
+
+    #servicesSection .item-group p {
+        font-size: 20px;
+        color: #707070;
+        line-height: 1.5em;
+    }
+    /* End of Services Section Layout */
+/* End of Layout for Home Page */
+
+/* Login Page Layout */
+#loginPage {
+    background: #F5FDFF;
+}
+
+#loginPage .baseCard {
+    background: #FFFFFF;
+    height: 85vh;
+    width: 90vw;
+}
+
+#loginPage .baseCard .cardImage {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+/* End of Login Page Layout*/
+
+/* Dashboard Layout */
+.dashboardContainer {
+    position: relative;
+    display: grid;
+    grid-template-areas:
+        "sidebar topbar" "sidebar main-content";
+    height: 98vh;
+    grid-template-columns: minmax(90px, 110px) 1fr;
+    grid-template-rows: 10vh auto;
+    width: 98.5vw;
+    background: #DAEAF9;
+    border-radius: 20px 20px 20px 20px;
+}
+
+// Stores Main Content of Dashboard
+.mainContent {
+    grid-area: main-content;
+    display: grid;
+    padding: 20px;
+}
+/* End of Dashboard Layout */

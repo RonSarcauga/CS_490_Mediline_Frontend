@@ -6,17 +6,19 @@ import Logo from '../General/Logo';
 export default function Topbar({ height = 50, width = 50, fillColor = "#1B2B32", text, children }) {
     return (
         <nav className="topbar">
-            <Logo height={height}
-                  width={width}
-                  fillColor={fillColor}
-                  text={text} >
-                <span>
-                    { text }
-                </span>
-            </Logo>
-            <div></div>
-            {children}
-            <div></div>
+            <div className="logo">
+                <Logo height={height}
+                    width={width}
+                    fillColor={fillColor}
+                    text={text} >
+                    <span>
+                        {text}
+                    </span>
+                </Logo>
+            </div>
+            <div className="topbarItems">
+                {children}
+            </div>
         </nav>
     );
 }

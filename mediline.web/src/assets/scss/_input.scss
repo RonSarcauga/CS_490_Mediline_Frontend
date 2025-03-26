@@ -1,0 +1,51 @@
+/* Default Styles for Search Bar */
+.input-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    height: 40px;
+    max-width: 100%;
+    background: #F5F5F5;
+    border-radius: 20px;
+    padding: 0rem 0.8rem 0rem 0.8rem;
+    margin: 1rem 0rem 1rem 0rem;
+}
+
+.input-bar .search-icon {
+    visibility: hidden;
+    width: 0;
+}
+
+.input-bar .send-icon {
+    visibility: hidden;
+    width: 0;
+}
+
+.input-bar input {
+    height: 100%;
+    width: 90%;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0px 0px 0px 10px;
+}
+
+.input-bar input,
+.input-bar input::placeholder {
+    font-size: 14px;
+    font-weight: 400;
+    color: #CECECE;
+}
+/* End of Default Styles for Search Bar */
+
+/* Landing Page Searchbar */
+.findDoctorContainer .input-bar {
+    border: none;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 5px 0.5px rgba(0, 0, 0, 0.25);
+}
+
+.findDoctorContainer .input-bar:focus-within {
+    box-shadow: 0px 0px 5px 0.5px rgba(80, 150, 255, 1);
+}
+/* End of Styles for Landing Page Searchbar*/

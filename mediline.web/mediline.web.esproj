@@ -10,7 +10,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="node_modules\" />
-    <Folder Include="src\components\LandingPage\" />
+    <Folder Include="src\assets\fonts\" />
     <Folder Include="src\models\" />
     <Folder Include="src\viewModels\" />
   </ItemGroup>
