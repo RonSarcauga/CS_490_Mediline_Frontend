@@ -5,9 +5,11 @@ import {
     RouterProvider,
 } from 'react-router-dom';
 import '../../assets/css/default-style.css';
-import HomePage from './home';
-import Dashboard from './dashboard';
-import LoginPage from './login';
+import '../../assets/scss/default-style.scss';
+import HomePage from './Home';
+import Dashboard from './Dashboard';
+import LoginPage from './Login';
+import RegisterPage from './Register';
 
 const router = createBrowserRouter([
     {
@@ -17,6 +19,10 @@ const router = createBrowserRouter([
     {
         path: '/login',
         element: <LoginPage />,
+    },
+    {
+        path: '/register',
+        element: <RegisterPage />,
     },
 ]);
 

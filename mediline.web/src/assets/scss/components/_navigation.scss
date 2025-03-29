@@ -3,7 +3,7 @@
     height: 10vh;
     width: 100%;
     display: grid;
-    grid-template-columns: minmax(20vw, 40vw) auto;
+    grid-template-columns: auto 1fr;
     grid-auto-flow: column;
     align-items: center;
     position: relative;

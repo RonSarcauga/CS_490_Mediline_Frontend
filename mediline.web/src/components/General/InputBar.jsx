@@ -1,16 +1,25 @@
 {/* This is the base component for a search bar in our site */ }
-export default function InputBar({readonly = false,
-                                  searchIcon = null,
-                                  placeholder = '',
-                                  sendIcon = null}) {
+export default function InputBar({
+    customClass = "",
+    readonly = false,
+    searchIcon = null,
+    sendIcon = null,
+    ...attributes
+})
+{
+    const baseClass = 'input-bar';
+
     return (
-        <div className="input-bar">
+        <div className={`${baseClass} ${customClass}`}>
             {/* Search icon */}
             <div className="search-icon" style={{ visibility : searchIcon ? 'visible' : 'hidden', width: searchIcon ? 'auto' : '0'}}>
                 {searchIcon}
             </div>
             {/* Input field for the search bar */ }
-            <input type="text" placeholder={placeholder} readOnly={readonly} />
+            <input
+                {...attributes}
+                readOnly={readonly}
+            />
             {/* Send icon */}
             <div className="send-icon" style={{ visibility: sendIcon ? 'visible' : 'hidden', width: sendIcon ? 'auto' : '0' }}>
                 {sendIcon}

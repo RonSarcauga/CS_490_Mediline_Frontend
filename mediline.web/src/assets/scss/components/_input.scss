@@ -1,14 +1,13 @@
-/* Default Styles for Search Bar */
+/* Search Bar: Default Styles */
 .input-bar {
     display: grid;
     grid-template-columns: auto 1fr auto;
     align-items: center;
-    height: 40px;
+    height: fit-content;
     max-width: 100%;
     background: #F5F5F5;
     border-radius: 20px;
     padding: 0rem 0.8rem 0rem 0.8rem;
-    margin: 1rem 0rem 1rem 0rem;
 }
 
 .input-bar .search-icon {
@@ -36,16 +35,4 @@
     font-weight: 400;
     color: #CECECE;
 }
-/* End of Default Styles for Search Bar */
-
-/* Landing Page Searchbar */
-.findDoctorContainer .input-bar {
-    border: none;
-    background: #FFFFFF;
-    box-shadow: 0px 0px 5px 0.5px rgba(0, 0, 0, 0.25);
-}
-
-.findDoctorContainer .input-bar:focus-within {
-    box-shadow: 0px 0px 5px 0.5px rgba(80, 150, 255, 1);
-}
-/* End of Styles for Landing Page Searchbar*/
+/* End of Default Styles */

@@ -1,0 +1,120 @@
+/* Container: Grid Layout */
+.container {
+    height: fit-content;
+    width: fit-content;
+    max-height: 100%;
+    max-width: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+        "header"
+        "content"
+        "footer";
+}
+
+.container > .header {
+    grid-area: header;
+}
+
+.container > .content {
+    grid-area: content;
+}
+
+.container > .footer {
+    grid-area: footer;
+}
+
+.container > .header:empty,
+.container > .content:empty,
+.container > .footer:empty {
+    height: 0;
+    width: 0;
+}
+
+/* End of Container */
+
+/* Item Group: Grid Layout */
+.item-group-row,
+.item-group-col {
+    display: grid;
+    height: auto;
+    width: fit-content;
+}
+
+.item-group-row {
+    grid-auto-flow: column;
+    grid-auto-columns: min-content;
+}
+
+.item-group-col {
+    grid-auto-flow: row;
+    grid-auto-rows: min-content;
+}
+
+.item-group-row-stretch {
+    grid-auto-columns: max-content;
+}
+
+.item-group-col-stretch {
+    grid-auto-rows: max-content;
+}
+
+.item-group-row-even {
+    grid-auto-columns: 1fr;
+}
+
+.item-group-col-even {
+    grid-auto-rows: 1fr;
+}
+
+.item-group-row-odd-left {
+    grid-auto-columns: auto 1fr;
+}
+
+.item-group-col-odd-right {
+    grid-auto-rows: 1fr auto;
+}
+
+.item-group {
+    display: flex;
+    flex-direction: row;
+    height: auto;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    gap: calc(5vw + 1vw);
+}
+/* End of Item Group */
+
+/* Picture Frame: Grid Layout */
+.frame-horizontal,
+.frame-vertical {
+    height: fit-content;
+    width: fit-content;
+    display: grid;
+}
+
+.frame-horizontal {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.frame-vertical {
+    grid-template-rows: repeat(2, 1fr);
+}
+
+.frame-vertical > .picture,
+.frame-horizontal > .picture {
+    display: grid;
+    grid-template-rows: repeat(3, 1fr);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.picture > .headervb {
+
+}
+
+/* End of Picture Frame */
+
+/* Form: Grid Layout */
+/* End of Form */

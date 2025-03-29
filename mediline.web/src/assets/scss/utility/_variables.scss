@@ -1,0 +1,39 @@
+/* 
+    This CSS has variables which can be accessed and used in other CSS files.
+*/
+
+// Spacing variables
+$base-padding: 0.25rem;
+$base-margin: 0.25rem;
+$base-gap: 0.25rem;
+
+// Sizing variables
+$base-size: 1rem;
+$increment: 0.25;
+$max: 10;
+
+// Border variables
+$base-border-thickness: 1px;
+$base-border-radius: 20px;
+
+// Font variables
+$base-font-size: 0.25rem;
+$font-size-xxs: $base-font-size * 0.25;
+$font-size-xs: $base-font-size * 0.5;
+$font-size-sm: $base-font-size * 0.75;
+$font-size-lg: $base-font-size * 1.5;
+$font-size-xl: $base-font-size * 2;
+$font-size-xxl: $base-font-size * 3;
+
+$base-font-weight: 400;
+$font-weight-thin: 100;
+$font-weight-extralight: 200;
+$font-weight-light: 300;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+$font-weight-black: 900;
+
+// Shadow variables
+$base-shadow: 5px;

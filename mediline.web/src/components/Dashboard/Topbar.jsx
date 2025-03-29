@@ -1,36 +1,43 @@
 import { Link } from 'react-router-dom';
-import Logo from '../General/Logo';
 
 {/* This is the base component for the navigation bar. 
     Create a style sheet for a page to change its appearance */}
-export default function Topbar({ height = 50, width = 50, fillColor = "#1B2B32", text, children }) {
+export default function Topbar({
+    header = [],
+    items = [],
+    customClass = '',
+    itemClass = ''
+})
+{
+    const baseClass = "topbar";
+
     return (
-        <nav className="topbar">
+        <nav className={`${baseClass} ${customClass}`}>
             <div className="logo">
-                <Logo height={height}
-                    width={width}
-                    fillColor={fillColor}
-                    text={text} >
-                    <span>
-                        {text}
-                    </span>
-                </Logo>
+                {header}
             </div>
-            <div className="topbarItems">
-                {children}
+            <div className={`topbarItems ${itemClass}`}>
+                {items}
             </div>
         </nav>
     );
 }
 
 {/* This is a base component for items to be added to the navbar */}
-export function TopbarItem({ icon, text, to = "/", customClass = '' }) {
+export function TopbarItem({
+    icon,
+    text,
+    to = "/",
+    customClass = '',
+    textClass = ''
+})
+{
     const baseClass = 'topbarItem';
 
     return (
         <Link to={to} className={`${baseClass} ${customClass}`}>
             {icon}
-            <span className="topbarText">
+            <span className={`topbarText ${textClass}`}>
                 {text}
             </span>
         </Link>

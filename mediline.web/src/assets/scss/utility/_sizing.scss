@@ -1,0 +1,18 @@
+/* 
+    This CSS generates utility classes for adjusting the height and width of elements using predefined sizes.
+    This is probably not going to be all that useful but let us test it for now.
+*/
+
+$counter: 0;
+
+@while $counter <= $max {
+    .h-#{$counter * 100} {
+        height: ($counter * $base-size) !important;
+    }
+
+    .w-#{$counter * 100} {
+        width: ($counter * $base-size) !important;
+    }
+
+    $counter: $counter + $increment;
+}
