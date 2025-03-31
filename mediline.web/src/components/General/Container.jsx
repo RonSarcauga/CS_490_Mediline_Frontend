@@ -12,6 +12,7 @@ export default function Container({
     headerClass = '',
     contentClass = '',
     footerClass = '',
+    style,
     maxWidth = null,
     isClickable = false,
     onClick = null,
@@ -34,8 +35,9 @@ export default function Container({
 
     {/* Although using inline styles are discouraged, these styles do not remove too much control from the user.
         They are used to make the Container component more flexible */}
-    const style = {
+    const combinedStyle = {
         ...(maxWidth && { maxWidth }),
+        ...style
     };
 
     {/* These add optional data attributes to the component to be used in event handling.
@@ -48,9 +50,9 @@ export default function Container({
     return (
         <div
             id={id}
-            {...data}
+            {...dataAttributes}
             className={`${classNames}`}
-            style={style}
+            style={combinedStyle}
             onClick={isClickable ? onClick : null}>
             <div className={`header ${headerClass}`}>
                 {header}
@@ -71,6 +73,7 @@ export function ItemGroup({
     id = null,
     dataAttributes = {},
     customClass = '',
+    style,
     stretch = false,
     maxWidth = null,
     evenSplit = '',
@@ -102,8 +105,9 @@ export function ItemGroup({
 
     {/* Although using inline styles are discouraged, these styles do not remove too much control from the user. 
         They are used to make the ItemGroup component more flexible */}
-    const style = {
+    const combinedStyle = {
         ...(maxWidth && { maxWidth }),
+        ...style
     };
 
     {/* These add optional data attributes to the component to be used in event handling.
@@ -118,7 +122,7 @@ export function ItemGroup({
             id={id}
             {...data}
             className={`${classNames}`}
-            style={style}
+            style={combinedStyle}
             onClick={isClickable ? onClick : null}>
             {items}
         </div>

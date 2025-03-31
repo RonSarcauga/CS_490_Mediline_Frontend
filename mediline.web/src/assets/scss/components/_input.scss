@@ -35,4 +35,10 @@
     font-weight: 400;
     color: #CECECE;
 }
+
+/* Browser-Specific Password Reveal Buttons */
+::-ms-reveal {
+    display: none;
+}
+
 /* End of Default Styles */

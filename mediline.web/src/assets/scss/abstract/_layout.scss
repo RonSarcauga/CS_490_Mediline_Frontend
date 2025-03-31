@@ -20,21 +20,3 @@
 }
 /* End of Dashboard Layout */
 
-.progress-indicator {
-    z-index: 1;
-    color: var(--clr-neutral-1000);
-    background: var(--clr-neutral-1100);
-    text-align: center;
-    align-items: center;
-    justify-items: center;
-    border: 3.5px solid var(--clr-line-color, var(--clr-neutral-1000));
-    border-radius: 50%;
-    transition: all 0.2s ease;
-}
-
-.step-bar {
-    z-index: 0;
-    position: absolute;
-    transform: translate(2rem, 2.2rem);
-    transition: all 0.2s ease;
-}

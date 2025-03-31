@@ -821,15 +821,15 @@ $utilities: (
             "auto": auto
         )
     ),
-    "width": (
-        "prefix": "width-threshold",
+    "position": (
+        "prefix": "position",
         "values": (
-            "sm-1": clamp(100px, 50%, 400px) ,
-            "lg-1": clamp(20vw, 30vw, 40vw) ,
-            "lg-2": clamp(30vw, 45vw, 50vw) ,
-            "lg-3": clamp(50vw, 60vw, 70vw) 
+            "relative": relative,
+            "absolute": absolute,
+            "static": static,
+            "fixed": fixed
         )
-    )
+    ),
 );
 
 // Generate utility classes

@@ -1,131 +1,87 @@
 import Container, { ItemGroup } from '../General/Container';
-import { useState } from 'react';
 
 export default function ProgressBar({
-    currentStep,
-    totalSteps
+    currentStep = 1,
+    formData,
+    steps = [],
+    stepInputs = [],
+    onStepClick
 })
 {
+    const progressPercentage = ((currentStep - 1) / (steps.length - 1)) * 100;
+
+    const getLastCompletedStep = () => {
+        return Object.keys(stepInputs).reduce((lastStep, stepId) => {
+            const inputs = stepInputs[stepId];
+            const isStepComplete = inputs.every((field) => formData[field]?.trim() !== "");
+            return isStepComplete ? parseInt(stepId) : lastStep;
+        }, 0);
+    }
+
+    const lastCompletedStep = getLastCompletedStep();
+
     return (
-        <Container
-            customClass="gap-20 px-10"
-            content={[
-                <ItemGroup
-                    customClass="gap-25"
-                    axis={false}
-                    evenSplit={true}
-                    items={[
-                        <>
-                            <ItemGroup
-                                customClass="gap-4"
-                                axis={true}
-                                items={[
-                                    <>
-                                        <Container
-                                            customClass="br-full bg-neutral-1100 b-8 outline-neutral-1000 p-0 text-center align-items-center h-450 w-450"
-                                            content={[
-                                                <>
-                                                    <h1 className="font-medium font-8 text-neutral-1000">1</h1>
-                                                </>
-                                            ]}
-                                        />
-                                        <Container
-                                            customClass="p-0 text-center align-items-center"
-                                            content={[
-                                                <h1 className="font-semibold font-4 text-neutral-1000">
-                                                    Personal<br />
-                                                    Information
-                                                </h1>
-                                            ]}
-                                        />
-                                    </>
-                                ]}
-                            />
-                            <ItemGroup
-                                customClass="gap-4"
-                                axis={true}
-                                items={[
-                                    <>
-                                        <Container
-                                            customClass="br-full bg-neutral-1100 b-8 outline-neutral-1000 p-0 text-center align-items-center h-450 w-450"
-                                            content={[
-                                                <h1 className="font-medium font-8 text-neutral-1000">2</h1>
-                                            ]}
-                                        />
-                                        <Container
-                                            customClass="p-0 text-center align-items-center"
-                                            content={[
-                                                <>
-                                                    <h1 className="font-semibold font-4 text-neutral-1000">
-                                                        Choose<br />
-                                                        Your Account
-                                                    </h1>
-                                                </>
-                                            ]}
-                                        />
-                                    </>
-                                ]}
-                            />
-                            <ItemGroup
-                                customClass="gap-4"
-                                axis={true}
-                                items={[
-                                    <>
-                                        <Container
-                                            customClass="br-full bg-neutral-1100 b-8 outline-neutral-1000 p-0 text-center align-items-center h-450 w-450"
-                                            content={[
-                                                <h1 className="font-medium font-8 text-neutral-1000">3</h1>
-                                            ]}
-                                        />
-                                        <Container
-                                            customClass="p-0 text-center align-items-center"
-                                            content={[
-                                                <>
-                                                    <h1 className="font-semibold font-4 text-neutral-1000">
-                                                        Account<br />
-                                                        Information
-                                                    </h1>
-                                                </>
-                                            ]}
-                                        />
-                                    </>
-                                ]}
-                            />
-                            <ItemGroup
-                                customClass="gap-4"
-                                axis={true}
-                                items={[
-                                    <>
-                                        <Container
-                                            customClass="br-full bg-neutral-1100 b-8 outline-neutral-1000 p-0 text-center align-items-center h-450 w-450"
-                                            content={[
-                                                <h1 className="font-medium font-8 text-neutral-1000">4</h1>
-                                            ]}
-                                        />
-                                        <Container
-                                            customClass="p-0 text-center align-items-center"
-                                            content={[
-                                                <>
-                                                    <h1 className="font-semibold font-4 text-neutral-1000">
-                                                        Review<br />
-                                                        and Submit
-                                                    </h1>
-                                                </>
-                                            ]}
-                                        />
-                                    </>
-                                ]}
-                            />
-                            <Container
-                                customClass="progress-bar position-absolute h-25 bg-neutral-1000"
-                                fitParent={true}
-                                maxWidth="680px"
-                            />
-                        </>
-                    ]}
-                />
+        <ItemGroup
+            customClass="gap-25 position-relative"
+            axis={false}
+            evenSplit={true}
+            items={[
+                <>
+                    {steps.map((step, index) => (
+                        <ItemGroup
+                            key={index}
+                            customClass="gap-4"
+                            axis={true}
+                            items={[
+                                <>
+                                    <Container
+                                        customClass={`progress-indicator ${currentStep === step.id || step.id < currentStep ? "active" : ""
+                                            }`}
+                                        isClickable={step.id <= lastCompletedStep && currentStep !== step.id}
+                                        onClick={() => {
+                                            console.log(`Current step: ${step.id}`);
+                                            console.log(`Last completed step: ${lastCompletedStep}`);
+                                            step.id <= lastCompletedStep + 1 && onStepClick(step.id);
+                                        }}
+                                        content={[
+                                            <>
+                                                <h1 className="font-semibold">{index + 1}</h1>
+                                            </>
+                                        ]}
+                                    />
+                                    <Container
+                                        customClass={
+                                            `progress-step ${step.id <= currentStep ? "active" : ""}`}
+                                        content={[
+                                            <h1 className={"font-semibold font-4 px-3"}>
+                                                {step.label}
+                                            </h1>
+                                        ]}
+                                    />
+                                </>
+                            ]}
+                        />
+                    ))}
+                    <Container
+                        customClass="stepbar-wrapper position-absolute"
+                        maxWidth="90%"
+                        content={[
+                            <>
+                                <Container
+                                    customClass="step-bar h-25 p-0"
+                                    fitParent={true}
+                                />
+                                <Container
+                                    customClass="step-meter h-25 p-0"
+                                    style={{
+                                        width: `${progressPercentage}%`
+                                    }}
+                                />
+                            </>
+                        ]}
+                    />
+                </>
             ]}
         />
-
     );
 }

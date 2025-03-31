@@ -24,6 +24,10 @@ const router = createBrowserRouter([
         path: '/register',
         element: <RegisterPage />,
     },
+    {
+        path: '/dashboard',
+        element: <Dashboard />,
+    },
 ]);
 
 createRoot(document.getElementById('root')).render(
