@@ -101,7 +101,7 @@ export default function Login() {
                                                                         <Button
                                                                             customClass="bg-0"
                                                                             content={[
-                                                                                <Link to="/dashboard" className=" text-decoration-none font-regular text-neutral-1100">
+                                                                                <Link to="/patientDashboard" className=" text-decoration-none font-regular text-neutral-1100">
                                                                                     Sign In
                                                                                 </Link>
                                                                             ]}
