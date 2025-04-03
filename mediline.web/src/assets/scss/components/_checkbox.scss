@@ -1,0 +1,22 @@
+/* Default Style: Checkbox */
+.checkbox-wrapper {
+    position: relative;
+    height: 30px;
+    width: 30px;
+}
+
+.checkbox-wrapper input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 100%;
+    width: 100%;
+    border: 1px solid var(--clr-line-color, var(--clr-neutral-700));
+    outline: none;
+    cursor: pointer;
+}
+
+.check-icon {
+    position: absolute;
+    pointer-events: none;
+}
+/* End of Checkbox */

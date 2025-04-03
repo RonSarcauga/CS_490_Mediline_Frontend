@@ -1,0 +1,52 @@
+/* Search Bar: Default Styles */
+.input-bar {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    height: fit-content;
+    max-width: 100%;
+    background: #F5F5F5;
+    border-radius: 20px;
+    padding: 0rem 0.8rem 0rem 0.8rem;
+}
+
+.input-bar .search-icon {
+    visibility: hidden;
+    width: 0;
+}
+
+.input-bar .send-icon {
+    visibility: hidden;
+    width: 0;
+}
+
+.input-bar input {
+    height: 100%;
+    width: 90%;
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0px 0px 0px 10px;
+}
+
+.input-bar input,
+.input-bar input::placeholder {
+    font-size: 14px;
+    font-weight: 400;
+    color: #CECECE;
+}
+
+.circle {
+    display: block;
+    height: 40px;
+    width: 40px;
+    align-content: center;
+    justify-content: center;
+}
+
+/* Browser-Specific Password Reveal Buttons */
+::-ms-reveal {
+    display: none !important;
+}
+
+/* End of Default Styles */

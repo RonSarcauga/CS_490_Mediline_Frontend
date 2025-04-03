@@ -1,0 +1,884 @@
+/* 
+    This CSS has utility classes which can be used to control things such as borders, spacing, and font sizes.
+    Using this approach limits the number of unnecessary custom classes that are often made in HTML.
+*/
+
+@use 'sass:math';
+
+// Specifies the property and the syntax for each utility class
+$utilities: (
+    "padding": (
+        "prefix": "p",
+        "values": (
+            "0": 0,
+            "1": $base-padding,
+            "2": $base-padding * 2,
+            "3": $base-padding * 3,
+            "4": $base-padding * 4,
+            "5": $base-padding * 5,
+            "6": $base-padding * 6,
+            "7": $base-padding * 7,
+            "8": $base-padding * 8,
+            "9": $base-padding * 9,
+            "10": $base-padding * 10,
+            "11": $base-padding * 11,
+            "12": $base-padding * 12,
+            "13": $base-padding * 13,
+            "14": $base-padding * 14,
+            "15": $base-padding * 15,
+            "16": $base-padding * 16,
+            "17": $base-padding * 17,
+            "18": $base-padding * 18,
+            "19": $base-padding * 19,
+            "20": $base-padding * 20,
+            "21": $base-padding * 21,
+            "22": $base-padding * 22,
+            "23": $base-padding * 23,
+            "24": $base-padding * 24,
+            "25": $base-padding * 25,
+            "26": $base-padding * 26,
+            "27": $base-padding * 27,
+            "28": $base-padding * 28,
+            "29": $base-padding * 29,
+            "30": $base-padding * 30,
+        ),
+    ),
+    "padding-left": (
+        "prefix": "pl",
+        "values": (
+            "0": 0,
+            "1": $base-padding,
+            "2": $base-padding * 2,
+            "3": $base-padding * 3,
+            "4": $base-padding * 4,
+            "5": $base-padding * 5,
+            "6": $base-padding * 6,
+            "7": $base-padding * 7,
+            "8": $base-padding * 8,
+            "9": $base-padding * 9,
+            "10": $base-padding * 10,
+            "11": $base-padding * 11,
+            "12": $base-padding * 12,
+            "13": $base-padding * 13,
+            "14": $base-padding * 14,
+            "15": $base-padding * 15,
+            "16": $base-padding * 16,
+            "17": $base-padding * 17,
+            "18": $base-padding * 18,
+            "19": $base-padding * 19,
+            "20": $base-padding * 20,
+            "21": $base-padding * 21,
+            "22": $base-padding * 22,
+            "23": $base-padding * 23,
+            "24": $base-padding * 24,
+            "25": $base-padding * 25,
+            "26": $base-padding * 26,
+            "27": $base-padding * 27,
+            "28": $base-padding * 28,
+            "29": $base-padding * 29,
+            "30": $base-padding * 30,
+        ),
+    ),
+    "padding-right": (
+        "prefix": "pr",
+        "values": (
+            "0": 0,
+            "1": $base-padding,
+            "2": $base-padding * 2,
+            "3": $base-padding * 3,
+            "4": $base-padding * 4,
+            "5": $base-padding * 5,
+            "6": $base-padding * 6,
+            "7": $base-padding * 7,
+            "8": $base-padding * 8,
+            "9": $base-padding * 9,
+            "10": $base-padding * 10,
+            "11": $base-padding * 11,
+            "12": $base-padding * 12,
+            "13": $base-padding * 13,
+            "14": $base-padding * 14,
+            "15": $base-padding * 15,
+            "16": $base-padding * 16,
+            "17": $base-padding * 17,
+            "18": $base-padding * 18,
+            "19": $base-padding * 19,
+            "20": $base-padding * 20,
+            "21": $base-padding * 21,
+            "22": $base-padding * 22,
+            "23": $base-padding * 23,
+            "24": $base-padding * 24,
+            "25": $base-padding * 25,
+            "26": $base-padding * 26,
+            "27": $base-padding * 27,
+            "28": $base-padding * 28,
+            "29": $base-padding * 29,
+            "30": $base-padding * 30,
+        ),
+    ),
+    "padding-inline": (
+        "prefix": "px",
+        "values": (
+            "0": 0,
+            "1": $base-padding,
+            "2": $base-padding * 2,
+            "3": $base-padding * 3,
+            "4": $base-padding * 4,
+            "5": $base-padding * 5,
+            "6": $base-padding * 6,
+            "7": $base-padding * 7,
+            "8": $base-padding * 8,
+            "9": $base-padding * 9,
+            "10": $base-padding * 10,
+            "11": $base-padding * 11,
+            "12": $base-padding * 12,
+            "13": $base-padding * 13,
+            "14": $base-padding * 14,
+            "15": $base-padding * 15,
+            "16": $base-padding * 16,
+            "17": $base-padding * 17,
+            "18": $base-padding * 18,
+            "19": $base-padding * 19,
+            "20": $base-padding * 20,
+            "21": $base-padding * 21,
+            "22": $base-padding * 22,
+            "23": $base-padding * 23,
+            "24": $base-padding * 24,
+            "25": $base-padding * 25,
+            "26": $base-padding * 26,
+            "27": $base-padding * 27,
+            "28": $base-padding * 28,
+            "29": $base-padding * 29,
+            "30": $base-padding * 30,
+        ),
+    ),
+    "padding-top": (
+        "prefix": "pt",
+        "values": (
+            "0": 0,
+            "1": $base-padding,
+            "2": $base-padding * 2,
+            "3": $base-padding * 3,
+            "4": $base-padding * 4,
+            "5": $base-padding * 5,
+            "6": $base-padding * 6,
+            "7": $base-padding * 7,
+            "8": $base-padding * 8,
+            "9": $base-padding * 9,
+            "10": $base-padding * 10,
+            "11": $base-padding * 11,
+            "12": $base-padding * 12,
+            "13": $base-padding * 13,
+            "14": $base-padding * 14,
+            "15": $base-padding * 15,
+            "16": $base-padding * 16,
+            "17": $base-padding * 17,
+            "18": $base-padding * 18,
+            "19": $base-padding * 19,
+            "20": $base-padding * 20,
+            "21": $base-padding * 21,
+            "22": $base-padding * 22,
+            "23": $base-padding * 23,
+            "24": $base-padding * 24,
+            "25": $base-padding * 25,
+            "26": $base-padding * 26,
+            "27": $base-padding * 27,
+            "28": $base-padding * 28,
+            "29": $base-padding * 29,
+            "30": $base-padding * 30,
+        ),
+    ),
+    "padding-bottom": (
+        "prefix": "pb",
+        "values": (
+            "0": 0,
+            "1": $base-padding,
+            "2": $base-padding * 2,
+            "3": $base-padding * 3,
+            "4": $base-padding * 4,
+            "5": $base-padding * 5,
+            "6": $base-padding * 6,
+            "7": $base-padding * 7,
+            "8": $base-padding * 8,
+            "9": $base-padding * 9,
+            "10": $base-padding * 10,
+            "11": $base-padding * 11,
+            "12": $base-padding * 12,
+            "13": $base-padding * 13,
+            "14": $base-padding * 14,
+            "15": $base-padding * 15,
+            "16": $base-padding * 16,
+            "17": $base-padding * 17,
+            "18": $base-padding * 18,
+            "19": $base-padding * 19,
+            "20": $base-padding * 20,
+            "21": $base-padding * 21,
+            "22": $base-padding * 22,
+            "23": $base-padding * 23,
+            "24": $base-padding * 24,
+            "25": $base-padding * 25,
+            "26": $base-padding * 26,
+            "27": $base-padding * 27,
+            "28": $base-padding * 28,
+            "29": $base-padding * 29,
+            "30": $base-padding * 30,
+        ),
+    ),
+    "padding-block": (
+        "prefix": "py",
+        "values": (
+            "0": 0,
+            "1": $base-padding,
+            "2": $base-padding * 2,
+            "3": $base-padding * 3,
+            "4": $base-padding * 4,
+            "5": $base-padding * 5,
+            "6": $base-padding * 6,
+            "7": $base-padding * 7,
+            "8": $base-padding * 8,
+            "9": $base-padding * 9,
+            "10": $base-padding * 10,
+            "11": $base-padding * 11,
+            "12": $base-padding * 12,
+            "13": $base-padding * 13,
+            "14": $base-padding * 14,
+            "15": $base-padding * 15,
+            "16": $base-padding * 16,
+            "17": $base-padding * 17,
+            "18": $base-padding * 18,
+            "19": $base-padding * 19,
+            "20": $base-padding * 20,
+            "21": $base-padding * 21,
+            "22": $base-padding * 22,
+            "23": $base-padding * 23,
+            "24": $base-padding * 24,
+            "25": $base-padding * 25,
+            "26": $base-padding * 26,
+            "27": $base-padding * 27,
+            "28": $base-padding * 28,
+            "29": $base-padding * 29,
+            "30": $base-padding * 30,
+        ),
+    ),
+    "margin": (
+        "prefix": "m",
+        "values": (
+            "0": 0,
+            "1": $base-margin,
+            "2": $base-margin * 2,
+            "3": $base-margin * 3,
+            "4": $base-margin * 4,
+            "5": $base-margin * 5,
+            "6": $base-margin * 6,
+            "7": $base-margin * 7,
+            "8": $base-margin * 8,
+            "9": $base-margin * 9,
+            "10": $base-margin * 10,
+            "11": $base-margin * 11,
+            "12": $base-margin * 12,
+            "13": $base-margin * 13,
+            "14": $base-margin * 14,
+            "15": $base-margin * 15,
+            "16": $base-margin * 16,
+            "17": $base-margin * 17,
+            "18": $base-margin * 18,
+            "19": $base-margin * 19,
+            "20": $base-margin * 20,
+            "21": $base-margin * 21,
+            "22": $base-margin * 22,
+            "23": $base-margin * 23,
+            "24": $base-margin * 24,
+            "25": $base-margin * 25,
+            "26": $base-margin * 26,
+            "27": $base-margin * 27,
+            "28": $base-margin * 28,
+            "29": $base-margin * 29,
+            "30": $base-margin * 30,
+        ),
+    ),
+    "margin-left": (
+        "prefix": "ml",
+        "values": (
+            "0": 0,
+            "1": $base-margin,
+            "2": $base-margin * 2,
+            "3": $base-margin * 3,
+            "4": $base-margin * 4,
+            "5": $base-margin * 5,
+            "6": $base-margin * 6,
+            "7": $base-margin * 7,
+            "8": $base-margin * 8,
+            "9": $base-margin * 9,
+            "10": $base-margin * 10,
+            "11": $base-margin * 11,
+            "12": $base-margin * 12,
+            "13": $base-margin * 13,
+            "14": $base-margin * 14,
+            "15": $base-margin * 15,
+            "16": $base-margin * 16,
+            "17": $base-margin * 17,
+            "18": $base-margin * 18,
+            "19": $base-margin * 19,
+            "20": $base-margin * 20,
+            "21": $base-margin * 21,
+            "22": $base-margin * 22,
+            "23": $base-margin * 23,
+            "24": $base-margin * 24,
+            "25": $base-margin * 25,
+            "26": $base-margin * 26,
+            "27": $base-margin * 27,
+            "28": $base-margin * 28,
+            "29": $base-margin * 29,
+            "30": $base-margin * 30,
+        ),
+    ),
+    "margin-right": (
+        "prefix": "mr",
+        "values": (
+            "0": 0,
+            "1": $base-margin,
+            "2": $base-margin * 2,
+            "3": $base-margin * 3,
+            "4": $base-margin * 4,
+            "5": $base-margin * 5,
+            "6": $base-margin * 6,
+            "7": $base-margin * 7,
+            "8": $base-margin * 8,
+            "9": $base-margin * 9,
+            "10": $base-margin * 10,
+            "11": $base-margin * 11,
+            "12": $base-margin * 12,
+            "13": $base-margin * 13,
+            "14": $base-margin * 14,
+            "15": $base-margin * 15,
+            "16": $base-margin * 16,
+            "17": $base-margin * 17,
+            "18": $base-margin * 18,
+            "19": $base-margin * 19,
+            "20": $base-margin * 20,
+            "21": $base-margin * 21,
+            "22": $base-margin * 22,
+            "23": $base-margin * 23,
+            "24": $base-margin * 24,
+            "25": $base-margin * 25,
+            "26": $base-margin * 26,
+            "27": $base-margin * 27,
+            "28": $base-margin * 28,
+            "29": $base-margin * 29,
+            "30": $base-margin * 30,
+        ),
+    ),
+    "margin-top": (
+        "prefix": "mt",
+        "values": (
+            "0": 0,
+            "1": $base-margin,
+            "2": $base-margin * 2,
+            "3": $base-margin * 3,
+            "4": $base-margin * 4,
+            "5": $base-margin * 5,
+            "6": $base-margin * 6,
+            "7": $base-margin * 7,
+            "8": $base-margin * 8,
+            "9": $base-margin * 9,
+            "10": $base-margin * 10,
+            "11": $base-margin * 11,
+            "12": $base-margin * 12,
+            "13": $base-margin * 13,
+            "14": $base-margin * 14,
+            "15": $base-margin * 15,
+            "16": $base-margin * 16,
+            "17": $base-margin * 17,
+            "18": $base-margin * 18,
+            "19": $base-margin * 19,
+            "20": $base-margin * 20,
+            "21": $base-margin * 21,
+            "22": $base-margin * 22,
+            "23": $base-margin * 23,
+            "24": $base-margin * 24,
+            "25": $base-margin * 25,
+            "26": $base-margin * 26,
+            "27": $base-margin * 27,
+            "28": $base-margin * 28,
+            "29": $base-margin * 29,
+            "30": $base-margin * 30,
+        ),
+    ),
+    "margin-bottom": (
+        "prefix": "mb",
+        "values": (
+            "0": 0,
+            "1": $base-margin,
+            "2": $base-margin * 2,
+            "3": $base-margin * 3,
+            "4": $base-margin * 4,
+            "5": $base-margin * 5,
+            "6": $base-margin * 6,
+            "7": $base-margin * 7,
+            "8": $base-margin * 8,
+            "9": $base-margin * 9,
+            "10": $base-margin * 10,
+            "11": $base-margin * 11,
+            "12": $base-margin * 12,
+            "13": $base-margin * 13,
+            "14": $base-margin * 14,
+            "15": $base-margin * 15,
+            "16": $base-margin * 16,
+            "17": $base-margin * 17,
+            "18": $base-margin * 18,
+            "19": $base-margin * 19,
+            "20": $base-margin * 20,
+            "21": $base-margin * 21,
+            "22": $base-margin * 22,
+            "23": $base-margin * 23,
+            "24": $base-margin * 24,
+            "25": $base-margin * 25,
+            "26": $base-margin * 26,
+            "27": $base-margin * 27,
+            "28": $base-margin * 28,
+            "29": $base-margin * 29,
+            "30": $base-margin * 30,
+        ),
+    ),
+    "gap": (
+        "prefix": "gap",
+        "values": (
+            "0": 0,
+            "1": $base-gap,
+            "2": $base-gap * 2,
+            "3": $base-gap * 3,
+            "4": $base-gap * 4,
+            "5": $base-gap * 5,
+            "6": $base-gap * 6,
+            "7": $base-gap * 7,
+            "8": $base-gap * 8,
+            "9": $base-gap * 9,
+            "10": $base-gap * 10,
+            "11": $base-gap * 11,
+            "12": $base-gap * 12,
+            "13": $base-gap * 13,
+            "14": $base-gap * 14,
+            "15": $base-gap * 15,
+            "16": $base-gap * 16,
+            "17": $base-gap * 17,
+            "18": $base-gap * 18,
+            "19": $base-gap * 19,
+            "20": $base-gap * 20,
+            "21": $base-gap * 21,
+            "22": $base-gap * 22,
+            "23": $base-gap * 23,
+            "24": $base-gap * 24,
+            "25": $base-gap * 25,
+            "26": $base-gap * 26,
+            "27": $base-gap * 27,
+            "28": $base-gap * 28,
+            "29": $base-gap * 29,
+            "30": $base-gap * 30,
+        )
+    ),
+    "row-gap": (
+        "prefix": "row-gap",
+        "values": (
+            "0": 0,
+            "1": $base-gap 0,
+            "2": $base-gap * 2,
+            "3": $base-gap * 3,
+            "4": $base-gap * 4,
+            "5": $base-gap * 5,
+            "6": $base-gap * 6,
+            "7": $base-gap * 7,
+            "8": $base-gap * 8,
+            "9": $base-gap * 9,
+            "10": $base-gap * 10,
+            "11": $base-gap * 11,
+            "12": $base-gap * 12,
+            "13": $base-gap * 13,
+            "14": $base-gap * 14,
+            "15": $base-gap * 15,
+            "16": $base-gap * 16,
+            "17": $base-gap * 17,
+            "18": $base-gap * 18,
+            "19": $base-gap * 19,
+            "20": $base-gap * 20,
+            "21": $base-gap * 21,
+            "22": $base-gap * 22,
+            "23": $base-gap * 23,
+            "24": $base-gap * 24,
+            "25": $base-gap * 25,
+            "26": $base-gap * 26,
+            "27": $base-gap * 27,
+            "28": $base-gap * 28,
+            "29": $base-gap * 29,
+            "30": $base-gap * 30,
+        )
+    ),
+    "column-gap": (
+        "prefix": "col-gap",
+        "values": (
+            "0": 0,
+            "1": $base-gap,
+            "2": $base-gap * 2,
+            "3": $base-gap * 3,
+            "4": $base-gap * 4,
+            "5": $base-gap * 5,
+            "6": $base-gap * 6,
+            "7": $base-gap * 7,
+            "8": $base-gap * 8,
+            "9": $base-gap * 9,
+            "10": $base-gap * 10,
+            "11": $base-gap * 11,
+            "12": $base-gap * 12,
+            "13": $base-gap * 13,
+            "14": $base-gap * 14,
+            "15": $base-gap * 15,
+            "16": $base-gap * 16,
+            "17": $base-gap * 17,
+            "18": $base-gap * 18,
+            "19": $base-gap * 19,
+            "20": $base-gap * 20,
+            "21": $base-gap * 21,
+            "22": $base-gap * 22,
+            "23": $base-gap * 23,
+            "24": $base-gap * 24,
+            "25": $base-gap * 25,
+            "26": $base-gap * 26,
+            "27": $base-gap * 27,
+            "28": $base-gap * 28,
+            "29": $base-gap * 29,
+            "30": $base-gap * 30,
+        )
+    ),
+    "border-radius": (
+        "prefix": "br",
+        "values": (
+            // Default: Applies to all corners 
+            "default": $base-border-radius ,
+            "none": 0,
+            "xs": math.div($base-border-radius, 4) ,
+            "sm": math.div($base-border-radius, 2) ,
+            "lg": $base-border-radius * 2 ,
+            "full": 50% ,
+
+            // Applies to the corners at the left side of the element
+            "left": $base-border-radius 0px 0px $base-border-radius ,
+            "left-xs": math.div($base-border-radius, 4) 0px 0px math.div($base-border-radius, 4) ,
+            "left-sm": math.div($base-border-radius, 2) 0px 0px math.div($base-border-radius, 2) ,
+            "left-lg": ($base-border-radius * 2) 0px 0px ($base-border-radius * 2) ,
+            "left-full": 50% 0px 0px 50% ,
+
+            // Applies to the corners at the right side of the element
+            "right": 0px $base-border-radius $base-border-radius 0px ,
+            "right-xs": 0px math.div($base-border-radius, 4) math.div($base-border-radius, 4) 0px ,
+            "right-sm": 0px math.div($base-border-radius, 2) math.div($base-border-radius, 2) 0px ,
+            "right-lg": 0px ($base-border-radius * 2) ($base-border-radius * 2) 0px ,
+            "right-full": 0px 50% 50% 0px ,
+
+            // Applies to the corners at the top of the element
+            "top": $base-border-radius $base-border-radius 0px 0px ,
+            "top-xs": math.div($base-border-radius, 4) math.div($base-border-radius, 4) 0px 0px ,
+            "top-sm": math.div($base-border-radius, 2) math.div($base-border-radius, 2) 0px 0px ,
+            "top-lg": ($base-border-radius * 2) ($base-border-radius * 2) 0px 0px ,
+            "top-full": 50% 50% 0px 0px ,
+
+            // Applies to the corners at the bottom of the element
+            "bottom": 0px 0px $base-border-radius $base-border-radius ,
+            "bottom-xs": 0px 0px math.div($base-border-radius, 4) math.div($base-border-radius, 4) ,
+            "bottom-sm": 0px 0px math.div($base-border-radius, 2) math.div($base-border-radius, 2) ,
+            "bottom-lg": 0px 0px ($base-border-radius * 2) ($base-border-radius * 2) ,
+            "bottom-full": 0px 0px 50% 50% ,
+
+            // Applies to the top left corner of the element
+            "top-left": $base-border-radius 0px 0px 0px ,
+            "top-left-xs": math.div($base-border-radius, 4) 0px 0px 0px ,
+            "top-left-sm": math.div($base-border-radius, 2) 0px 0px 0px ,
+            "top-left-lg": ($base-border-radius * 2) 0px 0px 0px ,
+            "top-left-full": 50% 0px 0px 0px ,
+
+            // Applies to the bottom left corner of the element
+            "bottom-left": 0px 0px 0px $base-border-radius ,
+            "bottom-left-xs": 0px 0px 0px math.div($base-border-radius, 4) ,
+            "bottom-left-sm": 0px 0px 0px math.div($base-border-radius, 2) ,
+            "bottom-left-lg": 0px 0px 0px ($base-border-radius * 2) ,
+            "bottom-left-full": 0px 0px 0px 50% ,
+
+            // Applies to the top right corner of the element
+            "top-right": 0px $base-border-radius 0px 0px ,
+            "top-right-xs": 0px math.div($base-border-radius, 4) 0px 0px ,
+            "top-right-sm": 0px math.div($base-border-radius, 2) 0px 0px ,
+            "top-right-lg": 0px ($base-border-radius * 2) 0px 0px ,
+            "top-right-full": 0px 50% 0px 0px ,
+
+            // Applies to the top right corner of the element
+            "bottom-right": 0px 0px $base-border-radius 0px ,
+            "bottom-right-xs": 0px 0px math.div($base-border-radius, 4) 0px ,
+            "bottom-right-sm": 0px 0px math.div($base-border-radius, 2) 0px ,
+            "bottom-right-lg": 0px 0px ($base-border-radius * 2) 0px ,
+            "bottom-right-full": 0px  0px 50% 0px ,
+        ),
+    ),
+    "border": (
+        "prefix": "b",
+        "values": (
+            "0": none,
+            "1": $base-border-thickness solid var(--clr-line-color, black),
+            "2": $base-border-thickness * 1.25 solid var(--clr-line-color, black),
+            "3": $base-border-thickness * 1.5 solid var(--clr-line-color, black),
+            "4": $base-border-thickness * 1.75 solid var(--clr-line-color, black),
+            "5": $base-border-thickness * 2 solid var(--clr-line-color, black),
+            "6": $base-border-thickness * 2.5 solid var(--clr-line-color, black),
+            "7": $base-border-thickness * 3 solid var(--clr-line-color, black),
+            "8": $base-border-thickness * 3.5 solid var(--clr-line-color, black),
+            "9": $base-border-thickness * 4 solid var(--clr-line-color, black),
+            "10": $base-border-thickness * 4.5 solid var(--clr-line-color, black),
+        )
+    ),
+    "border-top": (
+        "prefix": "b-top",
+        "values": (
+            "0": none,
+            "1": $base-border-thickness solid var(--clr-line-color, black),
+            "2": $base-border-thickness * 1.25 solid var(--clr-line-color, black),
+            "3": $base-border-thickness * 1.5 solid var(--clr-line-color, black),
+            "4": $base-border-thickness * 1.75 solid var(--clr-line-color, black),
+            "5": $base-border-thickness * 2 solid var(--clr-line-color, black),
+            "6": $base-border-thickness * 2.5 solid var(--clr-line-color, black),
+            "7": $base-border-thickness * 3 solid var(--clr-line-color, black),
+            "8": $base-border-thickness * 3.5 solid var(--clr-line-color, black),
+            "9": $base-border-thickness * 4 solid var(--clr-line-color, black),
+            "10": $base-border-thickness * 4.5 solid var(--clr-line-color, black),
+        )
+    ),
+    "border-bottom": (
+        "prefix": "b-bottom",
+        "values": (
+            "0": none,
+            "1": $base-border-thickness solid var(--clr-line-color, black),
+            "2": $base-border-thickness * 1.25 solid var(--clr-line-color, black),
+            "3": $base-border-thickness * 1.5 solid var(--clr-line-color, black),
+            "4": $base-border-thickness * 1.75 solid var(--clr-line-color, black),
+            "5": $base-border-thickness * 2 solid var(--clr-line-color, black),
+            "6": $base-border-thickness * 2.5 solid var(--clr-line-color, black),
+            "7": $base-border-thickness * 3 solid var(--clr-line-color, black),
+            "8": $base-border-thickness * 3.5 solid var(--clr-line-color, black),
+            "9": $base-border-thickness * 4 solid var(--clr-line-color, black),
+            "10": $base-border-thickness * 4.5 solid var(--clr-line-color, black),
+        )
+    ),
+    "border-left": (
+        "prefix": "b-left",
+        "values": (
+            "0": none,
+            "1": $base-border-thickness solid var(--clr-line-color, black),
+            "2": $base-border-thickness * 1.25 solid var(--clr-line-color, black),
+            "3": $base-border-thickness * 1.5 solid var(--clr-line-color, black),
+            "4": $base-border-thickness * 1.75 solid var(--clr-line-color, black),
+            "5": $base-border-thickness * 2 solid var(--clr-line-color, black),
+            "6": $base-border-thickness * 2.5 solid var(--clr-line-color, black),
+            "7": $base-border-thickness * 3 solid var(--clr-line-color, black),
+            "8": $base-border-thickness * 3.5 solid var(--clr-line-color, black),
+            "9": $base-border-thickness * 4 solid var(--clr-line-color, black),
+            "10": $base-border-thickness * 4.5 solid var(--clr-line-color, black),
+        )
+    ),
+    "border-right": (
+        "prefix": "b-right",
+        "values": (
+            "0": none,
+            "1": $base-border-thickness solid var(--clr-line-color, black),
+            "2": $base-border-thickness * 1.25 solid var(--clr-line-color, black),
+            "3": $base-border-thickness * 1.5 solid var(--clr-line-color, black),
+            "4": $base-border-thickness * 1.75 solid var(--clr-line-color, black),
+            "5": $base-border-thickness * 2 solid var(--clr-line-color, black),
+            "6": $base-border-thickness * 2.5 solid var(--clr-line-color, black),
+            "7": $base-border-thickness * 3 solid var(--clr-line-color, black),
+            "8": $base-border-thickness * 3.5 solid var(--clr-line-color, black),
+            "9": $base-border-thickness * 4 solid var(--clr-line-color, black),
+            "10": $base-border-thickness * 4.5 solid var(--clr-line-color, black),
+        )
+    ),
+    "text-align": (
+        "prefix": "text",
+        "values": (
+            "center": center,
+            "left": left,
+            "right": right,
+            "top": top,
+            "bottom": bottom,
+            "justify": justify
+        )
+    ),
+    "text-decoration": (
+        "prefix": "text-decoration",
+        "values": (
+            "none": none,
+            "overline": overline,
+            "underline": underline,
+            "line-through": line-through
+        )
+    ),
+    "align-items": (
+        "prefix": "align-items",
+        "values": (
+            "top": start,
+            "center": center,
+            "bottom": end
+        )
+    ),
+    "justify-items": (
+        "prefix": "justify-items",
+        "values": (
+            "left": start,
+            "center": center,
+            "right": end
+        )
+    ),
+    "justify-self": (
+        "prefix": "justify-self",
+        "values": (
+            "start": start,
+            "center": center,
+            "end": end
+        )
+    ),
+    "align-self": (
+        "prefix": "align-self",
+        "values": (
+            "start": start,
+            "center": center,
+            "end": end
+        )
+    ),
+    "box-shadow": (
+        "prefix": "box-shadow",
+        "values": (
+            "default": 0px 0px ($base-shadow * 3) $base-shadow var(--clr-box-shadow, rgba(0, 0, 0, 0.2)),
+            "xs": 0px 0px $base-shadow 0px var(--clr-box-shadow, rgba(0, 0, 0, 0.2)),
+            "sm": 0px 0px ($base-shadow * 2) 0px var(--clr-box-shadow, rgba(0, 0, 0, 0.2)),
+            "lg": 0px 0px ($base-shadow * 4) ($base-shadow * 2) var(--clr-box-shadow, rgba(0, 0, 0, 0.2)),
+            "xl": 0px 0px ($base-shadow * 5) ($base-shadow * 3) var(--clr-box-shadow, rgba(0, 0, 0, 0.2)),
+            "xxl": 0px 0px ($base-shadow * 6) ($base-shadow * 4) var(--clr-box-shadow, rgba(0, 0, 0, 0.2))
+        )
+    ),
+    "font-size": (
+        "prefix": "font",
+        "values": (
+            "1": $base-font-size ,
+            "2": $base-font-size * 2 ,
+            "3": $base-font-size * 3 ,
+            "4": $base-font-size * 4 ,
+            "5": $base-font-size * 5 ,
+            "6": $base-font-size * 6 ,
+            "7": $base-font-size * 7 ,
+            "8": $base-font-size * 8 ,
+            "9": $base-font-size * 9 ,
+            "10": $base-font-size *  10 ,
+            "11": $base-font-size * 11 ,
+            "12": $base-font-size * 12 ,
+            "13": $base-font-size * 13 ,
+            "14": $base-font-size * 14 ,
+            "15": $base-font-size * 15 ,
+            "16": $base-font-size * 16 ,
+            "17": $base-font-size * 17 ,
+            "18": $base-font-size * 18 ,
+            "19": $base-font-size * 19 ,
+            "20": $base-font-size * 20 ,
+        ),
+    ),
+    "font-weight": (
+        "prefix": "font",
+        "values": (
+            "thin": $font-weight-thin,
+            "extralight": $font-weight-extralight,
+            "light": $font-weight-light,
+            "regular": $base-font-weight,
+            "medium": $font-weight-medium,
+            "semibold": $font-weight-semibold,
+            "bold": $font-weight-bold,
+            "extrabold": $font-weight-extrabold,
+            "black": $font-weight-black,
+        )
+    ),
+    "overflow": (
+        "prefix": "overflow",
+        "values": (
+            "visible": visible,
+            "hidden": hidden,
+            "auto": auto
+        )
+    ),
+    "overflow-x": (
+        "prefix": "overflow-x",
+        "values": (
+            "visible": visible,
+            "hidden": hidden,
+            "auto": auto
+        )
+    ),
+    "overflow-y": (
+        "prefix": "overflow-y",
+        "values": (
+            "visible": visible,
+            "hidden": hidden,
+            "auto": auto
+        )
+    ),
+    "position": (
+        "prefix": "position",
+        "values": (
+            "relative": relative,
+            "absolute": absolute,
+            "static": static,
+            "fixed": fixed
+        )
+    ),
+);
+
+// Generate utility classes
+@each $property, $map in $utilities {
+    $prefix: map-get($map, "prefix");
+    $values: map-get($map, "values");
+
+    @each $key, $value in $values {
+        @if($key == "default") {
+            // Base utility class
+            .#{$prefix} {
+                #{$property}: $value !important;
+            }
+            // Applies class conditionally
+            .hover-#{$prefix}:hover {
+                #{$property}: $value !important;
+            }
+
+            .input-#{$prefix} input {
+                #{$property}: $value !important;
+            }
+
+            .input-placeholder-#{$prefix} input::placeholder {
+                #{$property}: $value !important;
+            }
+        } @else {
+              .#{$prefix}-#{$key} {
+                  #{$property}: $value !important;
+              }
+              .hover-#{$prefix}-#{$key}:hover {
+                  #{$property}: $value !important;
+              }
+             .input-#{$prefix}-#{$key} input {
+                 #{$property}: $value !important;
+             }
+             .input-placeholder-#{$prefix}-#{$key} input::placeholder {
+                 #{$property}: $value !important;
+             }
+        }
+    }
+}
+
+// Miscellaneous utility classes
+.fit-parent {
+    height: 100% !important;
+    width: 100% !important;
+}
+
+.fit-screen {
+    height: 100vh !important;
+    width: 100vw !important;
+}

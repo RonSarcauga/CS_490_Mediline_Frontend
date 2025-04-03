@@ -1,0 +1,7 @@
+.clickable:not(:disabled) {
+    cursor: pointer;
+}
+
+.selected {
+    border: 2px solid var(--clr-secondary-400) !important;
+}

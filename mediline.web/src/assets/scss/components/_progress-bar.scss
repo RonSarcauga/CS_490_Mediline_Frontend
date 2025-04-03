@@ -1,0 +1,61 @@
+/* Default Style for Progress Bar */
+.progress-indicator {
+    height: 4.5rem;
+    width: 4.5rem;
+    color: var(--clr-neutral-1000);
+    background: var(--clr-neutral-1100);
+    text-align: center;
+    align-items: center;
+    justify-items: center;
+    border: 3.5px solid var(--clr-line-color, var(--clr-neutral-1000));
+    border-radius: 50%;
+    transition: all 0.25s ease;
+    z-index: 1;
+
+    &.active {
+        color: var(--clr-secondary-400);
+        border: 3.5px solid var(--clr-line-color, var(--clr-secondary-400));
+    }
+}
+
+.progress-step {
+    padding: 0;
+    text-align: center;
+    align-items: center;
+    color: var(--clr-neutral-1000);
+
+    &.active {
+        color: var(--clr-secondary-400);
+    }
+}
+
+.stepbar-wrapper {
+    position: relative;
+    height: 0.25rem;
+    width: 100%;
+    padding: 0;
+    transform: translate(2rem, 2.2rem);
+}
+
+.step-bar {
+    z-index: 0;
+    height: 0.25rem;
+    width: 100%;
+    background: var(--clr-neutral-1000);
+    position: absolute;
+    transition: width 0.3s ease;
+
+    &.active {
+        background: var(--clr-secondary-400);
+    }
+}
+
+.step-meter {
+    z-index: 0;
+    height: 0.25rem;
+    width: 0%;
+    background: var(--clr-secondary-400);
+    position: absolute;
+    transition: width 0.3s ease;
+}
+/* End of Default Styles for Progress Bar*/

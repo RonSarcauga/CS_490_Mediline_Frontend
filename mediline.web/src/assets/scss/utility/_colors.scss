@@ -1,0 +1,113 @@
+/*
+    This CSS file is used to map out the colors and themes of the app.
+    This approach ensures that our colors remain consistent throuhgout the site.
+*/
+
+$colors: (
+    primary: (
+        100: hsl(210, 70%, 10%),
+        200: hsl(210, 70%, 20%),
+        300: hsl(210, 70%, 30%),
+        400: hsl(210, 70%, 40%),
+        500: hsl(210, 70%, 50%),
+        600: hsl(210, 70%, 60%),
+        700: hsl(210, 70%, 70%),
+        800: hsl(210, 70%, 80%),
+        900: hsl(210, 70%, 90%)
+    ),
+    secondary: (
+        100: hsl(200, 45%, 50%),
+        200: hsl(200, 45%, 60%),
+        300: hsl(200, 45%, 70%),
+        400: hsl(200, 45%, 80%),
+        500: hsl(200, 45%, 90%)
+    ),
+    neutral: (
+        100: hsl(0, 0%, 0%),
+        200: hsl(0, 0%, 10%),
+        300: hsl(0, 0%, 20%),
+        400: hsl(0, 0%, 30%),
+        500: hsl(0, 0%, 40%),
+        600: hsl(0, 0%, 50%),
+        700: hsl(0, 0%, 60%),
+        800: hsl(0, 0%, 70%),
+        900: hsl(0, 0%, 80%),
+        1000: hsl(0, 0%, 90%),
+        1100: hsl(0, 0%, 100%)
+    ),
+    dark: (
+        100: hsl(200, 30%, 15%),
+        200: hsl(200, 30%, 25%),
+        300: hsl(200, 30%, 35%),
+        400: hsl(200, 30%, 45%),
+        500: hsl(200, 30%, 55%)
+    ),
+    primary-neutral: (
+        100: hsl(210, 20%, 45%),
+        200: hsl(210, 20%, 55%),
+        300: hsl(210, 20%, 65%),
+        400: hsl(210, 20%, 75%),
+        500: hsl(210, 20%, 85%)
+    ),
+    success: (
+        100: hsl(210, 20%, 45%),
+        200: hsl(210, 20%, 55%),
+        300: hsl(210, 20%, 65%),
+        400: hsl(210, 20%, 75%),
+        500: hsl(210, 20%, 85%)
+    ),
+    warning: (
+        100: hsl(210, 20%, 45%),
+        200: hsl(210, 20%, 55%),
+        300: hsl(210, 20%, 65%),
+        400: hsl(210, 20%, 75%),
+        500: hsl(210, 20%, 85%)
+    ),
+);
+
+// Generates utility classes for the color and background
+@each $color, $shades in $colors {
+    @each $shade, $value in $shades {
+        .text-#{$color}-#{$shade} {
+            color: $value;
+        }
+        .bg-#{$color}-#{$shade} {
+            background: $value !important;
+        }
+        .input-text-#{$color}-#{$shade} input {
+            color: $value !important;
+        }
+        .input-text-placeholder-#{$color}-#{$shade} input::placeholder {
+            color: $value !important;
+        }
+        .outline-#{$color}-#{$shade} {
+            --clr-line-color: #{$value};
+        }
+        .shadow-#{$color}-#{$shade} {
+            --clr-box-shadow: #{$value};
+        }
+        .hover-#{$color}-#{$shade}:hover {
+            color:  $value;
+        }
+        .hover-outline-#{$color}-#{$shade}:hover {
+            --clr-line-color: #{$value};
+        }
+        .hover-group-#{$color}-#{$shade} > a:hover {
+            color:  $value;
+        }
+    }
+}
+
+// Utility class for removing backgrounds
+.bg-0 {
+    background: transparent !important;
+}
+
+// Creates a property for each color and shade
+:root {
+    @each $color, $shades in $colors {
+        @each $shade, $value in $shades {
+            --clr-#{$color}-#{$shade}: #{$value};
+        }
+    }
+}

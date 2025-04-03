@@ -1,0 +1,16 @@
+/* Button: Default Style */
+.button {
+    height: fit-content;
+    width: fit-content;
+    padding: 0.5em 1em 0.5em 1em;
+    border-radius: 5px;
+    text-align: center;
+    color: white;
+    background: var(--clr-primary-400);
+    transition: all 0.25s ease;
+}
+
+.button[disabled] {
+    background: var(--clr-neutral-1000) !important;
+}
+/* End of Default Style */
