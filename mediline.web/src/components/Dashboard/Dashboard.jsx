@@ -1,11 +1,14 @@
-import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
-import Sidebar, { SidebarItem } from '../../components/Dashboard/Sidebar';
-import BaseIcon from '../../components/General/BaseIcon';
-import Container, { ItemGroup } from '../../components/General/Container';
+import Topbar, { TopbarItem } from './Topbar';
+import Sidebar, { SidebarItem } from './Sidebar';
+import BaseIcon from '../General/BaseIcon';
+import Container, { ItemGroup } from '../General/Container';
 
 {/* This is the navigation bar for the dashboards specifically.
     A separate navigation bar will be used for the landing page */}
-export default function Dashboard() {
+export default function Dashboard({
+    content = []
+})
+{
     return (
         <div className="background">
             <div className="dashboardContainer">
@@ -78,6 +81,7 @@ export default function Dashboard() {
                     />
                 </Sidebar>
                 <div className="mainContent">
+                    {content}
                 </div>
             </div>
         </div>

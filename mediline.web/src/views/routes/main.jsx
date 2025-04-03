@@ -7,7 +7,7 @@ import {
 import '../../assets/css/default-style.css';
 import '../../assets/scss/default-style.scss';
 import HomePage from './Home';
-import Dashboard from './Dashboard';
+import PatientDashboard from './PatientDashboard';
 import LoginPage from './Login';
 import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
@@ -15,7 +15,7 @@ import FindADoctorPage from './FindADoctor';
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <HomePage />,
+        element: <PatientDashboard />,
     },
     {
         path: '/login',
@@ -26,8 +26,8 @@ const router = createBrowserRouter([
         element: <RegisterPage />,
     },
     {
-        path: '/dashboard',
-        element: <Dashboard />,
+        path: '/patientDashboard',
+        element: <PatientDashboard />,
     },
     {
         path: '/findADoctor',
