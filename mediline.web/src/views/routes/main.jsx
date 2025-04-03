@@ -15,7 +15,7 @@ import FindADoctorPage from './FindADoctor';
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <PatientDashboard />,
+        element: <HomePage />,
     },
     {
         path: '/login',
