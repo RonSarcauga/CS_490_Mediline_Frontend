@@ -30,6 +30,7 @@ export default function MultiStepRegistration()
             else if (formData.accountType === "pharmacist") {
                 return ["pharmacyName", "pharmacyAddress"].includes(key)
             }
+            return false;
         }),
     };
 
@@ -725,6 +726,75 @@ export default function MultiStepRegistration()
                                                                 dataAttributes={
                                                                     { disabled: !isCurrentStepComplete }
                                                                 }
+                                                                content={[
+                                                                    <Link
+                                                                        to="/login"
+                                                                        className=" text-decoration-none font-regular text-neutral-1100">
+                                                                        Get Started
+                                                                    </Link>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
+                                            </>
+                                        ]}
+                                    />
+                                </>
+                            ]}
+                        />
+                    )}
+                    {currentStep === 5 && formData.accountType === "patient" && (
+                        <Container
+                            customClass="align-items-center bg-neutral-1100 br box-shadow-sm gap-15"
+                            fitParent={true}
+                            content={[
+                                <>
+                                    <ItemGroup
+                                        customClass="gap-7"
+                                        axis={true}
+                                        items={[
+                                            <>
+                                                <Container
+                                                    customClass="gap-10 px-10"
+                                                    content={[
+                                                        <ProgressBar
+                                                            formData={formData}
+                                                            steps={steps}
+                                                            stepInputs={stepInputs}
+                                                            currentStep={currentStep}
+                                                            onStepClick={handleStepClick}
+                                                        />
+                                                    ]}
+                                                />
+                                                <ItemGroup
+                                                    customClass='gap-3 px-20'
+                                                    axis={true}
+                                                    style={{
+                                                        maxWidth: "60vw"
+                                                    }}
+                                                    items={[
+                                                        <>
+                                                            <h1 className='font-semibold font-8 text-neutral-100'>You're almost there {formData.firstname}!</h1>
+                                                            <p className='font-5 text-neutral-700 text-justify'>
+                                                                Before you log in and see your dashboard, we need to ask you a few questions.
+                                                            </p>
+                                                        </>
+                                                    ]}
+                                                />
+                                                <ItemGroup
+                                                    customClass="gap-4 px-20"
+                                                    axis={true}
+                                                    style={{
+                                                        maxWidth: "60vw"
+                                                    }}
+                                                    fitParent={true}
+                                                    items={[
+                                                        <>
+                                                            <Container
+                                                                customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
+                                                                fitParent={true}
+                                                                isClickable={true}
                                                                 content={[
                                                                     <Link
                                                                         to="/login"

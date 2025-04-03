@@ -44,7 +44,9 @@ export default function Home() {
                             <>
                                 <TopbarItem text={"Services"}>
                                 </TopbarItem>
-                                <TopbarItem text={"Doctors"}>
+                                <TopbarItem
+                                    to={"/findADoctor"}
+                                    text={"Doctors"}>
                                 </TopbarItem>
                                 <TopbarItem text={"Discussion"}>
                                 </TopbarItem>
@@ -195,7 +197,7 @@ export default function Home() {
                                                 <h1 className="font-10">Instant Consultation</h1>
                                                 <p className="font-6 mb-2 text-justify">Tired of sitting in the clinic, waiting for your check-up? With our online exam rooms, you won't have to. Connect with your care team on the go.</p>
                                                 <Link
-                                                    to="/"
+                                                    to="/findADoctor"
                                                     className="button bg-primary-500 text-decoration-none hover-box-shadow-xs shadow-primary-400">
                                                     <p className='text-neutral-1100'>FIND A DOCTOR</p>
                                                 </Link>

@@ -10,6 +10,7 @@ import HomePage from './Home';
 import Dashboard from './Dashboard';
 import LoginPage from './Login';
 import RegisterPage from './Register';
+import FindADoctorPage from './FindADoctor';
 
 const router = createBrowserRouter([
     {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <Dashboard />,
+    },
+    {
+        path: '/findADoctor',
+        element: <FindADoctorPage />,
     },
 ]);
 

@@ -13,7 +13,7 @@ export default function ProgressBar({
     const getLastCompletedStep = () => {
         return Object.keys(stepInputs).reduce((lastStep, stepId) => {
             const inputs = stepInputs[stepId];
-            const isStepComplete = inputs.every((field) => formData[field]?.trim() !== "");
+            const isStepComplete = inputs.length > 0 && inputs.every((field) => formData[field]?.trim() !== "");
             return isStepComplete ? parseInt(stepId) : lastStep;
         }, 0);
     }
@@ -41,6 +41,7 @@ export default function ProgressBar({
                                         onClick={() => {
                                             console.log(`Current step: ${step.id}`);
                                             console.log(`Last completed step: ${lastCompletedStep}`);
+                                            console.log("Step Inputs: ", stepInputs);
                                             step.id <= lastCompletedStep + 1 && onStepClick(step.id);
                                         }}
                                         content={[

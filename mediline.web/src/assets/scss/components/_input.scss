@@ -36,9 +36,17 @@
     color: #CECECE;
 }
 
+.circle {
+    display: block;
+    height: 40px;
+    width: 40px;
+    align-content: center;
+    justify-content: center;
+}
+
 /* Browser-Specific Password Reveal Buttons */
 ::-ms-reveal {
-    display: none;
+    display: none !important;
 }
 
 /* End of Default Styles */
