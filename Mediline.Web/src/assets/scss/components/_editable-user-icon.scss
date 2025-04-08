@@ -1,0 +1,25 @@
+.editable-user-icon {
+    position: relative;
+  
+    .avatar-container {
+      position: relative;
+  
+      .edit-btn {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+    }
+  
+    .popup-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+  }
+  
