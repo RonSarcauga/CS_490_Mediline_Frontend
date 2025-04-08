@@ -1,0 +1,33 @@
+.appointment-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    background-color: white;
+    margin-bottom: 8px;
+  
+    .doctor-info {
+      display: flex;
+      flex-direction: column;
+  
+      .specialization {
+        font-size: 0.85rem;
+        color: #666;
+      }
+    }
+  
+    .appointment-time {
+      .time {
+        font-size: 0.85rem;
+        color: #444;
+      }
+    }
+  
+    .appointment-type {
+      margin-left: auto;
+      font-weight: bold;
+    }
+  }
+  
