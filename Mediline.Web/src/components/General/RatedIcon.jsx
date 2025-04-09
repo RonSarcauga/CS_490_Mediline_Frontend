@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseIcon from '../common/BaseIcon';
+import BaseIcon from './BaseIcon';
 import '../../assets/scss/components/_rated-icon.scss';
 
 const RatedIcon = ({ rating, borderColor = '#4CAF50' }) => {

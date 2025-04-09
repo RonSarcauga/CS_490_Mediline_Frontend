@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import BaseIcon from '../common/BaseIcon';
-import Button from '../common/Button';
+import BaseIcon from './BaseIcon';
+import Button from './Button';
 import '../../assets/scss/components/_editable-user-icon.scss';
 
 const EditableUserIcon = () => {

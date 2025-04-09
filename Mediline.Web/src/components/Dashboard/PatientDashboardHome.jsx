@@ -1,17 +1,17 @@
 import React from 'react';
-import Dashboard from '../Dashboard/Dashboard';
-import RatedIcon from '../RatedIcon/RatedIcon';
-import ScrollableTable from '../ScrollableTable/ScrollableTable';
-import AppointmentCard from '../AppointmentCard/AppointmentCard';
-import ThreeDotButton from '../ThreeDotButton/ThreeDotButton';
-import EditableUserIcon from '../EditableUserIcon/EditableUserIcon';
-import StatusLabel from '../StatusLabel/StatusLabel';
-import AccordionList from '../AccordionList/AccordionList';
+import Dashboard from './Dashboard';
+import RatedIcon from '../General/RatedIcon';
+import ScrollableTable from '../General/ScrollableTable';
+import AppointmentCard from './AppointmentCard';
+import ThreeDotButton from '../General/ThreeDotButton';
+import EditableUserIcon from '../General/EditableUserIcon';
+import StatusLabel from '../General/StatusLabel';
+import AccordionList from '../General/Accordion';
 
 import patientDashboardData from '../../assets/js/const';
-import '../../assets/scss/components/patient-dashboard-home.scss';
+import '../../assets/scss/components/_patient-dashboard-home.scss';
 
-const PatientDashboard = () => {
+const PatientDashboardHome = () => {
   const { doctor, procedures, appointments, user } = patientDashboardData;
 
   return (
@@ -66,4 +66,4 @@ const PatientDashboard = () => {
   );
 };
 
-export default PatientDashboard;
+export default PatientDashboardHome;

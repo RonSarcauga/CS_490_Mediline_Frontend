@@ -1,5 +1,5 @@
 import React from 'react';
-import BaseIcon from '../common/BaseIcon';
+import BaseIcon from '../General/BaseIcon';
 import '../../assets/scss/components/_appointment-card.scss';
 
 const AppointmentCard = ({ doctorName, specialization, time, type }) => {
