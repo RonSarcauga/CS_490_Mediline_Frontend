@@ -38,23 +38,18 @@ export const patientDashboardData = {
       lastAppointment: "2025-04-02 10:30AM",
       borderColor: "#007bff"
     },
-    procedures: [
-      { name: "Blood Test", date: "2025-04-01", id: 1 },
-      { name: "MRI", date: "2025-03-28", id: 2 }
+    checkout: [
+      { appointment: "March 12, 2025", doctor: "Dr. Jacob Clifford", treatment: "Follow Up", totalBill: "$300.00", status: "Unpaid", id: 1 },
+      { appointment: "January 21, 2024", doctor: "Dr. Douglas Powers", treatment: "Consultation", totalBill: "$250.00", status: "Paid", id: 2 }
     ],
     appointments: [
       {
-        doctor: "Dr. Alex Smith",
-        specialization: "Cardiology",
-        time: "2025-04-09",
-        hour: "11:00 AM",
-        type: "Online Chat"
-      },
-      {
-        doctor: "Dr. Eva Johnson",
-        specialization: "Dermatology",
-        time: "2025-04-12",
-        hour: "9:00 AM",
+        doctor: "Dr. Jacob Clifford",
+        specialization: "Exercise Physiologist",
+        time: {
+          date: "March 12, 2025",
+          time: "10:00 - 10:30"
+        },
         type: "Online Chat"
       }
     ],
@@ -64,6 +59,6 @@ export const patientDashboardData = {
       gender: "Male",
       birthday: "September 28, 1982",
       age: "42",
-      medication: ["Drug 1", "Drug 2"]
+      medications: ["Drug 1", "Drug 2"]
     }
   };  

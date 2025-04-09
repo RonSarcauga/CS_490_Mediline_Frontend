@@ -2,7 +2,10 @@ import React from 'react';
 import BaseIcon from '../General/BaseIcon';
 import '../../assets/scss/components/_appointment-card.scss';
 
-const AppointmentCard = ({ doctorName, specialization, time, type }) => {
+const AppointmentCard = ({ data }) => {
+  const { doctor: doctorName, specialization, time, type } = data;
+
+  console.log({ doctor: doctorName, specialization, time, type })
   return (
     <div className="appointment-card">
       <BaseIcon />

@@ -13,9 +13,9 @@ import '../../assets/scss/components/_patient-dashboard-home.scss';
 
 const PatientDashboardHome = () => {
   console.log(patientDashboardData)
+  const { doctor, checkout, appointments, user } = patientDashboardData;
   const mainBody = (
     <>
-    <div>test</div>
     <div className="patient-dashboard">
       <div className="card top-card">
         <div className="card-header">
@@ -37,7 +37,7 @@ const PatientDashboardHome = () => {
         </div>
         <ScrollableTable 
           columns={["Appointment", "Doctor", "Treatment", "Total Bill", "Status"]} 
-          data={procedures} 
+          data={checkout} 
           renderAction={() => <ThreeDotButton />} 
         />
       </div>
