@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useRef, useEffect, useState } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
@@ -20,6 +20,9 @@ export default function FindADoctorPage() {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const searchQuery = queryParams.get("query");
+
+    // Used for navigating to other pages
+    const navigate = useNavigate();
 
     // The click event for the reset filters button
     const clearFilters = () => {
@@ -274,6 +277,10 @@ export default function FindADoctorPage() {
                                                                                     dataAttributes={
                                                                                         { disabled: FindDoctorViewModel.doctorId === null }
                                                                                     }
+                                                                                    onClick={(e) => {
+                                                                                        e.preventDefault();
+                                                                                        navigate('/login');
+                                                                                    }}
                                                                                     stretch={true}
                                                                                     axis={false}
                                                                                     items={[
