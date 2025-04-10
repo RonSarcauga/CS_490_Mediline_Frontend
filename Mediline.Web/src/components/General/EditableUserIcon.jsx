@@ -9,7 +9,7 @@ const EditableUserIcon = () => {
   return (
     <div className="editable-user-icon">
       <div className="avatar-container">
-        <BaseIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.8 61.8">
+        <BaseIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
           <g clipPath="url(#clip0_56_1683)">
             <path
               fill="#E9573E"
