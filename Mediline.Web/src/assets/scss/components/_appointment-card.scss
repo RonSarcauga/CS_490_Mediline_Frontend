@@ -1,0 +1,12 @@
+.appointment-card {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: white;
+  margin-bottom: 8px;
+  width: 70%;
+}
