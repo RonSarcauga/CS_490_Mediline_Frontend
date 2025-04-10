@@ -1,7 +1,7 @@
-import Topbar, { TopbarItem } from './Topbar';
-import Sidebar, { SidebarItem } from './Sidebar';
-import BaseIcon from '../General/BaseIcon';
-import Container, { ItemGroup } from '../General/Container';
+import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
+import Sidebar, { SidebarItem } from '../../components/Dashboard/Sidebar';
+import BaseIcon from '../../components/General/BaseIcon';
+import Container, { ItemGroup } from '../../components/General/Container';
 import ECCheckbox from '../../components/General/ECCheckbox';
 import { BsCircleHalf } from "react-icons/bs";
 import { BsClipboard2HeartFill } from "react-icons/bs";
