@@ -3,48 +3,53 @@
     display: grid;
     grid-gap: 0.5rem;
 }
-
+  
 .accordionTitle {
     display: grid;
-    grid-template-columns: 300px auto;
+    grid-template-columns: 1fr auto; 
     align-items: center;
     background: #C5D8E8;
     border-radius: 10px;
     cursor: pointer;
-    padding: 0rem 1rem 0rem 1rem;
+    padding: 1rem; 
+    width: 100%;
 }
-
+  
 .accordionTitle h3 {
     font-weight: 600;
 }
-
+  
 .dropdownUp,
 .dropdownDown {
     height: 0;
     width: 0;
 }
-
+  
 .dropdownUp {
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-bottom: 15px solid #677382;
-}
-
+ }
+  
 .dropdownDown {
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
     border-top: 15px solid #677382;
 }
-
+  
 .accordionContent {
-    max-height: 0;
+    height: 0;
     overflow: hidden;
+    padding: 0 1rem;
     transition: all 0.5s cubic-bezier(0, 1, 0, 1);
+    text-align: left;
 }
-
-.accordionContent .show {
+  
+.accordionContent.show {
     height: auto;
     max-height: 9999px;
+    padding: 1rem;
     transition: all 0.5s cubic-bezier(1, 0, 1, 0);
 }
 /* End of Accordion Menu Default Styles */
+  

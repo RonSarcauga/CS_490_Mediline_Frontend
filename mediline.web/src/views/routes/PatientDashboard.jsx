@@ -1,9 +1,9 @@
-import Dashboard from '../../Components/Dashboard/Dashboard';
+import PatientDashboardHome from '../../Components/Dashboard/PatientDashboardHome';
 
 function PatientDashboard() {
     return (
         <>
-            <Dashboard />
+            <PatientDashboardHome />
         </>
     );
 }
