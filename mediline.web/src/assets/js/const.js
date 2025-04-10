@@ -35,7 +35,7 @@ export const patientDashboardData = {
       name: "Dr. Jacob Clifford",
       rating: 9.5,
       status: "Serving Patients",
-      lastAppointment: "January 16, 2024",
+      lastAppointment: { date: "January 16, 2024", time: "15:00"},
       borderColor: "#007bff"
     },
     checkout: [

@@ -8,6 +8,8 @@ import EditableUserIcon from '../General/EditableUserIcon';
 import StatusLabel from '../General/StatusLabel';
 import AccordionList from '../General/Accordion';
 import Container, { ItemGroup } from '../General/Container';
+import BaseIcon from '../General/BaseIcon';
+import CommonIcon from '../General/CommonIcon';
 
 import {patientDashboardData} from '../../assets/js/const';
 import '../../assets/scss/components/_patient-dashboard-home.scss';
@@ -16,13 +18,13 @@ const PatientDashboardHome = () => {
   const { doctor, checkout, appointments, user } = patientDashboardData;
   const accordionData = [
     {
-      header: 'Basic Info',
+      header: (<><CommonIcon name={'person'} />Basic Info</>),
       content: (
         <>
         <div><strong>Last Appointment</strong></div>
-        <div><>Date:</> {user.lastAppointment.date}</div>
-        <div><>Time:</> {user.lastAppointment.time}</div>
-        <div><>Doctor:</> {user.lastAppointment.doctor}</div>
+        <div><CommonIcon name={'calendar'} /> {user.lastAppointment.date}</div>
+        <div><CommonIcon name={'clock'} /> {user.lastAppointment.time}</div>
+        <div><CommonIcon name={'doctor'} /> {user.lastAppointment.doctor}</div>
         <div><strong>Address</strong></div>
         <div>{user.address}</div>
         <div><strong>Phone</strong></div>
@@ -31,7 +33,7 @@ const PatientDashboardHome = () => {
       ),
     },
     {
-      header: 'Medications',
+      header: (<><CommonIcon name={'pill'} />Medications</>),
       content: (
         <>
         {user.medications.length > 0 ? (
@@ -47,7 +49,7 @@ const PatientDashboardHome = () => {
       ),
     },
     {
-      header: 'Forms',
+      header: (<><CommonIcon name={'form'} />Forms</>),
       content: (
         <>No Forms to Show</>
       ),
@@ -87,7 +89,7 @@ const PatientDashboardHome = () => {
                     />,
 
                     <div key="bottom" style={{ display: 'flex', justifyContent: 'left', alignItems: 'center', padding: '1rem' }} >
-                      <div><strong>Last Appointment:</strong> <br /> {doctor.lastAppointment}</div>
+                      <div> <strong>Last Appointment:</strong> <br /> {doctor.lastAppointment.date} {doctor.lastAppointment.time} </div>
                     </div>
                   ]}
                 />

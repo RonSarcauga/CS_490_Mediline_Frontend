@@ -1,5 +1,6 @@
 import React from 'react';
 import BaseIcon from '../General/BaseIcon';
+import CommonIcon from '../General/CommonIcon';
 import '../../assets/scss/components/_appointment-card.scss';
 
 const AppointmentCard = ({ data }) => {
@@ -78,15 +79,15 @@ const AppointmentCard = ({ data }) => {
           </g>
         </g>
       </BaseIcon>
-      <div className="doctor-info">
+      <div>
         <div>{doctorName}</div>
         <div className="specialization">{specialization}</div>
       </div>
-      <div className="appointment-time">
-        <div>{time.date}</div>
-        <div className="time">{time.time}</div>
+      <div>
+        <div><CommonIcon name={'calendar'} />{time.date}</div>
+        <div><CommonIcon name={'clock'} />{time.time}</div>
       </div>
-      <div className="appointment-type">{type}</div>
+      <div><CommonIcon name={'camera'} />{type}</div>
     </div>
   );
 };
