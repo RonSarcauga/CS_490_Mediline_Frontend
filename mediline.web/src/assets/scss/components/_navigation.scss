@@ -100,6 +100,27 @@
 .indicator:hover svg {
     fill: #1B2B32;
 }
+
+.nav-item {
+    height: fit-content;
+    width: fit-content;
+    background: transparent;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+
+.nav-item:hover,
+.nav-item.active {
+    background: var(--clr-neutral-1100);
+}
+
+.nav-item:hover svg,
+.nav-item.active svg {
+    fill: var(--clr-dark-100);
+}
 /* End of Sidebar */
 
 /* Navbar for Dashboard */

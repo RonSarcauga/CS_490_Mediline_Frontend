@@ -555,6 +555,7 @@ $utilities: (
             "none": 0,
             "xs": math.div($base-border-radius, 4) ,
             "sm": math.div($base-border-radius, 2) ,
+            "md": $base-border-radius * 1.5 ,
             "lg": $base-border-radius * 2 ,
             "full": 50% ,
 
@@ -562,6 +563,7 @@ $utilities: (
             "left": $base-border-radius 0px 0px $base-border-radius ,
             "left-xs": math.div($base-border-radius, 4) 0px 0px math.div($base-border-radius, 4) ,
             "left-sm": math.div($base-border-radius, 2) 0px 0px math.div($base-border-radius, 2) ,
+            "left-md": ($base-border-radius * 1.5) 0px 0px ($base-border-radius * 1.5) ,
             "left-lg": ($base-border-radius * 2) 0px 0px ($base-border-radius * 2) ,
             "left-full": 50% 0px 0px 50% ,
 
@@ -569,6 +571,7 @@ $utilities: (
             "right": 0px $base-border-radius $base-border-radius 0px ,
             "right-xs": 0px math.div($base-border-radius, 4) math.div($base-border-radius, 4) 0px ,
             "right-sm": 0px math.div($base-border-radius, 2) math.div($base-border-radius, 2) 0px ,
+            "right-md": 0px ($base-border-radius * 1.5) ($base-border-radius * 1.5) 0px ,
             "right-lg": 0px ($base-border-radius * 2) ($base-border-radius * 2) 0px ,
             "right-full": 0px 50% 50% 0px ,
 
@@ -576,6 +579,7 @@ $utilities: (
             "top": $base-border-radius $base-border-radius 0px 0px ,
             "top-xs": math.div($base-border-radius, 4) math.div($base-border-radius, 4) 0px 0px ,
             "top-sm": math.div($base-border-radius, 2) math.div($base-border-radius, 2) 0px 0px ,
+            "top-md": ($base-border-radius * 1.5) ($base-border-radius * 1.5) 0px 0px ,
             "top-lg": ($base-border-radius * 2) ($base-border-radius * 2) 0px 0px ,
             "top-full": 50% 50% 0px 0px ,
 
@@ -583,6 +587,7 @@ $utilities: (
             "bottom": 0px 0px $base-border-radius $base-border-radius ,
             "bottom-xs": 0px 0px math.div($base-border-radius, 4) math.div($base-border-radius, 4) ,
             "bottom-sm": 0px 0px math.div($base-border-radius, 2) math.div($base-border-radius, 2) ,
+            "bottom-md": 0px 0px ($base-border-radius * 1.5) ($base-border-radius * 1.5) ,
             "bottom-lg": 0px 0px ($base-border-radius * 2) ($base-border-radius * 2) ,
             "bottom-full": 0px 0px 50% 50% ,
 
@@ -590,6 +595,7 @@ $utilities: (
             "top-left": $base-border-radius 0px 0px 0px ,
             "top-left-xs": math.div($base-border-radius, 4) 0px 0px 0px ,
             "top-left-sm": math.div($base-border-radius, 2) 0px 0px 0px ,
+            "top-left-md": ($base-border-radius * 1.5) 0px 0px 0px ,
             "top-left-lg": ($base-border-radius * 2) 0px 0px 0px ,
             "top-left-full": 50% 0px 0px 0px ,
 
@@ -597,6 +603,7 @@ $utilities: (
             "bottom-left": 0px 0px 0px $base-border-radius ,
             "bottom-left-xs": 0px 0px 0px math.div($base-border-radius, 4) ,
             "bottom-left-sm": 0px 0px 0px math.div($base-border-radius, 2) ,
+            "bottom-left-md": 0px 0px 0px ($base-border-radius * 1.5) ,
             "bottom-left-lg": 0px 0px 0px ($base-border-radius * 2) ,
             "bottom-left-full": 0px 0px 0px 50% ,
 
@@ -604,6 +611,7 @@ $utilities: (
             "top-right": 0px $base-border-radius 0px 0px ,
             "top-right-xs": 0px math.div($base-border-radius, 4) 0px 0px ,
             "top-right-sm": 0px math.div($base-border-radius, 2) 0px 0px ,
+            "top-right-md": 0px ($base-border-radius * 1.5) 0px 0px ,
             "top-right-lg": 0px ($base-border-radius * 2) 0px 0px ,
             "top-right-full": 0px 50% 0px 0px ,
 
@@ -611,6 +619,7 @@ $utilities: (
             "bottom-right": 0px 0px $base-border-radius 0px ,
             "bottom-right-xs": 0px 0px math.div($base-border-radius, 4) 0px ,
             "bottom-right-sm": 0px 0px math.div($base-border-radius, 2) 0px ,
+            "bottom-right-md": 0px 0px ($base-border-radius * 1.5) 0px ,
             "bottom-right-lg": 0px 0px ($base-border-radius * 2) 0px ,
             "bottom-right-full": 0px  0px 50% 0px ,
         ),
@@ -720,7 +729,8 @@ $utilities: (
         "values": (
             "top": start,
             "center": center,
-            "bottom": end
+            "bottom": end,
+            "space-between": space-between,
         )
     ),
     "justify-items": (
@@ -728,7 +738,17 @@ $utilities: (
         "values": (
             "left": start,
             "center": center,
-            "right": end
+            "right": end,
+            "space-between": space-between,
+        )
+    ),
+    "align-content": (
+        "prefix": "align-content",
+        "values": (
+            "top": start,
+            "center": center,
+            "bottom": end,
+            "space-between": space-between,
         )
     ),
     "justify-self": (

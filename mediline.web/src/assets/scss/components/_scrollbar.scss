@@ -1,0 +1,30 @@
+/* Custom Scrollbar 1 */
+.postList {
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+    /* Browser-Specific Styles */
+    .postList::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .postList::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .postList::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        border: 3px solid transparent;
+    }
+
+    .postList::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .postList::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    /* End of Browser-Specific Styles */
+
+/* End of CS 1 */

@@ -48,7 +48,9 @@ export default function Home() {
                                     to={"/findADoctor"}
                                     text={"Doctors"}>
                                 </TopbarItem>
-                                <TopbarItem text={"Discussion"}>
+                                <TopbarItem
+                                    to={"/discussionForumPage"}
+                                    text={"Discussion"}>
                                 </TopbarItem>
                                 <TopbarItem
                                     to={"/login"}
