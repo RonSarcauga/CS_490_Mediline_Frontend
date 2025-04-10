@@ -751,6 +751,15 @@ $utilities: (
             "space-between": space-between,
         )
     ),
+    "justify-content": (
+        "prefix": "justify-content",
+        "values": (
+            "start": start,
+            "center": center,
+            "right": end,
+            "space-between": space-between,
+        )
+    ),
     "justify-self": (
         "prefix": "justify-self",
         "values": (
@@ -899,6 +908,6 @@ $utilities: (
 }
 
 .fit-screen {
-    height: 100vh !important;
-    width: 100vw !important;
+    min-height: 100vh !important;
+    min-width: 100vw !important;
 }
