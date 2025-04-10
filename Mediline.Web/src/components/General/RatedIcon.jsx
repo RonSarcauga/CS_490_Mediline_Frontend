@@ -6,7 +6,7 @@ const RatedIcon = ({ rating, borderColor = '#4CAF50' }) => {
   return (
     <div className="rated-icon" style={{ '--border-color': borderColor }}>
       <div className="avatar-wrapper">
-        <BaseIcon xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 61.8 61.8">
+        <BaseIcon xmlns="http://www.w3.org/2000/svg" viewBox="0 0 61.8 61.8">
           <g id="Layer_2" data-name="Layer 2">
             <g id="_ÎÓÈ_1" data-name="—ÎÓÈ 1">
               <circle cx="30.9" cy="30.9" r="30.9" fill="#58b0e0"></circle>

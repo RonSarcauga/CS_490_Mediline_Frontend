@@ -55,6 +55,7 @@ const PatientDashboardHome = () => {
       ),
     }
   ];
+
   const mainBody = (
     <>
     <div className="patient-dashboard">
@@ -105,6 +106,7 @@ const PatientDashboardHome = () => {
         <ScrollableTable 
             columns={["Appointment", "Doctor", "Treatment", "Total Bill", "Status"]} 
             columnKeys={["appointment", "doctor", "treatment", "totalBill", "status"]}
+            columnTypes = {{appointment:{ type: 'icon', iconName: 'calendar' }, doctor:{ type: 'icon', iconName: 'doctor' }, status:{ type: 'status' }}}
             data={checkout}
             renderActions={() => <ThreeDotButton />} 
         />
@@ -114,7 +116,7 @@ const PatientDashboardHome = () => {
         <div className="card-header">
           <h3>Upcoming Appointments</h3>
         </div>
-        <div className="scrollable-list">
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
           {appointments.map((a, i) => (
             <AppointmentCard key={i} data={a} />
           ))}
