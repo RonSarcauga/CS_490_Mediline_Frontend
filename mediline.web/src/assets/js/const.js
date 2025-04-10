@@ -35,7 +35,7 @@ export const patientDashboardData = {
       name: "Dr. Sarah Lee",
       rating: 4.7,
       status: "Available",
-      lastAppointment: "2025-04-02 10:30AM",
+      lastAppointment: "January 16, 2024",
       borderColor: "#007bff"
     },
     checkout: [
@@ -59,6 +59,9 @@ export const patientDashboardData = {
       gender: "Male",
       birthday: "September 28, 1982",
       age: "42",
-      medications: ["Drug 1", "Drug 2"]
+      medications: ["Drug 1", "Drug 2"],
+      lastAppointment: { date: "January 21, 2024", time: "17:00", doctor: "Dr. Douglas Powers"},
+      address: "74 Ames Ave, Greensboro, Norch Carolina",
+      phone: "+1 (934) 799 3917"
     }
   };  

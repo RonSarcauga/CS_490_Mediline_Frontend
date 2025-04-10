@@ -12,8 +12,46 @@ import {patientDashboardData} from '../../assets/js/const';
 import '../../assets/scss/components/_patient-dashboard-home.scss';
 
 const PatientDashboardHome = () => {
-  console.log(patientDashboardData)
   const { doctor, checkout, appointments, user } = patientDashboardData;
+  const accordionData = [
+    {
+      header: 'Basic Info',
+      content: (
+        <>
+        <div><strong>Last Appointment</strong></div>
+        <div><>Date:</> {user.lastAppointment.date}</div>
+        <div><>Time:</> {user.lastAppointment.time}</div>
+        <div><>Doctor:</> {user.lastAppointment.doctor}</div>
+        <div><strong>Address</strong></div>
+        <div>{user.address}</div>
+        <div><strong>Phone</strong></div>
+        <div>{user.phone}</div>
+        </>
+      ),
+    },
+    {
+      header: 'Medications',
+      content: (
+        <>
+        {user.medications.length > 0 ? (
+          <ul>
+            {user.medications.map((medication, index) => (
+              <li key={index}>{medication}</li>
+            ))}
+          </ul>
+        ) : (
+          <div>No medications available</div>
+        )}
+      </>
+      ),
+    },
+    {
+      header: 'Forms',
+      content: (
+        <>No Forms to Show</>
+      ),
+    }
+  ];
   const mainBody = (
     <>
     <div className="patient-dashboard">
@@ -36,9 +74,10 @@ const PatientDashboardHome = () => {
           <h3>Checkout</h3>
         </div>
         <ScrollableTable 
-          columns={["Appointment", "Doctor", "Treatment", "Total Bill", "Status"]} 
-          data={checkout} 
-          renderAction={() => <ThreeDotButton />} 
+            columns={["Appointment", "Doctor", "Treatment", "Total Bill", "Status"]} 
+            columnKeys={["appointment", "doctor", "treatment", "totalBill", "status"]}
+            data={checkout}
+            renderActions={() => <ThreeDotButton />} 
         />
       </div>
 
@@ -55,11 +94,10 @@ const PatientDashboardHome = () => {
 
       <div className="card vertical-card">
         <EditableUserIcon />
-        <div><strong>Name:</strong> {user.name}</div>
+        <div><strong>{user.name}</strong></div>
         <div><strong>MRN:</strong> {user.mrn}</div>
-        <div><strong>Gender:</strong> {user.gender}</div>
-        <div><strong>Birthday:</strong> {user.birthday} ({user.age})</div>
-        <AccordionList title="Medications" items={user.medications} />
+        <div>{user.gender} ● {user.birthday} ({user.age})</div>
+        <AccordionList data = {accordionData} />
       </div>
     </div>
     </>

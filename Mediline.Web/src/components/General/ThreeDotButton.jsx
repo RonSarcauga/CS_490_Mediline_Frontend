@@ -13,7 +13,8 @@ const ThreeDotButton = () => {
       </button>
       {isOpen && (
         <div className="popup-menu">
-          {/* placeholder */}
+          <div> Pay </div>
+          <div> See More </div>
         </div>
       )}
     </div>
