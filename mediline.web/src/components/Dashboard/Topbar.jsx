@@ -27,8 +27,7 @@ export default function Topbar({
 export function TopbarItem({
     icon,
     text,
-    to,
-    onClick,
+    to = "/",
     customClass = '',
     textClass = ''
 })
@@ -36,10 +35,7 @@ export function TopbarItem({
     const baseClass = 'topbarItem';
 
     return (
-        <Link
-            to={to}
-            onClick={onClick}
-            className={`${baseClass} ${customClass}`}>
+        <Link to={to} className={`${baseClass} ${customClass}`}>
             {icon}
             <span className={`topbarText ${textClass}`}>
                 {text}
