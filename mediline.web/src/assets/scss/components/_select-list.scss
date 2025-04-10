@@ -25,11 +25,11 @@
     position: absolute;
     top: 100%;
     left: 0;
-    width: 100%;
+    width: 100.5%;
     background: var(--clr-neutral-1100);
     border: 1.25px solid var(--clr-line-color, var(--clr-neutral-900));
     border-radius: 0px 0px 20px 20px;
-    // padding: 0.75rem 1.25rem 0.75rem 1.25rem;
+    transform: translate(-0.6px, 0px);
     overflow-x: hidden;
     overflow-y: auto;
     z-index: 1;
