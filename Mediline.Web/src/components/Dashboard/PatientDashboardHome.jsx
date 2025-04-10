@@ -90,7 +90,7 @@ const PatientDashboardHome = () => {
                     />,
 
                     <div key="bottom" style={{ display: 'flex', justifyContent: 'left', alignItems: 'center', padding: '1rem' }} >
-                      <div> <strong>Last Appointment:</strong> <br /> {doctor.lastAppointment.date} {doctor.lastAppointment.time} </div>
+                      <div> <strong>Last Appointment:</strong> <br /> <CommonIcon name={'calendar'} /> {doctor.lastAppointment.date} <CommonIcon name={'clock'} /> {doctor.lastAppointment.time} </div>
                     </div>
                   ]}
                 />
