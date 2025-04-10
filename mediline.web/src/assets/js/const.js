@@ -32,9 +32,9 @@ export const ratings = [
 
 export const patientDashboardData = {
     doctor: {
-      name: "Dr. Sarah Lee",
-      rating: 4.7,
-      status: "Available",
+      name: "Dr. Jacob Clifford",
+      rating: 9.5,
+      status: "Serving Patients",
       lastAppointment: "January 16, 2024",
       borderColor: "#007bff"
     },

@@ -7,6 +7,7 @@ import ThreeDotButton from '../General/ThreeDotButton';
 import EditableUserIcon from '../General/EditableUserIcon';
 import StatusLabel from '../General/StatusLabel';
 import AccordionList from '../General/Accordion';
+import Container, { ItemGroup } from '../General/Container';
 
 import {patientDashboardData} from '../../assets/js/const';
 import '../../assets/scss/components/_patient-dashboard-home.scss';
@@ -56,19 +57,45 @@ const PatientDashboardHome = () => {
     <>
     <div className="patient-dashboard">
       <div className="card top-card">
-        <div className="card-header">
-          <h3>Your Care Team</h3>
-          <button className="small-btn">Book an Appointment</button>
-        </div>
-        <RatedIcon rating={doctor.rating} borderColor={doctor.borderColor} />
-        <div><strong>Doctor</strong> {doctor.name}</div>
-        <div>
-          <strong>Status</strong>
-          <StatusLabel status={doctor.status} />
-        </div>
-        <div><strong>Last Appointment:</strong> {doctor.lastAppointment}</div>
-      </div>
+        <Container 
+          header={<h2 style={{ padding: '1rem' , justifyContent: 'center', alignItems: 'center' }}>Your Care Team</h2>} 
+          
+          content={
+            <ItemGroup
+              axis={false} fitParent={true} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}
+              items={[
+                <div key="left" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }} >
+                  <RatedIcon rating={doctor.rating} borderColor={doctor.borderColor} />
+                </div>,
 
+                <ItemGroup
+                  key="right"
+                  axis={true}
+                  fitParent={true}
+                  evenSplit={true}
+                  items={[
+                    <ItemGroup
+                      key="top" axis={false} fitParent={true}
+                      items={[
+                        <div key="top-left" style={{ display: 'flex', justifyContent: 'left', alignItems: 'center', padding: '1rem', minWidth: '200px'}}>
+                          <div><strong>Doctor</strong> <br /> {doctor.name}</div>
+                        </div>,
+                        <div key="top-right" style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'flex-start', padding: '1rem', minWidth: '200px', flexDirection: 'column'}} >
+                          <strong>Status</strong> <StatusLabel status={doctor.status} />
+                        </div>
+                      ]}
+                    />,
+
+                    <div key="bottom" style={{ display: 'flex', justifyContent: 'left', alignItems: 'center', padding: '1rem' }} >
+                      <div><strong>Last Appointment:</strong> <br /> {doctor.lastAppointment}</div>
+                    </div>
+                  ]}
+                />
+              ]}
+            />
+          }
+        />
+      </div>
       <div className="card mid-card">
         <div className="card-header">
           <h3>Checkout</h3>
