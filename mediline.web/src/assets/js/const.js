@@ -43,3 +43,99 @@ export const doctorList = [
     { value: "doc10", label: "Olivia White", rating: "96%", acceptingNewPatients: true, specialty: "Exercise Physiologist" }
 ];
 
+export const discussionPosts = [
+    {
+        author: "John Doe",
+        role: "patient",
+        timestamp: "1 day ago",
+        title: "Best workout ever",
+        content: "I love to do this workout on the weekends. It's energizing and keeps me active.",
+        tags: "Patient",
+        replies: 3,
+    },
+    {
+        author: "Jane Smith",
+        role: "patient",
+        timestamp: "2 hours ago",
+        title: "Healthy meal prep tips",
+        content: "Meal prepping is a game changer for my weekly routine. Anyone have more ideas?",
+        tags: "Doctor",
+        replies: 5,
+    },
+    {
+        author: "Alex Johnson",
+        role: "patient",
+        timestamp: "30 minutes ago",
+        title: "Struggling with motivation",
+        content: "I've been finding it hard to stay consistent with my workouts. Any advice?",
+        tags: "Patient",
+        replies: 8,
+    },
+    {
+        author: "Maria Gonzalez",
+        role: "patient",
+        timestamp: "3 days ago",
+        title: "Yoga for beginners",
+        content: "Just started yoga and it's amazing! Can anyone share beginner-friendly poses?",
+        tags: "Pharmacist",
+        replies: 2,
+    },
+    {
+        author: "Chris Wong",
+        role: "patient",
+        timestamp: "1 week ago",
+        title: "Running tips for endurance",
+        content: "Training for a marathon and looking for ways to improve my endurance. Suggestions?",
+        tags: "Doctor",
+        replies: 6,
+    },
+];
+
+export const userList = [
+    {
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john.doe@example.com",
+        role: "patient",
+        bio: "I'm passionate about fitness and enjoy sharing tips on staying active.",
+        joinDate: "01/15/2022",
+    },
+    {
+        id: 2,
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane.smith@example.com",
+        role: "doctor",
+        bio: "A family physician dedicated to promoting healthy lifestyle practices.",
+        joinDate: "03/20/2021",
+    },
+    {
+        id: 3,
+        firstName: "Alex",
+        lastName: "Johnson",
+        email: "alex.johnson@example.com",
+        role: "patient",
+        bio: "Striving to find consistency in my fitness routine. Love learning from others.",
+        joinDate: "05/10/2022",
+    },
+    {
+        id: 4,
+        firstName: "Maria",
+        lastName: "Gonzalez",
+        email: "maria.gonzalez@example.com",
+        role: "pharmacist",
+        bio: "Experienced pharmacist passionate about educating patients on medication safety.",
+        joinDate: "07/25/2021",
+    },
+    {
+        id: 5,
+        firstName: "Chris",
+        lastName: "Wong",
+        email: "chris.wong@example.com",
+        role: "doctor",
+        bio: "Marathon runner and sports medicine specialist. Helping patients achieve their best.",
+        joinDate: "09/18/2020",
+    },
+];
+

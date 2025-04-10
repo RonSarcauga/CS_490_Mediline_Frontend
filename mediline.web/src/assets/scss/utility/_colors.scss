@@ -3,6 +3,7 @@
     This approach ensures that our colors remain consistent throuhgout the site.
 */
 
+// Color-scheme for the themes
 $colors: (
     primary: (
         100: hsl(210, 70%, 10%),
@@ -50,11 +51,12 @@ $colors: (
         500: hsl(210, 20%, 85%)
     ),
     success: (
-        100: hsl(210, 20%, 45%),
-        200: hsl(210, 20%, 55%),
-        300: hsl(210, 20%, 65%),
-        400: hsl(210, 20%, 75%),
-        500: hsl(210, 20%, 85%)
+        100: hsl(120, 45%, 35%),
+        200: hsl(120, 45%, 45%),
+        300: hsl(120, 45%, 55%),
+        400: hsl(120, 45%, 65%),
+        500: hsl(120, 45%, 75%),
+        600: hsl(120, 45%, 85%)
     ),
     warning: (
         100: hsl(0, 70%, 40%),
@@ -63,6 +65,13 @@ $colors: (
         400: hsl(0, 70%, 70%),
         500: hsl(0, 70%, 80%),
         600: hsl(0, 70%, 90%)
+    ),
+    user: (
+        100: hsl(250, 60%, 40%),
+        200: hsl(250, 60%, 50%),
+        300: hsl(250, 60%, 60%),
+        400: hsl(250, 60%, 70%),
+        500: hsl(250, 60%, 80%),
     ),
 );
 
@@ -102,6 +111,19 @@ $colors: (
 // Utility class for removing backgrounds
 .bg-0 {
     background: transparent !important;
+}
+
+// Utility class for applying predefined gradients to an element
+.gradient {
+    &-dark {
+        @include linear-gradient(to bottom, $gradient-dark);
+    }
+    &-light {
+        @include linear-gradient(to bottom, $gradient-light);
+    }
+    &-white {
+        @include linear-gradient(to bottom, $gradient-white);
+    }
 }
 
 // Creates a property for each color and shade
