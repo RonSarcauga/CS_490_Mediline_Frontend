@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { useState, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Image from '../../components/General/Image'
@@ -7,6 +8,18 @@ import Button from '../../components/General/Button';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 
 export default function Home() {
+    const [searchQuery, setSearchQuery] = useState("");
+    const navigate = useNavigate();
+    const serviceRef = useRef();
+    console.log("servicesRef:", serviceRef.current);
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (searchQuery.trim()) {
+            navigate(`/findADoctor?query=${encodeURIComponent(searchQuery.trim())}`);
+        }
+    }
+
     return (
         <>
             <Container
@@ -42,7 +55,12 @@ export default function Home() {
                         ]}
                         items={[
                             <>
-                                <TopbarItem text={"Services"}>
+                                <TopbarItem
+                                    text={"Services"}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        serviceRef.current.scrollIntoView({ behavior: "smooth" })
+                                    }}>
                                 </TopbarItem>
                                 <TopbarItem
                                     to={"/findADoctor"}
@@ -86,6 +104,15 @@ export default function Home() {
                                                         </BaseIcon>
                                                     }
                                                     placeholder="Specialty"
+                                                    value={searchQuery}
+                                                    onChange={(e) => {
+                                                        setSearchQuery(e.target.value);
+                                                    }}
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            handleSubmit(e);
+                                                        }
+                                                    }}
                                                 />
                                             </>
                                         ]}
@@ -102,116 +129,118 @@ export default function Home() {
                     </>
                 ]}
             />
-            <Container
-                customClass='align-items-center justify-content-center p-20'
-                fitScreen={true}
-                content={[
-                    <>
-                        <ItemGroup
-                            customClass='gap-20 align-items-center'
-                            stretch={true}
-                            fitParent={true}
-                            axis={false}
-                            items={[
-                                <>
-                                    <Container
-                                        customClass='bg-secondary-500 br p-4 gap-4 box-shadow'
-                                        maxWidth='45vw'
-                                        header={[
-                                            <Container
-                                                customClass='bg-secondary-400 br-sm align-items-center'
-                                                fitParent={true}
-                                                content={[
+            <section ref={serviceRef}>
+                <Container
+                    customClass='align-items-center justify-content-center p-20'
+                    fitScreen={true}
+                    content={[
+                        <>
+                            <ItemGroup
+                                customClass='gap-20 align-items-center'
+                                stretch={true}
+                                fitParent={true}
+                                axis={false}
+                                items={[
+                                    <>
+                                        <Container
+                                            customClass='bg-secondary-500 br p-4 gap-4 box-shadow'
+                                            maxWidth='45vw'
+                                            header={[
+                                                <Container
+                                                    customClass='bg-secondary-400 br-sm align-items-center'
+                                                    fitParent={true}
+                                                    content={[
+                                                        <ItemGroup
+                                                            axis={false}
+                                                            stretch={true}
+                                                            customClass='gap-3 bg-secondary-400 p-4'
+                                                            items={[
+                                                                <>
+                                                                    <BaseIcon width={30} height={30} fillColor="none">
+                                                                        <path d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z" stroke="#677382" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                                        <path d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z" stroke="#677382" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                                        <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="hsl(210, 20%, 45%)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    </BaseIcon>
+                                                                    <h1 className="font-semibold text-primary-neutral-100">JACOB CLIFFORD</h1>
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    ]}
+                                                />
+                                            ]}
+                                            content={[
+                                                <>
                                                     <ItemGroup
-                                                        axis={false}
-                                                        stretch={true}
-                                                        customClass='gap-3 bg-secondary-400 p-4'
+                                                        customClass='gap-2'
+                                                        fitParent={true}
+                                                        axis={true}
                                                         items={[
                                                             <>
-                                                                <BaseIcon width={30} height={30} fillColor="none">
-                                                                    <path d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z" stroke="#677382" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                    <path d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z" stroke="#677382" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="hsl(210, 20%, 45%)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                </BaseIcon>
-                                                                <h1 className="font-semibold text-primary-neutral-100">JACOB CLIFFORD</h1>
+                                                                <ItemGroup
+                                                                    customClass='justify-self-start'
+                                                                    fitParent={true}
+                                                                    stretch={true}
+                                                                    maxWidth='50%'
+                                                                    items={[
+                                                                        <div className='bg-secondary-400 br p-3 px-4'>
+                                                                            <p className='text-primary-neutral-100 font-5'>Good morning Luke. I see you are in the waiting room so we will begin our consultation shortly.</p>
+                                                                        </div>
+                                                                    ]}
+                                                                />
+                                                                <ItemGroup
+                                                                    customClass='justify-self-end'
+                                                                    fitParent={true}
+                                                                    stretch={true}
+                                                                    maxWidth='50%'
+                                                                    items={[
+                                                                        <div className='bg-primary-600 br p-3 px-4'>
+                                                                            <p className='text-neutral-1100 font-5'>Good morning Dr. Clifford. I am ready when you are.</p>
+                                                                        </div>
+                                                                    ]}
+                                                                />
                                                             </>
                                                         ]}
                                                     />
-                                                ]}
-                                            />
-                                        ]}
-                                        content={[
-                                            <>
-                                                <ItemGroup
-                                                    customClass='gap-2'
-                                                    fitParent={true}
-                                                    axis={true}
-                                                    items={[
-                                                        <>
-                                                            <ItemGroup
-                                                                customClass='justify-self-start'
-                                                                fitParent={true}
-                                                                stretch={true}
-                                                                maxWidth='50%'
-                                                                items={[
-                                                                    <div className='bg-secondary-400 br p-3 px-4'>
-                                                                        <p className='text-primary-neutral-100 font-5'>Good morning Luke. I see you are in the waiting room so we will begin our consultation shortly.</p>
-                                                                    </div>
-                                                                ]}
-                                                            />
-                                                            <ItemGroup
-                                                                customClass='justify-self-end'
-                                                                fitParent={true}
-                                                                stretch={true}
-                                                                maxWidth='50%'
-                                                                items={[
-                                                                    <div className='bg-primary-600 br p-3 px-4'>
-                                                                        <p className='text-neutral-1100 font-5'>Good morning Dr. Clifford. I am ready when you are.</p>
-                                                                    </div>
-                                                                ]}
-                                                            />
-                                                        </>
-                                                    ]}
+                                                </>
+                                            ]}
+                                            footer={[
+                                                <InputBar
+                                                    customClass="px-3 py-2"
+                                                    placeholder="Type a message"
+                                                    readonly={true}
+                                                    sendIcon={
+                                                        <BaseIcon width={30} height={30} fillColor="none">
+                                                            <path d="M18.8951 3.61502C19.7248 3.37794 20.492 4.1451 20.2549 4.97489L16.2553 18.9736C15.8267 20.4736 13.823 20.7554 12.9973 19.4317L10.1999 14.947C9.87715 14.4296 9.44039 13.9928 8.92298 13.6701L4.43823 10.8726C3.11455 10.047 3.39632 8.04323 4.89636 7.61465L18.8951 3.61502Z" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                                            <path d="M10.1924 13.6777L13.7279 10.1422" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                                        </BaseIcon>
+                                                    }
                                                 />
-                                            </>
-                                        ]}
-                                        footer={[
-                                            <InputBar
-                                                customClass="px-3 py-2"
-                                                placeholder="Type a message"
-                                                readonly={true}
-                                                sendIcon={
-                                                    <BaseIcon width={30} height={30} fillColor="none">
-                                                        <path d="M18.8951 3.61502C19.7248 3.37794 20.492 4.1451 20.2549 4.97489L16.2553 18.9736C15.8267 20.4736 13.823 20.7554 12.9973 19.4317L10.1999 14.947C9.87715 14.4296 9.44039 13.9928 8.92298 13.6701L4.43823 10.8726C3.11455 10.047 3.39632 8.04323 4.89636 7.61465L18.8951 3.61502Z" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-                                                        <path d="M10.1924 13.6777L13.7279 10.1422" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
-                                                    </BaseIcon>
-                                                }
-                                            />
-                                        ]}
-                                    />
-                                    <ItemGroup
-                                        customClass='gap-3 px-4'
-                                        maxWidth='30vw'
-                                        axis={true}
-                                        items={[
-                                            <>
-                                                <h2 className="text-primary-500 font-bold font-6">PATIENT RESOURCES</h2>
-                                                <h1 className="font-10">Instant Consultation</h1>
-                                                <p className="font-6 mb-2 text-justify">Tired of sitting in the clinic, waiting for your check-up? With our online exam rooms, you won't have to. Connect with your care team on the go.</p>
-                                                <Link
-                                                    to="/findADoctor"
-                                                    className="button bg-primary-500 text-decoration-none hover-box-shadow-xs shadow-primary-400">
-                                                    <p className='text-neutral-1100'>FIND A DOCTOR</p>
-                                                </Link>
-                                            </>
-                                        ]}
-                                    />
-                                </>
-                            ]}
-                        />
-                    </>
-                ]}
-            />
+                                            ]}
+                                        />
+                                        <ItemGroup
+                                            customClass='gap-3 px-4'
+                                            maxWidth='30vw'
+                                            axis={true}
+                                            items={[
+                                                <>
+                                                    <h2 className="text-primary-500 font-bold font-6">PATIENT RESOURCES</h2>
+                                                    <h1 className="font-10">Instant Consultation</h1>
+                                                    <p className="font-6 mb-2 text-justify">Tired of sitting in the clinic, waiting for your check-up? With our online exam rooms, you won't have to. Connect with your care team on the go.</p>
+                                                    <Link
+                                                        to="/findADoctor"
+                                                        className="button bg-primary-500 text-decoration-none hover-box-shadow-xs shadow-primary-400">
+                                                        <p className='text-neutral-1100'>FIND A DOCTOR</p>
+                                                    </Link>
+                                                </>
+                                            ]}
+                                        />
+                                    </>
+                                ]}
+                            />
+                        </>
+                    ]}
+                />
+            </section>
             <Container
                 customClass='align-items-center justify-items-center'
                 fitScreen={true}
