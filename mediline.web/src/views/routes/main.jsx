@@ -28,6 +28,10 @@ const router = createBrowserRouter([
         element: <RegisterPage />,
     },
     {
+        path: '/dashboard',
+        element: <DBoard />,
+    },
+    {
         path: '/patientDashboard',
         element: <PDDiscussionForum />,
     },
