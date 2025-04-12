@@ -173,4 +173,31 @@ export const patientDashboardData = {
       address: "74 Ames Ave, Greensboro, Norch Carolina",
       phone: "+1 (934) 799 3917"
     }
-  };  
+};
+
+export const baseUserList = [
+    {
+        id: 1,
+        firstName: "John",
+        lastName: "Doe",
+        email: "john.doe@example.com",
+        phoneNumber: "555-123-4567",
+        address: "123 Main St",
+        city: "Springfield",
+        zipCode: "12345",
+        role: "patient",
+        password: "password123",
+    },
+    {
+        id: 2,
+        firstName: "Jane",
+        lastName: "Smith",
+        email: "jane.smith@example.com",
+        phoneNumber: "555-987-6543",
+        address: "456 Elm St",
+        city: "Greenwood",
+        zipCode: "67890",
+        role: "doctor",
+        password: "securePass456",
+    },
+];
