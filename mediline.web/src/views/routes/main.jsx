@@ -13,11 +13,12 @@ import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
+import DashboardLayout from './DashboardLayout'
 
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <HomePage />,
+        element: <DBoard />,
     },
     {
         path: '/login',
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DBoard />,
+        element: <DashboardLayout />,
     },
     {
         path: '/patientDashboard',
