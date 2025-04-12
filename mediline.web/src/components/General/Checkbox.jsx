@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Container, { ItemGroup } from './Container';
 import BaseIcon from './BaseIcon';
 
@@ -13,14 +13,20 @@ export default function Checkbox({
     onChange
 })
 {
-    const defaultChecked = checked ? checked : false;
-    const [isChecked, setIsChecked] = useState(defaultChecked);
+    const [isChecked, setIsChecked] = useState(checked || false);
+
+    useEffect(() => {
+        if (checked !== undefined) {
+            setIsChecked(checked);
+        }
+    }, [checked]);
 
     const handleChange = (e) => {
+        const checkedValue = e.target.checked;
+        setIsChecked(checkedValue);
         console.log("Check this!");
-        setIsChecked(e.target.checked);
         if (onChange) {
-            onChange(e.target.checked);
+            onChange(checkedValue);
         }
     }
 
