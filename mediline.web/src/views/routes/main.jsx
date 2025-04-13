@@ -7,12 +7,13 @@ import {
 import '../../assets/css/default-style.css';
 import '../../assets/scss/default-style.scss';
 import HomePage from './Home';
-import PatientDashboard from './PatientDashboard';
 import LoginPage from './Login';
 import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
+import PatientDashboard from './PatientDashboard';
+import Dashboard from './PatientDashboard_Exercise_Page';
 import DashboardLayout from './DashboardLayout'
 
 const router = createBrowserRouter([
@@ -34,6 +35,14 @@ const router = createBrowserRouter([
     },
     {
         path: '/patientDashboard',
+        element: <PatientDashboard />,
+    },
+    {
+        path: '/patientExercise',
+        element: <Dashboard />,
+    },
+    {
+        path: '/patientDiscussion',
         element: <PDDiscussionForum />,
     },
     {
