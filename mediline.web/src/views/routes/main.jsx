@@ -18,7 +18,7 @@ import DashboardLayout from './DashboardLayout'
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <DBoard />,
+        element: <HomePage />,
     },
     {
         path: '/login',

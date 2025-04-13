@@ -21,6 +21,8 @@ const RegisterViewModel = {
 
     // Helper function that calls the "addUser" method in the service layer
     addUser() {
+        console.log("Users: ", baseUserList);
+
         // Basic validation
         if (
             !this.firstname ||
@@ -61,6 +63,8 @@ const RegisterViewModel = {
         // Add the new user to the base user list
         baseUserList.push(newUser);
 
+        console.log("Users: ", baseUserList);
+
         // Clear the input fields after successful registration
         this.clearFields();
 
@@ -68,7 +72,7 @@ const RegisterViewModel = {
         return newUser;
     },
 
-    // Method to clear input fields
+    // Helper method that calls the service layer
     clearFields() {
         this.firstname = "";
         this.lastname = "";
