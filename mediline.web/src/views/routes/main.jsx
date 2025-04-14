@@ -14,6 +14,7 @@ import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
 import DoctorDashboardHome from './DoctorDashboardHome';
+import DoctorPatientProfile from './DoctorPatientProfile';
 
 const router = createBrowserRouter([
     {
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
     {
         path: '/doctorHome',
         element: <DoctorDashboardHome />,
+    },
+    {
+        path: '/doctorPatient',
+        element: <DoctorPatientProfile />,
     },
 ]);
 

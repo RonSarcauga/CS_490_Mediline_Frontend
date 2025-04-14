@@ -1,12 +1,8 @@
 import React from 'react';
 import Dashboard from '../../components/Dashboard/Dashboard';
-import RatedIcon from '../../components/General/RatedIcon';
 import ScrollableTable from '../../components/General/ScrollableTable';
-import AppointmentCard from '../../components/Dashboard/AppointmentCard';
 import ThreeDotButton from '../../components/General/ThreeDotButton';
-import EditableUserIcon from '../../components/General/EditableUserIcon';
 import StatusLabel from '../../components/General/StatusLabel';
-import AccordionList from '../../components/General/Accordion';
 import Container, { ItemGroup } from '../../components/General/Container';
 import CommonIcon from '../../components/General/CommonIcon';
 
