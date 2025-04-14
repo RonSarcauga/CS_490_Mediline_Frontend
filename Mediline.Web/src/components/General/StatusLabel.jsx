@@ -2,11 +2,11 @@ import React from 'react';
 import '../../assets/scss/components/_status-label.scss';
 
 const statusColors = {
-  'Serving Patients': '#4CAF50',
-  'Not Serving Patients': '#F44336',
-  'Paid': '#4CAF50',
-  'Unpaid': '#F44336',
-  'Error': '#000000'
+  'Serving Patients': 'var(--clr-success-200)',
+  'Not Serving Patients': 'var(--clr-warning-200)',
+  'Paid': 'var(--clr-success-200)',
+  'Unpaid': 'var(--clr-warning-200)',
+  'Error': 'var(--clr-warning-200)'
 };
 
 const StatusLabel = ({ status }) => {
