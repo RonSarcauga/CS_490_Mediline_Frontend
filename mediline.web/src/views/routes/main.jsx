@@ -15,6 +15,7 @@ import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
 import DoctorDashboardHome from './DoctorDashboardHome';
 import DoctorPatientProfile from './DoctorPatientProfile';
+import DoctorAppointment from './DoctorAppointment';
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
     {
         path: '/doctorPatient',
         element: <DoctorPatientProfile />,
+    },
+    {
+        path: '/doctorAppointment',
+        element: <DoctorAppointment />,
     },
 ]);
 
