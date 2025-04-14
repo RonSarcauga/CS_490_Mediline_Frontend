@@ -31,7 +31,6 @@ export default function Login() {
             LoginViewModel.password = formData.password;
             const loginResult = LoginViewModel.login();
             console.log("Login successful!", loginResult.user);
-            alert(`Welcome, ${loginResult.user.firstName}!`);
 
             // Redirect to the dashboard
             navigate('/dashboard');
