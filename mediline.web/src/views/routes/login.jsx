@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
@@ -7,13 +7,37 @@ import Button from '../../components/General/Button';
 import LoginViewModel from '../../viewModels/LoginViewModel';
 
 export default function Login() {
-    const [formData, setFormData] = useState(LoginViewModel);
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
+    const navigate = useNavigate();
 
     const handleInput = (field, target) => {
+        console.log(`${field}: ${target.value}`);
         setFormData({
             ...formData,
             [field]: target.value,
         });
+        console.log(`Email: ${formData.email}`);
+        console.log(`Password: ${formData.password}`);
+    };
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        console.log("Initiate login process!");
+        try {
+            LoginViewModel.email = formData.email;
+            LoginViewModel.password = formData.password;
+            const loginResult = LoginViewModel.login();
+            console.log("Login successful!", loginResult.user);
+            alert(`Welcome, ${loginResult.user.firstName}!`);
+
+            // Redirect to the dashboard
+            navigate('/dashboard');
+        } catch (error) {
+            console.log("Login failed:", error.message);
+        }
     };
 
     const isComplete = Object.values(formData).every((value) => value.trim() !== "");
@@ -96,14 +120,15 @@ export default function Login() {
                                                                 <Container
                                                                     customClass='bg-dark-100 justify-items-center align-items-center br-sm py-1'
                                                                     isClickable={isComplete}
+                                                                    onClick={handleLogin}
                                                                     fitParent={true}
                                                                     content={[
                                                                         <Button
                                                                             customClass="bg-0"
                                                                             content={[
-                                                                                <Link to="/patientDashboard" className=" text-decoration-none font-regular text-neutral-1100">
+                                                                                <p className=" text-decoration-none font-regular text-neutral-1100">
                                                                                     Sign In
-                                                                                </Link>
+                                                                                </p>
                                                                             ]}
                                                                         />
                                                                     ]}

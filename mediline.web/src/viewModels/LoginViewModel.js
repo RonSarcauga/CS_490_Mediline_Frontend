@@ -12,7 +12,7 @@ const LoginViewModel = {
         }
 
         // Fetch the user data from the "backend"
-        const user = users.find((u) => u.email === this.email);
+        const user = baseUserList.find((u) => u.email === this.email);
 
         if (user && user.password === this.password) {
             // Mock successful authentication
