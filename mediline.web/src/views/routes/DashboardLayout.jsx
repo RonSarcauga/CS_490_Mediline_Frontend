@@ -51,7 +51,7 @@ function DashboardLayout() {
                                                     <>
                                                         <div></div>
                                                         <Container
-                                                            customClass="nav-item"
+                                                            customClass="nav-item active"
                                                             style={{
                                                                 height: "55px",
                                                                 width: "55px",
@@ -94,6 +94,9 @@ function DashboardLayout() {
                                                                 width: "55px"
                                                             }}
                                                             isClickable={true}
+                                                            onClick={() => {
+                                                                console.log();
+                                                            }}
                                                             content={[
                                                                 <>
                                                                     <BaseIcon width={30} height={25} fillColor="#E3E3E3" viewBox="-32 0 512 512">
@@ -103,7 +106,7 @@ function DashboardLayout() {
                                                             ]}
                                                         />
                                                         <Container
-                                                            customClass="nav-item active"
+                                                            customClass="nav-item"
                                                             style={{
                                                                 height: "55px",
                                                                 width: "55px"

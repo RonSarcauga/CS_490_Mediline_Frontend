@@ -29,11 +29,11 @@ export default function Login() {
         try {
             LoginViewModel.email = formData.email;
             LoginViewModel.password = formData.password;
-            const loginResult = LoginViewModel.login();
-            console.log("Login successful!", loginResult.user);
+            const currentUser = LoginViewModel.login();
+            console.log("Login successful!", currentUser.user);
 
             // Redirect to the dashboard
-            navigate('/dashboard');
+            navigate(`/dashboard/${currentUser.role}`);
         } catch (error) {
             console.log("Login failed:", error.message);
         }

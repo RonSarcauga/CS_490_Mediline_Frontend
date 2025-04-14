@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
     createBrowserRouter,
@@ -15,6 +15,8 @@ import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
 import DashboardLayout from './DashboardLayout'
 
+const [currentUser, setCurrentUser] = useState(null);
+
 const router = createBrowserRouter([
     {
         path: '/',
@@ -30,7 +32,7 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardLayout />,
+        element: <DashboardLayout currentUser={currentUser} />,
     },
     {
         path: '/patientDashboard',
