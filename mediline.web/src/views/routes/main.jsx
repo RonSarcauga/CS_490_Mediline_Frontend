@@ -13,6 +13,12 @@ import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
+import DoctorDashboardHome from './DoctorDashboardHome';
+import DoctorPatientProfile from './DoctorPatientProfile';
+import DoctorAppointment from './DoctorAppointment';
+import PatientAppointment from './PatientAppointment';
+import PharmacistHome from './PharmacistHome';
+import PharmacistPatientProfile from './PharmacistPatientProfile';
 
 const router = createBrowserRouter([
     {
@@ -38,6 +44,30 @@ const router = createBrowserRouter([
     {
         path: '/discussionForumPage',
         element: <DiscussionForumPage />,
+    },
+    {
+        path: '/doctorHome',
+        element: <DoctorDashboardHome />,
+    },
+    {
+        path: '/doctorPatient',
+        element: <DoctorPatientProfile />,
+    },
+    {
+        path: '/doctorAppointment',
+        element: <DoctorAppointment />,
+    },
+    {
+        path: '/patientAppointment',
+        element: <PatientAppointment />,
+    },
+    {
+        path: '/pharmacistHome',
+        element: <PharmacistHome />,
+    },
+    {
+        path: '/pharmacistPatient',
+        element: <PharmacistPatientProfile />,
     },
 ]);
 
