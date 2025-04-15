@@ -26,6 +26,10 @@ const LoginViewModel = {
         }
     },
 
+    getUsers() {
+        return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
+    }
+
     // Clear input fields after login attempt
     clearFields() {
         this.email = "";
