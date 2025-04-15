@@ -6,6 +6,7 @@ class DashboardLayoutViewModel {
 
     // Helper method to retrieve users
     getUsers() {
+        console.log(`Users Inside Local Storage: `, JSON.parse(localStorage.getItem("baseUserList")));
         return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
         // return this.users; // Return the list of users that authored the posts
     }

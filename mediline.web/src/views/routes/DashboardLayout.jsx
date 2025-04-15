@@ -8,7 +8,7 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 
 function DashboardLayout() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find((user) => user.id === currentUser.id);
+    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     console.log(`User: ${user.firstName} ${user.lastName}`);
 
     return (
