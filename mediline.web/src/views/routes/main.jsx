@@ -16,6 +16,12 @@ import PatientDashboard from './PatientDashboard';
 import PatientDashboardHome from './PatientDashboardHome';
 import Dashboard from './PatientDashboard_Exercise_Page';
 import DashboardLayout from './DashboardLayout'
+import DoctorDashboardHome from './DoctorDashboardHome';
+import DoctorPatientProfile from './DoctorPatientProfile';
+import DoctorAppointment from './DoctorAppointment';
+import PatientAppointment from './PatientAppointment';
+import PharmacistHome from './PharmacistHome';
+import PharmacistPatientProfile from './PharmacistPatientProfile';
 
 const router = createBrowserRouter([
     {
@@ -57,6 +63,30 @@ const router = createBrowserRouter([
     {
         path: '/discussionForumPage',
         element: <DiscussionForumPage />,
+    },
+    {
+        path: '/doctorHome',
+        element: <DoctorDashboardHome />,
+    },
+    {
+        path: '/doctorPatient',
+        element: <DoctorPatientProfile />,
+    },
+    {
+        path: '/doctorAppointment',
+        element: <DoctorAppointment />,
+    },
+    {
+        path: '/patientAppointment',
+        element: <PatientAppointment />,
+    },
+    {
+        path: '/pharmacistHome',
+        element: <PharmacistHome />,
+    },
+    {
+        path: '/pharmacistPatient',
+        element: <PharmacistPatientProfile />,
     },
 ]);
 
