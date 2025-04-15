@@ -9,6 +9,7 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 function DashboardLayout() {
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    const navigate = useNavigate();
     console.log(`User: ${user.firstName} ${user.lastName}`);
 
     return (
@@ -58,6 +59,9 @@ function DashboardLayout() {
                                                                 width: "55px",
                                                             }}
                                                             isClickable={true}
+                                                            onClick={() => {
+                                                                navigate(`/dashboard/${user.role}`);
+                                                            }}
                                                             content={[
                                                                 <>
                                                                     <BaseIcon width={30} height={30} fillColor="#E3E3E3">
@@ -108,6 +112,10 @@ function DashboardLayout() {
                                                         />
                                                         <Container
                                                             customClass="nav-item"
+                                                            isClickable={true}
+                                                            onClick={() => { 
+                                                                navigate(`/dashboard/${user.role}/discussion-forum`);
+                                                            }}
                                                             style={{
                                                                 height: "55px",
                                                                 width: "55px"
@@ -132,7 +140,8 @@ function DashboardLayout() {
                                                 axis={true}
                                                 fitParent={true}
                                                 style={{
-                                                    minWidth: "80vw"
+                                                    minWidth: "80vw",
+                                                    gridAutoRows: "auto 1fr",
                                                 }}
                                                 items={[
                                                     <>
@@ -214,7 +223,13 @@ function DashboardLayout() {
                                                                 </>
                                                             ]}
                                                         />
-                                                        <Outlet />
+                                                        <Container
+                                                            customClass="p-0"
+                                                            fitParent={true}
+                                                            content={[
+                                                                <Outlet />
+                                                            ]}
+                                                        />
                                                     </>
                                                 ]}
                                             />

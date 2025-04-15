@@ -34,7 +34,14 @@ const router = createBrowserRouter([
         path: '/dashboard',
         element: <DashboardLayout />,
         children: [
-            { path: 'patient', element: <PDHome /> },
+            {
+                path: 'patient',
+                element: <PDHome />,
+            },
+            {
+                path: 'patient/discussion-forum',
+                element: <PDDiscussionForum />,
+            }
         ],
     },
     {
