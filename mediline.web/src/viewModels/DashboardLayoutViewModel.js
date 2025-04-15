@@ -6,7 +6,8 @@ class DashboardLayoutViewModel {
 
     // Helper method to retrieve users
     getUsers() {
-        return this.users; // Return the list of users that authored the posts
+        return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
+        // return this.users; // Return the list of users that authored the posts
     }
 };
 
