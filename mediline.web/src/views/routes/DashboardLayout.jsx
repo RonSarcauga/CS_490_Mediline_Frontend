@@ -2,13 +2,13 @@ import { useNavigate } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
-import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
+import { useUser } from '../../context/UserProvider'
+import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
 function DashboardLayout() {
-    const posts = discussionForumViewModel.getPosts();
-    const users = discussionForumViewModel.getUsers();
-
-    const currentUser = discussionForumViewModel.getUsers().find((user) => user.id === 1);
+    const { currentUser } = useUser();
+    const user = dashboardLayoutViewModel.getUsers().find((user) => user.email === currentUser?.email);
+    console.log(`User: ${user}`);
 
     return (
         <Container
@@ -95,7 +95,7 @@ function DashboardLayout() {
                                                             }}
                                                             isClickable={true}
                                                             onClick={() => {
-                                                                console.log();
+                                                                console.log(`Current user: ${currentUser}`);
                                                             }}
                                                             content={[
                                                                 <>

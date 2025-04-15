@@ -1,4 +1,4 @@
-import { StrictMode, useState } from 'react';
+import { StrictMode, useState, createContext, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
     createBrowserRouter,
@@ -15,7 +15,19 @@ import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
 import DashboardLayout from './DashboardLayout'
 
-const [currentUser, setCurrentUser] = useState(null);
+const UserContext = createContext(null);
+
+export const UserProvider = ({ children }) => {
+    const [currentUser, setCurrentUser] = useState(null);
+
+    return (
+        <UserContext.Provider value={{ currentUser, setCurrentUser }}>
+            {children}
+        </UserContext.Provider>
+    );
+};
+
+export const useUser = () => useContext(UserContext);
 
 const router = createBrowserRouter([
     {
@@ -32,7 +44,10 @@ const router = createBrowserRouter([
     },
     {
         path: '/dashboard',
-        element: <DashboardLayout currentUser={currentUser} />,
+        element: <DashboardLayout />,
+        children: [
+            { path: 'patient', element: <PDDiscussionForum /> },
+        ],
     },
     {
         path: '/patientDashboard',
@@ -50,6 +65,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <UserProvider>
+            <RouterProvider router={router} />
+        </UserProvider>
     </StrictMode>,
 );
