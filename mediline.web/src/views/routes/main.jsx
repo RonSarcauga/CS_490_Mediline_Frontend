@@ -12,7 +12,6 @@ import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDDiscussionForum from './PDDiscussionForum';
-import PatientDashboard from './PatientDashboard';
 import PatientDashboardHome from './PatientDashboardHome';
 import Dashboard from './PatientDashboard_Exercise_Page';
 import DashboardLayout from './DashboardLayout'
@@ -39,10 +38,6 @@ const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <DashboardLayout />,
-    },
-    {
-        path: '/patientDashboard',
-        element: <PatientDashboard />,
     },
     {
         path: '/patientExercise',
