@@ -1,10 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
 import InputBar from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
 import LoginViewModel from '../../viewModels/LoginViewModel';
+import { UserContext } from '../../context/UserProvider';
 
 export default function Login() {
     const [formData, setFormData] = useState({
@@ -12,6 +13,8 @@ export default function Login() {
         password: "",
     });
     const navigate = useNavigate();
+
+    const { setCurrentUser } = useContext(UserContext);
 
     const handleInput = (field, target) => {
         console.log(`${field}: ${target.value}`);
@@ -30,6 +33,7 @@ export default function Login() {
             LoginViewModel.email = formData.email;
             LoginViewModel.password = formData.password;
             const currentUser = LoginViewModel.login();
+            setCurrentUser(currentUser);
             console.log("Login successful!", currentUser.user.role);
 
             // Redirect to the dashboard
