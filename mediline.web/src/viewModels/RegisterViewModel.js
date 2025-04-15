@@ -63,6 +63,7 @@ const RegisterViewModel = {
         // Add the new user to the base user list
         const updatedUserList = [...baseUserList, newUser];
         localStorage.setItem("baseUserList", JSON.stringify(updatedUserList));
+        console.log("Updated Users List in localStorage:", JSON.parse(localStorage.getItem("baseUserList")));
         //baseUserList.push(newUser);
 
         console.log("Users: ", baseUserList);

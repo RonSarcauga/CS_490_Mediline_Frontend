@@ -12,7 +12,8 @@ const LoginViewModel = {
         }
 
         // Fetch the user data from the "backend"
-        const user = baseUserList.find((u) => u.email === this.email);
+        const users = JSON.parse(localStorage.getItem("baseUserList"));
+        const user = users.find((u) => u.email === this.email);
 
         if (user && user.password === this.password) {
             // Mock successful authentication
@@ -25,10 +26,6 @@ const LoginViewModel = {
             throw new Error("Invalid email or password.");
         }
     },
-
-    getUsers() {
-        return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
-    }
 
     // Clear input fields after login attempt
     clearFields() {
