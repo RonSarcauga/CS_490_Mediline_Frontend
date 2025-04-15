@@ -124,7 +124,7 @@ export default function FindADoctorPage() {
                                                             checked={formData.filters.acceptingNewPatients}
                                                             onChange={(checked) => {
                                                                 FindDoctorViewModel.updateFilter("acceptingNewPatients", checked);
-                                                                setFormData({ ...FindDoctorViewModel });
+                                                                setFormData({...FindDoctorViewModel});
                                                             }}
                                                             label={[
                                                                 <p>Accepting New Patients</p>

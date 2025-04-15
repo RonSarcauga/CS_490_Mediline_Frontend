@@ -21,11 +21,11 @@
 
   .edit-btn {
       position: absolute;
-      top: -10px;
-      right: -10px;
+      top: -5px;
+      right: -5px;
       width: 30px;
       height: 30px;
-      background-color: #4CAF50;
+      background-color: #CFD8E8;
       border-radius: 50%;
       display: flex;
       align-items: center;
@@ -33,7 +33,7 @@
       color: white;
       font-size: 16px;
       cursor: pointer;
-      border: none;
+      border: 3px;
       z-index: 10;
   }
 

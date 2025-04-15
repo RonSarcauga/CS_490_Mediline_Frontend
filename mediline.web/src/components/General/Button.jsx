@@ -2,9 +2,9 @@ function Button({
     content = [],
     isClickable = false,
     style = {},
-    customClass = null
-})
-{
+    customClass = null,
+    onClick = null
+}) {
     const baseClass = "button";
 
     const classNames = `
@@ -14,7 +14,9 @@ function Button({
     `;
 
     return (
-        <div className={classNames} style={style}>
+        <div className={classNames}
+            style={style}
+            onClick={isClickable ? onClick : null}>
             {content}
         </div>
     );

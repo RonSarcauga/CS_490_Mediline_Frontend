@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
+import Container, { ItemGroup } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
 import InputBar from '../../components/General/InputBar';
 import ProgressBar from '../../components/LandingPage/ProgressBar';
@@ -10,6 +10,7 @@ export default function MultiStepRegistration()
 {
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState(RegistrationViewModel);
+    const navigate = useNavigate();
 
     const steps = [
         { id: 1, label: <><span>Personal</span><br /><span>Information</span></> },
@@ -66,6 +67,16 @@ export default function MultiStepRegistration()
             [field]: target.value,
         });
     };
+
+    const handleSubmit = () => {
+        Object.keys(formData).forEach((key) => {
+            RegistrationViewModel[key] = formData[key];
+        });
+
+        RegistrationViewModel.addUser();
+
+        navigate('/login');
+    }
 
     return (
         <Container
@@ -640,14 +651,14 @@ export default function MultiStepRegistration()
                                                                 customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
                                                                 fitParent={true}
                                                                 isClickable={isCurrentStepComplete}
-                                                                onClick={handleNext}
+                                                                onClick={handleSubmit}
                                                                 dataAttributes={
                                                                     { disabled: !isCurrentStepComplete }
                                                                 }
                                                                 content={[
-                                                                    <Link to="/login" className=" text-decoration-none font-regular text-neutral-1100">
+                                                                    <p className=" text-decoration-none font-regular text-neutral-1100">
                                                                         Get Started
-                                                                    </Link>
+                                                                    </p>
                                                                 ]}
                                                             />
                                                         </>
@@ -722,16 +733,14 @@ export default function MultiStepRegistration()
                                                                 customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
                                                                 fitParent={true}
                                                                 isClickable={isCurrentStepComplete}
-                                                                onClick={handleNext}
+                                                                onClick={handleSubmit}
                                                                 dataAttributes={
                                                                     { disabled: !isCurrentStepComplete }
                                                                 }
                                                                 content={[
-                                                                    <Link
-                                                                        to="/login"
-                                                                        className=" text-decoration-none font-regular text-neutral-1100">
+                                                                    <p className=" text-decoration-none font-regular text-neutral-1100">
                                                                         Get Started
-                                                                    </Link>
+                                                                    </p>
                                                                 ]}
                                                             />
                                                         </>
@@ -795,12 +804,11 @@ export default function MultiStepRegistration()
                                                                 customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
                                                                 fitParent={true}
                                                                 isClickable={true}
+                                                                onClick={handleSubmit}
                                                                 content={[
-                                                                    <Link
-                                                                        to="/login"
-                                                                        className=" text-decoration-none font-regular text-neutral-1100">
+                                                                    <p className=" text-decoration-none font-regular text-neutral-1100">
                                                                         Get Started
-                                                                    </Link>
+                                                                    </p>
                                                                 ]}
                                                             />
                                                         </>
