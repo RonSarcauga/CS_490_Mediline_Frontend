@@ -1,12 +1,13 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
-import { useUser } from '../../context/UserProvider'
+import { UserContext } from '../../context/UserProvider'
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
 function DashboardLayout() {
-    const { currentUser } = useUser();
+    const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find((user) => user.email === currentUser?.email);
     console.log(`User: ${user}`);
 
