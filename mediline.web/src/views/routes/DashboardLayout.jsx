@@ -214,6 +214,7 @@ function DashboardLayout() {
                                                                 </>
                                                             ]}
                                                         />
+                                                        <Outlet />
                                                     </>
                                                 ]}
                                             />

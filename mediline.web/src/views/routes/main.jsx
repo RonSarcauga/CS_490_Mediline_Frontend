@@ -12,6 +12,7 @@ import LoginPage from './Login';
 import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
+import PDHome from './PDHome';
 import PDDiscussionForum from './PDDiscussionForum';
 import DashboardLayout from './DashboardLayout';
 import UserProvider from '../../context/UserProvider';
@@ -33,7 +34,7 @@ const router = createBrowserRouter([
         path: '/dashboard',
         element: <DashboardLayout />,
         children: [
-            { path: 'patient', element: <PDDiscussionForum /> },
+            { path: 'patient', element: <PDHome /> },
         ],
     },
     {
