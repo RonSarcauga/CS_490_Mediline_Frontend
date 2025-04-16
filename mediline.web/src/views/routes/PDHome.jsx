@@ -389,6 +389,7 @@ function PDHome() {
                                                                             <>
                                                                                 <Accordion
                                                                                     headerClass="px-6"
+                                                                                    contentClass="px-0 pb-2 pt-5"
                                                                                     data={[
                                                                                         {
                                                                                             header:
@@ -420,7 +421,7 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <ItemGroup
-                                                                                                            customClass="gap-2"
+                                                                                                            customClass="gap-4"
                                                                                                             fitParent={true}
                                                                                                             axis={true}
                                                                                                             stretch={true}
@@ -433,6 +434,27 @@ function PDHome() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">LAST APPOINTMENT</h5>
+                                                                                                                            </>
+                                                                                                                        ]}
+                                                                                                                    />
+                                                                                                                    <ItemGroup
+                                                                                                                        axis={true}
+                                                                                                                        stretch={true}
+                                                                                                                        fitParent={true}
+                                                                                                                        items={[
+                                                                                                                            <>
+                                                                                                                                <h5 className="font-3 text-neutral-600">ADDRESS</h5>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{user.address}, {user.city}, {user.postalCode}</p>
+                                                                                                                            </>
+                                                                                                                        ]}
+                                                                                                                    />
+                                                                                                                    <ItemGroup
+                                                                                                                        axis={true}
+                                                                                                                        stretch={true}
+                                                                                                                        fitParent={true}
+                                                                                                                        items={[
+                                                                                                                            <>
+                                                                                                                                <h5 className="font-3 text-neutral-600">PHONE</h5>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />

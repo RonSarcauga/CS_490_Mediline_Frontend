@@ -11,6 +11,7 @@ const RegisterViewModel = {
     phone: "",
     address: "",
     city: "",
+    state: "",
     postalCode: "",
     password: "",
     confirmPassword: "",
@@ -49,6 +50,7 @@ const RegisterViewModel = {
             phoneNumber: this.phone,
             address: this.address,
             city: this.city,
+            state: this.state,
             zipCode: this.postalCode,
             role: this.accountType,
             password: this.password,
@@ -87,6 +89,7 @@ const RegisterViewModel = {
         this.phone = "";
         this.address = "";
         this.city = "";
+        this.state = "";
         this.postalCode = "";
         this.password = "";
         this.confirmPassword = "";

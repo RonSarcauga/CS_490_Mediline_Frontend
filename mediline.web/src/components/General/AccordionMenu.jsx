@@ -35,14 +35,13 @@ export default function Accordion({
                         </span>
                     </div>
                     <div
-                        className={`
-                            ${selected === i
+                        className={
+                            selected === i
                                 ?
-                                'accordionContent show'
+                                `accordionContent show ${contentClass}`
                                 :
-                                'accordionContent'}
-                            ${contentClass}
-                        `}>
+                                'accordionContent'
+                        }>
                         {item.content}
                     </div>
                 </div>
