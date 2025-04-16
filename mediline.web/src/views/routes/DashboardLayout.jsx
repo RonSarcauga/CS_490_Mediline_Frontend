@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
@@ -10,7 +10,17 @@ function DashboardLayout() {
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
-    console.log(`User: ${user.firstName} ${user.lastName}`);
+    const location = useLocation();
+
+    const basePath = `/dashboard/${user.role}`;
+
+    const pathNames = {
+        appointment: `/dashboard/${user.role}/appointment`,
+        profile: `/dashboard/${user.role}/profile`,
+        discussion: `/dashboard/${user.role}/discussion-forum`,
+    };
+
+   console.log(`User: ${user.firstName} ${user.lastName}, Role: ${user.role}`);
 
     return (
         <Container
@@ -53,14 +63,15 @@ function DashboardLayout() {
                                                     <>
                                                         <div></div>
                                                         <Container
-                                                            customClass="nav-item active"
+                                                            key="home"
+                                                            customClass={`nav-item ${location.pathname === basePath ? "active" : ""}`}
                                                             style={{
                                                                 height: "55px",
                                                                 width: "55px",
                                                             }}
                                                             isClickable={true}
                                                             onClick={() => {
-                                                                navigate(`/dashboard/${user.role}`);
+                                                                navigate(`${basePath}`);
                                                             }}
                                                             content={[
                                                                 <>
@@ -78,12 +89,15 @@ function DashboardLayout() {
                                                             ]}
                                                         />
                                                         <Container
-                                                            customClass="nav-item"
+                                                            customClass={`nav-item ${location.pathname === pathNames.profile ? " active" : ""}`}
                                                             style={{
                                                                 height: "55px",
                                                                 width: "55px"
                                                             }}
                                                             isClickable={true}
+                                                            onClick={() => {
+                                                                navigate(`${pathNames.profile}`);
+                                                            }}
                                                             content={[
                                                                 <>
                                                                     <BaseIcon width={30} height={28} fillColor="#E3E3E3" viewBox="-32 0 512 512">
@@ -93,14 +107,14 @@ function DashboardLayout() {
                                                             ]}
                                                         />
                                                         <Container
-                                                            customClass="nav-item"
+                                                            customClass={`nav-item ${location.pathname === pathNames.appointment ? " active" : ""}`}
                                                             style={{
                                                                 height: "55px",
                                                                 width: "55px"
                                                             }}
                                                             isClickable={true}
                                                             onClick={() => {
-                                                                console.log(`Current user: ${currentUser}`);
+                                                                navigate(`${pathNames.appointment}`);
                                                             }}
                                                             content={[
                                                                 <>
@@ -111,10 +125,11 @@ function DashboardLayout() {
                                                             ]}
                                                         />
                                                         <Container
-                                                            customClass="nav-item"
+                                                            key="discussion"
+                                                            customClass={`nav-item ${location.pathname === pathNames.discussion ? " active" : ""}`}
                                                             isClickable={true}
-                                                            onClick={() => { 
-                                                                navigate(`/dashboard/${user.role}/discussion-forum`);
+                                                            onClick={() => {
+                                                                navigate(`${pathNames.discussion}`);
                                                             }}
                                                             style={{
                                                                 height: "55px",
