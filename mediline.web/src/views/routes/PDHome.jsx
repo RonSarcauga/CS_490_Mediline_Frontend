@@ -438,23 +438,26 @@ function PDHome() {
                                                                                                                         ]}
                                                                                                                     />
                                                                                                                     <ItemGroup
+                                                                                                                        customClass="gap-2"
                                                                                                                         axis={true}
                                                                                                                         stretch={true}
                                                                                                                         fitParent={true}
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">ADDRESS</h5>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{user.address}, {user.city}, {user.postalCode}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{user.address}, {user.city}, {user.state}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
                                                                                                                     <ItemGroup
+                                                                                                                        customClass="gap-2"
                                                                                                                         axis={true}
                                                                                                                         stretch={true}
                                                                                                                         fitParent={true}
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">PHONE</h5>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{user.phoneNumber}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />

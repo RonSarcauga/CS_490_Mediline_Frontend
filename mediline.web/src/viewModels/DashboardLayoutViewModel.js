@@ -39,6 +39,20 @@ class DashboardLayoutViewModel {
 
         return hasBirthdayOccurred ? age : age - 1;
     }
+
+    // Helper method to change the format of the phone number
+    formatPhoneNumber(phoneNumber)
+    {
+        // A regex patttern that is used to parse through the stored phone number
+        const match = phoneNumber.match(/^(\d{3})-(\d{3})-(\d{4})$/);
+
+        if (!match) {
+            throw new Error("Invalid phone number format. Expected ###-###-####.");
+        }
+
+        // Extract matched groups and reformat
+        return `(${match[1]}) ${match[2]} ${match[3]}`;
+    }
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
