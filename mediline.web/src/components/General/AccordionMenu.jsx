@@ -3,7 +3,8 @@ import { useState } from 'react';
 {/* This is the base component for an accordion. */ }
 export default function Accordion({
     customClass = "",
-    headerClass = "", 
+    headerClass = "",
+    contentClass = "",
     data=[]
 })
 {
@@ -34,13 +35,14 @@ export default function Accordion({
                         </span>
                     </div>
                     <div
-                        className={
-                            selected === i
+                        className={`
+                            ${selected === i
                                 ?
                                 'accordionContent show'
                                 :
-                                'accordionContent'
-                        }>
+                                'accordionContent'}
+                            ${contentClass}
+                        `}>
                         {item.content}
                     </div>
                 </div>
