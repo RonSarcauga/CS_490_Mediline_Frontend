@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
+import Accordion from '../../components/General/AccordionMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
@@ -311,7 +312,7 @@ function PDHome() {
                                     ]}
                                 />
                                 <Container
-                                    customClass="gradient-light br-sm b-3 outline-neutral-1100 px-10 pt-7 pb-10"
+                                    customClass="gradient-light br-sm b-3 outline-neutral-1100 px-10 pt-14 pb-10"
                                     fitParent={true}
                                     content={[
                                         <>
@@ -328,8 +329,8 @@ function PDHome() {
                                                             items={[
                                                                 <>
                                                                     <BaseIcon
-                                                                        height="150px"
-                                                                        width="150px"
+                                                                        height="125px"
+                                                                        width="125px"
                                                                         fillColor='none'
                                                                         viewBox='0 0 61.7998 61.7998'>
                                                                         <circle cx="30.8999" cy="30.8999" fill="hsl(210, 50%, 90%)" r="30.8999" />
@@ -350,7 +351,7 @@ function PDHome() {
                                                                         <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                     </BaseIcon>
                                                                     <ItemGroup
-                                                                        customClass="justify-items-center gap-4"
+                                                                        customClass="justify-items-center gap-6"
                                                                         axis={true}
                                                                         items={[
                                                                             <>
@@ -359,8 +360,8 @@ function PDHome() {
                                                                                     axis={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            <h3 className="font-semibold font-5">{user.firstName} {user.lastName}</h3>
-                                                                                            <h3 className="font-regular font-4 text-neutral-700">MRN: {user.id}</h3>
+                                                                                            <h3 className="font-semibold font-6">{user.firstName} {user.lastName}</h3>
+                                                                                            <h3 className="font-regular font-4 text-neutral-700">MRN: 1234567</h3>
                                                                                         </>
                                                                                     ]}
                                                                                 />
@@ -370,10 +371,77 @@ function PDHome() {
                                                                                     stretch={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            <p className="font-semibold text-neutral-700 font-3">Male</p>
-                                                                                            <div className="bg-neutral-700 br-lg" style={{ height: "10px", width: "10px" }}></div>
-                                                                                            <p className="font-semibold text-neutral-700 font-3">September 28, 1982 (42 years)</p>
+                                                                                            <p className="font-semibold text-neutral-700" style={{ fontSize: "0.9rem" }}>Male</p>
+                                                                                            <div className="bg-neutral-700 br-lg" style={{ height: "9px", width: "9px" }}></div>
+                                                                                            <p className="font-semibold text-neutral-700" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(user.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(user.dateOfBirth)} yrs)</p>
                                                                                         </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    <ItemGroup
+                                                                        customClass="gap-2"
+                                                                        axis={true}
+                                                                        stretch={true}
+                                                                        fitParent={true}
+                                                                        items={[
+                                                                            <>
+                                                                                <Accordion
+                                                                                    headerClass="px-6"
+                                                                                    data={[
+                                                                                        {
+                                                                                            header:
+                                                                                                <ItemGroup
+                                                                                                    customClass="align-items-center gap-3"
+                                                                                                    stretch={true}
+                                                                                                    axis={false}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <BaseIcon
+                                                                                                                height="20px"
+                                                                                                                width="20px"
+                                                                                                                fillColor="none">
+                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                <g id="SVGRepo_iconCarrier"> <path d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z" stroke="hsl(210, 10%, 45%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                    <path d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z" stroke="hsl(210, 10%, 45%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="hsl(210, 20%, 45%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                </g>
+                                                                                                            </BaseIcon>
+                                                                                                            <h1 className="font-5 font-semibold">Basic Info</h1>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                            ,
+                                                                                            content:
+                                                                                                <ItemGroup
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <p>Is this even working?</p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                            ,
+                                                                                        }
+                                                                                    ]}
+                                                                                />
+                                                                                <Accordion
+                                                                                    data={[
+                                                                                        {
+                                                                                            header: 'Medications',
+                                                                                            content: 'Does this work?'
+                                                                                        }
+                                                                                    ]}
+                                                                                />
+                                                                                <Accordion
+                                                                                    data={[
+                                                                                        {
+                                                                                            header: 'Forms',
+                                                                                            content: 'Does this work?'
+                                                                                        }
                                                                                     ]}
                                                                                 />
                                                                             </>

@@ -13,19 +13,32 @@ class DashboardLayoutViewModel {
 
     // Helper method to format a user's birthday
     formatBirthDate(birthDate) {
-    const months = [
-        "January", "February", "March", "April", "May", "June",
-        "July", "August", "September", "October", "November", "December"
-    ];
+        const months = [
+            "January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
 
-    const [month, day, year] = dateString.split("/");
-    const monthName = months[parseInt(month) - 1];
+        const [month, day, year] = birthDate.split("/");
+        const monthName = months[parseInt(month) - 1]; // Convert month number to name
 
-    return `${monthName} ${parseInt(day)}, ${year}`;
-}
+        return `${monthName} ${parseInt(day)}, ${year}`;
+    }
 
-// Example usage
-console.log(formatBirthday("09/28/1984")); // Output: September 28, 1984
+    // Helper method to calculate the age of a user
+    calculateAge(birthDate) {
+        const [month, day, year] = birthDate.split("/");
+        const date = new Date(year, month - 1, day); // Convert to Date object
+        const today = new Date();
+
+        let age = today.getFullYear() - date.getFullYear();
+
+        // Adjust age if the birthday hasn't occurred yet this year
+        const hasBirthdayOccurred =
+            today.getMonth() > date.getMonth() ||
+            (today.getMonth() === date.getMonth() && today.getDate() >= date.getDate());
+
+        return hasBirthdayOccurred ? age : age - 1;
+    }
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
