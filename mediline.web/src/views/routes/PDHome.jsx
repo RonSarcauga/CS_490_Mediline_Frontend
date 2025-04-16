@@ -364,6 +364,18 @@ function PDHome() {
                                                                                         </>
                                                                                     ]}
                                                                                 />
+                                                                                <ItemGroup
+                                                                                    customClass="align-items-center gap-2"
+                                                                                    axis={false}
+                                                                                    stretch={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <p className="font-semibold text-neutral-700 font-3">Male</p>
+                                                                                            <div className="bg-neutral-700 br-lg" style={{ height: "10px", width: "10px" }}></div>
+                                                                                            <p className="font-semibold text-neutral-700 font-3">September 28, 1982 (42 years)</p>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
                                                                             </>
                                                                         ]}
                                                                     />

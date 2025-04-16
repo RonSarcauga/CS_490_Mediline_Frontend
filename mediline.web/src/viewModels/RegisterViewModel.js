@@ -28,6 +28,7 @@ const RegisterViewModel = {
             !this.firstname ||
             !this.lastname ||
             !this.email ||
+            !this.dateOfBirth ||
             !this.accountType ||
             !this.password ||
             this.password !== this.confirmPassword
@@ -43,6 +44,7 @@ const RegisterViewModel = {
             id: newUserId,
             firstName: this.firstname,
             lastName: this.lastname,
+            dateOfBirth: this.dateOfBirth,
             email: this.email,
             phoneNumber: this.phone,
             address: this.address,
