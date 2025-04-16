@@ -6,7 +6,9 @@ const statusColors = {
   'Not Serving Patients': 'var(--clr-warning-200)',
   'Paid': 'var(--clr-success-200)',
   'Unpaid': 'var(--clr-warning-200)',
-  'Error': 'var(--clr-warning-200)'
+  'Unsent': 'var(--clr-primary-700)',
+  'Overdue': 'var(--clr-warning-600)',
+  'Error': 'var(--clr-neutral-100)',
 };
 
 const StatusLabel = ({ status }) => {
