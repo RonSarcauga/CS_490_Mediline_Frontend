@@ -9,7 +9,7 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 function PDHome() {
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    console.log(`User: ${user.firstName} ${user.lastName}`);
+    console.log(`User: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
 
     return (
         <Container

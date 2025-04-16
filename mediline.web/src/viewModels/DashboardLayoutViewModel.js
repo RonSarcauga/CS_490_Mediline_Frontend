@@ -10,6 +10,22 @@ class DashboardLayoutViewModel {
         return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
         // return this.users; // Return the list of users that authored the posts
     }
+
+    // Helper method to format a user's birthday
+    formatBirthDate(birthDate) {
+    const months = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
+
+    const [month, day, year] = dateString.split("/");
+    const monthName = months[parseInt(month) - 1];
+
+    return `${monthName} ${parseInt(day)}, ${year}`;
+}
+
+// Example usage
+console.log(formatBirthday("09/28/1984")); // Output: September 28, 1984
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
