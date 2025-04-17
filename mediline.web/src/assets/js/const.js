@@ -338,6 +338,7 @@ export const chatlog = {
         [0, "Alright, thanks. Should I avoid exercise for the next few days?"],
         [1, "Yes, avoid strenuous activity. If the pain persists for more than 5 days or gets worse, we’ll schedule a follow-up."]
       ]
+};
 //  const { patientCount, servingP, appointmentCount, pendingCount, invoices, patientsToday, appointmentsToday} = doctorDashboardData;
 export const doctorDashboardData = {
     patientCount: 258,
@@ -365,4 +366,8 @@ export const doctorDashboardData = {
     appointmentsToday: {
         
     }
+};
+
+export const bookingInfo = {
+
 };
