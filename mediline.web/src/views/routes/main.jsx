@@ -13,9 +13,10 @@ import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDHome from './PDHome';
 import PDDiscussionForum from './PDDiscussionForum';
+import DashboardLayout from './DashboardLayout';
+import UserProvider from '../../context/UserProvider';
 import PatientDashboardHome from './PatientDashboardHome';
 import Dashboard from './PatientDashboard_Exercise_Page';
-import DashboardLayout from './DashboardLayout'
 import DoctorDashboardHome from './DoctorDashboardHome';
 import DoctorPatientProfile from './DoctorPatientProfile';
 import DoctorAppointment from './DoctorAppointment';
