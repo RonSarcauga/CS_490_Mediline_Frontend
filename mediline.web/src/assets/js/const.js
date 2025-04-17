@@ -228,7 +228,7 @@ export const doctorDataList = [
 export const appointmentDataList = [
     {
         appointmentId: 1,
-        doctorLicenseNumber: "789012",
+        doctorLicenseNumber: "214365",
         patientMRN: "123456",
         appointmentDate: "04/10/2025",
         startTime: "09:00",
@@ -240,7 +240,7 @@ export const appointmentDataList = [
     },
     {
         appointmentId: 2,
-        doctorLicenseNumber: "789012",
+        doctorLicenseNumber: "214365",
         patientMRN: "123456",
         appointmentDate: "04/17/2025",
         startTime: "10:00",
@@ -252,7 +252,7 @@ export const appointmentDataList = [
     },
     {
         appointmentId: 3,
-        doctorLicenseNumber: "789012",
+        doctorLicenseNumber: "214365",
         patientMRN: "123456",
         appointmentDate: "04/25/2025",
         startTime: "14:00",
@@ -269,7 +269,7 @@ export const vitalHistoryList = [
         id: 1,
         date: "04/10/2025",
         time: "08:00",
-        patientMRN: "789012",
+        patientMRN: "123456",
         measurements: {
             height: 175,
             weight: 75,
@@ -283,7 +283,7 @@ export const vitalHistoryList = [
         id: 2,
         date: "04/11/2025",
         time: "08:00",
-        patientMRN: "789012",
+        patientMRN: "123456",
         measurements: {
             height: 175,
             weight: 74.5,
