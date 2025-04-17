@@ -21,7 +21,7 @@ const PatientAppointment = () => {
           minHeight: "78vh",
           maxHeight: "88vh"
       }}
-      items={[
+      items={
           <>
             <ItemGroup
               customClass="gap-5"
@@ -30,25 +30,25 @@ const PatientAppointment = () => {
               style={{
                   maxHeight: "54.5vh"
               }}
-              items={[
+              items={
                 <>
                   <ItemGroup
                     customClass="gap-5"
                     fitParent={true}
                     axis={true}
-                    items={[
+                    items={
                       <>
                         <ItemGroup
                           customClass="gap-5"
                           fitParent={true}
                           axis={false}
-                          items={[
+                          items={
                             <>
                               <Container
                                 fitParent={true}
                                 customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                                 headerClass="p-5"
-                                header={[
+                                header={
                                   <>
                                   <strong>Booking Information</strong>
                                   <ItemGroup
@@ -58,41 +58,41 @@ const PatientAppointment = () => {
                                   />
                                   <>{/* booking info */}</>
                                   </>
-                                ]}
+                                }
                               />
                             </>
-                          ]}
+                          }
                         />
                         <Container
                           fitParent={true}
                           customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                           headerClass="p-5"
-                          header={[
+                          header={
                             <>
                             temp label - appointment window
                             <>{/* appointment page */}</>
                             </>
-                          ]}
+                          }
                         />
                       </>
-                    ]}
+                    }
                   />
                 </>
-              ]}
+              }
             />
           <Container
             fitParent={true}
             customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100 "
             headerClass="p-5"
-            header={[
+            header={
               <>
               temp label - patient card
               <>{/* copy from patient home */}</>
               </>
-            ]}
+            }
           />
         </>
-      ]}
+      }
       />
     </>
   );

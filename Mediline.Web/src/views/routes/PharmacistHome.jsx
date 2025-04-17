@@ -24,7 +24,7 @@ const PharmacistHome = () => {
           minHeight: "78vh",
           maxHeight: "88vh"
       }}
-      items={[
+      items={
           <>
             <ItemGroup
               customClass="gap-5"
@@ -33,19 +33,19 @@ const PharmacistHome = () => {
               style={{
                   maxHeight: "54.5vh"
               }}
-              items={[
+              items={
                 <>
                   <ItemGroup
                     customClass="gap-5"
                     fitParent={true}
                     axis={false}
-                    items={[
+                    items={
                       <>
                         <Container
                           fitParent={true}
                           customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                           headerClass="p-5"
-                          header={[
+                          header={
                             <>
                             <strong>Prescription Requests</strong>
                             <ItemGroup
@@ -55,13 +55,13 @@ const PharmacistHome = () => {
                             />
                             <>{/* two circles and 2 labels */}</>
                             </>
-                          ]}
+                          }
                         />
                         <Container
                           fitParent={true}
                           customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100 "
                           headerClass="p-5"
-                          header={[
+                          header={
                             <>
                             <strong>Inventory</strong>
                             <ItemGroup
@@ -71,27 +71,27 @@ const PharmacistHome = () => {
                             />
                             <>{/* medicine list -- scrollable table component should work */}</>
                             </>
-                          ]}
+                          }
                         />
                       </>
-                    ]}
+                    }
                   />
                 </>
-              ]}
+              }
             />
           <Container
             fitParent={true}
             customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100 "
             headerClass="p-5"
-            header={[
+            header={
               <>
               <strong>Prescriptions</strong>
               <>{/* prescriptions list -- scrollable table component should work here too */}</>
               </>
-            ]}
+            }
           />
         </>
-      ]}
+      }
       />
     </>
   );
