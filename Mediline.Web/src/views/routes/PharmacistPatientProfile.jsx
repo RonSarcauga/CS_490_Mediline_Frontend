@@ -24,7 +24,7 @@ const PharmacistPatientProfile = () => {
           minHeight: "78vh",
           maxHeight: "88vh"
       }}
-      items={[
+      items={
           <>
             <ItemGroup
               customClass="gap-5"
@@ -33,18 +33,18 @@ const PharmacistPatientProfile = () => {
               style={{
                   maxHeight: "54.5vh"
               }}
-              items={[
+              items={
                 <>
                   <Container
                     fitParent={true}
                     customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                     headerClass="p-5"
-                    header={[
+                    header={
                       <ItemGroup
                         customClass="gap-5 align-items-center"
                         fitParent={true}
                         axis={true}
-                        items={[
+                        items={
                           <>
                             <strong>Personal Information</strong>
                             <ItemGroup
@@ -56,27 +56,27 @@ const PharmacistPatientProfile = () => {
                               customClass="col-gap-5"
                               fitParent={true}
                               axis={false}
-                              items={[
+                              items={
                                 <>
                                 {/* info of patient -- could maybe reuse card from doctor patient profile? */}
                                 </>
-                              ]}
+                              }
                             />
                           </>
-                        ]}
+                        }
                       />
-                    ]}
+                    }
                   />
                   <Container
                     fitParent={true}
                     customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                     headerClass="p-5"
-                    header={[
+                    header={
                       <ItemGroup
                         customClass="gap-5 align-items-center"
                         fitParent={true}
                         axis={true}
-                        items={[
+                        items={
                           <>
                             <strong>Contact Information</strong>
                             <ItemGroup
@@ -88,27 +88,27 @@ const PharmacistPatientProfile = () => {
                               customClass="col-gap-5"
                               fitParent={true}
                               axis={false}
-                              items={[
+                              items={
                                 <>
                                 {/* similar cards exist */}
                                 </>
-                              ]}
+                              }
                             />
                           </>
-                        ]}
+                        }
                       />
-                    ]}
+                    }
                   />
                   <Container
                     fitParent={true}
                     customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                     headerClass="p-5"
-                    header={[
+                    header={
                       <ItemGroup
                         customClass="gap-5 align-items-center"
                         fitParent={true}
                         axis={true}
-                        items={[
+                        items={
                           <>
                             <strong>Medication History</strong>
                             <ItemGroup
@@ -120,33 +120,33 @@ const PharmacistPatientProfile = () => {
                               customClass="col-gap-5"
                               fitParent={true}
                               axis={false}
-                              items={[
+                              items={
                                 <>
                                 {/* scrollable list maybe */}
                                 </>
-                              ]}
+                              }
                             />
                           </>
-                        ]}
+                        }
                       />
-                    ]}
+                    }
                   />
                 </>
-              ]}
+              }
             />
           <Container
             fitParent={true}
             customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
             headerClass="p-5"
-            header={[
+            header={
               <>
               temp label - patient list
               <>{/* accordion -- maybe also scrollable table */}</>
               </>
-            ]}
+            }
           />
         </>
-      ]}
+      }
       />
     </>
   );
