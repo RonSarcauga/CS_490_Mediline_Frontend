@@ -60,6 +60,9 @@ const RegisterViewModel = {
             firstName: this.firstname,
             lastName: this.lastname,
             email: this.email,
+            phoneNumber: this.phone,
+            address: this.address,
+            city: this.city,
             dateOfBirth: this.dateOfBirth,
             accountType: this.accountType,
             password: this.password
