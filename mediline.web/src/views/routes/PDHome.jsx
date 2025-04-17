@@ -68,19 +68,50 @@ function PDHome() {
                                                                                     stretch={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            <ItemGroup
-                                                                                                customClass="bg-dark-100 br-sm align-items-center justify-items-center px-4 py-3"
-                                                                                                isClickable={true}
-                                                                                                stretch={true}
-                                                                                                axis={false}
-                                                                                                items={[
-                                                                                                    <>
-                                                                                                        <h1 className="font-3 font-medium text-neutral-1100">
-                                                                                                            Book an Appointment
-                                                                                                        </h1>
-                                                                                                    </>
-                                                                                                ]}
-                                                                                            />
+                                                                                            {
+                                                                                                dashboardLayoutViewModel.hasDoctor(user.id) ? (
+                                                                                                    <ItemGroup
+                                                                                                        customClass="button bg-dark-100 br-sm align-items-center justify-items-center px-4 py-3"
+                                                                                                        dataAttributes={
+                                                                                                            { disabled: !dashboardLayoutViewModel.hasDoctor(user.id) }
+                                                                                                        }
+                                                                                                        isClickable={dashboardLayoutViewModel.hasDoctor(user.id)}
+                                                                                                        stretch={true}
+                                                                                                        axis={false}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <h1 className="font-3 font-medium text-neutral-1100">
+                                                                                                                    Book an Appointment
+                                                                                                                </h1>
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                ) : (
+                                                                                                        <ItemGroup
+                                                                                                            customClass="button bg-dark-100 br-sm align-items-center justify-items-center pr-4 pl-1"
+                                                                                                            isClickable={!dashboardLayoutViewModel.hasDoctor(user.id)}
+                                                                                                            stretch={true}
+                                                                                                            axis={false}
+                                                                                                            items={[
+                                                                                                                <>
+                                                                                                                    <BaseIcon
+                                                                                                                        fill="none"
+                                                                                                                        height="28px"
+                                                                                                                        width="28px">
+                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="#FFFFFF" />
+                                                                                                                        </g>
+                                                                                                                    </BaseIcon>
+                                                                                                                    <h1 className="font-4 font-medium text-neutral-1100">
+                                                                                                                        Find a Doctor
+                                                                                                                    </h1>
+                                                                                                                </>
+                                                                                                            ]}
+                                                                                                        />
+                                                                                                )
+                                                                                            }
                                                                                         </>
                                                                                     ]}
                                                                                 />
@@ -169,7 +200,7 @@ function PDHome() {
                                                                                                             ]}
                                                                                                         />
                                                                                                         <ItemGroup
-                                                                                                            customClass="gap-1"
+                                                                                                            customClass="gap-2"
                                                                                                             axis={true}
                                                                                                             stretch={true}
                                                                                                             fitParent={true}
@@ -180,20 +211,18 @@ function PDHome() {
                                                                                                                         {
                                                                                                                             dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).acceptingNewPatients ? 
                                                                                                                             (
-                                                                                                                                <Container
-                                                                                                                                    customClass="bg-success-500 br py-1 px-3"
-                                                                                                                                    content={[
+                                                                                                                                <ItemGroup
+                                                                                                                                    items={[
                                                                                                                                         <>
-                                                                                                                                            <h3 className="text-success-100 font-semibold font-3">Serving Patients</h3>
+                                                                                                                                            <h3 className="text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
                                                                                                                                         </>
                                                                                                                                     ]}
                                                                                                                                 />
                                                                                                                             ) : (
-                                                                                                                                <Container
-                                                                                                                                    customClass="bg-warning-400 br py-1 px-3"
-                                                                                                                                    content={[
+                                                                                                                                <ItemGroup
+                                                                                                                                    items={[
                                                                                                                                         <>
-                                                                                                                                            <h3 className="text-warning-100 font-semibold font-3">Serving Patients</h3>
+                                                                                                                                            <h3 className="text-warning-100 bg-warning-400 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
                                                                                                                                         </>
                                                                                                                                     ]}
                                                                                                                                 />
@@ -279,7 +308,18 @@ function PDHome() {
                                                                     />
                                                                 </>
                                                             ) : (
-                                                                <p>Insert Doctor Here!</p>
+                                                                <Container
+                                                                    customClass="br-sm align-items-center justify-content-center"
+                                                                    style={{
+                                                                        background: "rgba(200, 215, 230, 40%)",
+                                                                    }}
+                                                                    fitParent={true}
+                                                                    content={[
+                                                                        <>
+                                                                            <p className="font-4 font-semibold text-primary-neutral-100">It's a bit empty here...</p>
+                                                                        </>
+                                                                    ]}
+                                                                />
                                                             )
                                                         }
                                                     </>
@@ -412,7 +452,7 @@ function PDHome() {
                                                                             <Container
                                                                                 customClass="align-items-center justify-content-center py-3 br-sm mt-2"
                                                                                 style={{
-                                                                                    background: "rgba(200, 215, 230, 70%)",
+                                                                                    background: "rgba(200, 215, 230, 40%)",
                                                                                 }}
                                                                                 fitParent={true}
                                                                                 content={[
@@ -605,11 +645,14 @@ function PDHome() {
                                                                     ))
                                                                 ) : (
                                                                     <Container
-                                                                        customClass="gradient-white br-sm p-5"
+                                                                        customClass="br-sm p-5 align-items-center justify-content-center"
+                                                                        style={{
+                                                                            background: "rgba(200, 215, 230, 40%)",
+                                                                        }}
                                                                         fitParent={true}
                                                                         content={[
                                                                             <>
-                                                                                <p>Insert appointments here!</p>
+                                                                                <p className="text-primary-neutral-100 font-semibold font-4">You have no bookings</p>
                                                                             </>
                                                                         ]}
                                                                     />
