@@ -203,3 +203,98 @@ export const baseUserList = [
         password: "securePass456",
     },
 ];
+
+const patientDataList = [
+    {
+        userId: 1,
+        mrn: "123456",
+        firstName: "John",
+        lastName: "Doe",
+        sex: "Male",
+        doctor: null,
+        appointments: []
+    }
+];
+
+const doctorDataList = [
+    {
+        userId: 2, 
+        licenseNumber: "214365",
+        firstName: "Jane",
+        lastName: "Smith",
+        specialty: "Cardiologist",
+        patients: [],
+        appointments: [],
+        acceptingNewPatients: true
+    }
+];
+
+const appointmentDataList = [
+    {
+        appointmentId: 1,
+        doctorLicenseNumber: "789012",
+        patientMRN: "123456",
+        appointmentDate: "04/10/2025",
+        startTime: "09:00",
+        endTime: "09:30",
+        notes: "Discussed importance of cardiovascular exercise. Recommended at least 30 minutes of brisk walking daily.",
+        pharmacyNotes: "Suggested Omega-3 supplements for heart health and muscle recovery.",
+        fixedFee: 150,
+        paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 2,
+        doctorLicenseNumber: "789012",
+        patientMRN: "123456",
+        appointmentDate: "04/17/2025",
+        startTime: "10:00",
+        endTime: "10:45",
+        notes: "Patient reports improvement in endurance. Advised incorporating strength training twice a week.",
+        pharmacyNotes: "Recommended vitamin D and magnesium supplements for bone and muscle support.",
+        fixedFee: 150,
+        paymentStatus: "Pending"
+    },
+    {
+        appointmentId: 3,
+        doctorLicenseNumber: "789012",
+        patientMRN: "123456",
+        appointmentDate: "04/25/2025",
+        startTime: "14:00",
+        endTime: "14:30",
+        notes: "Follow-up to assess progress in fitness routine. Will evaluate improvements in heart rate and endurance.",
+        pharmacyNotes: "Recommended electrolyte supplements for hydration during exercise.",
+        fixedFee: 150,
+        paymentStatus: "Pending"
+    }
+];
+
+const vitalHistoryList = [
+    {
+        id: 1,
+        date: "04/10/2025",
+        time: "08:00",
+        patientMRN: "789012",
+        measurements: {
+            height: 175,
+            weight: 75,
+            caloriesBurned: 2300,
+            waterIntake: 2.5,
+            bloodPressure: "120/80",
+            heartRate: 72
+        }
+    },
+    {
+        id: 2,
+        date: "04/11/2025",
+        time: "08:00",
+        patientMRN: "789012",
+        measurements: {
+            height: 175,
+            weight: 74.5,
+            caloriesBurned: 2500,
+            waterIntake: 3,
+            bloodPressure: "118/76",
+            heartRate: 70
+        }
+    }
+];
