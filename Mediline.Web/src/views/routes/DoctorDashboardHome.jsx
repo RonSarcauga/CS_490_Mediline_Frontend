@@ -15,6 +15,15 @@ const DoctorDashboardHome = () => {
     //any hardcoded data can go here
     //const {} = ;
   const { patientCount, servingP, appointmentCount, pendingCount, invoices, patientsToday, appointmentsToday} = doctorDashboardData;
+  const weekDates = [
+    { date: 9, day: "Sun" },
+    { date: 10, day: "Mon" },
+    { date: 11, day: "Tue" },
+    { date: 12, day: "Wed" },
+    { date: 13, day: "Thu" },
+    { date: 14, day: "Fri" },
+    { date: 15, day: "Sat" }
+  ];  
 
   const mainBody = (
     <>
@@ -233,7 +242,7 @@ const DoctorDashboardHome = () => {
                     headerClass="p-5"
                     header={[
                       <ItemGroup
-                        customClass="gap-5 align-items-center"
+                        customClass="gap-5"
                         fitParent={true}
                         axis={true}
                         items={[
@@ -245,12 +254,36 @@ const DoctorDashboardHome = () => {
                                 axis={true}
                             />
                             <ItemGroup
-                              customClass="col-gap-5"
+                              customClass="col-gap-5 justify-content-center"
                               fitParent={true}
                               axis={false}
                               items={[
                                 <>
                                 {/* schedule */}
+                                <ItemGroup
+                                  customClass="col-gap-5"
+                                  fitParent={true}
+                                  stretch={true}
+                                  axis={false}
+                                  items={weekDates.map(({ date, day }, idx) => (
+                                    <Container
+                                      key={idx}
+                                      customClass="p-5 br-sm bg-neutral-1100 font-5"
+                                      content={[
+                                        <ItemGroup
+                                          key={`${day}-${date}`}
+                                          axis={true}
+                                          customClass="align-items-center text-center"
+                                          items={[
+                                            <div className="font-bold text-xl">{date}</div>,
+                                            <div className="text-sm text-neutral-700">{day}</div>
+                                          ]}
+                                        />
+                                      ]}
+                                    />
+                                  ))}
+                                />
+
                                 </>
                               ]}
                             />
@@ -286,6 +319,14 @@ const DoctorDashboardHome = () => {
                       items={[
                         <>
                         {/* patient list */}
+                        <>
+                                  <ScrollableTable 
+                                    style = {{maxHeight: "750px", minHeight: "750px"}}
+                                    columns={["Time", "Name"]} 
+                                    columnKeys={["time", "name"]}
+                                    data={patientsToday}
+                                  />
+                                </>
                         </>
                       ]}
                     />

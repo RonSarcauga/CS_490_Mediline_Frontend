@@ -351,23 +351,32 @@ export const doctorDashboardData = {
       { status: "Paid", date: "03/11/2025", number: "#054", name: "Mary Keitel", total: "$500", id: 2 },
       { status: "Overdue", date: "03/02/2025", number: "#053", name: "Johnny Cage", total: "$500", id: 3 },
     ],
-    patientsToday: {
-        8: "Mary Keitel",
-        9: "Gina Degeneres",
-        10: "Luke Patterson",
-        11: "Dennis Goreman",
-        12: "Vicky Jang",
-        13: "James Callus",
-        14: "Sandra Park",
-        15: "John Doe",
-        16: "Michael Corleone",
-        17: "Elizabeth McGlynn"
-    }, 
+    patientsToday : [
+        { time: "8:00", name: "Mary Keitel" },
+        { time: "9:00", name: "Gina Degeneres" },
+        { time: "10:00", name: "Luke Patterson" },
+        { time: "11:00", name: "Dennis Goreman" },
+        { time: "12:00", name: "Vicky Jang" },
+        { time: "13:00", name: "James Callus" },
+        { time: "14:00", name: "Sandra Park" },
+        { time: "15:00", name: "John Doe" },
+        { time: "16:00", name: "Michael Corleone" },
+        { time: "17:00", name: "Elizabeth McGlynn" }
+      ],      
     appointmentsToday: {
         
     }
 };
 
 export const bookingInfo = {
-
+    meetingTime: { 
+        date: "March 12, 2025",
+        time: "14:00",
+        doctor: "Dr. Jacob Clifford",
+    },
+    preAppointmentChecklist: [
+        "Check-In Form",
+        "Self Evaluation Form",
+    ],
+    treatment: ["Consultation"]
 };
