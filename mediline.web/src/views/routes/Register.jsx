@@ -248,17 +248,17 @@ export default function MultiStepRegistration()
                                                                 <>
                                                                     <InputBar
                                                                         type="text"
-                                                                        value={formData.state}
-                                                                        onChange={(e) => handleInput('state', e.target)}
-                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                        placeholder="State"
-                                                                    />
-                                                                    <InputBar
-                                                                        type="text"
                                                                         value={formData.city}
                                                                         onChange={(e) => handleInput('city', e.target)}
                                                                         customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                                         placeholder="City"
+                                                                    />
+                                                                    <InputBar
+                                                                        type="text"
+                                                                        value={formData.state}
+                                                                        onChange={(e) => handleInput('state', e.target)}
+                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                        placeholder="State"
                                                                     />
                                                                     <InputBar
                                                                         type="text"
