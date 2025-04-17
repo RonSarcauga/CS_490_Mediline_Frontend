@@ -1,19 +1,33 @@
-import Topbar, { TopbarItem } from './Topbar';
-import Sidebar, { SidebarItem } from './Sidebar';
-import BaseIcon from '../General/BaseIcon';
-import Container, { ItemGroup } from '../General/Container';
+import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
+import Sidebar, { SidebarItem } from '../../components/Dashboard/Sidebar';
+import BaseIcon from '../../components/General/BaseIcon';
+import Container, { ItemGroup } from '../../components/General/Container';
 import ECCheckbox from '../../components/General/ECCheckbox';
+import InputBar from '../../components/General/InputBar';
 import { BsCircleHalf } from "react-icons/bs";
 import { BsClipboard2HeartFill } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
+import React, { useRef, useEffect, useState } from "react";
+import { Chart } from "chart.js/auto";
+
 
 
 {/* This is the navigation bar for the dashboards specifically.
     A separate navigation bar will be used for the landing page */}
-export default function Dashboard({
+export default function PatientDashboardExercise({
     content = []
-})
-{
+}) {
+    const [showNewElement, setShowNewElement] = useState(false);
+
+    const handleButtonClick = () => {
+        if (showNewElement === true) {
+            setShowNewElement(false);
+        } else {
+            setShowNewElement(true);
+        }
+        // Replace the element when the button is pressed
+    };
+
     return (
         <div className="background">
             <div className="dashboardContainer">
@@ -86,360 +100,247 @@ export default function Dashboard({
                     />
                 </Sidebar>
                 <div className="mainContent">
-                <Container
-            fitScreen={true}
-            customClass="bg-secondary-500 px-5"
-            content={[
-                <>
-                    <ItemGroup
-                        customClass=" gap-5"
-                        axis={true}
-                        items={[
+                    <Container
+                        fitScreen={true}
+                        customClass="bg-secondary-500 px-5"
+                        content={[
                             <>
                                 <ItemGroup
-                                    customClass="gap-5"
-                                    axis={false}
-                                    stretch={true}
+                                    customClass=" gap-5"
+                                    axis={true}
                                     items={[
                                         <>
                                             <ItemGroup
-                                                customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm gap-5 b-10 fit-parent"
-                                                axis={true}
-                                                style={{
-                                                    width: "60vw",
-                                                }}
-                                                items={[
-                                                    
-                                                    <>
-                                                    <ItemGroup
-                                                            customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
-                                                            axis={true}
-                                                            style={{
-                                                                width: "54vw",
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                <h1>
-                                                                    Exercise List
-                                                                </h1>
-                                                                </>
-                                                            ]}
-                                                        />
-                                                    
-                                                        <ItemGroup
-                                                            customClass=" gap-5 fit-parent pl-5 pr-5"
-                                                            axis={false}
-                                                            style={{
-                                                                width:"30vw"
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 1"
-                                                                    time = "1 min"
-                                                                    />
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 2"
-                                                                    time = "2 min"
-                                                                    />
-                                
-                                                                </>
-                                                            ]}
-                                                        />
-                                                        <ItemGroup
-                                                            customClass=" gap-5 fit-parent pl-5 pr-5"
-                                                            axis={false}
-                                                            style={{
-                                                                width:"30vw"
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 3"
-                                                                    time = "3 min"
-                                                                    />
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 4"
-                                                                    time = "4 min"
-                                                                    />
-                                                                
-                                                                </>
-                                                            ]}
-                                                        />
-                                                        <ItemGroup
-                                                            customClass=" gap-5 fit-parent pl-5 pr-5"
-                                                            axis={false}
-                                                            style={{
-                                                                width:"30vw"
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 5"
-                                                                    time = "5 min"
-                                                                    />
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 6"
-                                                                    time = "6 min"
-                                                                    />
-                                                                
-                                                                </>
-                                                            ]}
-                                                        />
-                                                        <ItemGroup
-                                                            customClass=" gap-5 fit-parent pl-5 pr-5"
-                                                            axis={false}
-                                                            style={{
-                                                                width:"30vw"
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 7"
-                                                                    time = "7 min"
-                                                                    />
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 8"
-                                                                    time = "8 min"
-                                                                    />
-                                                                
-                                                                </>
-                                                            ]}
-                                                        />
-                                                        <ItemGroup
-                                                            customClass=" gap-5 fit-parent pl-5 pr-5"
-                                                            axis={false}
-                                                            style={{
-                                                                width:"30vw"
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 9"
-                                                                    time = "9 min"
-                                                                    />
-                                                                    <ECCheckbox
-                                                                    label = "Exercise 10"
-                                                                    time = "10 min"
-                                                                    />
-                                                                
-                                                                </>
-                                                            ]}
-                                                        />
-                                                    </>
-                                                ]}
-                                            />
-                                            <Container
-                                                customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm gap-5 b-10 fit-parent"
-                                                style={{
-                                                    width: "30vw"
-                                                }}
-                                                content={[
-                                                    <>
-                                                        <ItemGroup
-                                                            customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
-                                                            axis={true}
-                                                            style={{
-                                                                width: "27vw",
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                <h1>
-                                                                    Daily Tasks
-                                                                </h1>
-                                                                </>
-                                                            ]}
-                                                        />
-                                                        <ItemGroup
-                                                            customClass=" p-5 gap-5 align-self-center fit-parent"
-                                                            axis={true}
-                                                            
-                                                            items={[
-                                                                <>
-                                                                <ECCheckbox
-                                                                label = "Exercise 11"
-                                                                time = "11 min"
-                                                                />
-                                                                <ECCheckbox
-                                                                label = "Exercise 12"
-                                                                time = "12 min"
-                                                                />
-                                                                <ECCheckbox
-                                                                label = "Exercise 13"
-                                                                time = "13 min"
-                                                                />
-                                                                <ECCheckbox
-                                                                label = "Exercise 14"
-                                                                time = "14 min"
-                                                                />
-                                                                <ECCheckbox
-                                                                label = "Exercise 15"
-                                                                time = "15 min"
-                                                                />
-                                                                </>
-                                                            ]}
-                                                        />
-                                                            
-                                                    </>
-                                                ]}
-                                                
-                                            />
-                                        </>
-                                    ]}
-                                />
-                                <ItemGroup
-                                    customClass="gap-2"
-                                    axis={false}
-                                    stretch={true}
-                                    items={[
-                                        <>
-                                            <ItemGroup
-                                                customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm gap-10 b-10"
-                                                axis={true}
-                                                style={{
-                                                    width: "56vw",
-                                                }}
+                                                customClass="gap-5"
+                                                axis={false}
+                                                stretch={true}
                                                 items={[
                                                     <>
+                                                        <ItemGroup
+                                                            customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm gap-5 b-10 fit-parent"
+                                                            axis={true}
+                                                            style={{
+                                                                width: "60vw",
+                                                            }}
+                                                            items={[
+                                                                <>
+                                                                    {!showNewElement && <ExerciseList />}
+                                                                    {showNewElement && <WeeklyForm />}
 
+                                                                </>
+                                                            ]}
+                                                        />
+                                                        <Container
+                                                            customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm gap-5 b-10 fit-parent"
+                                                            style={{
+                                                                width: "30vw"
+                                                            }}
+                                                            content={[
+                                                                <>
+                                                                    <ItemGroup
+                                                                        customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
+                                                                        axis={true}
+                                                                        style={{
+                                                                            width: "27vw",
+                                                                        }}
+                                                                        items={[
+                                                                            <>
+                                                                                <h1>
+                                                                                    Daily Tasks
+                                                                                </h1>
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    <ItemGroup
+                                                                        customClass=" p-5 gap-5 align-self-center fit-parent"
+                                                                        axis={true}
+
+                                                                        items={[
+                                                                            <>
+                                                                                <ECCheckbox
+                                                                                    label="Exercise 11"
+                                                                                    time="11 min"
+                                                                                />
+                                                                                <ECCheckbox
+                                                                                    label="Exercise 12"
+                                                                                    time="12 min"
+                                                                                />
+                                                                                <ECCheckbox
+                                                                                    label="Exercise 13"
+                                                                                    time="13 min"
+                                                                                />
+                                                                                <ECCheckbox
+                                                                                    label="Exercise 14"
+                                                                                    time="14 min"
+                                                                                />
+                                                                                <ECCheckbox
+                                                                                    label="Exercise 15"
+                                                                                    time="15 min"
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
+
+                                                                </>
+                                                            ]}
+
+                                                        />
                                                     </>
                                                 ]}
                                             />
-                                            <Container
-                                                customClass="bg-secondary-500 br-sm fit-parent"
-                                                style={{
-                                                    width: "32vw"
-                                                }}
-                                                content={[
+                                            <ItemGroup
+                                                customClass="gap-2"
+                                                axis={false}
+                                                stretch={true}
+                                                items={[
                                                     <>
-                                                    <ItemGroup
-                                                        customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm b-10 p-5"
-                                                        axis={true}
-                                                        style={{
-                                                            width: "30vw"
-                                                        }}
-                                                        items={[
-                                                        <>
-                                                            <ItemGroup
-                                                            customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
-                                                            axis={true}
-                                                            style={{
-                                                                width: "27vw",
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                <h1>
-                                                                    Present Medication
-                                                                </h1>
-                                                                </>
-                                                            ]}
-                                                        />
                                                         <ItemGroup
-                                                            customClass="p-3 align-items-center gap-3 fit-parent"
-                                                            axis={false}
-                                                            style={{
-                                                                width: "10vw",
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    <BsCircleHalf />
-                                                                    <ItemGroup
-                                                                        customClass= "fit-parent"
-                                                                        axis={true}
-                                                                        style={{
-                                                                            width: "15vw",
-                                                                        }}
-                                                                        items={[
-                                                                            <div>
-                                                                                Medication
-                                                                            </div>
-                                                                        ]}
-                                                                    />
-                                                                    <ItemGroup
-                                                                        customClass= "justify-content-right pl-30 "
-                                                                        axis={true}
-                                                                        style={{
-                                                                            width: "10vw",
-                                                                        }}
-                                                                        items={[
-                                                                            <div>
-                                                                                1/Day
-                                                                            </div>
-                    
-                                                                            
-                                                                            
-                                                                            
-                                                                        ]}
-                                                                    />
-                                                                    
-                                                                </>
-                                                            ]}
-                                                        />
-                                                        </>
-                                                        ]}
-                                                    />
-                                                    <ItemGroup
-                                                        customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm p-5 b-10 mt-5"
-                                                        axis={true}
-                                                        style={{
-                                                            width: "30vw"
-                                                        }}
-                                                        items={[
-                                                            <>
-                                                            <ItemGroup
-                                                            customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
+                                                            customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm gap-10 b-10"
                                                             axis={true}
                                                             style={{
-                                                                width: "27vw",
+                                                                width: "56vw",
                                                             }}
                                                             items={[
                                                                 <>
-                                                                <h1>
-                                                                    Notes
-                                                                </h1>
-                                                                </>
-                                                            ]}
-                                                            />
-                                                            <ItemGroup
-                                                            customClass="p-3 align-items-center gap-3 fit-parent"
-                                                            axis={false}
-                                                            style={{
-                                                                width: "10vw",
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    <BsClipboard2HeartFill />
-                                                                    <ItemGroup
-                                                                        customClass= ""
-                                                                        axis={true}
-                                                                        style={{
-                                                                            width: "15vw",
-                                                                        }}
-                                                                        items={[
-                                                                            <div>
-                                                                                Weekly Survey
-                                                                            </div>
-                                                                        ]}
-                                                                    />
-                                                                    <ItemGroup
-                                                                        customClass= "justify-content-right pl-30 "
-                                                                        axis={true}
-                                                                        style={{
-                                                                            width: "10vw",
-                                                                        }}
-                                                                        items={[
-                                                                            <IoMdDownload />
-                                                                        ]}
-                                                                    />
-                                                                    
+                                                                    <ExerciseChart />
                                                                 </>
                                                             ]}
                                                         />
-                                                
-                                                            </>
-                                                        ]}
-                                                    />
+                                                        <Container
+                                                            customClass="bg-secondary-500 br-sm fit-parent"
+                                                            style={{
+                                                                width: "32vw"
+                                                            }}
+                                                            content={[
+                                                                <>
+                                                                    <ItemGroup
+                                                                        customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm b-10 p-5"
+                                                                        axis={true}
+                                                                        style={{
+                                                                            width: "30vw"
+                                                                        }}
+                                                                        items={[
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
+                                                                                    axis={true}
+                                                                                    style={{
+                                                                                        width: "27vw",
+                                                                                    }}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h1>
+                                                                                                Present Medication
+                                                                                            </h1>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <ItemGroup
+                                                                                    customClass="p-3 align-items-center gap-3 fit-parent"
+                                                                                    axis={false}
+                                                                                    style={{
+                                                                                        width: "10vw",
+                                                                                    }}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <BsCircleHalf />
+                                                                                            <ItemGroup
+                                                                                                customClass="fit-parent"
+                                                                                                axis={true}
+                                                                                                style={{
+                                                                                                    width: "15vw",
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <div>
+                                                                                                        Medication
+                                                                                                    </div>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <ItemGroup
+                                                                                                customClass="justify-content-right pl-30 "
+                                                                                                axis={true}
+                                                                                                style={{
+                                                                                                    width: "10vw",
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <div>
+                                                                                                        1/Day
+                                                                                                    </div>
+                                                                                                ]}
+                                                                                            />
+
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    <ItemGroup
+                                                                        customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm p-5 b-10 mt-5"
+                                                                        axis={true}
+                                                                        style={{
+                                                                            width: "30vw"
+                                                                        }}
+                                                                        items={[
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
+                                                                                    axis={true}
+                                                                                    style={{
+                                                                                        width: "27vw",
+                                                                                    }}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h1>
+                                                                                                Notes
+                                                                                            </h1>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <ItemGroup
+                                                                                    customClass="p-3 align-items-center gap-3 fit-parent"
+                                                                                    isClickable={true}
+                                                                                    onClick={handleButtonClick}
+                                                                                    axis={false}
+                                                                                    style={{
+                                                                                        width: "10vw",
+                                                                                    }}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <BsClipboard2HeartFill />
+                                                                                            <ItemGroup
+                                                                                                customClass=""
+                                                                                                axis={true}
+                                                                                                style={{
+                                                                                                    width: "15vw",
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <div>
+                                                                                                        Weekly Survey
+                                                                                                    </div>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <ItemGroup
+                                                                                                customClass="justify-content-right pl-30 "
+                                                                                                axis={true}
+                                                                                                style={{
+                                                                                                    width: "10vw",
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <IoMdDownload />
+                                                                                                ]}
+                                                                                            />
+
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                </>
+                                                            ]}
+                                                        />
                                                     </>
                                                 ]}
                                             />
@@ -449,11 +350,287 @@ export default function Dashboard({
                             </>
                         ]}
                     />
-                </>
-            ]}
-        />
                 </div>
             </div>
         </div>
     );
 }
+
+function ExerciseList() {
+    return (
+        <>
+            <ItemGroup
+                customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
+                axis={true}
+                style={{
+                    width: "54vw",
+                }}
+                items={[
+                    <>
+                        <h1>
+                            Exercise List
+                        </h1>
+                    </>
+                ]}
+            />
+
+            <ItemGroup
+                customClass=" gap-5 fit-parent pl-5 pr-5"
+                axis={false}
+                style={{
+                    width: "30vw"
+                }}
+                items={[
+                    <>
+
+                        <ECCheckbox
+                            label="Exercise 1"
+                            time="1 min"
+                        />
+                        <ECCheckbox
+                            label="Exercise 2"
+                            time="2 min"
+                        />
+
+                    </>
+                ]}
+            />
+            <ItemGroup
+                customClass=" gap-5 fit-parent pl-5 pr-5"
+                axis={false}
+                style={{
+                    width: "30vw"
+                }}
+                items={[
+                    <>
+                        <ECCheckbox
+                            label="Exercise 3"
+                            time="3 min"
+                        />
+                        <ECCheckbox
+                            label="Exercise 4"
+                            time="4 min"
+                        />
+
+                    </>
+                ]}
+            />
+            <ItemGroup
+                customClass=" gap-5 fit-parent pl-5 pr-5"
+                axis={false}
+                style={{
+                    width: "30vw"
+                }}
+                items={[
+                    <>
+                        <ECCheckbox
+                            label="Exercise 5"
+                            time="5 min"
+                        />
+                        <ECCheckbox
+                            label="Exercise 6"
+                            time="6 min"
+                        />
+
+                    </>
+                ]}
+            />
+            <ItemGroup
+                customClass=" gap-5 fit-parent pl-5 pr-5"
+                axis={false}
+                style={{
+                    width: "30vw"
+                }}
+                items={[
+                    <>
+                        <ECCheckbox
+                            label="Exercise 7"
+                            time="7 min"
+                        />
+                        <ECCheckbox
+                            label="Exercise 8"
+                            time="8 min"
+                        />
+
+                    </>
+                ]}
+            />
+            <ItemGroup
+                customClass=" gap-5 fit-parent pl-5 pr-5"
+                axis={false}
+                style={{
+                    width: "30vw"
+                }}
+                items={[
+                    <>
+                        <ECCheckbox
+                            label="Exercise 9"
+                            time="9 min"
+                        />
+                        <ECCheckbox
+                            label="Exercise 10"
+                            time="10 min"
+                        />
+
+                    </>
+                ]}
+            />
+        </>
+
+    )
+}
+function WeeklyForm() {
+    return (
+        <ItemGroup
+            customClass=""
+            axis={true}
+            items={[
+                <>
+                    <ItemGroup
+                        customClass=" p-3 b-bottom-4 ml-2 mt-2 mb-2 outline-primary-neutral-400"
+                        axis={false}
+                        style={{
+                            width: "54vw",
+                        }}
+                        items={[
+                            <>
+
+                                <ItemGroup
+                                    customClass=""
+                                    axis={true}
+                                    style={{
+                                        width: "27vw",
+                                    }}
+                                    items={[
+                                        <>
+
+                                            <h1>
+                                                Weekly Survey
+                                            </h1>
+                                        </>
+                                    ]}
+                                />
+                            </>
+                        ]}
+                    />
+                    <form>
+                        <ItemGroup
+                            customClass="gap-3 bg-neutral-1100 mb-2 mt-2 ml-5 p-2 br-xs "
+                            axis={true}
+                            style={{
+                                width: "52vw"
+                            }}
+                            items={[
+                                <>
+                                    <h2>Exercise</h2>
+                                    <div>How many hours did you spend exercising this week?</div>
+                                    <InputBar
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none"
+                                    />
+
+                                </>
+                            ]}
+                        />
+                        <ItemGroup
+                            customClass="gap-3 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                            axis={true}
+                            style={{
+                                width: "52vw"
+                            }}
+                            items={[
+                                <>
+                                    <h2>Sleep</h2>
+                                    <div>How many hours of sleep did you get?</div>
+                                    <InputBar
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none"
+                                    />
+
+                                </>
+                            ]}
+                        />
+                        <ItemGroup
+                            customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                            axis={true}
+                            style={{
+                                width: "52vw"
+                            }}
+                            items={[
+                                <>
+                                    <h2>Hydration</h2>
+                                    <div>How many liters of water did you drink this week?</div>
+                                    <InputBar
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none"
+                                    />
+
+                                </>
+                            ]}
+                        />
+
+                    </form>
+                </>
+            ]}
+        />
+
+
+    )
+}
+
+
+function ExerciseChart() {
+    const chartRef = useRef(null); // Reference to the canvas element
+    const chartInstance = useRef(null); // Reference to the Chart.js instance
+
+    useEffect(() => {
+        if (chartRef.current) {
+            // Destroy the chart instance if it already exists (to avoid duplicates)
+            if (chartInstance.current) {
+                chartInstance.current.destroy();
+            }
+
+            // Initialize the chart
+            chartInstance.current = new Chart(chartRef.current, {
+                type: "line", // Chart type (e.g., 'bar', 'line', 'pie', etc.)
+                data: {
+                    labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+                    datasets: [
+                        {
+                            label: "Exercise Hours",
+                            data: [1, 2, 1.5, 3, 2.5, 4, 3], // Example data
+                            backgroundColor: "rgba(75, 192, 192, 0.2)", // Bar color
+                            borderColor: "rgba(75, 192, 192, 1)", // Border color
+                            borderWidth: 1,
+                        },
+                    ],
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: "top",
+                        },
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                        },
+                    },
+                },
+            });
+        }
+
+        // Cleanup function to destroy the chart when the component unmounts
+        return () => {
+            if (chartInstance.current) {
+                chartInstance.current.destroy();
+            }
+        };
+    }, []);
+
+    return (
+        <div style={{ width: "100%", height: "400px" }}>
+            <canvas ref={chartRef}></canvas>
+        </div>
+    );
+}
+
