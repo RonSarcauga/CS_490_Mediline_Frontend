@@ -88,7 +88,7 @@ function PDHome() {
                                                                                                     />
                                                                                                 ) : (
                                                                                                         <ItemGroup
-                                                                                                            customClass="button bg-dark-100 br-sm align-items-center justify-items-center pr-4 pl-1"
+                                                                                                            customClass="button bg-dark-100 br-sm align-items-center justify-items-center pr-4 pl-2 gap-1"
                                                                                                             isClickable={!dashboardLayoutViewModel.hasDoctor(user.id)}
                                                                                                             stretch={true}
                                                                                                             axis={false}
