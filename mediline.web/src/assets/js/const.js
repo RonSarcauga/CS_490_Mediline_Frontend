@@ -208,8 +208,6 @@ export const patientDataList = [
     {
         userId: 1,
         mrn: "123456",
-        firstName: "John",
-        lastName: "Doe",
         sex: "Male",
         doctor: null,
         appointments: []
@@ -220,8 +218,6 @@ export const doctorDataList = [
     {
         userId: 2, 
         licenseNumber: "214365",
-        firstName: "Jane",
-        lastName: "Smith",
         specialty: "Cardiologist",
         patients: [],
         appointments: [],
