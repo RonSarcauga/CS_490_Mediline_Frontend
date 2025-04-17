@@ -10,14 +10,16 @@ class DashboardLayoutViewModel {
     users = [...baseUserList];
 
     // Helper method to retrieve users
-    getUsers() {
+    getUsers()
+    {
         console.log(`Users Inside Local Storage: `, JSON.parse(localStorage.getItem("baseUserList")));
         return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
         // return this.users; // Return the list of users that authored the posts
     }
 
     // Helper method to format a user's birthday
-    formatBirthDate(birthDate) {
+    formatBirthDate(birthDate)
+    {
         const months = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -30,7 +32,8 @@ class DashboardLayoutViewModel {
     }
 
     // Helper method to calculate the age of a user
-    calculateAge(birthDate) {
+    calculateAge(birthDate)
+    {
         const [month, day, year] = birthDate.split("/");
         const date = new Date(year, month - 1, day); // Convert to Date object
         const today = new Date();
@@ -60,13 +63,53 @@ class DashboardLayoutViewModel {
     }
 
     // Helper method to find records in the patient table by ID
-    getPatientData(id) {
-        return patientDataList.find(patient => patient.id === id);
+    getPatientData(id)
+    {
+        console.log(`Patient ID: ${id}`);
+        return patientDataList.find(patient => patient.userId === id);
     };
 
+    // Helper method to find records in the patient table by MRN
+    getPatientByMRN(mrn) {
+        return patientDataList.find(patient => patient.mrn === mrn);
+    }
+
     // Helper method to find records in the doctor table by ID
-    getDoctorData(id) {
-        return doctorDataList.find(doctor => doctor.id === id);
+    getDoctorData(id)
+    {
+        return doctorDataList.find(doctor => doctor.userId === id);
+    }
+
+    // Helper method to find records in the doctor table by license number
+    getDoctorByLicense(licenseNumber) {
+        return doctorDataList.find(doctor => doctor.licenseNumber === licenseNumber);
+    }
+
+    // Helper method that determines if a patient has a doctor
+    hasDoctor(id) {
+        const patient = patientDataList.find(patient => patient.userId === id);
+        return patient ? patient.doctor !== null : false;
+    };
+
+    // Helper method to retrieve appointment data
+    getPastAppointmentsSorted(id)
+    {
+        // Fetch the patient's records from the appointment table
+        const patientRecord = patientDataList.find(patient => patient.userId === id);
+
+        // Return if there are no appointments on record
+        if (!patientRecord) return [];
+
+        // Get the patient's MRN
+        const patientMRN = patientRecord.mrn;
+
+        // Filter appointments where the appointment date is before today
+        const pastAppointments = appointmentDataList.filter(appt => appt.patientMRN === patientMRN && new Date(appt.appointmentDate) < new Date());
+
+        // Sort filtered appointments by date in descending order
+        pastAppointments.sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
+
+        return pastAppointments;
     }
 };
 
