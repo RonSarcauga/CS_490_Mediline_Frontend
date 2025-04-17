@@ -12,15 +12,15 @@ function DashboardLayout() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const basePath = `/dashboard/${user.role}`;
+    const basePath = `/dashboard/${user.accountType}`;
 
     const pathNames = {
-        appointment: `/dashboard/${user.role}/appointment`,
-        profile: `/dashboard/${user.role}/profile`,
-        discussion: `/dashboard/${user.role}/discussion-forum`,
+        appointment: `/dashboard/${user.accountType}/appointment`,
+        profile: `/dashboard/${user.accountType}/profile`,
+        discussion: `/dashboard/${user.accountType}/discussion-forum`,
     };
 
-   console.log(`User: ${user.firstName} ${user.lastName}, Role: ${user.role}`);
+   console.log(`User: ${user.firstName} ${user.lastName}, Role: ${user.accountType}`);
 
     return (
         <Container
