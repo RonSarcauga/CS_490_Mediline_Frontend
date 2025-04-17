@@ -361,7 +361,7 @@ function PDHome() {
                                                                                     items={[
                                                                                         <>
                                                                                             <h3 className="font-semibold font-6">{user.firstName} {user.lastName}</h3>
-                                                                                            <h3 className="font-regular font-4 text-neutral-600">MRN: 1234567</h3>
+                                                                                            <h3 className="font-regular font-4 text-neutral-600">MRN: 123456</h3>
                                                                                         </>
                                                                                     ]}
                                                                                 />

@@ -1,14 +1,18 @@
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
+import { UserContext } from '../../context/UserProvider';
 import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
+import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
 function PDDiscussionForum() {
     const posts = discussionForumViewModel.getPosts();
     const users = discussionForumViewModel.getUsers();
 
-    const currentUser = discussionForumViewModel.getUsers().find((user) => user.id === 1);
+    const { currentUser } = useContext(UserContext);
+    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    console.log(`User: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
 
     return (
         <ItemGroup
@@ -300,8 +304,8 @@ function PDDiscussionForum() {
                                                                                     axis={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            <h3 className="font-semibold font-7">{currentUser.firstName} {currentUser.lastName}</h3>
-                                                                                            <h3 className="font-regular font-4 text-neutral-700">{currentUser.email}</h3>
+                                                                                            <h3 className="font-semibold font-7">{user.firstName} {user.lastName}</h3>
+                                                                                            <h3 className="font-regular font-4 text-neutral-700">{user.email}</h3>
                                                                                         </>
                                                                                     ]}
                                                                                 />
@@ -336,7 +340,9 @@ function PDDiscussionForum() {
                                                                         items={[
                                                                             <>
                                                                                 <h3 className="text-neutral-700 font-semibold font-4">BIO</h3>
-                                                                                <p className="font-3">{currentUser.bio}</p>
+                                                                                <p className="font-3">
+                                                                                    I'm passionate about fitness and enjoy sharing tips on staying active.
+                                                                                </p>
                                                                             </>
                                                                         ]}
                                                                     />
@@ -367,7 +373,7 @@ function PDDiscussionForum() {
                                                                                                 customClass="bg-user-500 br py-2 px-4"
                                                                                                 content={[
                                                                                                     <>
-                                                                                                        <h3 className="text-user-300 font-semibold font-4">{currentUser.firstName} {currentUser.lastName}</h3>
+                                                                                                        <h3 className="text-user-300 font-semibold font-4">{user.firstName} {user.lastName}</h3>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
