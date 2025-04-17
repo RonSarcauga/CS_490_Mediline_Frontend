@@ -204,7 +204,7 @@ export const baseUserList = [
     },
 ];
 
-const patientDataList = [
+export const patientDataList = [
     {
         userId: 1,
         mrn: "123456",
@@ -216,7 +216,7 @@ const patientDataList = [
     }
 ];
 
-const doctorDataList = [
+export const doctorDataList = [
     {
         userId: 2, 
         licenseNumber: "214365",
@@ -229,7 +229,7 @@ const doctorDataList = [
     }
 ];
 
-const appointmentDataList = [
+export const appointmentDataList = [
     {
         appointmentId: 1,
         doctorLicenseNumber: "789012",
@@ -268,7 +268,7 @@ const appointmentDataList = [
     }
 ];
 
-const vitalHistoryList = [
+export const vitalHistoryList = [
     {
         id: 1,
         date: "04/10/2025",
