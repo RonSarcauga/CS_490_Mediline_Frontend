@@ -1,4 +1,8 @@
-import { baseUserList } from '../assets/js/const';
+import {
+    baseUserList,
+    patientDataList,
+    doctorDataList
+} from '../assets/js/const';
 
 const RegisterViewModel = {
     // Properties of the view model
