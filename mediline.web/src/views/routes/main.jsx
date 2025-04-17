@@ -48,7 +48,23 @@ const router = createBrowserRouter([
             {
                 path: 'patient/discussion-forum',
                 element: <PDDiscussionForum />,
-            }
+            },
+            {
+                path: 'doctor',
+                element: <PDHome />,
+            },
+            {
+                path: 'doctor/discussion-forum',
+                element: <PDDiscussionForum />,
+            },
+            {
+                path: 'pharmacist',
+                element: <PDHome />,
+            },
+            {
+                path: 'pharmacist/discussion-forum',
+                element: <PDDiscussionForum />,
+            },
         ],
     },
     {
