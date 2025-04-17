@@ -21,7 +21,7 @@ export default function MultiStepRegistration()
 
     const stepInputs = {
         1: Object.keys(formData).filter((key) => ["firstname", "lastname", "dateOfBirth"].includes(key)),
-        2: Object.keys(formData).filter((key) => ["email", "phone", "address", "city", "postalCode"].includes(key)),
+        2: Object.keys(formData).filter((key) => ["email", "phone", "address", "city", "state", "postalCode"].includes(key)),
         3: Object.keys(formData).filter((key) => ["password", "confirmPassword"].includes(key)),
         4: Object.keys(formData).filter((key) => ["accountType"].includes(key)),
         5: Object.keys(formData).filter((key) => {
@@ -231,6 +231,13 @@ export default function MultiStepRegistration()
                                                             customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                             placeholder="Phone"
                                                         />
+                                                        <InputBar
+                                                            type="text"
+                                                            value={formData.address}
+                                                            onChange={(e) => handleInput('address', e.target)}
+                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                            placeholder="Address"
+                                                        />
                                                         <ItemGroup
                                                             customClass="gap-4"
                                                             axis={false}
@@ -241,10 +248,10 @@ export default function MultiStepRegistration()
                                                                 <>
                                                                     <InputBar
                                                                         type="text"
-                                                                        value={formData.address}
-                                                                        onChange={(e) => handleInput('address', e.target)}
+                                                                        value={formData.state}
+                                                                        onChange={(e) => handleInput('state', e.target)}
                                                                         customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                        placeholder="Address"
+                                                                        placeholder="State"
                                                                     />
                                                                     <InputBar
                                                                         type="text"

@@ -1,4 +1,8 @@
-import { baseUserList } from '../assets/js/const';
+import {
+    baseUserList,
+    patientDataList,
+    doctorDataList
+} from '../assets/js/const';
 
 const RegisterViewModel = {
     // Properties of the view model
@@ -11,6 +15,7 @@ const RegisterViewModel = {
     phone: "",
     address: "",
     city: "",
+    state: "",
     postalCode: "",
     password: "",
     confirmPassword: "",
@@ -19,26 +24,37 @@ const RegisterViewModel = {
     pharmacyName: "",
     pharmacyAddress: "",
 
-    // Helper function that calls the "addUser" method in the service layer
+    // Helper function that registers a user and creates a role-specific entry
     addUser() {
-        console.log("Users: ", baseUserList);
+        console.log("Users Before Registration: ", baseUserList);
 
         // Basic validation
         if (
             !this.firstname ||
             !this.lastname ||
             !this.email ||
+            !this.dateOfBirth ||
+            !this.address ||
+            !this.city ||
+            !this.state ||
+            !this.postalCode ||
             !this.accountType ||
             !this.password ||
-            this.password !== this.confirmPassword
+            !this.confirmPassword
         ) {
-            throw new Error("Invalid input: Ensure all required fields are filled and passwords match.");
+            throw new Error("Invalid input: Ensure all required fields are filled.");
         }
 
-        // Generate a unique ID for the new user
+        // Ensure the user doesn't already exist
+        const existingUser = baseUserList.find(user => user.email === this.email);
+        if (existingUser) {
+            throw new Error("User already exists: " + this.email);
+        }
+
+        // Generate unique incremental ID for the new base user
         const newUserId = baseUserList.length > 0 ? baseUserList[baseUserList.length - 1].id + 1 : 1;
 
-        // Construct the new user object
+        // Create the new base user object
         const newUser = {
             id: newUserId,
             firstName: this.firstname,
@@ -47,29 +63,55 @@ const RegisterViewModel = {
             phoneNumber: this.phone,
             address: this.address,
             city: this.city,
-            zipCode: this.postalCode,
+            postalCode: this.postalCode,
+            dateOfBirth: this.dateOfBirth,
             role: this.accountType,
-            password: this.password,
-            ...(this.accountType === "doctor" && {
-                licenseNumber: this.licenseNumber,
-                specialty: this.specialty,
-            }),
-            ...(this.accountType === "pharmacist" && {
-                pharmacyName: this.pharmacyName,
-                pharmacyAddress: this.pharmacyAddress,
-            }),
+            password: this.password
         };
 
-        // Add the new user to the base user list
+        // Add user to base user list
         baseUserList.push(newUser);
+        localStorage.setItem("baseUserList", JSON.stringify(baseUserList));
 
-        console.log("Users: ", baseUserList);
+        // Create an associated record in the role-specific table
+        if (this.accountType === "patient") {
+            const newPatient = {
+                userId: newUserId,
+                mrn: this.generateRandomMRN(patientDataList),
+                sex: this.sex || "Not Specified",
+                doctor: null, // No doctor assigned by default
+                appointments: [] // No appointments yet
+            };
+            patientDataList.push(newPatient);
+        } else if (this.accountType === "doctor") {
+            const newDoctor = {
+                userId: newUserId,
+                licenseNumber: this.licenseNumber,
+                specialty: this.specialty,
+                patients: [],
+                appointments: [],
+                acceptingNewPatients: true
+            };
+            doctorDataList.push(newDoctor);
+        }
 
-        // Clear the input fields after successful registration
+        console.log("Updated Base User List: ", baseUserList);
+        console.log("Updated Patient Data: ", patientDataList);
+        console.log("Updated Doctor Data: ", doctorDataList);
+
+        // Clear input fields after successful registration
         this.clearFields();
 
-        // Return the newly added user
         return newUser;
+    },
+
+    // Helper function for generating a unique MRN
+    generateRandomMRN(existingPatients) {
+        let newMRN;
+        do {
+            newMRN = String(Math.floor(100000 + Math.random() * 900000)); // 6-digit number
+        } while (existingPatients.some(patient => patient.mrn === newMRN)); // Ensure uniqueness
+        return newMRN;
     },
 
     // Helper method that calls the service layer
@@ -82,6 +124,7 @@ const RegisterViewModel = {
         this.phone = "";
         this.address = "";
         this.city = "";
+        this.state = "";
         this.postalCode = "";
         this.password = "";
         this.confirmPassword = "";

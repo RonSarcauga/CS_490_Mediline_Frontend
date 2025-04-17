@@ -1,4 +1,4 @@
-import { StrictMode } from 'react';
+import { StrictMode, useState, createContext, useContext } from 'react';
 import { createRoot } from 'react-dom/client';
 import {
     createBrowserRouter,
@@ -11,6 +11,7 @@ import LoginPage from './Login';
 import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
+import PDHome from './PDHome';
 import PDDiscussionForum from './PDDiscussionForum';
 import PatientDashboardHome from './PatientDashboardHome';
 import Dashboard from './PatientDashboard_Exercise_Page';
@@ -38,6 +39,16 @@ const router = createBrowserRouter([
     {
         path: '/dashboard',
         element: <DashboardLayout />,
+        children: [
+            {
+                path: 'patient',
+                element: <PDHome />,
+            },
+            {
+                path: 'patient/discussion-forum',
+                element: <PDDiscussionForum />,
+            }
+        ],
     },
     {
         path: '/patientExercise',
@@ -87,6 +98,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <RouterProvider router={router} />
+        <UserProvider>
+            <RouterProvider router={router} />
+        </UserProvider>
     </StrictMode>,
 );

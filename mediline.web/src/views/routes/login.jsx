@@ -1,19 +1,46 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
 import InputBar from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
 import LoginViewModel from '../../viewModels/LoginViewModel';
+import { UserContext } from '../../context/UserProvider';
 
 export default function Login() {
-    const [formData, setFormData] = useState(LoginViewModel);
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
+    const navigate = useNavigate();
+
+    const { setCurrentUser } = useContext(UserContext);
 
     const handleInput = (field, target) => {
+        console.log(`${field}: ${target.value}`);
         setFormData({
             ...formData,
             [field]: target.value,
         });
+        console.log(`Email: ${formData.email}`);
+        console.log(`Password: ${formData.password}`);
+    };
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        console.log("Initiate login process!");
+        try {
+            LoginViewModel.email = formData.email;
+            LoginViewModel.password = formData.password;
+            const currentUser = LoginViewModel.login();
+            setCurrentUser(currentUser);
+            console.log("Login successful!", currentUser.user.role);
+
+            // Redirect to the dashboard
+            navigate(`/dashboard/${currentUser.user.role}`);
+        } catch (error) {
+            console.log("Login failed:", error.message);
+        }
     };
 
     const isComplete = Object.values(formData).every((value) => value.trim() !== "");
@@ -96,14 +123,15 @@ export default function Login() {
                                                                 <Container
                                                                     customClass='bg-dark-100 justify-items-center align-items-center br-sm py-1'
                                                                     isClickable={isComplete}
+                                                                    onClick={handleLogin}
                                                                     fitParent={true}
                                                                     content={[
                                                                         <Button
                                                                             customClass="bg-0"
                                                                             content={[
-                                                                                <Link to="/patientDashboard" className=" text-decoration-none font-regular text-neutral-1100">
+                                                                                <p className=" text-decoration-none font-regular text-neutral-1100">
                                                                                     Sign In
-                                                                                </Link>
+                                                                                </p>
                                                                             ]}
                                                                         />
                                                                     ]}
