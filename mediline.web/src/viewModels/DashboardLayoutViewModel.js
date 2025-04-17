@@ -1,4 +1,9 @@
-import { baseUserList } from '../assets/js/const';
+import {
+    baseUserList,
+    patientDataList,
+    doctorDataList,
+    appointmentDataList,
+} from '../assets/js/const';
 
 class DashboardLayoutViewModel {
     // Retrieves a list of users from the user table
@@ -52,6 +57,16 @@ class DashboardLayoutViewModel {
 
         // Extract matched groups and reformat
         return `(${match[1]}) ${match[2]} ${match[3]}`;
+    }
+
+    // Helper method to find records in the patient table by ID
+    getPatientData(id) {
+        return patientDataList.find(patient => patient.id === id);
+    };
+
+    // Helper method to find records in the doctor table by ID
+    getDoctorData(id) {
+        return doctorDataList.find(doctor => doctor.id === id);
     }
 };
 
