@@ -20,7 +20,7 @@ const PatientDashboardHome = () => {
       content: (
         <>
         <ItemGroup
-          items={[
+          items={
               <>
                 <strong>Last Appointment</strong>
                 <div><CommonIcon name={'calendar'} /> {user.lastAppointment.date} <CommonIcon name={'clock'} /> {user.lastAppointment.time}</div>
@@ -30,7 +30,7 @@ const PatientDashboardHome = () => {
                 <strong>Phone</strong>
                 {user.phone}
               </>
-          ]}
+          }
         />
         </>
       ),
@@ -69,7 +69,7 @@ const PatientDashboardHome = () => {
           minHeight: "78vh",
           maxHeight: "88vh"
       }}
-      items={[
+      items={
           <>
             <ItemGroup
               customClass="gap-5"
@@ -78,52 +78,52 @@ const PatientDashboardHome = () => {
               style={{
                   maxHeight: "54.5vh"
               }}
-              items={[
+              items={
                   <>
                     <Container
                       fitParent={true}
                       customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                       headerClass="p-5"
-                      header={[
+                      header={
                           <>
                               <ItemGroup
                                   customClass="gap-5"
                                   fitParent={true}
                                   axis={true}
-                                  items={[
+                                  items={
                                       <>
                                         <ItemGroup
                                             customClass="justify-content-space-between align-items-center"
                                             fitParent={true}
                                             stretch={true}
                                             axis={false}
-                                            items={[
+                                            items={
                                                 <>
                                                     <h1>Your Care Team</h1>
                                                     <ItemGroup
                                                         customClass="gap-3"
                                                         axis={false}
                                                         stretch={true}
-                                                        items={[
+                                                        items={
                                                             <>
                                                               <ItemGroup
                                                                   customClass="bg-dark-100 br-sm pl-1 py-1"
                                                                   isClickable={true}
                                                                   stretch={true}
                                                                   axis={false}
-                                                                  items={[
+                                                                  items={
                                                                       <>
                                                                         <h1 className="font-4 font-medium text-neutral-1100 pr-4 pl-4 pt-2 pb-2">
                                                                             Book an Appointment
                                                                         </h1>
                                                                       </>
-                                                                  ]}
+                                                                  }
                                                               />
                                                             </>
-                                                        ]}
+                                                        }
                                                     />
                                                 </>
-                                            ]}
+                                            }
                                         />
                                         <ItemGroup
                                             customClass="b-bottom-3 outline-secondary-400"
@@ -134,58 +134,60 @@ const PatientDashboardHome = () => {
                                           axis={false}
                                           fitParent={true}
                                           customClass="m-4 justify-content-center col-gap-20"
-                                          items={[
-                                            <div key="left">
-                                              <RatedIcon rating={doctor.rating} borderColor={doctor.borderColor} />
-                                            </div>,
+                                          items={
+                                            <>
+                                            <RatedIcon rating={doctor.rating} borderColor={doctor.borderColor} />
 
                                             <ItemGroup
-                                              key="right"
                                               axis={true}
                                               fitParent={true}
-                                              customClass="pl-10"
-                                              items={[
+                                              customClass="pl-10 gap-10"
+                                              items={
+                                                <>
                                                 <ItemGroup
-                                                  key="top"
                                                   axis={false}
                                                   fitParent={true}
-                                                  items={[
-                                                    <div key="top-left" className="p-4" style={{ minWidth: '200px' }} >
+                                                  items={
+                                                    <>
+                                                    <div style={{ minWidth: '200px' }} >
                                                       <strong>Doctor</strong> <br /> {doctor.name}
-                                                    </div>,
+                                                    </div>
 
-                                                    <div key="top-right" className="p-4" >
+                                                    <div>
                                                       <strong>Status</strong> <StatusLabel status={doctor.status} />
                                                     </div>
-                                                  ]}
-                                                />,
-                                                <div key="bottom" className="flex justify-start items-center p-4">
+                                                    </>
+                                                  }
+                                                />
+                                                <div>
                                                     <strong>Last Appointment:</strong> <br />
                                                     <CommonIcon name="calendar" /> {doctor.lastAppointment.date}{' '}
                                                     <CommonIcon name="clock" /> {doctor.lastAppointment.time}
                                                 </div>
-                                              ]}
+                                                </>
+                                              }
                                             />
-                                          ]}
+                                            </>
+                                          }
                                         />
                                       </>
-                                  ]}
+                                  }
                               />
                           </>
-                        ]}
+                        }
                       />
                       <Container
                         fitParent={true}
                         customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                         headerClass="p-5"
-                        header={[
+                        header={
                             <>
                               <ItemGroup
                                   customClass="gap-5"
                                   fitParent={true}
                                   stretch={true}
                                   axis={true}
-                                  items={[
+                                  items={
                                       <>
                                         <h1>Checkout</h1>
                                         <ItemGroup
@@ -193,7 +195,7 @@ const PatientDashboardHome = () => {
                                           stretch={true}
                                           fitParent={true}
                                           customClass="justify-center items-center"
-                                          items={[
+                                          items={
                                             <ScrollableTable 
                                                 columns={["Appointment", "Doctor", "Treatment", "Total Bill", "Status"]} 
                                                 columnKeys={["appointment", "doctor", "treatment", "totalBill", "status"]}
@@ -201,26 +203,26 @@ const PatientDashboardHome = () => {
                                                 data={checkout}
                                                 renderActions={() => <ThreeDotButton />} 
                                             />
-                                          ]}
+                                          }
                                         />
                                       </>
-                                  ]}
+                                  }
                               />
                           </>
-                        ]}
+                        }
                       />
                       <Container
                       fitParent={true}
                       customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100"
                       headerClass="p-5"
-                      header={[
+                      header={
                           <>
                               <ItemGroup
                                   customClass="gap-5"
                                   fitParent={true}
                                   stretch={true}
                                   axis={true}
-                                  items={[
+                                  items={
                                       <>
                                         <h1>Upcoming Appointments</h1>
                                         <ItemGroup
@@ -228,65 +230,65 @@ const PatientDashboardHome = () => {
                                           fitParent={true}
                                           stretch={true}
                                           axis={true}
-                                          items={[
+                                          items={
                                               <>
                                                 {appointments.map((a, i) => (
                                                   <AppointmentCard key={i} data={a} />
                                                 ))}
                                               </>
-                                          ]}
+                                          }
                                       />
                                       </>
-                                  ]}
+                                  }
                               />
                           </>
-                        ]}
+                        }
                       />
                   </>
-              ]}
+              }
           />
           <Container
               customClass="px-0 pb-10"
               fitParent={true}
-              content={[
+              content={
                   <>
                       <Container
                           fitParent={true}
                           customClass="gradient-light br-md b-3 outline-neutral-1100 justify-content-center align-items-space-between pt-10"
-                          content={[
+                          content={
                               <>
                                   <ItemGroup
                                       customClass="gap-7"
                                       axis={true}
                                       fitParent={true}
-                                      items={[
+                                      items={
                                         <>
                                           <ItemGroup
                                             customClass="gap-5 justify-items-center align-items-center"
                                             axis={true}
                                             fitParent={true}
-                                            items={[
+                                            items={
                                               <>
                                                 <EditableUserIcon />
                                                 <div><strong>{user.name}</strong></div>
                                                 <div><strong>MRN:</strong> {user.mrn}</div>
                                                 <div>{user.gender} ● {user.birthday} ({user.age})</div>
                                               </>
-                                            ]}
+                                            }
                                           />
                                           
                                           <AccordionList data = {accordionData} />
                                         </>
-                                      ]}
+                                      }
                                   />
                               </>
-                          ]}
+                          }
                       />
                   </>
-              ]}
+              }
           />
         </>
-      ]}
+      }
       />
     </>
   );

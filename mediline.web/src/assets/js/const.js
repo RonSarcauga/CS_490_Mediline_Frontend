@@ -175,6 +175,28 @@ export const patientDashboardData = {
     }
 };
 
+export const doctorAppointmentData = {
+    rating: 9.5,
+    ratingColor: "#007bff",
+    patient: {
+      name: "Luke Patterson",
+      mrn: "984568",
+      gender: "Male",
+      birthday: "September 28, 1982",
+      age: "42",
+      medications: ["Drug 1", "Drug 2"],
+      lastAppointment: { date: "January 21, 2024", time: "17:00", doctor: "Dr. Douglas Powers"},
+      address: "74 Ames Ave, Greensboro, Norch Carolina",
+      phone: "+1 (934) 799 3917"
+    },
+    booking: {
+        status: "In Progress",
+        time: { date: "March 12, 2025", time: "10:00"},
+        doctor: "Dr. Jacob Clifford",
+        treatment: "Consultation"
+    }
+};
+
 export const baseUserList = [
     {
         id: 1,
@@ -300,3 +322,47 @@ export const vitalHistoryList = [
         }
     }
 ];
+
+export const chatlog = {
+    patient: "Luke Patterson",
+    doctor: "Jacob Clifford",
+    log: [
+        [0, "Hi Dr. Clifford, I've been having some sharp pain in my lower back since yesterday afternoon."],
+        [1, "Hi Luke, sorry to hear that. Can you describe the pain? Is it constant or does it come and go?"],
+        [0, "It comes and goes, mostly when I move or twist my torso. Sitting still isn’t too bad."],
+        [1, "Got it. Any numbness, tingling in your legs, or difficulty walking?"],
+        [0, "No, nothing like that. Just the localized pain on the right side."],
+        [1, "Okay, that’s helpful. Did you lift anything heavy recently or have a fall?"],
+        [0, "Yeah, I helped my friend move a couch two days ago. It was kind of awkward to carry."],
+        [1, "That could definitely be the cause. Sounds like a muscle strain. I recommend rest, ice packs, and over-the-counter ibuprofen for now."],
+        [0, "Alright, thanks. Should I avoid exercise for the next few days?"],
+        [1, "Yes, avoid strenuous activity. If the pain persists for more than 5 days or gets worse, we’ll schedule a follow-up."]
+      ]
+//  const { patientCount, servingP, appointmentCount, pendingCount, invoices, patientsToday, appointmentsToday} = doctorDashboardData;
+export const doctorDashboardData = {
+    patientCount: 258,
+    servingP: true,
+    appointmentCount: 657,
+    pendingCount: 27,
+    //columnKeys={["status", "date", "number", "name", "total"]}
+    invoices: [
+      { status: "Unsent", date: "03/11/2025", number: "#055", name: "Gina Degeneres", total: "$500", id: 1 },
+      { status: "Paid", date: "03/11/2025", number: "#054", name: "Mary Keitel", total: "$500", id: 2 },
+      { status: "Overdue", date: "03/02/2025", number: "#053", name: "Johnny Cage", total: "$500", id: 3 },
+    ],
+    patientsToday: {
+        8: "Mary Keitel",
+        9: "Gina Degeneres",
+        10: "Luke Patterson",
+        11: "Dennis Goreman",
+        12: "Vicky Jang",
+        13: "James Callus",
+        14: "Sandra Park",
+        15: "John Doe",
+        16: "Michael Corleone",
+        17: "Elizabeth McGlynn"
+    }, 
+    appointmentsToday: {
+        
+    }
+};

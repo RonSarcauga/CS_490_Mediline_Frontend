@@ -8,11 +8,13 @@ import CommonIcon from '../../components/General/CommonIcon';
 
 //import hardcoded data if needed
 //import {} from '../../assets/js/const';
+import {doctorDashboardData} from '../../assets/js/const';
 
 const DoctorDashboardHome = () => {
 
     //any hardcoded data can go here
     //const {} = ;
+  const { patientCount, servingP, appointmentCount, pendingCount, invoices, patientsToday, appointmentsToday} = doctorDashboardData;
 
   const mainBody = (
     <>
@@ -62,28 +64,45 @@ const DoctorDashboardHome = () => {
                                     customClass="col-gap-5"
                                     fitParent={true}
                                     axis={false}
+                                    stretch={true}
                                     items={[
                                       <>
-                                      <Container
-                                        fitParent={true}
-                                        customClass="br-sm bg-neutral-1100 outline-neutral-100"
-                                        headerClass="p-5"
-                                        header={[
-                                          <>
-                                          {/* patient symbols and count */}
-                                          </>
-                                        ]}
-                                      />
-                                      <Container
-                                        fitParent={true}
-                                        customClass="br-sm bg-neutral-1100 outline-neutral-100"
-                                        headerClass="p-5"
-                                        header={[
-                                          <>
-                                          {/* serving patient status */}
-                                          </>
-                                        ]}
-                                      />
+                                        <Container
+                                          fitParent={true}
+                                          customClass="br-sm bg-neutral-1100 outline-neutral-100"
+                                          headerClass="p-5"
+                                          header={[
+                                            <ItemGroup
+                                              customClass="col-gap-5 font-10 font-semibold align-items-center"
+                                              fitParent={true}
+                                              axis={false}
+                                              items={[
+                                                <>
+                                                  <CommonIcon name='people'></CommonIcon>
+                                                  {patientCount}
+                                                </>
+                                              ]}
+                                            />
+                                          ]}
+                                        />
+                                        <Container
+                                          fitParent={true}
+                                          customClass="br-sm bg-neutral-1100 outline-neutral-100"
+                                          headerClass="p-5"
+                                          header={[
+                                            <ItemGroup
+                                              customClass="col-gap-5 font-5 font-light align-items-center"
+                                              fitParent={true}
+                                              axis={false}
+                                              items={[
+                                                <>
+                                                  {/* checkbox */}
+                                                  Serving Patients
+                                                </>
+                                              ]}
+                                            />
+                                          ]}
+                                        />
                                       </>
                                     ]}
                                   />
@@ -98,12 +117,12 @@ const DoctorDashboardHome = () => {
                           headerClass="p-5"
                           header={[
                             <ItemGroup
-                              customClass="gap-5 align-items-center"
+                              customClass="gap-5"
                               fitParent={true}
                               axis={true}
                               items={[
                                 <>
-                                  <strong>Accepting Patients</strong>
+                                  <strong>Upcoming Appointments</strong>
                                   <ItemGroup
                                       customClass="b-bottom-3 outline-secondary-400"
                                       fitParent={true}
@@ -112,29 +131,52 @@ const DoctorDashboardHome = () => {
                                   <ItemGroup
                                     customClass="col-gap-5"
                                     fitParent={true}
+                                    stretch={true}
                                     axis={false}
                                     items={[
                                       <>
-                                      <Container
-                                        fitParent={true}
-                                        customClass="br-sm bg-neutral-1100 outline-neutral-100"
-                                        headerClass="p-5"
-                                        header={[
-                                          <>
-                                          {/* appointment count */}
-                                          </>
-                                        ]}
-                                      />
-                                      <Container
-                                        fitParent={true}
-                                        customClass="br-sm bg-neutral-1100 outline-neutral-100"
-                                        headerClass="p-5"
-                                        header={[
-                                          <>
-                                          {/* pending count */}
-                                          </>
-                                        ]}
-                                      />
+                                        <Container
+                                          fitParent={true}
+                                          customClass="br-sm bg-neutral-1100 outline-neutral-100"
+                                          headerClass="p-5"
+                                          header={[
+                                            <ItemGroup
+                                              customClass="col-gap-5 font-10 font-semibold align-items-center"
+                                              fitParent={true}
+                                              axis={false}
+                                              items={[
+                                                <>
+                                                  <CommonIcon name='calendar'></CommonIcon>
+                                                  {appointmentCount}
+                                                </>
+                                              ]}
+                                            />
+                                          ]}
+                                        />
+                                        <Container
+                                          fitParent={true}
+                                          customClass="br-sm bg-neutral-1100 outline-neutral-100"
+                                          headerClass="p-5"
+                                          header={[
+                                            <ItemGroup
+                                              customClass="font-5 font-light"
+                                              fitParent={true}
+                                              axis={true}
+                                              items={[
+                                                <>
+                                                  <Container
+                                                    fitParent={true}
+                                                    customClass="font-10 font-semibold"
+                                                    header={[
+                                                      pendingCount
+                                                    ]}
+                                                  />
+                                                  In Pending
+                                                </>
+                                              ]}
+                                            />
+                                          ]}
+                                        />
                                       </>
                                     ]}
                                   />
@@ -165,11 +207,18 @@ const DoctorDashboardHome = () => {
                             />
                             <ItemGroup
                               customClass="col-gap-5"
+                              stretch={true}
                               fitParent={true}
                               axis={false}
                               items={[
                                 <>
-                                {/* invoices -- use scrollable table*/}
+                                  <ScrollableTable 
+                                    columns={["Status", "Date", "Number", "Name", "Total"]} 
+                                    columnKeys={["status", "date", "number", "name", "total"]}
+                                    columnTypes = {{status:{ type: 'status'}, date:{ type: 'icon', iconName: 'calendar' }, name:{ type: 'icon', iconName: 'person' }}}
+                                    data={invoices}
+                                    renderActions={() => <ThreeDotButton />} 
+                                  />
                                 </>
                               ]}
                             />
