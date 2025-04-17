@@ -208,7 +208,7 @@ export const baseUserList = [
         address: "123 Main St",
         city: "Springfield",
         postalCode: "12345",
-        accountType: "patient",
+        role: "patient",
         password: "password123",
     },
     {
@@ -221,9 +221,106 @@ export const baseUserList = [
         address: "456 Elm St",
         city: "Greenwood",
         postalCode: "67890",
-        accountType: "doctor",
+        role: "doctor",
         password: "securePass456",
     },
+];
+
+export const patientDataList = [
+    {
+        userId: 1,
+        mrn: "123456",
+        sex: "Male",
+        doctor: "214365",
+        appointments: []
+    }
+];
+
+export const doctorDataList = [
+    {
+        userId: 2, 
+        licenseNumber: "214365",
+        specialty: "Cardiologist",
+        patients: [],
+        appointments: [],
+        acceptingNewPatients: true
+    }
+];
+
+export const appointmentDataList = [
+    {
+        appointmentId: 1,
+        appointmentType: "Online Chat",
+        doctorLicenseNumber: "214365",
+        patientMRN: "123456",
+        appointmentDate: "04/10/2025",
+        startTime: "09:00",
+        endTime: "09:30",
+        treatment: "Consultation",
+        notes: "Discussed importance of cardiovascular exercise. Recommended at least 30 minutes of brisk walking daily.",
+        pharmacyNotes: "Suggested Omega-3 supplements for heart health and muscle recovery.",
+        fixedFee: 150,
+        paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 2,
+        appointmentType: "Online Chat",
+        doctorLicenseNumber: "214365",
+        patientMRN: "123456",
+        appointmentDate: "04/17/2025",
+        startTime: "10:00",
+        endTime: "10:45",
+        treatment: "Consultation",
+        notes: "Patient reports improvement in endurance. Advised incorporating strength training twice a week.",
+        pharmacyNotes: "Recommended vitamin D and magnesium supplements for bone and muscle support.",
+        fixedFee: 150,
+        paymentStatus: "Pending"
+    },
+    {
+        appointmentId: 3,
+        appointmentType: "Online Chat",
+        doctorLicenseNumber: "214365",
+        patientMRN: "123456",
+        appointmentDate: "04/25/2025",
+        startTime: "14:00",
+        endTime: "14:30",
+        treatment: "Consultation",
+        notes: "Follow-up to assess progress in fitness routine. Will evaluate improvements in heart rate and endurance.",
+        pharmacyNotes: "Recommended electrolyte supplements for hydration during exercise.",
+        fixedFee: 150,
+        paymentStatus: "Pending"
+    }
+];
+
+export const vitalHistoryList = [
+    {
+        id: 1,
+        date: "04/10/2025",
+        time: "08:00",
+        patientMRN: "123456",
+        measurements: {
+            height: 175,
+            weight: 75,
+            caloriesBurned: 2300,
+            waterIntake: 2.5,
+            bloodPressure: "120/80",
+            heartRate: 72
+        }
+    },
+    {
+        id: 2,
+        date: "04/11/2025",
+        time: "08:00",
+        patientMRN: "123456",
+        measurements: {
+            height: 175,
+            weight: 74.5,
+            caloriesBurned: 2500,
+            waterIntake: 3,
+            bloodPressure: "118/76",
+            heartRate: 70
+        }
+    }
 ];
 
 export const chatlog = {

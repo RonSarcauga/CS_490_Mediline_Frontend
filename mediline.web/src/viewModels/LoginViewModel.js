@@ -12,6 +12,7 @@ const LoginViewModel = {
         }
 
         // Fetch the user data from the "backend"
+        const users = JSON.parse(localStorage.getItem("baseUserList"));
         const user = users.find((u) => u.email === this.email);
 
         if (user && user.password === this.password) {
