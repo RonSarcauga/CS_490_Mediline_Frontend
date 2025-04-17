@@ -175,6 +175,28 @@ export const patientDashboardData = {
     }
 };
 
+export const doctorAppointmentData = {
+    rating: 9.5,
+    ratingColor: "#007bff",
+    patient: {
+      name: "Luke Patterson",
+      mrn: "984568",
+      gender: "Male",
+      birthday: "September 28, 1982",
+      age: "42",
+      medications: ["Drug 1", "Drug 2"],
+      lastAppointment: { date: "January 21, 2024", time: "17:00", doctor: "Dr. Douglas Powers"},
+      address: "74 Ames Ave, Greensboro, Norch Carolina",
+      phone: "+1 (934) 799 3917"
+    },
+    booking: {
+        status: "In Progress",
+        time: { date: "March 12, 2025", time: "10:00"},
+        doctor: "Dr. Jacob Clifford",
+        treatment: "Consultation"
+    }
+};
+
 export const baseUserList = [
     {
         id: 1,
