@@ -228,6 +228,7 @@ export const doctorDataList = [
 export const appointmentDataList = [
     {
         appointmentId: 1,
+        appointmentType: "Online Chat",
         doctorLicenseNumber: "214365",
         patientMRN: "123456",
         appointmentDate: "04/10/2025",
@@ -241,6 +242,7 @@ export const appointmentDataList = [
     },
     {
         appointmentId: 2,
+        appointmentType: "Online Chat",
         doctorLicenseNumber: "214365",
         patientMRN: "123456",
         appointmentDate: "04/17/2025",
@@ -254,6 +256,7 @@ export const appointmentDataList = [
     },
     {
         appointmentId: 3,
+        appointmentType: "Online Chat",
         doctorLicenseNumber: "214365",
         patientMRN: "123456",
         appointmentDate: "04/25/2025",
