@@ -556,6 +556,7 @@ function PDHome() {
                                                                                 />
                                                                                 <Accordion
                                                                                     headerClass="px-6"
+                                                                                    contentClass="px-0 pb-2 pt-4"
                                                                                     data={[
                                                                                         {
                                                                                             header:
@@ -591,7 +592,7 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p>Is this even working?</p>
+                                                                                                            <p className="font-3 font-semibold text-neutral-600">You do not have active prescriptions</p>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -601,6 +602,7 @@ function PDHome() {
                                                                                 />
                                                                                 <Accordion
                                                                                     headerClass="px-6"
+                                                                                    contentClass="px-0 pb-2 pt-4"
                                                                                     data={[
                                                                                         {
                                                                                             header:
@@ -629,7 +631,7 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p>Is this even working?</p>
+                                                                                                            <p className="font-3 font-semibold text-neutral-600">You do not have any forms</p>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
