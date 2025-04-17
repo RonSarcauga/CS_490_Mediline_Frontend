@@ -400,7 +400,7 @@ function PDHome() {
                                                                                             <ItemGroup
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h3 className={appt.paymentStatus === "Paid" ? `text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br` : `text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br`}>{appt.paymentStatus}</h3>
+                                                                                                        <h3 className={appt.paymentStatus === "Paid" ? `text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br` : `text-caution-100 bg-caution-500 font-semibold font-3 py-1 px-3 br`}>{appt.paymentStatus}</h3>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />

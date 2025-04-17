@@ -111,6 +111,28 @@ class DashboardLayoutViewModel {
 
         return pastAppointments;
     }
+
+    // Helper method to retrieve upcoming appointments
+    getUpcomingAppointmentsSorted(id) {
+        // Find the patient's MRN using their (base) user ID
+        const patientRecord = patientDataList.find(patient => patient.userId === id);
+
+        // Checks if the patient's record exists
+        if (!patientRecord) return [];
+
+        // Get the patient's MRN
+        const patientMRN = patientRecord.mrn;
+
+        // Filter appointments that match the patient's MRN and are upcoming
+        const upcomingAppointments = appointmentDataList.filter(appt =>
+            appt.patientMRN === patientMRN && new Date(appt.appointmentDate) >= new Date()
+        );
+
+        // Sort appointments by date in ascending order (soonest first)
+        upcomingAppointments.sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate));
+
+        return upcomingAppointments;
+    }
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
