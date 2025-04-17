@@ -186,7 +186,7 @@ export const baseUserList = [
         address: "123 Main St",
         city: "Springfield",
         postalCode: "12345",
-        accountType: "patient",
+        role: "patient",
         password: "password123",
     },
     {
@@ -199,7 +199,7 @@ export const baseUserList = [
         address: "456 Elm St",
         city: "Greenwood",
         postalCode: "67890",
-        accountType: "doctor",
+        role: "doctor",
         password: "securePass456",
     },
 ];
