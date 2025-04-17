@@ -65,7 +65,7 @@ const RegisterViewModel = {
             city: this.city,
             postalCode: this.postalCode,
             dateOfBirth: this.dateOfBirth,
-            accountType: this.accountType,
+            role: this.accountType,
             password: this.password
         };
 
