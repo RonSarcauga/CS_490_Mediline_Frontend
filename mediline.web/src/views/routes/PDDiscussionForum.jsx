@@ -361,19 +361,21 @@ function PDDiscussionForum() {
                                                                                     axis={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            <Container
-                                                                                                customClass="bg-success-500 br py-2 px-4"
-                                                                                                content={[
+                                                                                            <ItemGroup
+                                                                                                items={[
                                                                                                     <>
-                                                                                                        <h3 className="text-success-100 font-semibold font-4">Patient</h3>
+                                                                                                        <h3 className="text-success-100 bg-success-500 font-semibold font-4 py-2 px-4 br">
+                                                                                                            {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                                                                                                        </h3>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
-                                                                                            <Container
-                                                                                                customClass="bg-user-500 br py-2 px-4"
-                                                                                                content={[
+                                                                                            <ItemGroup
+                                                                                                items={[
                                                                                                     <>
-                                                                                                        <h3 className="text-user-300 font-semibold font-4">{user.firstName} {user.lastName}</h3>
+                                                                                                        <h3 className="text-user-300 bg-user-500 font-semibold font-4 py-2 px-4 br">
+                                                                                                            {user.firstName} {user.lastName}
+                                                                                                        </h3>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
