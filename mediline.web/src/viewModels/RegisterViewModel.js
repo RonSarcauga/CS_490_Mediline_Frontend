@@ -63,6 +63,7 @@ const RegisterViewModel = {
             phoneNumber: this.phone,
             address: this.address,
             city: this.city,
+            postalCode: this.postalCode,
             dateOfBirth: this.dateOfBirth,
             accountType: this.accountType,
             password: this.password
