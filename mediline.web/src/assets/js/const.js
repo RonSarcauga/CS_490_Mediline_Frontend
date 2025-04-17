@@ -209,7 +209,7 @@ export const patientDataList = [
         userId: 1,
         mrn: "123456",
         sex: "Male",
-        doctor: null,
+        doctor: "214365",
         appointments: []
     }
 ];
@@ -233,6 +233,7 @@ export const appointmentDataList = [
         appointmentDate: "04/10/2025",
         startTime: "09:00",
         endTime: "09:30",
+        treatment: "Consultation",
         notes: "Discussed importance of cardiovascular exercise. Recommended at least 30 minutes of brisk walking daily.",
         pharmacyNotes: "Suggested Omega-3 supplements for heart health and muscle recovery.",
         fixedFee: 150,
@@ -245,6 +246,7 @@ export const appointmentDataList = [
         appointmentDate: "04/17/2025",
         startTime: "10:00",
         endTime: "10:45",
+        treatment: "Consultation",
         notes: "Patient reports improvement in endurance. Advised incorporating strength training twice a week.",
         pharmacyNotes: "Recommended vitamin D and magnesium supplements for bone and muscle support.",
         fixedFee: 150,
@@ -257,6 +259,7 @@ export const appointmentDataList = [
         appointmentDate: "04/25/2025",
         startTime: "14:00",
         endTime: "14:30",
+        treatment: "Consultation",
         notes: "Follow-up to assess progress in fitness routine. Will evaluate improvements in heart rate and endurance.",
         pharmacyNotes: "Recommended electrolyte supplements for hydration during exercise.",
         fixedFee: 150,
