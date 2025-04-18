@@ -262,6 +262,45 @@ export const baseUserList = [
         postalCode: "60601",
         role: "Patient",
         password: "password123"
+    },
+    {
+        id: 6,
+        firstName: "Daniel",
+        lastName: "Stevens",
+        dateOfBirth: "02/20/1987",
+        email: "daniel.stevens@example.com",
+        phoneNumber: "555-567-3456",
+        address: "567 Cedar St",
+        city: "Los Angeles",
+        postalCode: "90001",
+        role: "Patient",
+        password: "password123"
+    },
+    {
+        id: 7,
+        firstName: "Emily",
+        lastName: "Martinez",
+        dateOfBirth: "11/05/1993",
+        email: "emily.martinez@example.com",
+        phoneNumber: "555--654-6789",
+        address: "789 Birch St",
+        city: "San Francisco",
+        postalCode: "94102",
+        role: "Patient",
+        password: "password123"
+    },
+    {
+        id: 8,
+        firstName: "Frank",
+        lastName: "Thompson",
+        dateOfBirth: "07/12/1980",
+        email: "frank.thompson@example.com",
+        phoneNumber: "555-479-9011",
+        address: "901 Spruce St",
+        city: "Seattle",
+        postalCode: "98101",
+        role: "Patient",
+        password: "password123"
     }
 ];
 
@@ -271,22 +310,49 @@ export const patientDataList = [
         mrn: "123456",
         sex: "Male",
         doctor: "214365",
-        appointments: []
-    },
-    {
-        userId: 2,
-        mrn: "456789",
-        doctor: "214365"
+        appointments: [1,2,3]
     },
     {
         userId: 3,
         mrn: "234567",
-        doctor: "214365"
+        sex: "Female",
+        doctor: "214365",
+        appointments: [4]
     },
     {
         userId: 4,
         mrn: "345678",
-        doctor: "214365"
+        sex: "Male",
+        doctor: "214365",
+        appointments: [5]
+    },
+    {
+        userId: 5,
+        mrn: "456789",
+        sex: "Male",
+        doctor: "214365",
+        appointments: [6]
+    },
+    {
+        userId: 6,
+        mrn: "567890",
+        doctor: "214365",
+        sex: "Male",
+        appointments: [7]
+    },
+    {
+        userId: 7,
+        mrn: "678901",
+        doctor: "214365",
+        sex: "Female",
+        appointments: [8]
+    },
+    {
+        userId: 8,
+        mrn: "789012",
+        doctor: "214365",
+        sex: "Male",
+        appointments: [9]
     }
 ];
 
@@ -365,6 +431,54 @@ export const appointmentDataList = [
         endTime: "09:00",
         fixedFee: 150,
         paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 6,
+        doctorLicenseNumber: "214365",
+        patientMRN: "456789",
+        appointmentDate: new Date().toLocaleDateString("en-US"),
+        startTime: "09:00",
+        endTime: "09:45",
+        appointmentType: "Online Chat",
+        treatment: "Consultation",
+        fixedFee: 150,
+        paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 7,
+        doctorLicenseNumber: "214365",
+        patientMRN: "567890",
+        appointmentDate: new Date().toLocaleDateString("en-US"),
+        startTime: "10:30",
+        endTime: "11:15",
+        appointmentType: "Online Chat",
+        treatment: "Medication Review",
+        fixedFee: 150,
+        paymentStatus: "Pending"
+    },
+    {
+        appointmentId: 8,
+        doctorLicenseNumber: "214365",
+        patientMRN: "678901",
+        appointmentDate: new Date().toLocaleDateString("en-US"),
+        startTime: "11:45",
+        endTime: "12:30",
+        appointmentType: "Online Chat",
+        treatment: "Follow-up Appointment",
+        fixedFee: 150,
+        paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 9,
+        doctorLicenseNumber: "214365",
+        patientMRN: "789012",
+        appointmentDate: new Date().toLocaleDateString("en-US"),
+        startTime: "13:00",
+        endTime: "14:30",
+        appointmentType: "Online Chat",
+        treatment: "Consultation",
+        fixedFee: 150,
+        paymentStatus: "Paid"
     }
 ];
 
@@ -398,9 +512,10 @@ export const vitalHistoryList = [
         }
     },
     {
+        id: 3,
         date: "04/10/2025",
         time: "08:30",
-        patientMRN: "456789",
+        patientMRN: "2345678",
         height: 170,
         weight: 68,
         heartRate: 72,
@@ -409,9 +524,10 @@ export const vitalHistoryList = [
         waterIntake: "2L"
     },
     {
+        id: 4, 
         date: "04/11/2025",
         time: "09:15",
-        patientMRN: "234567",
+        patientMRN: "345678",
         height: 175,
         weight: 80,
         heartRate: 76,
@@ -420,15 +536,52 @@ export const vitalHistoryList = [
         waterIntake: "2.5L"
     },
     {
+        id: 5,
         date: "04/12/2025",
         time: "10:00",
-        patientMRN: "345678",
+        patientMRN: "456789",
         height: 165,
         weight: 55,
         heartRate: 70,
         bloodPressure: "118/78",
         caloriesBurned: 200,
         waterIntake: "1.8L"
+    },
+    {
+        id: 6,
+        date: new Date().toLocaleDateString("en-US"),
+        time: "09:00",
+        patientMRN: "456789",
+        height: 172,
+        weight: 75,
+        heartRate: 74,
+        bloodPressure: "122/80",
+        caloriesBurned: 260,
+        waterIntake: "2.2L"
+    },
+    {
+        id: 7,
+        date: new Date().toLocaleDateString("en-US"),
+        time: "10:30",
+        patientMRN: "567890",
+        height: 168,
+        weight: 70,
+        heartRate: 78,
+        bloodPressure: "118/76",
+        caloriesBurned: 290,
+        waterIntake: "2.0L"
+    },
+    {
+        id: 8,
+        date: new Date().toLocaleDateString("en-US"),
+        time: "11:45",
+        patientMRN: "678901",
+        height: 180,
+        weight: 85,
+        heartRate: 80,
+        bloodPressure: "130/85",
+        caloriesBurned: 310,
+        waterIntake: "2.5L"
     }
 ];
 
