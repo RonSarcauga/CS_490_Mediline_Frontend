@@ -224,6 +224,45 @@ export const baseUserList = [
         role: "doctor",
         password: "securePass456",
     },
+    {
+        id: 3,
+        firstName: "Alice",
+        lastName: "Johnson",
+        dateOfBirth: "01/15/1985",
+        email: "alice.johnson@example.com",
+        phoneNumber: "555-345-1234",
+        address: "123 Maple St",
+        city: "New York",
+        postalCode: "10001",
+        role: "Patient",
+        password: "password123"
+    },
+    {
+        id: 4,
+        firstName: "Bob",
+        lastName: "Miller",
+        dateOfBirth: "06/22/1990",
+        email: "bob.miller@example.com",
+        phoneNumber: "555-677-5678",
+        address: "456 Oak St",
+        city: "Boston",
+        postalCode: "02108",
+        role: "Patient",
+        password: "password123"
+    },
+    {
+        id: 5,
+        firstName: "Charlie",
+        lastName: "Davis",
+        dateOfBirth: "09/30/1978",
+        email: "charlie.davis@example.com",
+        phoneNumber: "555-555-9012",
+        address: "789 Pine St",
+        city: "Chicago",
+        postalCode: "60601",
+        role: "Patient",
+        password: "password123"
+    }
 ];
 
 export const patientDataList = [
@@ -233,6 +272,21 @@ export const patientDataList = [
         sex: "Male",
         doctor: "214365",
         appointments: []
+    },
+    {
+        userId: 2,
+        mrn: "456789",
+        doctor: "214365"
+    },
+    {
+        userId: 3,
+        mrn: "234567",
+        doctor: "214365"
+    },
+    {
+        userId: 4,
+        mrn: "345678",
+        doctor: "214365"
     }
 ];
 
@@ -241,7 +295,7 @@ export const doctorDataList = [
         userId: 2, 
         licenseNumber: "214365",
         specialty: "Cardiologist",
-        patients: [],
+        patients: ["123456", "234567", "345678"],
         appointments: [],
         acceptingNewPatients: true
     }
@@ -289,6 +343,28 @@ export const appointmentDataList = [
         pharmacyNotes: "Recommended electrolyte supplements for hydration during exercise.",
         fixedFee: 150,
         paymentStatus: "Pending"
+    },
+    {
+        appointmentId: 4,
+        appointmentType: "Online Chat",
+        doctorLicenseNumber: "214365",
+        patientMRN: "234567",
+        appointmentDate: "04/18/2025",
+        startTime: "14:00",
+        endTime: "14:45",
+        fixedFee: 150,
+        paymentStatus: "Pending"
+    },
+    {
+        appointmentId: 5,
+        appointmentType: "Online Chat",
+        doctorLicenseNumber: "214365",
+        patientMRN: "345678",
+        appointmentDate: "04/20/2025",
+        startTime: "08:30",
+        endTime: "09:00",
+        fixedFee: 150,
+        paymentStatus: "Paid"
     }
 ];
 
@@ -320,7 +396,41 @@ export const vitalHistoryList = [
             bloodPressure: "118/76",
             heartRate: 70
         }
+    },
+    {
+        date: "04/10/2025",
+        time: "08:30",
+        patientMRN: "456789",
+        height: 170,
+        weight: 68,
+        heartRate: 72,
+        bloodPressure: "120/80",
+        caloriesBurned: 250,
+        waterIntake: "2L"
+    },
+    {
+        date: "04/11/2025",
+        time: "09:15",
+        patientMRN: "234567",
+        height: 175,
+        weight: 80,
+        heartRate: 76,
+        bloodPressure: "125/85",
+        caloriesBurned: 300,
+        waterIntake: "2.5L"
+    },
+    {
+        date: "04/12/2025",
+        time: "10:00",
+        patientMRN: "345678",
+        height: 165,
+        weight: 55,
+        heartRate: 70,
+        bloodPressure: "118/78",
+        caloriesBurned: 200,
+        waterIntake: "1.8L"
     }
+];
 ];
 
 export const chatlog = {

@@ -8,7 +8,7 @@ import { BsCircleHalf } from "react-icons/bs";
 import { BsClipboard2HeartFill } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
 import React, { useRef, useEffect, useState } from "react";
-import { Chart } from "chart.js/auto";
+//import { Chart } from "chart.js/auto";
 
 
 
