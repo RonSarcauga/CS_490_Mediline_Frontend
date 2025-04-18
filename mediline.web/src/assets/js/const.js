@@ -380,3 +380,26 @@ export const bookingInfo = {
     ],
     treatment: ["Consultation"]
 };
+
+export const pharmaPatData = {
+    patient: {
+        name: "Mary Keitel",
+        dob: "05/26/1989",
+        height: "152",
+        weight: "110",
+        email: "marykeitel@medhealth.org",
+        phone: "3159849937",
+        address: "49 Greenbriar Road, Greensboro, NC, 10001",
+        medHistory: [
+            {medication: "Ozempic", duration: "14", dosage: "0.25", since: "02/28/2025", expires: "09/07/2025"},
+            {medication: "Arsenic", duration: "7", dosage: "28", since: "03/11/2025", expires: "10/13/2025"},
+            {medication: "Diazepam", duration: "21", dosage: "7", since: "04/08/2025", expires: "11/25/2025"}
+        ]
+    },
+    latestRequests: [
+        {name: "Mary Keitel"}, {name:  "Gina Degeneres"}
+    ],
+    allPatients: [
+        {name: "Luke Patterson"}, {name: "Dennis Goreman"}, {name: "Vicky Jang"}, {name: "James Callus"}, {name: "Sandra Park"}, {name: "John Doe"}, {name: "Michael Corleone"}, {name: "Elizabeth McGlynn"}
+    ]
+}

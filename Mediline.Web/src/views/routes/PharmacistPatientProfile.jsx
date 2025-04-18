@@ -7,12 +7,40 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import CommonIcon from '../../components/General/CommonIcon';
 
 //import hardcoded data if needed
-//import {} from '../../assets/js/const';
+import {pharmaPatData} from '../../assets/js/const';
 
 const PharmacistPatientProfile = () => {
 
-    //any hardcoded data can go here
-    //const {} = ;
+  //any hardcoded data can go here
+  const {patient, latestRequests, allPatients} = pharmaPatData;
+
+  const accordionData = [
+    {
+      header: (<>Latest Requests</>),
+      content: (
+        <>
+          <ScrollableTable 
+            columns={[""]} 
+            columnKeys={["name"]}
+            data={latestRequests}
+          />
+        </>
+      ),
+    },
+    {
+      header: (<>All Patients</>),
+      content: (
+        <>
+          <ScrollableTable 
+            columns={[""]} 
+            columnKeys={["name"]}
+            data={allPatients}
+          />
+        </>
+      ),
+    }
+  ];
+
 
   const mainBody = (
     <>
@@ -53,12 +81,32 @@ const PharmacistPatientProfile = () => {
                                 axis={true}
                             />
                             <ItemGroup
-                              customClass="col-gap-5"
+                              customClass="justify-content-space-between"
                               fitParent={true}
+                              stretch={true}
                               axis={false}
                               items={
                                 <>
-                                {/* info of patient -- could maybe reuse card from doctor patient profile? */}
+                                <div>
+                                  <strong>Name</strong>
+                                  <br/>
+                                  {patient.name}
+                                </div>
+                                <div>
+                                  <strong>Date of Birth</strong>
+                                  <br/>
+                                  {patient.dob}
+                                </div>
+                                <div>
+                                  <strong>Height</strong>
+                                  <br/>
+                                  {patient.height} cm
+                                </div>
+                                <div>
+                                  <strong>Weight</strong>
+                                  <br/>
+                                  {patient.weight} lbs
+                                </div>
                                 </>
                               }
                             />
@@ -85,12 +133,36 @@ const PharmacistPatientProfile = () => {
                                 axis={true}
                             />
                             <ItemGroup
-                              customClass="col-gap-5"
+                              customClass="gap-5"
                               fitParent={true}
-                              axis={false}
+                              axis={true}
                               items={
                                 <>
-                                {/* similar cards exist */}
+                                  <ItemGroup
+                                    customClass="col-gap-10"
+                                    fitParent={true}
+                                    stretch={true}
+                                    axis={false}
+                                    items={
+                                      <>
+                                        <div>
+                                          <strong>Email</strong>
+                                          <br/>
+                                          {patient.email}
+                                        </div>
+                                        <div>
+                                          <strong>Phone</strong>
+                                          <br/>
+                                          {patient.phone}
+                                        </div>
+                                      </> 
+                                    }
+                                  />
+                                  <div>
+                                    <strong>Address</strong>
+                                    <br/>
+                                    {patient.address}
+                                  </div>
                                 </>
                               }
                             />
@@ -122,7 +194,11 @@ const PharmacistPatientProfile = () => {
                               axis={false}
                               items={
                                 <>
-                                {/* scrollable list maybe */}
+                                  <ScrollableTable 
+                                    columns={["Medication", "Duration", "Dosage", "Taken Since", "Expires By"]} 
+                                    columnKeys={["medication", "duration", "dosage", "since", "expires"]}
+                                    data={patient.medHistory}
+                                  />
                                 </>
                               }
                             />
@@ -140,8 +216,7 @@ const PharmacistPatientProfile = () => {
             headerClass="p-5"
             header={
               <>
-              temp label - patient list
-              <>{/* accordion -- maybe also scrollable table */}</>
+                <Accordion data = {accordionData} />
               </>
             }
           />
