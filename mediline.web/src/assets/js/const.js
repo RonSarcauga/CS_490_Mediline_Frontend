@@ -380,3 +380,26 @@ export const bookingInfo = {
     ],
     treatment: ["Consultation"]
 };
+
+export const PharmaHomeData = {
+    requests : {
+        collected: 97,
+        processing: 4,
+    },
+    inventory : [
+        { medication: "Ozempic", expires: "04/08/2025", stock: "100 units"},
+        { medication: "Diazepam", expires: "08/24/2025", stock: "125 units"},
+        { medication: "Arsenic", expires: "07/21/2025", stock: "75 units"},
+    ],
+    prescriptions : [
+        { patient: "Mary Keitel", doctor: "Jacob Clifford", medication: "Ozempic", duration: "14 Days", dosage: "0.25 mg", bill: "$300.00", status: "Pending" },
+        { patient: "Gina Degeneres", doctor: "Douglas Powers", medication: "Arsenic", duration: "7 Days", dosage: "7 tablets", bill: "$300.00", status: "Collected" },
+        { patient: "Luke Patterson", doctor: "Jacob Clifford", medication: "Cyanide", duration: "8 Days", dosage: "16 tablets", bill: "$300.00", status: "Collected" },
+        { patient: "Dennis Goreman", doctor: "Michael Kincaid", medication: "Phosphorus", duration: "14 Days", dosage: "28 tablets", bill: "$300.00", status: "Collected" },
+        { patient: "Vikcy Jang", doctor: "Deborah Oh", medication: "Diazepam", duration: "5 Days", dosage: "20 tablets", bill: "$300.00", status: "Collected" },
+        { patient: "Sandra Park", doctor: "Deborah Oh", medication: "Ozempic", duration: "10 Days", dosage: "20 tablets", bill: "$300.00", status: "Collected" },
+        { patient: "John Doe", doctor: "Jacob Clifford", medication: "Arsenic", duration: "21 Days", dosage: "21 tablets", bill: "$300.00", status: "Collected" },
+        { patient: "Michael Corleone", doctor: "Jacob Clifford", medication: "Glucose", duration: "30 Days", dosage: "120 tablets", bill: "$300.00", status: "Collected" }
+      ]
+      
+}
