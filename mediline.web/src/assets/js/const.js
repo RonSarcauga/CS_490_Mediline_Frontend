@@ -431,7 +431,6 @@ export const vitalHistoryList = [
         waterIntake: "1.8L"
     }
 ];
-];
 
 export const chatlog = {
     patient: "Luke Patterson",
