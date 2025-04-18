@@ -13,6 +13,8 @@ function DDHome() {
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const doctorData = dashboardLayoutViewModel.getDoctorData(user.id);
 
+    console.log(`Patients: ${dashboardLayoutViewModel.getTodaysPatients(user.id)}`);
+
     return (
         <Container
             customClass="p-5"
