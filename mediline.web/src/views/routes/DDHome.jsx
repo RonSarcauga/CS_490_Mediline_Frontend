@@ -15,7 +15,7 @@ function DDHome() {
 
     return (
         <Container
-            customClass="p-0"
+            customClass="p-5"
             fitParent={true}
             content={[
                 <>
