@@ -90,69 +90,92 @@ const DoctorAppointment = () => {
                     items={
                       <>
                         <ItemGroup
-                          customClass="gap-5"
+                          customClass="gap-5 justify-content-space-between"
                           fitParent={true}
                           axis={false}
                           items={
                             <>
-                              <Container
-                                fitParent={true}
-                                customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100 "
-                                headerClass="p-5"
-                                header={
-                                  <>
-                                    <ItemGroup
-                                      customClass="gap-5"
-                                      fitParent={true}
-                                      axis={true}
-                                      items={
-                                        <>
-                                          <ItemGroup
-                                            customClass="justify-content-space-between align-items-center"
-                                            fitParent={true}
-                                            stretch={true}
-                                            axis={false}
-                                            items={
-                                              <>
-                                                <h1>Booking Information</h1>
-                                                <StatusLabel status={"In Progress"}/>
-                                              </>
-                                            }
-                                          />
-                                          <ItemGroup
-                                              customClass="b-bottom-3 outline-secondary-400"
-                                              fitParent={true}
-                                              axis={true}
-                                          />
-                                          <ItemGroup
-                                            customClass="justify-items-top align-content-top"
-                                            fitParent={true}
-                                            stretch={true}
-                                            items={
-                                                <>
-                                                  <strong>Meeting Time</strong>
-                                                  <div><CommonIcon name={'calendar'} /> {booking.time.date} <CommonIcon name={'clock'} /> {booking.time.time}</div>
-                                                  <div><CommonIcon name={'doctor'} /> {booking.doctor}</div>
-                                                  <strong>Treatment</strong>
-                                                  {booking.treatment}
-                                                </>
-                                            }
-                                          />
-                                        </>
-                                      }
-                                    />
-                                  </>
+                              <ItemGroup
+                                customClass=""
+                                axis={false}
+                                items={
+                                  <Container
+                                    fitParent={true}
+                                    stretch={true}
+                                    customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100 "
+                                    headerClass="p-5"
+                                    header={
+                                      <>
+                                        <ItemGroup
+                                          customClass="gap-5"
+                                          fitParent={true}
+                                          axis={true}
+                                          items={
+                                            <>
+                                              <ItemGroup
+                                                customClass="align-items-center justify-content-space-between"
+                                                stretch={true}
+                                                axis={false}
+                                                items={
+                                                  <>
+                                                    <h1>Booking Information</h1>
+                                                    <StatusLabel status={"In Progress"}/>
+                                                  </>
+                                                }
+                                              />
+                                              <ItemGroup
+                                                  customClass="b-bottom-3 outline-secondary-400"
+                                                  fitParent={true}
+                                                  axis={true}
+                                              />
+                                              <ItemGroup
+                                                customClass="justify-items-top align-content-top"
+                                                fitParent={true}
+                                                stretch={true}
+                                                items={
+                                                    <>
+                                                      <strong>Meeting Time</strong>
+                                                      <div><CommonIcon name={'calendar'} /> {booking.time.date} <CommonIcon name={'clock'} /> {booking.time.time}</div>
+                                                      <div><CommonIcon name={'doctor'} /> {booking.doctor}</div>
+                                                      <strong>Treatment</strong>
+                                                      {booking.treatment}
+                                                    </>
+                                                }
+                                              />
+                                            </>
+                                          }
+                                        />
+                                      </>
+                                    }
+                                  />
                                 }
                               />
-                              <Container
-                                fitParent={true}
-                                customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100 "
-                                headerClass="p-5"
-                                header={
-                                  <>
-                                  <strong>Your Care Rating</strong>
-                                  <RatedIcon rating={rating} borderColor={ratingColor} />
-                                  </>
+                              <ItemGroup
+                                customClass=""
+                                stretch={true}
+                                axis={false}
+                                items={
+                                  <Container
+                                    fitParent={true}
+                                    stretch={true}
+                                    customClass="gradient-light br-top-md b-left-3 b-right-3 b-top-3 outline-neutral-1100 "
+                                    headerClass="p-5"
+                                    header={
+                                      <>
+                                        <ItemGroup
+                                          customClass="justify-items-center gap-5"
+                                          stretch={true}
+                                          axis={true}
+                                          items={
+                                            <>
+                                              <strong>Your Care Rating</strong>
+                                              <RatedIcon rating={rating} borderColor={ratingColor} />
+                                            </>
+                                          }
+                                          />
+                                      </>
+                                    }
+                                  />
                                 }
                               />
                             </>
