@@ -81,6 +81,16 @@ $colors: (
         400: hsl(250, 60%, 70%),
         500: hsl(250, 60%, 80%),
     ),
+    highlight-primary: (
+        100: hsl(200, 100%, 20%),
+        200: hsl(200, 100%, 30%),
+        300: hsl(200, 100%, 40%),
+        400: hsl(200, 100%, 50%),
+        500: hsl(200, 100%, 60%),
+        600: hsl(200, 100%, 70%),
+        700: hsl(200, 100%, 80%),
+        800: hsl(200, 100%, 90%),
+    ),
 );
 
 // Generates utility classes for the color and background

@@ -155,11 +155,11 @@ function DDHome() {
                                                                                                 days.map((day) => (
                                                                                                     <>
                                                                                                         <Container
-                                                                                                            customClass="align-items-center gradient-blue"
+                                                                                                            customClass="align-items-center"
                                                                                                             content={[
                                                                                                                 <>
                                                                                                                     <ItemGroup
-                                                                                                                        customClass="align-items-center justify-items-center px-5 py-4 br-sm"
+                                                                                                                        customClass="align-items-center justify-items-center px-5 py-4 br-sm gradient-blue b-5 outline-secondary-300"
                                                                                                                         axis={true}
                                                                                                                         items={[
                                                                                                                             <>
