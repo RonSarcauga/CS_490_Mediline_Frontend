@@ -132,6 +132,9 @@ $colors: (
     &-white {
         @include linear-gradient(to bottom, $gradient-white);
     }
+    &-blue {
+        @include linear-gradient(to bottom, $gradient-blue);
+    }
 }
 
 // Creates a property for each color and shade
