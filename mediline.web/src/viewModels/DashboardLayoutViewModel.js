@@ -158,6 +158,23 @@ class DashboardLayoutViewModel {
 
         return todaysPatients;
     }
+
+    // Helper method to retrieve a list of the doctor's appointments for the day
+    getTodaysAppointments(id) {
+        // Find the doctor's record in doctorsList using their userId
+        const doctorRecord = doctorDataList.find(doctor => doctor.userId === id);
+        if (!doctorRecord) return [];
+
+        // Get today's date in the same format as appointments (mm/dd/yyyy)
+        const today = new Date().toLocaleDateString("en-US");
+
+        // Filter appointments for today that match the doctor's license number
+        const todaysAppointments = appointmentDataList.filter(appt =>
+            appt.doctorLicenseNumber === doctorRecord.licenseNumber && appt.appointmentDate === today
+        );
+
+        return todaysAppointments;
+    }
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
