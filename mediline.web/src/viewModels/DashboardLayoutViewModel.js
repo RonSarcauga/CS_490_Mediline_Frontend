@@ -175,6 +175,30 @@ class DashboardLayoutViewModel {
 
         return todaysAppointments;
     }
+
+    // Get the current days of the week
+    getCurrentWeekDays() {
+        const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const currentDate = new Date();
+        const currentDay = currentDate.getDay();
+        const startOfWeek = new Date(currentDate);
+        startOfWeek.setDate(currentDate.getDate() - currentDay);
+
+        let weekDays = [];
+
+        for (let i = 0; i < 7; i++) {
+            let newDate = new Date(startOfWeek);
+            newDate.setDate(startOfWeek.getDate() + i);
+
+            let day = daysOfWeek[newDate.getDay()];
+            let month = newDate.toLocaleDateString("en-US", { month: "long" });
+            let date = newDate.getDate();
+
+            weekDays.push({ day, month, date });
+        }
+
+        return weekDays;
+    }
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();

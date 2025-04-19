@@ -13,10 +13,12 @@ function DDHome() {
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const doctorData = dashboardLayoutViewModel.getDoctorData(user.id);
     const todaysAppointments = dashboardLayoutViewModel.getTodaysAppointments(user.id);
+    const days = dashboardLayoutViewModel.getCurrentWeekDays();
 
     console.log(`Patients: ${JSON.stringify(dashboardLayoutViewModel.getTodaysPatients(user.id), null, 2)}`);
     console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getTodaysAppointments(user.id), null, 2)}`);
     console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
+    console.log(`Days of the Week: ${JSON.stringify(dashboardLayoutViewModel.getCurrentWeekDays(), null, 2)}`);
 
     return (
         <Container
@@ -110,7 +112,7 @@ function DDHome() {
                                                                         axis={false}
                                                                         items={[
                                                                             <>
-                                                                                <h1 className="font-5 font-semibold">Total Patients</h1>
+                                                                                <h1 className="font-5 font-semibold">My Schedule</h1>
                                                                             </>
                                                                         ]}
                                                                     />
@@ -129,11 +131,55 @@ function DDHome() {
                                                     <>
                                                         <ItemGroup
                                                             customClass="gap-3"
-                                                            axis={false}
+                                                            axis={true}
                                                             stretch={true}
+                                                            fitParent={true}
                                                             items={[
                                                                 <>
-                                                                    <h4 className="font-semibold">{doctorData.patients.length}</h4>
+                                                                    <ItemGroup
+                                                                        customClass="gradient-white b-5 outline-neutral-1100 br-sm py-3 justify-content-space-between"
+                                                                        axis={true}
+                                                                        stretch={true}
+                                                                        style={{
+                                                                            width: "100%",
+                                                                        }}
+                                                                        items={[
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    customClass="item-group-row-even"
+                                                                                    axis={false}
+                                                                                    fitParent={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            {
+                                                                                                days.map((day) => (
+                                                                                                    <>
+                                                                                                        <Container
+                                                                                                            customClass="align-items-center"
+                                                                                                            content={[
+                                                                                                                <>
+                                                                                                                    <ItemGroup
+                                                                                                                        customClass="align-items-center justify-items-center px-5 py-4 br-sm bg-secondary-500"
+                                                                                                                        axis={true}
+                                                                                                                        items={[
+                                                                                                                            <>
+                                                                                                                                <p className="font-6 font-semibold">{day.date}</p>
+                                                                                                                                <p className={`font-3 font-semibold text-neutral-800`}>{day.day.toUpperCase().slice(0, 3)}</p>
+                                                                                                                            </>
+                                                                                                                        ]}
+                                                                                                                    />
+                                                                                                                </>
+                                                                                                            ]}
+                                                                                                        />
+                                                                                                    </>
+                                                                                                ))
+                                                                                            }
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
                                                                 </>
                                                             ]}
                                                         />
@@ -265,7 +311,7 @@ function DDHome() {
                                                                         ]}
                                                                     />
                                                                 ))
-                                                            ): (
+                                                            ) : (
                                                                 <p>Hello world!</p>
                                                             )
                                                         }
