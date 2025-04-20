@@ -41,53 +41,207 @@ function DDHome() {
                                     axis={true}
                                     fitParent={true}
                                     style={{
-                                        gridAutoRows: "1fr"
+                                        gridAutoRows: "auto 1fr"
                                     }}
                                     items={[
                                         <>
-                                            <Container
-                                                customClass="gradient-light br-sm b-3 outline-neutral-1100 px-8 pt-7 pb-5"
+                                            <ItemGroup
+                                                customClass="gap-5"
+                                                axis={false}
                                                 fitParent={true}
-                                                header={[
+                                                style={{
+                                                    gridAutoColumns: "1fr",
+                                                }}
+                                                items={[
                                                     <>
-                                                        <ItemGroup
-                                                            customClass="gap-5"
+                                                        <Container
+                                                            customClass="gradient-light br-sm b-3 outline-neutral-1100 px-6 pt-5 pb-2"
                                                             fitParent={true}
-                                                            stretch={true}
-                                                            axis={true}
-                                                            items={[
+                                                            header={[
                                                                 <>
                                                                     <ItemGroup
-                                                                        customClass="justify-content-space-between align-items-center"
+                                                                        customClass="gap-5"
                                                                         fitParent={true}
                                                                         stretch={true}
-                                                                        axis={false}
+                                                                        axis={true}
                                                                         items={[
                                                                             <>
-                                                                                <h1 className="font-5 font-semibold">Total Patients</h1>
+                                                                                <ItemGroup
+                                                                                    customClass="justify-content-space-between align-items-center"
+                                                                                    fitParent={true}
+                                                                                    stretch={true}
+                                                                                    axis={false}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h1 className="font-5 font-semibold">Total Patients</h1>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
                                                                             </>
                                                                         ]}
                                                                     />
+                                                                </>
+                                                            ]}
+                                                            contentClass="pt-4 pb-3 align-items-center"
+                                                            content={[
+                                                                <>
                                                                     <ItemGroup
-                                                                        customClass="b-bottom-3 outline-secondary-400"
+                                                                        customClass="gap-3"
+                                                                        axis={false}
                                                                         fitParent={true}
-                                                                        axis={true}
+                                                                        stretch={true}
+                                                                        style={{
+                                                                            gridAutoColumns: "1fr"
+                                                                        }}
+                                                                        items={[
+                                                                            <>
+                                                                                <Container
+                                                                                    customClass="gradient-white br-sm b-3 outline-neutral-1100 align-items-center justify-content-center"
+                                                                                    fitParent={true}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-1 align-items-center justify-content-center pl-0 pr-4 py-4"
+                                                                                                axis={false}
+                                                                                                stretch={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <BaseIcon
+                                                                                                            fill="none"
+                                                                                                            height="60px"
+                                                                                                            width="65px"
+                                                                                                            viewBox="0 0 100 100"
+                                                                                                            fillColor="hsl(200, 30%, 25%)"
+                                                                                                        >
+                                                                                                            <ellipse cx="41.3" cy="42.3" rx="12.2" ry="13.5" />
+                                                                                                            <path d="M52.6,57.4c-3.1,2.8-7,4.5-11.3,4.5c-4.3,0-8.3-1.7-11.3-4.6c-5.5,2.5-11,5.7-11,10.7v2.1 c0,2.5,2,4.5,4.5,4.5h35.7c2.5,0,4.5-2,4.5-4.5v-2.1C63.6,63,58.2,59.9,52.6,57.4z" />
+                                                                                                            <path d="M68,47.4c-0.2-0.1-0.3-0.2-0.5-0.3c-0.4-0.2-0.9-0.2-1.3,0.1c-2.1,1.3-4.6,2.1-7.2,2.1c-0.3,0-0.7,0-1,0 c-0.5,1.3-1,2.6-1.7,3.7c0.4,0.2,0.9,0.3,1.4,0.6c5.7,2.5,9.7,5.6,12.5,9.8H75c2.2,0,4-1.8,4-4v-1.9C79,52.6,73.3,49.6,68,47.4z" />
+                                                                                                            <path d="M66.9,34.2c0-4.9-3.6-8.9-7.9-8.9c-2.2,0-4.1,1-5.6,2.5c3.5,3.6,5.7,8.7,5.7,14.4c0,0.3,0,0.5,0,0.8 C63.4,43,66.9,39.1,66.9,34.2z" />
+                                                                                                        </BaseIcon>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{doctorData.patients.length}</h4>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <Container
+                                                                                    customClass="gradient-white br-sm b-3 outline-neutral-1100 align-items-center justify-content-center"
+                                                                                    fitParent={true}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <ItemGroup
+                                                                                                customClass="align-items-center justify-content-center p-3"
+                                                                                                axis={true}
+                                                                                                stretch={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{todaysAppointments.length}</h4>
+                                                                                                        <p className="font-3 text-neutral-600">Patients Today</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
                                                                     />
                                                                 </>
                                                             ]}
                                                         />
-                                                    </>
-                                                ]}
-                                                contentClass="pt-6 pb-3 align-items-center"
-                                                content={[
-                                                    <>
-                                                        <ItemGroup
-                                                            customClass="gap-3"
-                                                            axis={false}
-                                                            stretch={true}
-                                                            items={[
+                                                        <Container
+                                                            customClass="gradient-light br-sm b-3 outline-neutral-1100 px-6 pt-5 pb-2"
+                                                            fitParent={true}
+                                                            header={[
                                                                 <>
-                                                                    <h4 className="font-semibold">{doctorData.patients.length}</h4>
+                                                                    <ItemGroup
+                                                                        customClass="gap-5"
+                                                                        fitParent={true}
+                                                                        stretch={true}
+                                                                        axis={true}
+                                                                        items={[
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    customClass="justify-content-space-between align-items-center"
+                                                                                    fitParent={true}
+                                                                                    stretch={true}
+                                                                                    axis={false}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h1 className="font-5 font-semibold">Upcoming Appointments</h1>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                </>
+                                                            ]}
+                                                            contentClass="pt-4 pb-3 align-items-center"
+                                                            content={[
+                                                                <>
+                                                                    <ItemGroup
+                                                                        customClass="gap-3"
+                                                                        axis={false}
+                                                                        fitParent={true}
+                                                                        stretch={true}
+                                                                        style={{
+                                                                            gridAutoColumns: "1fr"
+                                                                        }}
+                                                                        items={[
+                                                                            <>
+                                                                                <Container
+                                                                                    customClass="gradient-white br-sm b-3 outline-neutral-1100 align-items-center justify-content-center"
+                                                                                    fitParent={true}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-4 align-items-center justify-content-center p-3"
+                                                                                                axis={false}
+                                                                                                stretch={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <BaseIcon
+                                                                                                            height="40px"
+                                                                                                            width="40px"
+                                                                                                            viewBox="0 1 24 24"
+                                                                                                            fillColor="none">
+                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            <g id="SVGRepo_iconCarrier">
+                                                                                                                <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(200, 30%, 25%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            </g>
+                                                                                                        </BaseIcon>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{todaysAppointments.length}</h4>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <Container
+                                                                                    customClass="gradient-white br-sm b-3 outline-neutral-1100 align-items-center justify-content-center"
+                                                                                    fitParent={true}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <ItemGroup
+                                                                                                customClass="align-items-center justify-content-center p-3"
+                                                                                                axis={true}
+                                                                                                stretch={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{todaysAppointments.length}</h4>
+                                                                                                        <p className="font-3 text-neutral-600">Bookings Today</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
                                                                 </>
                                                             ]}
                                                         />
@@ -183,12 +337,16 @@ function DDHome() {
                                                                         ]}
                                                                     />
                                                                     <Container
-                                                                        customClass="position-relative overflow-x-hidden overflow-y-auto"
+                                                                        customClass="position-relative scrollable postList"
                                                                         fitParent={true}
+                                                                        style={{
+                                                                            maxHeight: "300px"
+                                                                        }}
                                                                         content={[
                                                                             <>
                                                                                 <ItemGroup
                                                                                     customClass="gap-10"
+                                                                                    fitParent={true}
                                                                                     axis={true}
                                                                                     items={[
                                                                                         <>
@@ -196,12 +354,18 @@ function DDHome() {
                                                                                                 hours.map((hour) => (
                                                                                                     <>
                                                                                                         <ItemGroup
-                                                                                                            customClass="position-relative"
+                                                                                                            customClass="position-relative align-items-center item-group-row-odd-left gap-5"
+                                                                                                            fitParent={true}
                                                                                                             axis={false}
                                                                                                             items={[
                                                                                                                 <>
                                                                                                                     <p>{hour}:00</p>
-                                                                                                                    <div className="line"></div>
+                                                                                                                    <div
+                                                                                                                        className="line outline-secondary-400"
+                                                                                                                        style={{
+                                                                                                                            height: "1.25px"
+                                                                                                                        }}
+                                                                                                                    ></div>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
