@@ -134,6 +134,23 @@ class DashboardLayoutViewModel {
         return upcomingAppointments;
     }
 
+    // Helper method to retrieve a list of all a doctor's patients
+    getPatients(licenseNumber) {
+        // Check if the doctor has a record in the database
+        const doctorRecord = doctorDataList.find(doctor => doctor.licenseNumber === licenseNumber);
+        if (!doctorRecord) return [];
+
+        // Extract the list of patient MRNs from the doctor record
+        const patientMRNs = doctorRecord.patients;
+
+        // Retrieve patient details from baseUserList using MRNs
+        const patients = baseUserList.filter(user =>
+            patientDataList.some(patient => patient.userId === user.id && patientMRNs.includes(patient.mrn))
+        );
+
+        return patients;
+    }
+
     // Helper method to retrieve a list of the doctor's patients for the day
     getTodaysPatients(id) {
         // Find the doctor's record in doctorsList using their userId
