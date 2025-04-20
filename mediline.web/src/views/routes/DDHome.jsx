@@ -14,11 +14,11 @@ function DDHome() {
     const doctorData = dashboardLayoutViewModel.getDoctorData(user.id);
     const todaysAppointments = dashboardLayoutViewModel.getTodaysAppointments(user.id);
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
+    const hours = Array.from({ length: 10 }, (_, i) => 8 + i);
 
     console.log(`Patients: ${JSON.stringify(dashboardLayoutViewModel.getTodaysPatients(user.id), null, 2)}`);
     console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getTodaysAppointments(user.id), null, 2)}`);
     console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
-    console.log(`Days of the Week: ${JSON.stringify(dashboardLayoutViewModel.getCurrentWeekDays(), null, 2)}`);
 
     return (
         <Container
@@ -32,11 +32,12 @@ function DDHome() {
                         fitParent={true}
                         stretch={true}
                         style={{
-                            gridAutoColumns: "40vw 1fr",
+                            gridAutoColumns: "auto 1fr",
                         }}
                         items={[
                             <>
                                 <ItemGroup
+                                    customClass="gap-5"
                                     axis={true}
                                     fitParent={true}
                                     style={{
@@ -159,15 +160,48 @@ function DDHome() {
                                                                                                             content={[
                                                                                                                 <>
                                                                                                                     <ItemGroup
-                                                                                                                        customClass="align-items-center justify-items-center px-5 py-4 br-sm gradient-blue b-5 outline-secondary-300"
+                                                                                                                        customClass={`align-items-center justify-items-center px-5 py-4 br-sm gradient-blue b-4 outline-highlight-primary-700 text-neutral-800`}
+                                                                                                                        isClickable={true}
                                                                                                                         axis={true}
                                                                                                                         items={[
                                                                                                                             <>
-                                                                                                                                <p className="font-6 font-semibold">{day.date}</p>
-                                                                                                                                <p className={`font-3 font-semibold text-neutral-800`}>{day.day.toUpperCase().slice(0, 3)}</p>
+                                                                                                                                <p className="font-6 font-semibold text-neutral-100">{day.date}</p>
+                                                                                                                                <p className={`font-3 font-semibold`}>{day.day.toUpperCase().slice(0, 3)}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
+                                                                                                                </>
+                                                                                                            ]}
+                                                                                                        />
+                                                                                                    </>
+                                                                                                ))
+                                                                                            }
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    <Container
+                                                                        customClass="position-relative overflow-x-hidden overflow-y-auto"
+                                                                        fitParent={true}
+                                                                        content={[
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    customClass="gap-10"
+                                                                                    axis={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            {
+                                                                                                hours.map((hour) => (
+                                                                                                    <>
+                                                                                                        <ItemGroup
+                                                                                                            customClass="position-relative"
+                                                                                                            axis={false}
+                                                                                                            items={[
+                                                                                                                <>
+                                                                                                                    <p>{hour}:00</p>
+                                                                                                                    <div className="line"></div>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
@@ -208,7 +242,7 @@ function DDHome() {
                                                             axis={false}
                                                             items={[
                                                                 <>
-                                                                    <h1 className="font-5 font-semibold">Your Patients Today</h1>
+                                                                    <h1 className="font-5 font-semibold">Your Patients</h1>
                                                                 </>
                                                             ]}
                                                         />
@@ -239,11 +273,10 @@ function DDHome() {
                                                                         axis={false}
                                                                         fitParent={true}
                                                                         style={{
-                                                                            gridAutoColumns: "50px 1fr"
+                                                                            gridAutoColumns: "1fr"
                                                                         }}
                                                                         items={[
                                                                             <>
-                                                                                <p>{appt.startTime}</p>
                                                                                 <Container
                                                                                     customClass="bg-neutral-1100 b-5 br-sm p-4"
                                                                                     fitParent={true}
