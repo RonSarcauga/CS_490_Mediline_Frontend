@@ -17,17 +17,18 @@ function DDHome() {
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
     const hours = Array.from({ length: 10 }, (_, i) => 8 + i);
 
-    const [selectedDate, setSelectedDate] = useState();
+    const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric"}));
 
     const handleDateSelect = (date) => {
-        const formattedDate = `${date.month} ${date.date}`;
-        console.log(`Selected date: ${JSON.stringify(date, null, 2)}`);
-        setSelectedDate(date);
+        const formattedDate = `${date.month} ${date.date}, ${date.year}`;
+        console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
+        setSelectedDate(formattedDate);
     }
 
-    console.log(`Upcoming Appointments: ${JSON.stringify(dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber), null, 2)}`);
-    console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getTodaysAppointments(user.id), null, 2)}`);
-    console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
+    console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
+    //console.log(`Upcoming Appointments: ${JSON.stringify(dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber), null, 2)}`);
+    //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getTodaysAppointments(user.id), null, 2)}`);
+    //console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
 
     return (
         <Container
@@ -306,6 +307,7 @@ function DDHome() {
                                                                         stretch={true}
                                                                         style={{
                                                                             width: "100%",
+                                                                            maxWidth: "673px",
                                                                         }}
                                                                         items={[
                                                                             <>
@@ -323,7 +325,7 @@ function DDHome() {
                                                                                                             content={[
                                                                                                                 <>
                                                                                                                     <ItemGroup
-                                                                                                                        customClass={`align-items-center justify-items-center px-5 py-4 br-sm ${selectedDate ? "gradient-blue b-4 outline-highlight-primary-700 text-neutral-800" : ""}`}
+                                                                                                                        customClass={`align-items-center justify-items-center px-5 py-4 br-sm ${selectedDate === `${day.month} ${day.date}, ${day.year}` ? "gradient-blue b-4 outline-highlight-primary-700 text-neutral-100" : "text-neutral-800"}`}
                                                                                                                         isClickable={true}
                                                                                                                         onClick={() => handleDateSelect(day)}
                                                                                                                         axis={true}
