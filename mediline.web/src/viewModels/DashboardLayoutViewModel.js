@@ -62,6 +62,12 @@ class DashboardLayoutViewModel {
         return `(${match[1]}) ${match[2]} ${match[3]}`;
     }
 
+    // Helper method to changes the format of the time string
+    formatTimeString(timeString) {
+        let [hour, minutes] = timeString.split(":");
+        return `${parseInt(hour, 10)}:${minutes}`;
+    };
+
     // Helper method to find records in the patient table by ID
     getPatientData(id)
     {
