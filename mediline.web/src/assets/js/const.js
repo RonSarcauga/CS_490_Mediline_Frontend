@@ -418,6 +418,7 @@ export const appointmentDataList = [
         appointmentDate: "04/18/2025",
         startTime: "14:00",
         endTime: "14:15",
+        treatment: "Consultation",
         fixedFee: 150,
         paymentStatus: "Pending"
     },
@@ -429,6 +430,7 @@ export const appointmentDataList = [
         appointmentDate: "04/20/2025",
         startTime: "08:30",
         endTime: "08:45",
+        treatment: "Consultation",
         fixedFee: 150,
         paymentStatus: "Paid"
     },
@@ -452,7 +454,7 @@ export const appointmentDataList = [
         startTime: "08:20",
         endTime: "08:35",
         appointmentType: "Online Chat",
-        treatment: "Medication Review",
+        treatment: "Consultation",
         fixedFee: 150,
         paymentStatus: "Pending"
     },
@@ -464,7 +466,7 @@ export const appointmentDataList = [
         startTime: "08:40",
         endTime: "08:55",
         appointmentType: "Online Chat",
-        treatment: "Follow-up Appointment",
+        treatment: "Consultation",
         fixedFee: 150,
         paymentStatus: "Paid"
     },
