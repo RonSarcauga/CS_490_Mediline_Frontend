@@ -19,6 +19,12 @@ function DDHome() {
 
     const [selectedDate, setSelectedDate] = useState();
 
+    const handleDateSelect = (date) => {
+        const formattedDate = `${date.month} ${date.date}`;
+        console.log(`Selected date: ${JSON.stringify(date, null, 2)}`);
+        setSelectedDate(date);
+    }
+
     console.log(`Upcoming Appointments: ${JSON.stringify(dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber), null, 2)}`);
     console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getTodaysAppointments(user.id), null, 2)}`);
     console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
@@ -319,6 +325,7 @@ function DDHome() {
                                                                                                                     <ItemGroup
                                                                                                                         customClass={`align-items-center justify-items-center px-5 py-4 br-sm ${selectedDate ? "gradient-blue b-4 outline-highlight-primary-700 text-neutral-800" : ""}`}
                                                                                                                         isClickable={true}
+                                                                                                                        onClick={() => handleDateSelect(day)}
                                                                                                                         axis={true}
                                                                                                                         items={[
                                                                                                                             <>

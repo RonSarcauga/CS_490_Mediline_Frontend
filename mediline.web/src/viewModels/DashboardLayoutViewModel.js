@@ -241,8 +241,9 @@ class DashboardLayoutViewModel {
             let day = daysOfWeek[newDate.getDay()];
             let month = newDate.toLocaleDateString("en-US", { month: "long" });
             let date = newDate.getDate();
+            let year = newDate.getFullYear();
 
-            weekDays.push({ day, month, date });
+            weekDays.push({ day, month, date, year });
         }
 
         return weekDays;
