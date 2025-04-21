@@ -140,6 +140,31 @@ class DashboardLayoutViewModel {
         return upcomingAppointments;
     }
 
+    // Helper method to retrieve upcoming appointments
+    getUpcomingAppointmentsDoctor(licenseNumber) {
+        // Find the patient's MRN using their (base) user ID
+        const doctorRecord = doctorDataList.find(doctor => doctor.licenseNumber === licenseNumber);
+
+        // Checks if the patient's record exists
+        if (!doctorRecord) return [];
+
+        // Get the current date in the format (mm/dd/yyyy)
+        const today = new Date().toLocaleDateString("en-US");
+
+        // Get the patient's MRN
+        const doctorLicenseNumber = doctorRecord.licenseNumber;
+
+        // Filter appointments that match the patient's MRN and are upcoming
+        const upcomingAppointments = appointmentDataList.filter(appt =>
+            appt.doctorLicenseNumber === doctorLicenseNumber && new Date(appt.appointmentDate) >= new Date(today)
+        );
+
+        // Sort appointments by date in ascending order (soonest first)
+        upcomingAppointments.sort((a, b) => new Date(a.appointmentDate) - new Date(b.appointmentDate));
+
+        return upcomingAppointments;
+    }
+
     // Helper method to retrieve a list of all a doctor's patients
     getPatients(licenseNumber) {
         // Check if the doctor has a record in the database

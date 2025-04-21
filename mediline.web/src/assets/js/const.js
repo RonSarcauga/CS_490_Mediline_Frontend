@@ -444,7 +444,7 @@ export const doctorDataList = [
         licenseNumber: "214365",
         specialty: "Cardiologist",
         patients: ["123456", "234567", "345678", "456789", "567890", "678901", "789012", "890123", "901234", "112345", "113456"],
-        appointments: [],
+        appointments: [1,2,3,4,5,6,7,8,9,10,11,12,13],
         acceptingNewPatients: true
     }
 ];
