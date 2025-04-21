@@ -13,6 +13,8 @@ export const monthNames = [
     "December",
 ];
 
+const today = new Date();
+
 export const specialties = [
     {label: "Cardiologist", value: "cardiologist"},
     {label: "Exercise Physiologist", value: "exercisePhysiologist"},
@@ -301,6 +303,58 @@ export const baseUserList = [
         postalCode: "98101",
         role: "Patient",
         password: "password123"
+    },
+    {
+        id: 9,
+        firstName: "Sophia",
+        lastName: "Williams",
+        dateOfBirth: "03/14/1995",
+        email: "sophia.williams@example.com",
+        phoneNumber: "180-555-1111",
+        address: "111 Cherry St",
+        city: "Houston",
+        postalCode: "77002",
+        role: "Patient",
+        password: "password123"
+    },
+    {
+        id: 10,
+        firstName: "Ethan",
+        lastName: "Brown",
+        dateOfBirth: "08/22/1986",
+        email: "ethan.brown@example.com",
+        phoneNumber: "180-555-2222",
+        address: "222 Walnut St",
+        city: "Dallas",
+        postalCode: "75201",
+        role: "Patient",
+        password: "password123"
+    },
+    {
+        id: 11,
+        firstName: "Olivia",
+        lastName: "Taylor",
+        dateOfBirth: "07/30/1978",
+        email: "olivia.taylor@example.com",
+        phoneNumber: "180-555-3333",
+        address: "333 Spruce St",
+        city: "Miami",
+        postalCode: "33101",
+        role: "Patient",
+        password: "password123"
+    },
+    {
+        id: 12,
+        firstName: "Michael",
+        lastName: "Garcia",
+        dateOfBirth: "12/09/1991",
+        email: "michael.garcia@example.com",
+        phoneNumber: "180-555-4444",
+        address: "444 Maple St",
+        city: "Phoenix",
+        postalCode: "85001",
+        role: "Patient",
+        password: "password123"
     }
 ];
 
@@ -353,6 +407,34 @@ export const patientDataList = [
         doctor: "214365",
         sex: "Male",
         appointments: [9]
+    },
+    {
+        userId: 9,
+        mrn: "890123",
+        doctor: "214365",
+        sex: "Female",
+        appointments: [10]
+    },
+    {
+        userId: 10,
+        mrn: "901234",
+        doctor: "214365",
+        sex: "Male",
+        appointments: [11]
+    },
+    {
+        userId: 11,
+        mrn: "112345",
+        doctor: "214365",
+        sex: "Female",
+        appointments: [12]
+    },
+    {
+        userId: 12,
+        mrn: "113456",
+        doctor: "214365",
+        sex: "Male",
+        appointments: [13]
     }
 ];
 
@@ -361,7 +443,7 @@ export const doctorDataList = [
         userId: 2, 
         licenseNumber: "214365",
         specialty: "Cardiologist",
-        patients: ["123456", "234567", "345678", "456789", "567890", "678901", "789012"],
+        patients: ["123456", "234567", "345678", "456789", "567890", "678901", "789012", "890123", "901234", "112345", "113456"],
         appointments: [],
         acceptingNewPatients: true
     }
@@ -477,6 +559,54 @@ export const appointmentDataList = [
         appointmentDate: new Date().toLocaleDateString("en-US"),
         startTime: "09:00",
         endTime: "09:15",
+        appointmentType: "Online Chat",
+        treatment: "Consultation",
+        fixedFee: 150,
+        paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 10,
+        doctorLicenseNumber: "214365",
+        patientMRN: "890123",
+        appointmentDate: new Date(today.setDate(today.getDate() + 1)).toLocaleDateString("en-US"),
+        startTime: "08:30",
+        endTime: "09:15",
+        appointmentType: "Online Chat",
+        treatment: "Consultation",
+        fixedFee: 150,
+        paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 11,
+        doctorLicenseNumber: "214365",
+        patientMRN: "901234",
+        appointmentDate: new Date(today.setDate(today.getDate() + 2)).toLocaleDateString("en-US"),
+        startTime: "10:00",
+        endTime: "10:45",
+        appointmentType: "Online Chat",
+        treatment: "Consultation",
+        fixedFee: 150,
+        paymentStatus: "Pending"
+    },
+    {
+        appointmentId: 12,
+        doctorLicenseNumber: "214365",
+        patientMRN: "112345",
+        appointmentDate: new Date(today.setDate(today.getDate() + 3)).toLocaleDateString("en-US"),
+        startTime: "11:15",
+        endTime: "12:00",
+        appointmentType: "Online Chat",
+        treatment: "Consultation",
+        fixedFee: 150,
+        paymentStatus: "Paid"
+    },
+    {
+        appointmentId: 13,
+        doctorLicenseNumber: "214365",
+        patientMRN: "113456",
+        appointmentDate: new Date(today.setDate(today.getDate() + 4)).toLocaleDateString("en-US"),
+        startTime: "13:45",
+        endTime: "14:30",
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
