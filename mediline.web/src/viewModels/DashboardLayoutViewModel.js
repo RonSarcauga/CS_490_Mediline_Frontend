@@ -12,7 +12,7 @@ class DashboardLayoutViewModel {
     // Helper method to retrieve users
     getUsers()
     {
-        console.log(`Users Inside Local Storage: `, JSON.parse(localStorage.getItem("baseUserList")));
+        //console.log(`Users Inside Local Storage: `, JSON.parse(localStorage.getItem("baseUserList")));
         return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
         // return this.users; // Return the list of users that authored the posts
     }
@@ -149,7 +149,7 @@ class DashboardLayoutViewModel {
         if (!doctorRecord) return [];
 
         // Get the current date in the format (mm/dd/yyyy)
-        const today = new Date().toLocaleDateString("en-US");
+        const today = new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
 
         // Get the patient's MRN
         const doctorLicenseNumber = doctorRecord.licenseNumber;
@@ -189,7 +189,7 @@ class DashboardLayoutViewModel {
         if (!doctorRecord) return [];
 
         // Get today's date in the same format as appointments (mm/dd/yyyy)
-        const today = new Date().toLocaleDateString("en-US");
+        const today = new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
 
         // Filter appointments for today that match the doctor's license number
         const todaysAppointments = appointmentDataList.filter(appt =>
@@ -214,7 +214,7 @@ class DashboardLayoutViewModel {
         if (!doctorRecord) return [];
 
         // Get today's date in the same format as appointments (mm/dd/yyyy)
-        const today = new Date().toLocaleDateString("en-US");
+        const today = new Date().toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" });
 
         // Filter appointments for today that match the doctor's license number
         const todaysAppointments = appointmentDataList.filter(appt =>
@@ -222,6 +222,23 @@ class DashboardLayoutViewModel {
         );
 
         return todaysAppointments;
+    }
+
+    // Helper method to get a list of the doctor's appointments for a selected date
+    getAppointmentsByDate(id, date) {
+        // Find the doctor's record in doctorsList using their userId
+        const doctorRecord = doctorDataList.find(doctor => doctor.userId === id);
+        if (!doctorRecord) return [];
+
+        // Get today's date in the same format as appointments (mm/dd/yyyy)
+        const appointmentDate = new Date(date).toLocaleDateString("en-US", {month: "2-digit", day: "2-digit", year: "numeric"});
+
+        // Filter appointments for today that match the doctor's license number
+        const appointments = appointmentDataList.filter(appt =>
+            appt.doctorLicenseNumber === doctorRecord.licenseNumber && appt.appointmentDate === appointmentDate
+        );
+
+        return appointments;
     }
 
     // Get the current days of the week
