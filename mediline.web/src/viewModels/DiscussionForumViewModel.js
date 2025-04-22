@@ -1,9 +1,10 @@
 import { discussionPosts, userList } from '../assets/js/const';
+import { discussionPostsList, discussionProfiles, baseUserList } from '../assets/js/const';
 
 class DiscussionForumViewModel {
     // Initialize the view model with mock data
-    posts = [...discussionPosts];
-    users = [...userList];
+    posts = [...discussionPostsList];
+    users = [...baseUserList];
 
     // Helper method to retrieve posts
     getPosts() {
