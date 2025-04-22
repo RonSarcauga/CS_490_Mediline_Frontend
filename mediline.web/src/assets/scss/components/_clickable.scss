@@ -5,3 +5,17 @@
 .selected {
     border: 2px solid var(--clr-secondary-400) !important;
 }
+
+.schedule-card {
+    height: 5.3rem;
+    width: 4.4rem;
+    border-radius: 10px;
+    align-content: center;
+    justify-items: center;
+}
+
+.schedule-card:hover {
+    @include linear-gradient(to bottom, $gradient-blue);
+    border: 1.75px solid var(--clr-highlight-primary-700);
+    color: black;
+}

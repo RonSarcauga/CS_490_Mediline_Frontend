@@ -327,7 +327,7 @@ function DDHome() {
                                                                                                             content={[
                                                                                                                 <>
                                                                                                                     <ItemGroup
-                                                                                                                        customClass={`align-items-center justify-items-center px-5 py-4 br-sm ${selectedDate === `${day.month} ${day.date}, ${day.year}` ? "gradient-blue b-4 outline-highlight-primary-700 text-neutral-100" : "text-neutral-800"}`}
+                                                                                                                        customClass={`schedule-card  ${selectedDate === `${day.month} ${day.date}, ${day.year}` ? "gradient-blue b-4 outline-highlight-primary-700 text-neutral-100" : "text-neutral-800"}`}
                                                                                                                         isClickable={true}
                                                                                                                         onClick={() => handleDateSelect(day)}
                                                                                                                         axis={true}
