@@ -364,7 +364,7 @@ function PDDiscussionForum() {
                                                                                             <ItemGroup
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h3 className="text-success-100 bg-success-500 font-semibold font-4 py-2 px-4 br">
+                                                                                                        <h3 className={`font-semibold font-4 py-2 px-4 br ${user.role === "patient" ? "bg-success-500 text-success-100" : "bg-primary-800 text-primary-400" }`}>
                                                                                                             {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                                                                                                         </h3>
                                                                                                     </>
