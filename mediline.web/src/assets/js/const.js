@@ -614,6 +614,179 @@ export const appointmentDataList = [
     }
 ];
 
+export const discussionProfiles = [
+    { userId: 1, bio: "Fitness enthusiast exploring recovery techniques." },
+    { userId: 2, bio: "Cardiologist passionate about heart health and mindfulness." },
+    { userId: 3, bio: "Patient sharing experiences with sustainable energy diets." },
+    { userId: 4, bio: "Looking for advice on managing chronic pain effectively." },
+    { userId: 5, bio: "Always searching for ways to improve sleep quality and mental clarity." },
+    { userId: 6, bio: "Dedicated to refining workout routines and optimizing recovery." },
+    { userId: 7, bio: "Mental health advocate exploring the benefits of journaling." },
+    { userId: 8, bio: "Holistic health seeker prioritizing natural remedies for joint pain." },
+    { userId: 9, bio: "Working on reducing stress and improving overall well-being." },
+    { userId: 10, bio: "Exploring methods to regulate sleep and maintain a consistent schedule." },
+    { userId: 11, bio: "Passionate about fitness but struggling with workout motivation." },
+    { userId: 12, bio: "Looking for practical ways to boost cardiovascular health." }
+];
+
+export const discussionPostsList = [
+    {
+        postId: 1,
+        authorId: 1,  // John Doe
+        title: "Best recovery methods after a workout",
+        content: "I've been trying different ways to recover post-workout. Any suggestions?",
+        tags: ["John Doe", "Patient"],
+        replies: [1, 2, 3]
+    },
+    {
+        postId: 2,
+        authorId: 2, // Jane Smith
+        title: "Health benefits of meditation",
+        content: "Meditation has profound effects on heart health and mental well-being. Anyone else practicing it?",
+        tags: ["Jane Smith", "Doctor"],
+        replies: [4, 5, 6]
+    },
+    {
+        postId: 3,
+        authorId: 3, // Alice Johnson
+        title: "Best diets for maintaining energy levels",
+        content: "I feel fatigued lately—any advice on diets that sustain energy?",
+        tags: ["Alice Johnson", "Patient"],
+        replies: [7, 8, 9]
+    },
+    {
+        postId: 4,
+        authorId: 4,  // Bob Miller
+        title: "Managing back pain effectively",
+        content: "I've been dealing with chronic back pain. What are some effective treatments?",
+        tags: ["Bob Miller", "Patient"],
+        replies: [10, 11, 12]
+    },
+    {
+        postId: 5,
+        authorId: 5, // Charlie Davis
+        title: "Sleep quality improvement tips",
+        content: "I often wake up feeling tired even after 8 hours of sleep. Any tips?",
+        tags: ["Charlie Davis", "Patient"],
+        replies: [13, 14]
+    },
+    {
+        postId: 6,
+        authorId: 6, // Daniel Stevens
+        title: "Best ways to recover from intense workouts",
+        content: "I sometimes feel sore for days after heavy training. How do I speed up recovery?",
+        tags: ["Daniel Stevens", "Patient"],
+        replies: [15, 16, 17]
+    },
+    {
+        postId: 7,
+        authorId: 7, // Emily Martinez
+        title: "Mental health benefits of journaling",
+        content: "Journaling has been helping me process emotions better. Anyone else do this?",
+        tags: ["Emily Martinez", "Patient"],
+        replies: [18, 19]
+    },
+    {
+        postId: 8,
+        authorId: 8,  // Frank Thompson
+        title: "Best home remedies for joint pain",
+        content: "I prefer home treatments over medication. Any suggestions for joint pain relief?",
+        tags: ["Frank Thompson", "Patient"],
+        replies: [20, 21, 22]
+    },
+    {
+        postId: 9,
+        authorId: 9, // Sophia Williams
+        title: "Effective stress management techniques",
+        content: "Lately, stress has been tough to manage. What techniques work best?",
+        tags: ["Sophia Williams", "Patient"],
+        replies: [23, 24, 25]
+    },
+    {
+        postId: 10,
+        authorId: 10, // Ethan Brown
+        title: "Advice on maintaining a healthy sleep cycle",
+        content: "I struggle with inconsistent sleep patterns. Any tips for consistency?",
+        tags: ["Ethan Brown", "Patient"],
+        replies: [26, 27]
+    },
+    {
+        postId: 11,
+        authorId: 11, // Olivia Taylor
+        title: "Finding motivation to exercise regularly",
+        content: "Some weeks, I struggle to stay consistent with workouts. How do you stay motivated?",
+        tags: ["Olivia Taylor", "Patient"],
+        replies: [28, 29, 30]
+    },
+    {
+        postId: 12,
+        authorId: 12, // Michael Garcia
+        title: "Tips for maintaining heart health",
+        content: "I’m trying to improve my cardiovascular health. What lifestyle habits help?",
+        tags: ["Michael Garcia", "Patient"],
+        replies: [31, 32, 33]
+    }
+];
+
+export const repliesTable = [
+    // Replies to Post 1
+    { replyId: 1, postId: 1, userId: 2, content: "Hydration and proper sleep are key!", parentReplyId: null },
+    { replyId: 2, postId: 1, userId: 3, content: "I use cold showers and stretching after workouts.", parentReplyId: null },
+    { replyId: 3, postId: 1, userId: 4, content: "Interesting! What kind of stretches do you do?", parentReplyId: 2 },
+
+    // Replies to Post 2
+    { replyId: 4, postId: 2, userId: 1, content: "I’ve been trying guided meditation—it’s amazing!", parentReplyId: null },
+    { replyId: 5, postId: 2, userId: 3, content: "I’ve read about meditation improving focus. Any tips?", parentReplyId: 4 },
+    { replyId: 6, postId: 2, userId: 2, content: "Yes! Start with short 5-minute sessions.", parentReplyId: 5 },
+
+    // Replies to Post 3
+    { replyId: 7, postId: 3, userId: 2, content: "A balanced mix of protein and fiber helps sustain energy levels!", parentReplyId: null },
+    { replyId: 8, postId: 3, userId: 1, content: "I switched to whole grains and it made a difference.", parentReplyId: 7 },
+    { replyId: 9, postId: 3, userId: 3, content: "That’s a great point! What meals do you typically prep?", parentReplyId: 8 },
+
+    // Replies to Post 4
+    { replyId: 10, postId: 4, userId: 2, content: "Have you tried stretching and posture corrections?", parentReplyId: null }, // Jane Smith (Doctor)
+    { replyId: 11, postId: 4, userId: 5, content: "I swear by yoga for back pain relief!", parentReplyId: null }, // Charlie Davis
+    { replyId: 12, postId: 4, userId: 6, content: "Are there specific stretches you recommend?", parentReplyId: 10 }, // Threaded reply to Jane Smith
+
+    // Replies to Post 5
+    { replyId: 13, postId: 5, userId: 3, content: "Reducing screen time before bed helped me a lot!", parentReplyId: null }, // Alice Johnson
+    { replyId: 14, postId: 5, userId: 7, content: "Have you tried meditation before sleep?", parentReplyId: 13 }, // Threaded reply to Alice Johnson
+
+    // Replies to Post 6
+    { replyId: 15, postId: 6, userId: 1, content: "Hydration and protein intake help recovery!", parentReplyId: null }, // John Doe
+    { replyId: 16, postId: 6, userId: 4, content: "Ice baths have worked wonders for me.", parentReplyId: null }, // Bob Miller
+    { replyId: 17, postId: 6, userId: 5, content: "I use foam rolling to reduce soreness.", parentReplyId: 15 }, // Threaded reply to John Doe
+
+    // Replies to Post 7
+    { replyId: 18, postId: 7, userId: 6, content: "Journaling helps me track emotions and patterns.", parentReplyId: null }, // Daniel Stevens
+    { replyId: 19, postId: 7, userId: 2, content: "Do you follow a structure for journaling?", parentReplyId: 18 }, // Threaded reply to Daniel Stevens
+
+    // Replies to Post 8
+    { replyId: 20, postId: 8, userId: 2, content: "Turmeric and ginger tea are excellent anti-inflammatories.", parentReplyId: null }, // Jane Smith
+    { replyId: 21, postId: 8, userId: 9, content: "Have you tried acupuncture? It worked for me.", parentReplyId: null }, // Sophia Williams
+    { replyId: 22, postId: 8, userId: 10, content: "Turmeric really works! Do you mix it with anything?", parentReplyId: 20 }, // Threaded reply to Jane Smith
+
+    // Replies to Post 9
+    { replyId: 23, postId: 9, userId: 3, content: "Breathing exercises and walking outdoors help me relax.", parentReplyId: null }, // Alice Johnson
+    { replyId: 24, postId: 9, userId: 8, content: "Music therapy is underrated. It really helps!", parentReplyId: null }, // Frank Thompson
+    { replyId: 25, postId: 9, userId: 2, content: "Sophia, have you tried mindfulness meditation?", parentReplyId: 23 }, // Threaded reply to Alice Johnson
+
+    // Replies to Post 10
+    { replyId: 26, postId: 10, userId: 1, content: "Keeping a strict bedtime routine helped me.", parentReplyId: null }, // John Doe
+    { replyId: 27, postId: 10, userId: 9, content: "Cutting caffeine after noon made a huge difference.", parentReplyId: 26 }, // Threaded reply to John Doe
+
+    // Replies to Post 11
+    { replyId: 28, postId: 11, userId: 2, content: "Creating small, achievable goals helps maintain consistency.", parentReplyId: null }, // Jane Smith (Doctor)
+    { replyId: 29, postId: 11, userId: 6, content: "I switch up workouts to keep them interesting!", parentReplyId: null }, // Daniel Stevens
+    { replyId: 30, postId: 11, userId: 8, content: "Olivia, do you prefer outdoor or gym workouts?", parentReplyId: 28 }, // Threaded reply to Jane Smith
+
+    // Replies to Post 12
+    { replyId: 31, postId: 12, userId: 9, content: "Daily walking and reducing processed food worked for me.", parentReplyId: null }, // Sophia Williams
+    { replyId: 32, postId: 12, userId: 3, content: "Meditation and deep breathing improve heart function!", parentReplyId: null }, // Alice Johnson
+    { replyId: 33, postId: 12, userId: 11, content: "Sophia, how do you track your progress?", parentReplyId: 31 } // Threaded reply to Sophia Williams
+];
+
 export const vitalHistoryList = [
     {
         id: 1,
