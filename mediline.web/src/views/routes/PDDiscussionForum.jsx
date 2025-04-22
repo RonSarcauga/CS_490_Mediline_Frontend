@@ -10,6 +10,9 @@ function PDDiscussionForum() {
     const posts = discussionForumViewModel.getPosts();
     const users = discussionForumViewModel.getUsers();
 
+    // const posts = discussionForumViewModel.getPosts();
+    // const users = discussionForumViewModel.getUsers();
+
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     console.log(`User: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
@@ -176,7 +179,7 @@ function PDDiscussionForum() {
                                                                                                         <path d="M25.767 61.373a30.815 30.815 0 0 1-3.779-.88 2.652 2.652 0 0 1-.114-.093l-3.535-6.39 4.541-3.26h-4.752l1.017-6.851 4.11-2.599c.178 7.37 1.759 15.656 2.512 20.073z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                         <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                     </BaseIcon>
-                                                                                                    <h3 className="font-semibold text-neutral-100 font-4">{post.author}</h3>
+                                                                                                    <h3 className="font-semibold text-neutral-100 font-4">{post.authorId}</h3>
                                                                                                 </>
                                                                                             ]}
                                                                                         />
