@@ -402,6 +402,7 @@ export const pharmaPatData = {
     allPatients: [
         {name: "Luke Patterson"}, {name: "Dennis Goreman"}, {name: "Vicky Jang"}, {name: "James Callus"}, {name: "Sandra Park"}, {name: "John Doe"}, {name: "Michael Corleone"}, {name: "Elizabeth McGlynn"}
     ]
+}
 
   export const PharmaHomeData = {
     requests : {
