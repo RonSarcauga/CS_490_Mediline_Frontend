@@ -1150,7 +1150,7 @@ function PDHome() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-900"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
