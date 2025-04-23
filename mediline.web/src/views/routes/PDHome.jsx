@@ -962,7 +962,7 @@ function PDHome() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerContent={[
+                                                                                    header={[
                                                                                         <Container
                                                                                             customClass="p-4 br-sm bg-primary-900"
                                                                                             fitParent={true}
@@ -990,7 +990,7 @@ function PDHome() {
                                                                                             ]}
                                                                                         />
                                                                                     ]}
-                                                                                    bodyContent={[
+                                                                                    body={[
                                                                                         <ItemGroup
                                                                                             axis={true}
                                                                                             stretch={true}
