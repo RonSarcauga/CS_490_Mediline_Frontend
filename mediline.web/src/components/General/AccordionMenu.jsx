@@ -32,14 +32,14 @@ export default function Accordion({
     };
 
     return (
-        <div className={`accordion ${customClass}`}>
+        <div className={`accordion-menu  ${expanded ? "expanded" : ""}`}>
             <div
                 className={`accordion-header ${headerClass}`}
                 onClick={handleToggle}
                 style={{ cursor: "pointer" }}
             >
                 {header}
-                {toggleIcon && <span className={`accordion-toggle ${toggleClass}`}>{toggleIcon}</span>}
+                {toggleIcon && <span className={`accordion-toggle`}>{toggleIcon}</span>}
             </div>
             {expanded && (
                 <div className={`accordion-body ${bodyClass}`}>
