@@ -344,7 +344,7 @@ function PDDiscussionForum() {
                                                                             <>
                                                                                 <h3 className="text-neutral-700 font-semibold font-4">BIO</h3>
                                                                                 <p className="font-3">
-                                                                                    I'm passionate about fitness and enjoy sharing tips on staying active.
+                                                                                    { discussionForumViewModel.getProfilesById(user.id).bio }
                                                                                 </p>
                                                                             </>
                                                                         ]}

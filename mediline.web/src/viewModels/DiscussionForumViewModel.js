@@ -21,6 +21,22 @@ class DiscussionForumViewModel {
         return this.users; // Return the list of users that authored the posts
     }
 
+    // Helper method to retrieve discussion forum profiles
+    getProfiles() {
+        return this.discussionProfiles; // Return the list of profiles
+    }
+
+    // Helper method to retrieve discussion forum profiles by ID
+    getProfilesById(id) {
+        const record = discussionProfiles.find(user => user.userId === id);
+
+        if (!record) {
+            return [];
+        }
+
+        return record;
+    }
+
     // Helper method to add a new post
     addPost(newPost) {
         if (!newPost.title || !newPost.content || !newPost.author) {
