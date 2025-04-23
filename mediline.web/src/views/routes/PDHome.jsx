@@ -962,7 +962,7 @@ function PDHome() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-900"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
@@ -973,15 +973,17 @@ function PDHome() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         <ItemGroup
-                                                                                                            customClass="gap-2"
+                                                                                                            customClass="gap-3"
                                                                                                             axis={false}
                                                                                                             stretch={true}
                                                                                                             items={[
                                                                                                                 <>
                                                                                                                     <BaseIcon
-                                                                                                                        height="20px"
-                                                                                                                        width="20px"
-                                                                                                                        fillColor="none">
+                                                                                                                        height="24px"
+                                                                                                                        width="24x"
+                                                                                                                        fillColor="none"
+                                                                                                                        viewBox="0 0 25 25"
+                                                                                                                    >
                                                                                                                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
                                                                                                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                         <g id="SVGRepo_iconCarrier"> <path d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z" stroke="hsl(210, 10%, 45%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -1161,7 +1163,7 @@ function PDHome() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         <ItemGroup
-                                                                                                            customClass="gap-2"
+                                                                                                            customClass="gap-3"
                                                                                                             axis={false}
                                                                                                             stretch={true}
                                                                                                             items={[
@@ -1207,7 +1209,7 @@ function PDHome() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-900"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
@@ -1218,7 +1220,7 @@ function PDHome() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         <ItemGroup
-                                                                                                            customClass="gap-2"
+                                                                                                            customClass="gap-3"
                                                                                                             axis={false}
                                                                                                             stretch={true}
                                                                                                             items={[

@@ -41,11 +41,9 @@ export default function Accordion({
                 {header}
                 {toggleIcon && <span className={`accordion-toggle`}>{toggleIcon}</span>}
             </div>
-            {expanded && (
-                <div className={`accordion-body ${bodyClass}`}>
-                    {body}
-                </div>
-            )}
+            <div className={`accordion-body ${expanded ? `${bodyClass}` : ""}`}>
+                {body}
+            </div>
         </div>
     );
 };
