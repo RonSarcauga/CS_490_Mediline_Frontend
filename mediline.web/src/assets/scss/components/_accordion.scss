@@ -52,4 +52,55 @@
     transition: all 0.5s ease;
 }
 /* End of Accordion Menu Default Styles */
+
+/* Default Styles for Refactored Accordion Menu */
+.accordion {
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+/* Accordion Header Styles */
+.accordion-header {
+    cursor: pointer;
+    display: grid;
+    grid-auto-columns: 1fr;
+    align-items: center;
+}
+
+.accordion-header:hover {
+    background-color: #f0f0f0;
+}
+
+/* Accordion Body Styles */
+.accordion-body {
+    height: 0;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    text-align: left;
+}
+
+/* Visible Accordion Body when expanded */
+.accordion.expanded .accordion-body {
+    height: auto;
+    max-height: 9999px;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Toggle Icon Styles */
+.accordion-toggle {
+    font-size: 18px;
+    color: #888;
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Arrow Points Up (Expanded) */
+.accordion.expanded .accordion-toggle {
+    transform: rotate(-180deg);
+}
+
+/* Arrow Points Down (Collapsed) */
+.accordion-toggle {
+    transform: rotate(0deg);
+}
+/* End of Accordion Menu Default Styles*/
   

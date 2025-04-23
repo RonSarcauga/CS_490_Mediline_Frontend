@@ -1,5 +1,5 @@
 import { discussionPosts, userList } from '../assets/js/const';
-import { discussionPostsList, discussionProfiles, baseUserList } from '../assets/js/const';
+import { discussionPostsList, discussionProfiles, repliesTable, baseUserList } from '../assets/js/const';
 
 class DiscussionForumViewModel {
     // Initialize the view model with mock data
@@ -9,6 +9,11 @@ class DiscussionForumViewModel {
     // Helper method to retrieve posts
     getPosts() {
         return this.posts; // Return the current list of posts
+    }
+
+    // Helper method to retrieve replies to a post by post ID
+    getPostReplies(postId) {
+        return repliesTable.filter(reply => reply.postId === postId);
     }
 
     // Helper method to retrieve users
