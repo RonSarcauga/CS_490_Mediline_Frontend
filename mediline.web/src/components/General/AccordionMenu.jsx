@@ -2,17 +2,17 @@ import { useState, useEffect } from 'react';
 
 {/* This is the base component for an accordion. */ }
 export default function Accordion({
-    customClass = "",                // Add a custom class to the outer container
-    headerClassName = "",            // Custom styles for the header
-    bodyClassName = "",              // Custom styles for the body
-    toggleClassName = "",            // Custom styles for the toggle element
-    headerContent,                   // JSX for the header
-    bodyContent,                     // JSX for the body
-    toggleIcon,                      // Custom toggle icon (e.g., expand/collapse arrow)
-    isExpanded,                      // Optional: Controlled state for expansion
-    defaultExpanded = false,         // Default state if uncontrolled
-    onExpand = () => { },             // Optional callback when expanded
-    onCollapse = () => { }            // Optional callback when collapsed
+    customClass = "",
+    headerClass = "",
+    bodyClass = "",
+    toggleClass = "",
+    header,
+    body,
+    toggleIcon,
+    isExpanded,
+    defaultExpanded = false,
+    onExpand = () => { },
+    onCollapse = () => { }
 })
 {
     const [expanded, setExpanded] = useState(isExpanded !== undefined ? isExpanded : defaultExpanded);
@@ -34,16 +34,16 @@ export default function Accordion({
     return (
         <div className={`accordion ${customClass}`}>
             <div
-                className={`accordion-header ${headerClassName}`}
+                className={`accordion-header ${headerClass}`}
                 onClick={handleToggle}
                 style={{ cursor: "pointer" }}
             >
-                {headerContent}
-                {toggleIcon && <span className={`accordion-toggle ${toggleClassName}`}>{toggleIcon}</span>}
+                {header}
+                {toggleIcon && <span className={`accordion-toggle ${toggleClass}`}>{toggleIcon}</span>}
             </div>
             {expanded && (
-                <div className={`accordion-body ${bodyClassName}`}>
-                    {bodyContent}
+                <div className={`accordion-body ${bodyClass}`}>
+                    {body}
                 </div>
             )}
         </div>
