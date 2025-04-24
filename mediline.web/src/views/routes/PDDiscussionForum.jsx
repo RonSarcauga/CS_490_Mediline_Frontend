@@ -22,14 +22,6 @@ function PDDiscussionForum() {
         console.log(`Load more replies!`);
     };
 
-    //const offset = 0;
-    //var limit = offset + 1;
-
-    //const loadMoreReplies = (postId) => {
-    //    limit += 1;
-    //    console.log(`Number of replies: ${discussionForumViewModel.getPostReplies(postId, offset, limit).length}`);
-    //}
-
     return (
         <ItemGroup
             axis={false}
