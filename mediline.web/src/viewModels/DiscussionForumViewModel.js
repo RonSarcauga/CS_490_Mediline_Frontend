@@ -22,7 +22,7 @@ class DiscussionForumViewModel {
 
     // Helper method to retrieve the number of replies to a discussion post
     getReplyCount(postId) {
-        const numReplies = this.repliesTable.filter(reply => reply.postId === postId);
+        const numReplies = repliesTable.filter(reply => reply.postId === postId);
         
         return numReplies.length;
     }
