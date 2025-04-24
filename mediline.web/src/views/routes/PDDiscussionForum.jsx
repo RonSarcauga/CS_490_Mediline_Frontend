@@ -355,22 +355,22 @@ function PDDiscussionForum() {
                                                                                                                         <>
                                                                                                                             <ItemGroup
                                                                                                                                 customClass="align-items-center pt-5"
-                                                                                                                                isClickable={true}
                                                                                                                                 fitParent={true}
                                                                                                                                 axis={true}
                                                                                                                                 stretch={true}
-                                                                                                                                onClick={() => 
-                                                                                                                                    setReplyCounts((prev) => ({
-                                                                                                                                        ...prev,
-                                                                                                                                        [post.postId]: currentCount + 5,
-                                                                                                                                    }))
-                                                                                                                                }
                                                                                                                                 items={[
                                                                                                                                     <>
                                                                                                                                         <ItemGroup
                                                                                                                                             customClass="gap-1 align-items-center"
                                                                                                                                             axis={false}
                                                                                                                                             stretch={true}
+                                                                                                                                            isClickable={true}
+                                                                                                                                            onClick={() =>
+                                                                                                                                                setReplyCounts((prev) => ({
+                                                                                                                                                    ...prev,
+                                                                                                                                                    [post.postId]: currentCount + 5,
+                                                                                                                                                }))
+                                                                                                                                            }
                                                                                                                                             items={[
                                                                                                                                                 <>
                                                                                                                                                     <BaseIcon
@@ -384,7 +384,7 @@ function PDDiscussionForum() {
                                                                                                                                                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
                                                                                                                                                         <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                                         <g id="SVGRepo_iconCarrier">
-                                                                                                                                                            <path d="M20 7V8.2C20 9.88016 20 10.7202 19.673 11.362C19.3854 11.9265 18.9265 12.3854 18.362 12.673C17.7202 13 16.8802 13 15.2 13H4M4 13L8 9M4 13L8 17" stroke="#000000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                                            <path d="M20 7V8.2C20 9.88016 20 10.7202 19.673 11.362C19.3854 11.9265 18.9265 12.3854 18.362 12.673C17.7202 13 16.8802 13 15.2 13H4M4 13L8 9M4 13L8 17" stroke="hsl(0, 0%, 50%)" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                                         </g>
                                                                                                                                                     </BaseIcon>
                                                                                                                                                     <p className="font-3 font-regular text-neutral-600">See More</p>
