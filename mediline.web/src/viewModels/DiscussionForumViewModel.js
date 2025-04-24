@@ -20,6 +20,13 @@ class DiscussionForumViewModel {
         return sortedReplies.slice(offset, offset + limit);
     }
 
+    // Helper method to retrieve the number of replies to a discussion post
+    getReplyCount(postId) {
+        const numReplies = this.repliesTable.filter(reply => reply.postId === postId);
+        
+        return numReplies.length;
+    }
+
     // Helper method to retrieve users
     getUsers() {
         return this.users; // Return the list of users that authored the posts
