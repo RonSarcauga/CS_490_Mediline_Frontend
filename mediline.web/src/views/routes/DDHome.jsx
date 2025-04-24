@@ -119,7 +119,7 @@ function DDHome() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         <BaseIcon
-                                                                                                            fill="none"
+                                                                                                            fill="hsl(200, 30%, 25%)"
                                                                                                             height="60px"
                                                                                                             width="65px"
                                                                                                             viewBox="0 0 100 100"
