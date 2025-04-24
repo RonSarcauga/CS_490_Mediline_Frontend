@@ -18,6 +18,7 @@ export default function PatientDashboardExercise({
     content = []
 }) {
     const [showNewElement, setShowNewElement] = useState(false);
+    const [graphState, setGraphState] = useState("exercise");
 
     const handleButtonClick = () => {
         if (showNewElement === true) {
@@ -27,6 +28,27 @@ export default function PatientDashboardExercise({
         }
         // Replace the element when the button is pressed
     };
+    const setGraphStateEc =() => {
+        setGraphState("exercise");
+    }
+    const setGraphStateWa =() => {
+        setGraphState("water");
+    }
+    const setGraphStateSl =() => {
+        setGraphState("sleep");
+    }
+    let chartDataExercise = [0, 1, .5, 2, 1, 3]
+    let chartDataSleep = [1, 2, 3, 4, 5, 3]
+    let chartDataWater = [10, 4, .6, 3, 1, ]
+
+    let ecBank1 = ["Push Ups", "Sit Ups", "Squats", "Planks", "Crunches", "Burpees", "Lunges", "Jumping Jacks", "Mountain Climbers", "High Knees"]
+    let ecBank2 = ["3 reps", "5 reps", "10 reps", "15 reps", "20 reps", "25 reps", "30 reps", "35 reps", "40 reps", "45 reps"]
+    let ecBank3 = ["5 min", "10 min", "15 min", "20 min", "25 min", "30 min", "35 min", "40 min", "45 min", "50 min"]
+
+    let currEcc1 = ["Muscle Ups", "Handstand Push Ups", "One Arm Push Ups", "One Arm Pull Ups", "Planche Push Ups"]
+    let currEcc2 = ["5 reps", "10 reps", "15 reps", "20 reps", "25 reps"]
+    let currEcc3 = ["5 min", "10 min", "15 min", "20 min", "25 min"]
+  
 
     return (
         <div className="background">
@@ -124,7 +146,7 @@ export default function PatientDashboardExercise({
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {!showNewElement && <ExerciseList />}
+                                                                    {!showNewElement && <ExerciseList exerciseBank1={ecBank1} exerciseBank2={ecBank2} exerciseBank3={ecBank3}/>}
                                                                     {showNewElement && <WeeklyForm />}
 
                                                                 </>
@@ -158,24 +180,29 @@ export default function PatientDashboardExercise({
                                                                         items={[
                                                                             <>
                                                                                 <ECCheckbox
-                                                                                    label="Exercise 11"
-                                                                                    time="11 min"
+                                                                                    label={currEcc1[0]}
+                                                                                    reps={currEcc2[0]}
+                                                                                    time={currEcc3[0]}
                                                                                 />
                                                                                 <ECCheckbox
-                                                                                    label="Exercise 12"
-                                                                                    time="12 min"
+                                                                                    label={currEcc1[1]}
+                                                                                    reps={currEcc2[1]}
+                                                                                    time={currEcc3[1]}
                                                                                 />
                                                                                 <ECCheckbox
-                                                                                    label="Exercise 13"
-                                                                                    time="13 min"
+                                                                                    label={currEcc1[2]}
+                                                                                    reps={currEcc2[2]}
+                                                                                    time={currEcc3[2]}
                                                                                 />
                                                                                 <ECCheckbox
-                                                                                    label="Exercise 14"
-                                                                                    time="14 min"
+                                                                                    label={currEcc1[3]}
+                                                                                    reps={currEcc2[3]}
+                                                                                    time={currEcc3[3]}
                                                                                 />
                                                                                 <ECCheckbox
-                                                                                    label="Exercise 15"
-                                                                                    time="15 min"
+                                                                                    label={currEcc1[4]}
+                                                                                    reps={currEcc2[4]}
+                                                                                    time={currEcc3[4]}
                                                                                 />
                                                                             </>
                                                                         ]}
@@ -195,14 +222,68 @@ export default function PatientDashboardExercise({
                                                 items={[
                                                     <>
                                                         <ItemGroup
-                                                            customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm gap-10 b-10"
-                                                            axis={true}
+                                                            customClass="bg-primary-neutral-500 outline-neutral-1100 br-sm b-10"
+                                                            axis={false}
                                                             style={{
                                                                 width: "56vw",
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    <ExerciseChart />
+                                                                    <ItemGroup
+                                                                        customClass="bg-neutral-1100 br-sm pl-5 pt-5 ml-5 mt-5 fit-parent"
+                                                                        axis={true}
+
+                                                                        items={[
+                                                                            <>
+                                                                                {graphState === "exercise" && <ExerciseChart inputData={chartDataExercise} inputLabel="Exercise"/>}
+                                                                                {graphState === "water" && <ExerciseChart inputData={chartDataWater} inputLabel="Water"/>}
+                                                                                {graphState === "sleep" && <ExerciseChart inputData={chartDataSleep} inputLabel="Sleep"/>}
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    <ItemGroup
+                                                                        customClass="p-5 mt-5 fit-parent gap-1"
+                                                                        axis={true}
+                                                                        
+
+                                                                        items={[
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    customClass="bg-neutral-1100 br-right-sm gap-1 p-5 fit-parent"
+                                                                                    axis={true}
+                                                                                    isClickable={true}
+                                                                                    onClick={setGraphStateEc}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h2>Exercise</h2>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <ItemGroup
+                                                                                    customClass="bg-neutral-1100 br-right-sm gap-10 p-5 fit-parent"
+                                                                                    axis={true}
+                                                                                    isClickable={true}
+                                                                                    onClick={setGraphStateWa}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h2>Hydration</h2>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <ItemGroup
+                                                                                    customClass="bg-neutral-1100 br-right-sm gap-10 p-5 fit-parent"
+                                                                                    axis={true}
+                                                                                    isClickable={true}
+                                                                                    onClick={setGraphStateSl}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h2>Sleep</h2>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
                                                                 </>
                                                             ]}
                                                         />
@@ -252,7 +333,7 @@ export default function PatientDashboardExercise({
                                                                                                 }}
                                                                                                 items={[
                                                                                                     <div>
-                                                                                                        Medication
+                                                                                                        Ibuprofen
                                                                                                     </div>
                                                                                                 ]}
                                                                                             />
@@ -356,7 +437,11 @@ export default function PatientDashboardExercise({
     );
 }
 
-function ExerciseList() {
+function ExerciseList({
+    exerciseBank1 = [],
+    exerciseBank2 = [],
+    exerciseBank3 = []
+}) {
     return (
         <>
             <ItemGroup
@@ -384,32 +469,14 @@ function ExerciseList() {
                     <>
 
                         <ECCheckbox
-                            label="Exercise 1"
-                            time="1 min"
+                            label= {exerciseBank1[0]}
+                            reps= {exerciseBank2[0]}
+                            time={exerciseBank3[0]}
                         />
                         <ECCheckbox
-                            label="Exercise 2"
-                            time="2 min"
-                        />
-
-                    </>
-                ]}
-            />
-            <ItemGroup
-                customClass=" gap-5 fit-parent pl-5 pr-5"
-                axis={false}
-                style={{
-                    width: "30vw"
-                }}
-                items={[
-                    <>
-                        <ECCheckbox
-                            label="Exercise 3"
-                            time="3 min"
-                        />
-                        <ECCheckbox
-                            label="Exercise 4"
-                            time="4 min"
+                            label= {exerciseBank1[1]}
+                            reps= {exerciseBank2[1]}
+                            time={exerciseBank3[1]}
                         />
 
                     </>
@@ -424,32 +491,14 @@ function ExerciseList() {
                 items={[
                     <>
                         <ECCheckbox
-                            label="Exercise 5"
-                            time="5 min"
+                            label= {exerciseBank1[2]}
+                            reps= {exerciseBank2[2]}
+                            time={exerciseBank3[2]}
                         />
                         <ECCheckbox
-                            label="Exercise 6"
-                            time="6 min"
-                        />
-
-                    </>
-                ]}
-            />
-            <ItemGroup
-                customClass=" gap-5 fit-parent pl-5 pr-5"
-                axis={false}
-                style={{
-                    width: "30vw"
-                }}
-                items={[
-                    <>
-                        <ECCheckbox
-                            label="Exercise 7"
-                            time="7 min"
-                        />
-                        <ECCheckbox
-                            label="Exercise 8"
-                            time="8 min"
+                            label= {exerciseBank1[3]}
+                            reps= {exerciseBank2[3]}
+                            time={exerciseBank3[3]}
                         />
 
                     </>
@@ -464,12 +513,58 @@ function ExerciseList() {
                 items={[
                     <>
                         <ECCheckbox
-                            label="Exercise 9"
-                            time="9 min"
+                            label= {exerciseBank1[4]}
+                            reps= {exerciseBank2[4]}
+                            time={exerciseBank3[4]}
                         />
                         <ECCheckbox
-                            label="Exercise 10"
-                            time="10 min"
+                            label= {exerciseBank1[5]}
+                            reps= {exerciseBank2[5]}
+                            time={exerciseBank3[5]}
+                        />
+
+                    </>
+                ]}
+            />
+            <ItemGroup
+                customClass=" gap-5 fit-parent pl-5 pr-5"
+                axis={false}
+                style={{
+                    width: "30vw"
+                }}
+                items={[
+                    <>
+                        <ECCheckbox
+                            label= {exerciseBank1[6]}
+                            reps= {exerciseBank2[6]}
+                            time={exerciseBank3[6]}
+                        />
+                        <ECCheckbox
+                            label= {exerciseBank1[7]}
+                            reps= {exerciseBank2[7]}
+                            time={exerciseBank3[7]}
+                        />
+
+                    </>
+                ]}
+            />
+            <ItemGroup
+                customClass=" gap-5 fit-parent pl-5 pr-5"
+                axis={false}
+                style={{
+                    width: "30vw"
+                }}
+                items={[
+                    <>
+                        <ECCheckbox
+                            label= {exerciseBank1[8]}
+                            reps= {exerciseBank2[8]}
+                            time={exerciseBank3[8]}
+                        />
+                        <ECCheckbox
+                            label= {exerciseBank1[9]}
+                            reps= {exerciseBank2[9]}
+                            time={exerciseBank3[9]}
                         />
 
                     </>
@@ -576,9 +671,13 @@ function WeeklyForm() {
 }
 
 
-function ExerciseChart() {
+function ExerciseChart({
+    inputData = [],
+    inputLabel = ""
+}) {
     const chartRef = useRef(null); // Reference to the canvas element
     const chartInstance = useRef(null); // Reference to the Chart.js instance
+
 
     useEffect(() => {
         if (chartRef.current) {
@@ -594,8 +693,8 @@ function ExerciseChart() {
                     labels: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
                     datasets: [
                         {
-                            label: "Exercise Hours",
-                            data: [1, 2, 1.5, 3, 2.5, 4, 3], // Example data
+                            label: inputLabel,
+                            data: inputData, // Example data
                             backgroundColor: "rgba(75, 192, 192, 0.2)", // Bar color
                             borderColor: "rgba(75, 192, 192, 1)", // Border color
                             borderWidth: 1,
@@ -633,4 +732,3 @@ function ExerciseChart() {
         </div>
     );
 }
-
