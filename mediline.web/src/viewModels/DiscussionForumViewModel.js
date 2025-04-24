@@ -20,6 +20,33 @@ class DiscussionForumViewModel {
         return sortedReplies.slice(offset, offset + limit);
     }
 
+    // Helper method to add a new reply
+    addReply({ postId, parentReplyId, content }) {
+        if (!postId || !content) {
+            throw new Error("Invalid reply object. Ensure postId and content are provided.");
+        }
+
+        // Generate ID and createDate
+        const newReply = {
+            id: Math.random().toString(36).substr(2, 9),
+            postId: postId,
+            parentReplyId: parentReplyId || null,
+            content: content,
+            createDate: new Date().toISOString(),
+        };
+
+        // Add the new reply to the Replies table
+        this.repliesTable = [...this.repliesTable, newReply];
+    }
+    // Helper method to retrieve nested replies for a given parent reply ID
+    getNestedReplies(postID, parentReplyID) {
+        const postReplies = repliesTable.filter(reply => reply.postId === postID);
+
+        const nestedReplies = postReplies.filter(reply => reply.parentReplyId === parentReplyID);
+
+        return nestedReplies
+    }
+
     // Helper method to retrieve the number of replies to a discussion post
     getReplyCount(postId) {
         const numReplies = repliesTable.filter(reply => reply.postId === postId);

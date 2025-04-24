@@ -359,7 +359,6 @@ function PDDiscussionForum() {
                                                                                                                     ]}
                                                                                                                 />
                                                                                                                 {
-                                                                                                                    // Check if there are more replies to fetch for this post
                                                                                                                     hasMoreReplies && (
                                                                                                                         <>
                                                                                                                             <ItemGroup
@@ -373,7 +372,7 @@ function PDDiscussionForum() {
                                                                                                                                         ...prev,
                                                                                                                                         [post.postId]: currentCount + 5,
                                                                                                                                     }))
-                                                                                                                                } // Load more replies for this specific post
+                                                                                                                                }
                                                                                                                                 items={[
                                                                                                                                     <>
                                                                                                                                         <h5 className="font-3 font-semibold">See More</h5>
