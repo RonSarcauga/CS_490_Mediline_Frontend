@@ -14,13 +14,8 @@ function PDDiscussionForum() {
 
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    console.log(`User: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
 
     const [replyCounts, setReplyCounts] = useState({});
-
-    const loadMoreReplies = (postID) => {
-        console.log(`Load more replies!`);
-    };
 
     return (
         <ItemGroup
