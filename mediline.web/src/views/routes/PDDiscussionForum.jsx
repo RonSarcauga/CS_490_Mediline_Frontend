@@ -354,7 +354,7 @@ function PDDiscussionForum() {
                                                                                                                     hasMoreReplies && (
                                                                                                                         <>
                                                                                                                             <ItemGroup
-                                                                                                                                customClass="align-items-center justify-content-center pt-10"
+                                                                                                                                customClass="align-items-center pt-5"
                                                                                                                                 isClickable={true}
                                                                                                                                 fitParent={true}
                                                                                                                                 axis={true}
@@ -367,14 +367,37 @@ function PDDiscussionForum() {
                                                                                                                                 }
                                                                                                                                 items={[
                                                                                                                                     <>
-                                                                                                                                        <h5 className="font-3 font-semibold">See More</h5>
+                                                                                                                                        <ItemGroup
+                                                                                                                                            customClass="gap-1 align-items-center"
+                                                                                                                                            axis={false}
+                                                                                                                                            stretch={true}
+                                                                                                                                            items={[
+                                                                                                                                                <>
+                                                                                                                                                    <BaseIcon
+                                                                                                                                                        fill="none"
+                                                                                                                                                        fillColor="none"
+                                                                                                                                                        height="20px"
+                                                                                                                                                        width="20px"
+                                                                                                                                                        viewBox="0 0 24 24"
+                                                                                                                                                        transform="matrix(-1, 0, 0, 1, 0, 0)"
+                                                                                                                                                    >
+                                                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                                                            <path d="M20 7V8.2C20 9.88016 20 10.7202 19.673 11.362C19.3854 11.9265 18.9265 12.3854 18.362 12.673C17.7202 13 16.8802 13 15.2 13H4M4 13L8 9M4 13L8 17" stroke="#000000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                                        </g>
+                                                                                                                                                    </BaseIcon>
+                                                                                                                                                    <p className="font-3 font-regular text-neutral-600">See More</p>
+                                                                                                                                                </>
+                                                                                                                                            ]}
+                                                                                                                                        />
                                                                                                                                     </>
                                                                                                                                 ]}
                                                                                                                             />
                                                                                                                         </>
                                                                                                                 )}
                                                                                                                 <ItemGroup
-                                                                                                                    customClass="gap-4 align-items-center item-group-row-odd-left pt-8"
+                                                                                                                    customClass="gap-4 align-items-center item-group-row-odd-left pt-6"
                                                                                                                     axis={false}
                                                                                                                     stretch={true}
                                                                                                                     fitParent={true}
