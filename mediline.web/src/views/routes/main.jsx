@@ -13,6 +13,7 @@ import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDHome from './PDHome';
 import PDAppointment from './PDAppointment';
+import PDProfile from './PDProfile';
 import PDDiscussionForum from './PDDiscussionForum';
 import DDHome from './DDHome';
 import DashboardLayout from './DashboardLayout';
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
             {
                 path: 'patient',
                 element: <PDHome />,
+            },
+            {
+                path: 'patient/profile',
+                element: <PDProfile />
             },
             {
                 path: 'patient/appointment',
