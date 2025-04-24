@@ -229,6 +229,7 @@ export const baseUserList = [
         phoneNumber: "555-123-4567",
         address: "123 Main St",
         city: "Springfield",
+        state: "Ohio",
         postalCode: "12345",
         role: "patient",
         password: "password123",
@@ -243,6 +244,7 @@ export const baseUserList = [
         phoneNumber: "555-987-6543",
         address: "456 Elm St",
         city: "Greenwood",
+        state: "Pennsylvania",
         postalCode: "67890",
         role: "doctor",
         password: "securePass456",
@@ -257,6 +259,7 @@ export const baseUserList = [
         phoneNumber: "555-345-1234",
         address: "123 Maple St",
         city: "New York",
+        state: "New York",
         postalCode: "10001",
         role: "Patient",
         password: "password123"
@@ -271,6 +274,7 @@ export const baseUserList = [
         phoneNumber: "555-677-5678",
         address: "456 Oak St",
         city: "Boston",
+        state: "Massachusetts",
         postalCode: "02108",
         role: "Patient",
         password: "password123"
@@ -285,6 +289,7 @@ export const baseUserList = [
         phoneNumber: "555-555-9012",
         address: "789 Pine St",
         city: "Chicago",
+        state: "Illinois",
         postalCode: "60601",
         role: "Patient",
         password: "password123"
@@ -299,6 +304,7 @@ export const baseUserList = [
         phoneNumber: "555-567-3456",
         address: "567 Cedar St",
         city: "Los Angeles",
+        state: "California",
         postalCode: "90001",
         role: "Patient",
         password: "password123"
@@ -313,6 +319,7 @@ export const baseUserList = [
         phoneNumber: "555--654-6789",
         address: "789 Birch St",
         city: "San Francisco",
+        state: "California",
         postalCode: "94102",
         role: "Patient",
         password: "password123"
@@ -327,6 +334,7 @@ export const baseUserList = [
         phoneNumber: "555-479-9011",
         address: "901 Spruce St",
         city: "Seattle",
+        state: "Washington",
         postalCode: "98101",
         role: "Patient",
         password: "password123"
@@ -341,6 +349,7 @@ export const baseUserList = [
         phoneNumber: "180-555-1111",
         address: "111 Cherry St",
         city: "Houston",
+        state: "Texas",
         postalCode: "77002",
         role: "Patient",
         password: "password123"
@@ -355,6 +364,7 @@ export const baseUserList = [
         phoneNumber: "180-555-2222",
         address: "222 Walnut St",
         city: "Dallas",
+        state: "Texas",
         postalCode: "75201",
         role: "Patient",
         password: "password123"
@@ -369,6 +379,7 @@ export const baseUserList = [
         phoneNumber: "180-555-3333",
         address: "333 Spruce St",
         city: "Miami",
+        state: "Florida",
         postalCode: "33101",
         role: "Patient",
         password: "password123"
@@ -383,6 +394,7 @@ export const baseUserList = [
         phoneNumber: "180-555-4444",
         address: "444 Maple St",
         city: "Phoenix",
+        state: "Arizona",
         postalCode: "85001",
         role: "Patient",
         password: "password123"

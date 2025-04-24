@@ -65,6 +65,7 @@ const RegisterViewModel = {
             phoneNumber: this.phone,
             address: this.address,
             city: this.city,
+            state: this.state,
             postalCode: this.postalCode,
             sex: this.sex,
             dateOfBirth: this.dateOfBirth,

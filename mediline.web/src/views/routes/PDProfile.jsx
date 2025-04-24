@@ -13,6 +13,7 @@ function PDProfile() {
     const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
 
     const [activeTab, setActiveTab] = useState("tab1");
+    const [isOpen, setIsOpen] = useState("false");
 
     const tabs = [
         {id: "tab1", label: "Overview"},
@@ -360,6 +361,10 @@ function PDProfile() {
                                                                                 axis={false}
                                                                                 fitParent={true}
                                                                                 stretch={true}
+                                                                                isClickable={true}
+                                                                                onClick={() => {
+                                                                                    setIsOpen(!isOpen);
+                                                                                }}
                                                                                 style={{
                                                                                     gridAutoColumns: "250px 250px 250px 1fr"
                                                                                 }}
@@ -536,95 +541,97 @@ function PDProfile() {
     };
 
     return (
-        <Container
-            customClass="p-5"
-            fitParent={true}
-            content={[
-                <>
-                    <ItemGroup
-                        customClass="gap-5"
-                        axis={true}
-                        fitParent={true}
-                        style={{
-                            gridAutoRows: "auto 1fr"
-                        }}
-                        items={[
-                            <>
-                                <Container
-                                    customClass="gradient-light br-sm b-3 outline-neutral-1100 py-5"
-                                    fitParent={true}
-                                    headerClass="px-10"
-                                    header={[
-                                        <>
-                                            <ItemGroup
-                                                customClass="gap-0"
-                                                fitParent={true}
-                                                stretch={true}
-                                                axis={true}
-                                                items={[
-                                                    <>
-                                                        <ItemGroup
-                                                            customClass="justify-content-center justify-items-center align-items-center text-align-center pt-2"
-                                                            fitParent={true}
-                                                            stretch={true}
-                                                            axis={false}
-                                                            style={{
-                                                                gridAutoColumns: "1fr"
-                                                            }}
-                                                            items={[
-                                                                <>
-                                                                    {tabs.map((tab) => (
-                                                                        <ItemGroup
-                                                                            customClass={`text-align-center justify-content-center py-3 br-top-sm ${activeTab === tab.id ? "b-bottom-10 outline-primary-dark-600" : "text-dark-200 b-bottom-4 outline-primary-dark-600"}`}
-                                                                            key={tab.id}
-                                                                            axis={false}
-                                                                            stretch={true}
-                                                                            fitParent={true}
-                                                                            isClickable={true}
-                                                                            onClick={() => setActiveTab(tab.id)}
-                                                                            items={[
-                                                                                <>
-                                                                                    <p className={`font-4 font-semibold ${activeTab === tab.id ? "text-dark-300" : "text-dark-200"}`}>{tab.label}</p>
-                                                                                </>
-                                                                            ]}
-                                                                        />
-                                                                    ))}
-                                                                </>
-                                                            ]}
-                                                        />
-                                                        
-                                                    </>
-                                                ]}
-                                            />
-                                        </>
-                                    ]}
-                                    contentClass="px-10"
-                                    content={[
-                                        <>
-                                            <ItemGroup
-                                                customClass="gap-6 scrollable postList pr-5"
-                                                axis={true}
-                                                fitParent={true}
-                                                style={{
-                                                    maxHeight: "587px"
-                                                }}
-                                                items={[
-                                                    <>
-                                                        <div></div>
-                                                        <div></div>
-                                                        {tabContent[activeTab]}
-                                                    </>
-                                                ]}
-                                            />
-                                        </>
-                                    ]}
-                                />
-                            </>
-                        ]}
-                    />
-                </>
-            ]}
-        />
+        <>
+            <Container
+                customClass="p-5"
+                fitParent={true}
+                content={[
+                    <>
+                        <ItemGroup
+                            customClass="gap-5"
+                            axis={true}
+                            fitParent={true}
+                            style={{
+                                gridAutoRows: "auto 1fr"
+                            }}
+                            items={[
+                                <>
+                                    <Container
+                                        customClass="gradient-light br-sm b-3 outline-neutral-1100 py-5"
+                                        fitParent={true}
+                                        headerClass="px-10"
+                                        header={[
+                                            <>
+                                                <ItemGroup
+                                                    customClass="gap-0"
+                                                    fitParent={true}
+                                                    stretch={true}
+                                                    axis={true}
+                                                    items={[
+                                                        <>
+                                                            <ItemGroup
+                                                                customClass="justify-content-center justify-items-center align-items-center text-align-center pt-2"
+                                                                fitParent={true}
+                                                                stretch={true}
+                                                                axis={false}
+                                                                style={{
+                                                                    gridAutoColumns: "1fr"
+                                                                }}
+                                                                items={[
+                                                                    <>
+                                                                        {tabs.map((tab) => (
+                                                                            <ItemGroup
+                                                                                customClass={`text-align-center justify-content-center py-3 br-top-sm ${activeTab === tab.id ? "b-bottom-10 outline-primary-dark-600" : "text-dark-200 b-bottom-4 outline-primary-dark-600"}`}
+                                                                                key={tab.id}
+                                                                                axis={false}
+                                                                                stretch={true}
+                                                                                fitParent={true}
+                                                                                isClickable={true}
+                                                                                onClick={() => setActiveTab(tab.id)}
+                                                                                items={[
+                                                                                    <>
+                                                                                        <p className={`font-4 font-semibold ${activeTab === tab.id ? "text-dark-300" : "text-dark-200"}`}>{tab.label}</p>
+                                                                                    </>
+                                                                                ]}
+                                                                            />
+                                                                        ))}
+                                                                    </>
+                                                                ]}
+                                                            />
+
+                                                        </>
+                                                    ]}
+                                                />
+                                            </>
+                                        ]}
+                                        contentClass="px-10"
+                                        content={[
+                                            <>
+                                                <ItemGroup
+                                                    customClass="gap-6 scrollable postList pr-5"
+                                                    axis={true}
+                                                    fitParent={true}
+                                                    style={{
+                                                        maxHeight: "587px"
+                                                    }}
+                                                    items={[
+                                                        <>
+                                                            <div></div>
+                                                            <div></div>
+                                                            {tabContent[activeTab]}
+                                                        </>
+                                                    ]}
+                                                />
+                                            </>
+                                        ]}
+                                    />
+                                </>
+                            ]}
+                        />
+                    </>
+                ]}
+            />
+        </>
     );
 }
 
