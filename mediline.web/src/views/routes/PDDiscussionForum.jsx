@@ -12,12 +12,16 @@ function PDDiscussionForum() {
     const posts = discussionForumViewModel.getPosts();
     const users = discussionForumViewModel.getUsers();
 
-    // const posts = discussionForumViewModel.getPosts();
-    // const users = discussionForumViewModel.getUsers();
-
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     console.log(`User: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
+
+    const offset = 0;
+    var limit = offset + 5;
+
+    const loadMoreReplies = () => {
+        limit += 5;
+    }
 
     return (
         <ItemGroup
@@ -258,7 +262,7 @@ function PDDiscussionForum() {
                                                                                                                 items={[
                                                                                                                     <>
                                                                                                                         {
-                                                                                                                            discussionForumViewModel.getPostReplies(post.postId).map((reply) => (
+                                                                                                                            discussionForumViewModel.getPostReplies(post.postId, offset, offset + limit).map((reply) => (
                                                                                                                                 <>
                                                                                                                                     <ItemGroup
                                                                                                                                         customClass="gap-0"
@@ -341,6 +345,27 @@ function PDDiscussionForum() {
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
+                                                                                                            {
+                                                                                                                discussionForumViewModel.getPostReplies(post.postId, offset, offset + limit).length >= limit ? (
+                                                                                                                    <>
+                                                                                                                        <ItemGroup
+                                                                                                                            customClass="align-items-center justify-content-center pt-10"
+                                                                                                                            isClickable={true}
+                                                                                                                            fitParent={true}
+                                                                                                                            axis={true}
+                                                                                                                            stretch={true}
+                                                                                                                            items={[
+                                                                                                                                <>
+                                                                                                                                    <h5 className="font-3 font-semibold">See More</h5>
+                                                                                                                                </>
+                                                                                                                            ]}
+                                                                                                                        />
+                                                                                                                    </>
+                                                                                                                ) : (
+                                                                                                                    <>
+                                                                                                                    </>
+                                                                                                                )
+                                                                                                            }
                                                                                                             <ItemGroup
                                                                                                                 customClass="gap-4 align-items-center item-group-row-odd-left pt-8"
                                                                                                                 axis={false}

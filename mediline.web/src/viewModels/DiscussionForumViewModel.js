@@ -12,7 +12,7 @@ class DiscussionForumViewModel {
     }
 
     // Helper method to retrieve replies to a post by post ID
-    getPostReplies(postId, limit, offset) {
+    getPostReplies(postId, offset, limit) {
         const replies = repliesTable.filter(reply => reply.postId === postId);
 
         const sortedReplies = replies.sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
