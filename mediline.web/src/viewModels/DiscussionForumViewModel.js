@@ -12,8 +12,12 @@ class DiscussionForumViewModel {
     }
 
     // Helper method to retrieve replies to a post by post ID
-    getPostReplies(postId) {
-        return repliesTable.filter(reply => reply.postId === postId);
+    getPostReplies(postId, limit, offset) {
+        const replies = repliesTable.filter(reply => reply.postId === postId);
+
+        const sortedReplies = replies.sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+
+        return sortedReplies.slice(offset, offset + limit);
     }
 
     // Helper method to retrieve users
