@@ -51,7 +51,8 @@ export default function PatientDashboardExercise({
   
 
     return (
-        <div className="background">
+        <div className="background"
+        style={{maxHeight: "50px", overflowY:"visible"}}>
             <div className="dashboardContainer">
                 <Topbar
                     header={[
@@ -124,7 +125,7 @@ export default function PatientDashboardExercise({
                 <div className="mainContent">
                     <Container
                         fitScreen={true}
-                        customClass="bg-secondary-500 px-5"
+                        customClass="bg-secondary-500 px-5 "
                         content={[
                             <>
                                 <ItemGroup
