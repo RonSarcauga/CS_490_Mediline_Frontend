@@ -611,7 +611,7 @@ function WeeklyForm() {
                     />
                     <form>
                         <ItemGroup
-                            customClass="gap-3 bg-neutral-1100 mb-2 mt-2 ml-5 p-2 br-xs "
+                            customClass="gap-3 bg-neutral-1100 mb-2 mt-2 ml-5 p-2 br-xs"
                             axis={true}
                             style={{
                                 width: "52vw"
@@ -621,7 +621,7 @@ function WeeklyForm() {
                                     <h2>Exercise</h2>
                                     <div>How many hours did you spend exercising this week?</div>
                                     <InputBar
-                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none"
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
 
                                 </>
@@ -638,7 +638,7 @@ function WeeklyForm() {
                                     <h2>Sleep</h2>
                                     <div>How many hours of sleep did you get?</div>
                                     <InputBar
-                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none"
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
 
                                 </>
@@ -655,7 +655,7 @@ function WeeklyForm() {
                                     <h2>Hydration</h2>
                                     <div>How many liters of water did you drink this week?</div>
                                     <InputBar
-                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none"
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
 
                                 </>
