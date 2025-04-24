@@ -93,6 +93,27 @@ function PDProfile() {
                                                                                     stretch={true}
                                                                                     items={[
                                                                                         <>
+                                                                                            {
+                                                                                                dashboardLayoutViewModel.getPatientByMRN(patientData.mrn).sex === "Female" ? (
+                                                                                                    <>
+                                                                                                        <BaseIcon
+                                                                                                            height="12px"
+                                                                                                            width="12px"
+                                                                                                            viewBox="0 0 24 24"
+                                                                                                            fillColor="none">
+                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            <g id="SVGRepo_iconCarrier"> <path d="M18.5 8.5C18.5 12.0899 15.5899 15 12 15C8.41015 15 5.5 12.0899 5.5 8.5C5.5 4.91015 8.41015 2 12 2C15.5899 2 18.5 4.91015 18.5 8.5Z" stroke="#000000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                <path d="M7.5 19H16.5" stroke="#000000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                <path d="M12 22L12 15" stroke="#000000" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            </g>
+                                                                                                        </BaseIcon>
+                                                                                                    </>
+                                                                                                ) : (
+                                                                                                    <>
+                                                                                                    </>
+                                                                                                )
+                                                                                            }
                                                                                             <h5 className="font-3 font-semibold">{dashboardLayoutViewModel.getPatientByMRN(patientData.mrn).sex}</h5>
                                                                                         </>
                                                                                     ]}
