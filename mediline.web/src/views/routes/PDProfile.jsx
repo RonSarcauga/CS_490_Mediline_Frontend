@@ -5,7 +5,6 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import Accordion from '../../components/General/AccordionMenu';
 import InputBar from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
-import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 function PDProfile() {
     const { currentUser } = useContext(UserContext);
@@ -25,40 +24,337 @@ function PDProfile() {
     const tabContent = {
         tab1: (
             <ItemGroup
-                customClass="gap-6"
+                customClass="gap-12"
                 axis={true}
+                fitParent={true}
                 items={[
                     <>
-                        <h5 className="font-5 text-neutral-100 font-semibold">Overview</h5>
                         <ItemGroup
-                            customClass="gap-2"
+                            customClass="gap-6"
                             axis={true}
+                            fitParent={true}
                             items={[
                                 <>
-                                    <p className="font-3 text-neutral-100 font-medium">This is the content of the tabbed content</p>
+                                    <Container
+                                        customClass="bg-primary-dark-600 br-sm p-5"
+                                        fitParent={true}
+                                        content={[
+                                            <>
+                                                <h5 className="font-5 text-dark-300 font-semibold">Basic Information</h5>
+                                            </>
+                                        ]}
+                                    />
+                                    <ItemGroup
+                                        customClass="gap-5"
+                                        axis={true}
+                                        fitParent={true}
+                                        items={[
+                                            <>
+                                                <ItemGroup
+                                                    customClass="gap-6"
+                                                    axis={false}
+                                                    stretch={true}
+                                                    fitParent={true}
+                                                    evenSplit={true}
+                                                    items={[
+                                                        <>
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">First Name</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.firstName}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">Last Name</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.lastName}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">Sex</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.sex}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
+                                                <ItemGroup
+                                                    customClass="gap-6"
+                                                    axis={false}
+                                                    stretch={true}
+                                                    fitParent={true}
+                                                    evenSplit={true}
+                                                    items={[
+                                                        <>
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">Date of Birth</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.dateOfBirth}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
+                                            </>
+                                        ]}
+                                    />
+                                    
                                 </>
                             ]}
                         />
+                        <ItemGroup
+                            customClass="gap-6"
+                            axis={true}
+                            fitParent={true}
+                            items={[
+                                <>
+                                    <Container
+                                        customClass="bg-primary-dark-600 br-sm p-5"
+                                        fitParent={true}
+                                        content={[
+                                            <>
+                                                <h5 className="font-5 text-dark-300 font-semibold">Contact Information</h5>
+                                            </>
+                                        ]}
+                                    />
+                                    <ItemGroup
+                                        customClass="gap-5"
+                                        axis={true}
+                                        fitParent={true}
+                                        items={[
+                                            <>
+                                                <ItemGroup
+                                                    customClass="gap-6"
+                                                    axis={false}
+                                                    stretch={true}
+                                                    fitParent={true}
+                                                    evenSplit={true}
+                                                    items={[
+                                                        <>
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">Email</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.email}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
+                                                <ItemGroup
+                                                    customClass="gap-6"
+                                                    axis={false}
+                                                    stretch={true}
+                                                    fitParent={true}
+                                                    evenSplit={true}
+                                                    items={[
+                                                        <>
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">Phone</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.phoneNumber}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
+                                                <ItemGroup
+                                                    customClass="gap-6"
+                                                    axis={false}
+                                                    stretch={true}
+                                                    fitParent={true}
+                                                    evenSplit={true}
+                                                    items={[
+                                                        <>
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">Address</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.address}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
+                                                <ItemGroup
+                                                    customClass="gap-6"
+                                                    axis={false}
+                                                    stretch={true}
+                                                    fitParent={true}
+                                                    evenSplit={true}
+                                                    items={[
+                                                        <>
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">City</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.city}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">State</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.state}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4">Postal Code</p>
+                                                                        <InputBar
+                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            placeholder=""
+                                                                            value={user.postalCode}
+                                                                            readonly={true}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
+                                            </>
+                                        ]}
+                                    />
+                                    
+                                </>
+                            ]}
+                        />
+                        <div></div>
                     </>
                 ]}
             />
         ),
         tab2: (
             <ItemGroup
-                customClass="gap-6"
+                customClass="gap-12"
                 axis={true}
+                fitParent={true}
                 items={[
                     <>
-                        <h5 className="font-5 text-neutral-100 font-semibold">Encounters</h5>
                         <ItemGroup
-                            customClass="gap-2"
+                            customClass="gap-6"
                             axis={true}
+                            fitParent={true}
                             items={[
                                 <>
-                                    <p className="font-3 text-neutral-100 font-medium">This is the content of the tabbed content</p>
+                                    <Container
+                                        customClass="p-0"
+                                        fitParent={true}
+                                        style={{
+                                            maxHeight: "678px",
+                                        }}
+                                        headerClass="bg-primary-dark-600 br-sm p-5"
+                                        header={[
+                                            <>
+                                                <h5 className="font-5 text-dark-300 font-semibold">Encounter History</h5>
+                                            </>
+                                        ]}
+                                        contentClass="p-5 scrollable postList"
+                                        content={[
+                                            <>
+                                                {
+
+                                                }
+                                            </>
+                                        ]}
+                                    />
+
                                 </>
                             ]}
                         />
+                        <div></div>
                     </>
                 ]}
             />
@@ -143,7 +439,7 @@ function PDProfile() {
                                 <Container
                                     customClass="gradient-light br-sm b-3 outline-neutral-1100 py-5"
                                     fitParent={true}
-                                    headerClass="px-5"
+                                    headerClass="px-10"
                                     header={[
                                         <>
                                             <ItemGroup
@@ -165,7 +461,7 @@ function PDProfile() {
                                                                 <>
                                                                     {tabs.map((tab) => (
                                                                         <ItemGroup
-                                                                            customClass={`text-align-center justify-content-center py-3 br-top-sm ${activeTab === tab.id ? "b-bottom-10 outline-secondary-400" : "text-dark-200 b-bottom-4 outline-secondary-400"}`}
+                                                                            customClass={`text-align-center justify-content-center py-3 br-top-sm ${activeTab === tab.id ? "b-bottom-10 outline-primary-dark-600" : "text-dark-200 b-bottom-4 outline-primary-dark-600"}`}
                                                                             key={tab.id}
                                                                             axis={false}
                                                                             stretch={true}
@@ -192,9 +488,12 @@ function PDProfile() {
                                     content={[
                                         <>
                                             <ItemGroup
-                                                customClass="gap-6"
+                                                customClass="gap-6 scrollable postList pr-5"
                                                 axis={true}
                                                 fitParent={true}
+                                                style={{
+                                                    maxHeight: "587px"
+                                                }}
                                                 items={[
                                                     <>
                                                         <div></div>
