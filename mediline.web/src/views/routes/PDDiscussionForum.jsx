@@ -240,7 +240,7 @@ function PDDiscussionForum() {
                                                                                                                         </g>
                                                                                                                     </g>
                                                                                                                 </BaseIcon>
-                                                                                                                <p className="text-neutral-600 font-semibold pb-1"><small>{discussionForumViewModel.getPostReplies(post.postId).length} replies</small></p>
+                                                                                                                <p className="text-neutral-600 font-semibold pb-1"><small>{discussionForumViewModel.getReplyCount(post.postId)} replies</small></p>
                                                                                                             </>
                                                                                                         ]}
                                                                                                     />
