@@ -65,6 +65,14 @@ const router = createBrowserRouter([
                 element: <DDHome />,
             },
             {
+                path: 'doctor/patient-profile',
+                element: <DoctorPatientProfile />
+            },
+            {
+                path: 'doctor/appointment',
+                element: <DoctorAppointment />
+            },
+            {
                 path: 'doctor/discussion-forum',
                 element: <PDDiscussionForum />,
             },
