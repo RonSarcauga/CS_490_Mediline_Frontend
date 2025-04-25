@@ -40,7 +40,7 @@ function PDAppointment() {
                                     items={[
                                         <>
                                             <Container
-                                                customClass="gradient-light br-sm b-3 outline-neutral-1100 px-8 pt-5 pb-5"
+                                                customClass="gradient-light br-sm b-3 outline-neutral-1100 px-8 pt-6 pb-5"
                                                 fitParent={true}
                                                 header={[
                                                     <>
@@ -58,57 +58,14 @@ function PDAppointment() {
                                                                         axis={false}
                                                                         items={[
                                                                             <>
-                                                                                <h1 className="font-6">Your Care Team</h1>
+                                                                                <h1 className="font-6 font-semibold">Booking Information</h1>
                                                                                 <ItemGroup
                                                                                     customClass="gap-3"
                                                                                     axis={false}
                                                                                     stretch={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            {
-                                                                                                dashboardLayoutViewModel.hasDoctor(user.id) ? (
-                                                                                                    <ItemGroup
-                                                                                                        customClass="button bg-dark-100 br-sm align-items-center justify-items-center px-4 py-3"
-                                                                                                        dataAttributes={
-                                                                                                            { disabled: !dashboardLayoutViewModel.hasDoctor(user.id) }
-                                                                                                        }
-                                                                                                        isClickable={dashboardLayoutViewModel.hasDoctor(user.id)}
-                                                                                                        stretch={true}
-                                                                                                        axis={false}
-                                                                                                        items={[
-                                                                                                            <>
-                                                                                                                <h1 className="font-3 font-medium text-neutral-1100">
-                                                                                                                    Book an Appointment
-                                                                                                                </h1>
-                                                                                                            </>
-                                                                                                        ]}
-                                                                                                    />
-                                                                                                ) : (
-                                                                                                    <ItemGroup
-                                                                                                        customClass="button bg-dark-100 br-sm align-items-center justify-items-center pr-4 pl-2 gap-1"
-                                                                                                        isClickable={!dashboardLayoutViewModel.hasDoctor(user.id)}
-                                                                                                        stretch={true}
-                                                                                                        axis={false}
-                                                                                                        items={[
-                                                                                                            <>
-                                                                                                                <BaseIcon
-                                                                                                                    fill="none"
-                                                                                                                    height="28px"
-                                                                                                                    width="28px">
-                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                    <g id="SVGRepo_iconCarrier">
-                                                                                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="#FFFFFF" />
-                                                                                                                    </g>
-                                                                                                                </BaseIcon>
-                                                                                                                <h1 className="font-4 font-medium text-neutral-1100">
-                                                                                                                    Find a Doctor
-                                                                                                                </h1>
-                                                                                                            </>
-                                                                                                        ]}
-                                                                                                    />
-                                                                                                )
-                                                                                            }
+                                                                                            
                                                                                         </>
                                                                                     ]}
                                                                                 />
