@@ -13,7 +13,6 @@ export default function Checkbox({
     onChange,
     checkboxClass = "",
     iconClass = "",
-    baseIconProps = {}, // For passing custom SVG attributes
 }) {
     const [isChecked, setIsChecked] = useState(checked);
 
