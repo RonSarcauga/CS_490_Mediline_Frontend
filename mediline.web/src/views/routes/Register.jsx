@@ -31,6 +31,9 @@ export default function MultiStepRegistration()
             else if (formData.accountType === "pharmacist") {
                 return ["pharmacyName", "pharmacyAddress"].includes(key)
             }
+            else if (formData.accountType === "patient") {
+                return ["pharmacyAddress"].includes(key)
+            }
             return false;
         }),
     };
@@ -816,6 +819,13 @@ export default function MultiStepRegistration()
                                                     fitParent={true}
                                                     items={[
                                                         <>
+                                                            <InputBar
+                                                                type="text"
+                                                                value={formData.pharmacyAddress}
+                                                                onChange={(e) => handleInput('pharmacyAddress', e.target)}
+                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                placeholder="Pharmacy Address"
+                                                            />
                                                             <Container
                                                                 customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
                                                                 fitParent={true}

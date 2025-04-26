@@ -2,6 +2,7 @@ import { useContext } from 'react';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import Accordion from '../../components/General/AccordionMenu';
+import InputBar from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
@@ -528,21 +529,91 @@ function PDAppointment() {
                                                                 ))
                                                             ) : (
                                                                 <Container
-                                                                    customClass="br-sm p-5 align-items-center justify-content-center bg-primary-dark-400"
+                                                                    customClass="br-sm py-1 px-0 scrollable postList"
                                                                     fitParent={true}
+                                                                    style={{
+                                                                        maxHeight: "200px",
+                                                                        gridAutoColumns: "1fr"
+                                                                    }}
                                                                     content={[
                                                                         <>
-                                                                            {
-                                                                                pastAppointments.map((appt) => {
+                                                                            <ItemGroup
+                                                                                customClass="gap-2"
+                                                                                axis={true}
+                                                                                fitParent={true}
+                                                                                style={{
+                                                                                    gridAutoColumns: "1fr"
+                                                                                }}
+                                                                                items={[
                                                                                     <>
+                                                                                        {
+                                                                                            dashboardLayoutViewModel.getUsers().map((user) => (
+                                                                                                <>
+                                                                                                    <ItemGroup
+                                                                                                        customClass="gap-2"
+                                                                                                        axis={false}
+                                                                                                        fitParent={true}
+                                                                                                        evenSplit={true}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <Container
+                                                                                                                    customClass="p-0 justify-content-start"
+                                                                                                                    fitParent={true}
+                                                                                                                    content={[
+                                                                                                                        <>
+                                                                                                                            <p className="font-4 font-regular text-dark-300 py-3 px-4 bg-secondary-400 br text-justify">Hey, let me tell you something about me and myself</p>
+                                                                                                                        </>
+                                                                                                                    ]}
+                                                                                                                />
+                                                                                                                <div></div>
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                    <ItemGroup
+                                                                                                        customClass="gap-2"
+                                                                                                        axis={false}
+                                                                                                        fitParent={true}
+                                                                                                        evenSplit={true}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <div></div>
+                                                                                                                <Container
+                                                                                                                    customClass="p-0 justify-content-end"
+                                                                                                                    fitParent={true}
+                                                                                                                    content={[
+                                                                                                                        <>
+                                                                                                                            <p className="font-4 font-regular text-neutral-1100 py-3 px-4 bg-primary-600 br text-justify">Have you heard about anything else?</p>
+                                                                                                                        </>
+                                                                                                                    ]}
+                                                                                                                />
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                </>
+                                                                                            ))
+                                                                                        }
                                                                                     </>
-                                                                                })
-                                                                            }
+                                                                                ]}
+                                                                            />
                                                                         </>
                                                                     ]}
                                                                 />
                                                             )
                                                         }
+                                                    </>
+                                                ]}
+                                                footer={[
+                                                    <>
+                                                        <InputBar
+                                                            customClass="px-3 py-2 input-text-placeholder-neutral-800 input-text-neutral-100"
+                                                            placeholder="Type a message"
+                                                            sendIcon={
+                                                                <BaseIcon width={30} height={30} fillColor="none">
+                                                                    <path d="M18.8951 3.61502C19.7248 3.37794 20.492 4.1451 20.2549 4.97489L16.2553 18.9736C15.8267 20.4736 13.823 20.7554 12.9973 19.4317L10.1999 14.947C9.87715 14.4296 9.44039 13.9928 8.92298 13.6701L4.43823 10.8726C3.11455 10.047 3.39632 8.04323 4.89636 7.61465L18.8951 3.61502Z" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                                                    <path d="M10.1924 13.6777L13.7279 10.1422" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                                                </BaseIcon>
+                                                            }
+                                                        />
                                                     </>
                                                 ]}
                                             />

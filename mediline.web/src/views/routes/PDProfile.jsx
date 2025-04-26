@@ -13,6 +13,8 @@ function PDProfile() {
     const patientData = dashboardLayoutViewModel.getPatientData(user.id);
     const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
 
+    const navigate = useNavigate();
+
     const [activeTab, setActiveTab] = useState("tab1");
 
     const tabs = [
@@ -520,6 +522,9 @@ function PDProfile() {
                                                                         <Container
                                                                             customClass="bg-primary-dark-800 px-5 py-2 br-sm"
                                                                             isClickable={true}
+                                                                            onClick={() => {
+                                                                                navigate(`/dashboard/${user.role}/appointment`);
+                                                                            }}
                                                                             content={[
                                                                                 <>
                                                                                     <p className="font-3 text-primary-neutral-200 font-semibold">JOIN MEETING</p>
