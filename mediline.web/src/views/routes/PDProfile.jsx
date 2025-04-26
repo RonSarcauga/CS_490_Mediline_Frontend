@@ -761,7 +761,7 @@ function PDProfile() {
                                                 />
                                             </>
                                         ]}
-                                        footerClass="scrollable postList px-5"
+                                        footerClass="hideScroll px-5"
                                         footer={[
                                             <>
                                                 <ItemGroup
@@ -772,7 +772,7 @@ function PDProfile() {
                                                         <>
                                                             {
                                                                 pastAppointments.length > 0 && (
-                                                                    pastAppointments.map((appt) => (
+                                                                    pastAppointments.map(() => (
                                                                         <>
                                                                             <ItemGroup
                                                                                 customClass=" py-1"
@@ -867,7 +867,7 @@ function PDProfile() {
                                                 />
                                             </>
                                         ]}
-                                        footerClass="px-5 scrollable postList"
+                                        footerClass="px-5 hideScroll"
                                         footer={[
                                             <>
                                                 <ItemGroup
@@ -878,7 +878,7 @@ function PDProfile() {
                                                         <>
                                                             {
                                                                 dashboardLayoutViewModel.getUsers().length > 0 && (
-                                                                    dashboardLayoutViewModel.getUsers().map((user) => (
+                                                                    dashboardLayoutViewModel.getUsers().map(() => (
                                                                         <>
                                                                             <ItemGroup
                                                                                 customClass=" py-1"
@@ -974,7 +974,7 @@ function PDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Active Programs</h5>
                                             </>
                                         ]}
-                                        contentClass="p-5 scrollable postList"
+                                        contentClass="p-5 hideScroll"
                                         content={[
                                             <>
                                                 <ItemGroup
@@ -1142,7 +1142,7 @@ function PDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Completed Programs</h5>
                                             </>
                                         ]}
-                                        contentClass="p-5 scrollable postList"
+                                        contentClass="p-5 hideScroll"
                                         content={[
                                             <>
                                                 <ItemGroup
