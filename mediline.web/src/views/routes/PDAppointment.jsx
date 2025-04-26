@@ -529,10 +529,10 @@ function PDAppointment() {
                                                                 ))
                                                             ) : (
                                                                 <Container
-                                                                    customClass="br-sm py-1 px-0 scrollable postList"
+                                                                    customClass="br-sm py-1 px-0 hideScroll"
                                                                     fitParent={true}
                                                                     style={{
-                                                                        maxHeight: "200px",
+                                                                        maxHeight: "300px",
                                                                         gridAutoColumns: "1fr"
                                                                     }}
                                                                     content={[
