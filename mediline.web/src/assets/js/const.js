@@ -505,7 +505,12 @@ export const appointmentDataList = [
         notes: "Discussed importance of cardiovascular exercise. Recommended at least 30 minutes of brisk walking daily.",
         pharmacyNotes: "Suggested Omega-3 supplements for heart health and muscle recovery.",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: [
+            { userId: 1, content: "Hi doctor, I wanted to confirm our appointment today." },
+            { userId: 2, content: "Hello! Yes, we are scheduled for 9:00 AM. Is there anything you'd like to prepare?" },
+            { userId: 1, content: "No, I think I'm all set. Thank you!" }
+        ]
     },
     {
         appointmentId: 2,
@@ -519,7 +524,12 @@ export const appointmentDataList = [
         notes: "Patient reports improvement in endurance. Advised incorporating strength training twice a week.",
         pharmacyNotes: "Recommended vitamin D and magnesium supplements for bone and muscle support.",
         fixedFee: 150,
-        paymentStatus: "Pending"
+        paymentStatus: "Pending",
+        messages: [
+            { userId: 1, content: "Good morning, doctor! I’ve been feeling more energetic lately." },
+            { userId: 2, content: "That's great to hear! Have you been following the exercise routine?" },
+            { userId: 1, content: "Yes, I’ve been doing the brisk walks daily!" }
+        ]
     },
     {
         appointmentId: 3,
@@ -533,7 +543,12 @@ export const appointmentDataList = [
         notes: "Follow-up to assess progress in fitness routine. Will evaluate improvements in heart rate and endurance.",
         pharmacyNotes: "Recommended electrolyte supplements for hydration during exercise.",
         fixedFee: 150,
-        paymentStatus: "Pending"
+        paymentStatus: "Pending",
+        messages: [
+            { userId: 2, content: "Hello, how’s everything progressing with your fitness routine?" },
+            { userId: 1, content: "Hi doctor, it's been going well! My heart rate during exercises seems lower now." },
+            { userId: 2, content: "Excellent! That’s a great sign of improved endurance." }
+        ]
     },
     {
         appointmentId: 4,
@@ -541,11 +556,14 @@ export const appointmentDataList = [
         doctorLicenseNumber: "214365",
         patientMRN: "234567",
         appointmentDate: "04/18/2025",
-        startTime: "14:00",
-        endTime: "14:15",
+        startTime: "13:00",
+        endTime: "13:15",
         treatment: "Consultation",
+        notes: "Discussed importance of cardiovascular exercise.",
+        pharmacyNotes: "Suggested Omega-3 supplements for heart health and muscle recovery.",
         fixedFee: 150,
-        paymentStatus: "Pending"
+        paymentStatus: "Pending",
+        messages: []
     },
     {
         appointmentId: 5,
@@ -557,7 +575,8 @@ export const appointmentDataList = [
         endTime: "08:45",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: []
     },
     {
         appointmentId: 6,
@@ -569,7 +588,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: []
     },
     {
         appointmentId: 7,
@@ -581,7 +601,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Pending"
+        paymentStatus: "Pending",
+        messages: []
     },
     {
         appointmentId: 8,
@@ -593,7 +614,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: []
     },
     {
         appointmentId: 9,
@@ -605,7 +627,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: []
     },
     {
         appointmentId: 10,
@@ -617,7 +640,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: []
     },
     {
         appointmentId: 11,
@@ -629,7 +653,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Pending"
+        paymentStatus: "Pending",
+        messages: []
     },
     {
         appointmentId: 12,
@@ -641,7 +666,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: []
     },
     {
         appointmentId: 13,
@@ -653,7 +679,8 @@ export const appointmentDataList = [
         appointmentType: "Online Chat",
         treatment: "Consultation",
         fixedFee: 150,
-        paymentStatus: "Paid"
+        paymentStatus: "Paid",
+        messages: []
     }
 ];
 
