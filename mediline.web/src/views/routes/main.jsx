@@ -4,6 +4,7 @@ import {
     createBrowserRouter,
     RouterProvider,
 } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '../../assets/css/default-style.css';
 import '../../assets/scss/default-style.scss';
 import HomePage from './Home';
@@ -23,6 +24,8 @@ import DoctorAppointment from './DoctorAppointment';
 import PatientAppointment from './PatientAppointment';
 import PharmacistHome from './PharmacistHome';
 import PharmacistPatientProfile from './PharmacistPatientProfile';
+
+const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
     {
@@ -115,8 +118,10 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
-        <UserProvider>
-            <RouterProvider router={router} />
-        </UserProvider>
+        <QueryClientProvider client={queryClient}>
+            <UserProvider>
+                <RouterProvider router={router} />
+            </UserProvider>
+        </QueryClientProvider>
     </StrictMode>,
 );
