@@ -12,7 +12,7 @@ export default function FindADoctorPage() {
     // Used to manage the form data
     const [formData, setFormData] = useState(FindDoctorViewModel);
 
-    const { data: doctorList, isLoading, error } = FindDoctorViewModel.useFilteredDoctors();
+    const { data: doctorList, isLoading, error } = FindDoctorViewModel.getDoctorList();
 
     // References for the select lists which can be used to invoke internal methods
     const specialtyDropdownRef = useRef();

@@ -1,6 +1,5 @@
 import { specialties, ratings, doctorList } from '../assets/js/const';
 import { useDoctors } from '../hooks/useDoctors';
-import { useMemo } from 'react';
 
 const FindDoctorViewModel = {
     // Contains the data to be displayed in the view
@@ -82,22 +81,8 @@ const FindDoctorViewModel = {
         this.applyFilters();
     },
 
-    // Call to the get doctors method in the service layer
     getDoctorList: function () {
-        console.warn("getDoctorList() should be replaced by useFilteredDoctors() inside components for React Query support.");
-        return [];
-    },
-    
-    // New method: React Query wrapper
-    useFilteredDoctors: function () {
-        const memoizedFilters = useMemo(() => ({ 
-            name: this.filters.name,
-            specialty: this.filters.specialty,
-            rating: this.filters.rating,
-            acceptingNewPatients: this.filters.acceptingNewPatients,
-        }), [this.filters.name, this.filters.specialty, this.filters.rating, this.filters.acceptingNewPatients]);
-
-        return useDoctors(memoizedFilters);
+        return useDoctors(this.filters);
     },
 
     // Call to the get specialties method in the service layer

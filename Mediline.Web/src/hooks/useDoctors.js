@@ -1,12 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from '../assets/js/api.js';
 import { specialties } from '../assets/js/const';
+import FindDoctorViewModel from '../viewModels/FindDoctorViewModel';
 
 const fetchDoctors = async () => {
     const { data } = await axios.get('/doctor/');
     console.log('Fetched data:', data);
 
-    // Hardcoded fields 
     return data.map((doctor, i) => ({
         ...doctor,
         rating: `${80 + (i % 5) * 5}%`,
@@ -14,7 +14,9 @@ const fetchDoctors = async () => {
     }));
 };
 
-export const useDoctors = (filters) => {
+export const useDoctors = () => {
+    const filters = FindDoctorViewModel.filters;
+
     return useQuery({
         queryKey: ['doctors', filters],
         queryFn: async () => {
