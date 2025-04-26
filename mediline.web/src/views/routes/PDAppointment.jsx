@@ -547,7 +547,7 @@ function PDAppointment() {
                                                                                 items={[
                                                                                     <>
                                                                                         {
-                                                                                            dashboardLayoutViewModel.getUsers().map((user) => (
+                                                                                            dashboardLayoutViewModel.getUsers().map(() => (
                                                                                                 <>
                                                                                                     <ItemGroup
                                                                                                         customClass="gap-2"
