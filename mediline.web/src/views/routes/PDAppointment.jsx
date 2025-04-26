@@ -602,6 +602,7 @@ function PDAppointment() {
                                                         }
                                                     </>
                                                 ]}
+                                                footerClass="pt-5"
                                                 footer={[
                                                     <>
                                                         <InputBar
