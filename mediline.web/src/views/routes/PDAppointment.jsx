@@ -561,7 +561,7 @@ function PDAppointment() {
                                                                                                                     fitParent={true}
                                                                                                                     content={[
                                                                                                                         <>
-                                                                                                                            <p className="font-4 font-regular text-dark-300 py-3 px-4 bg-secondary-400 br text-justify">Hey, let me tell you something about me and myself</p>
+                                                                                                                            <p className="font-4 font-regular text-dark-300 py-3 px-4 bg-primary-dark-600 br text-justify">Hey, let me tell you something about me and myself</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
