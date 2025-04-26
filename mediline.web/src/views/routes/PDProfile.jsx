@@ -985,15 +985,54 @@ function PDProfile() {
                                                         <>
                                                             {
                                                                 pastAppointments.length > 0 && (
-                                                                    pastAppointments.map((appt) => (
+                                                                    pastAppointments.map(() => (
                                                                         <>
                                                                             <ItemGroup
-                                                                                customClass=" pt-2 pb-6 b-bottom-3 outline-primary-dark-800 justify-content-space-between"
+                                                                                customClass=" pt-2 pb-6 justify-content-space-between position-relative"
                                                                                 axis={false}
                                                                                 fitParent={true}
                                                                                 stretch={true}
                                                                                 items={[
                                                                                     <>
+                                                                                        <Container
+                                                                                            customClass="bg-primary-dark-500 position-absolute"
+                                                                                            style={{
+                                                                                                height: "1.5px",
+                                                                                                width: "100%",
+                                                                                                bottom: "0",
+                                                                                                left: "0"
+                                                                                            }}
+                                                                                            content={[
+                                                                                                <>
+                                                                                                    <ItemGroup
+                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center "
+                                                                                                        axis={false}
+                                                                                                        stretch={true}
+                                                                                                        isClickable={true}
+                                                                                                        style={{
+                                                                                                            bottom: "0",
+                                                                                                            left: "45%",
+                                                                                                            transform: "translateY(50%)"
+                                                                                                        }}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <BaseIcon
+                                                                                                                    fill="none"
+                                                                                                                    height="28px"
+                                                                                                                    width="28px">
+                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                    <g id="SVGRepo_iconCarrier">
+                                                                                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="hsl(200, 30%, 25%)" />
+                                                                                                                    </g>
+                                                                                                                </BaseIcon>
+                                                                                                                <p className="font-3 font-semibold text-dark-200">ADD REGIMEN</p>
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                </>
+                                                                                            ]}
+                                                                                        />
                                                                                         <ItemGroup
                                                                                             axis={false}
                                                                                             fitParent={true}
