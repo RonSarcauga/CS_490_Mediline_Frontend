@@ -71,7 +71,7 @@ function PDProfile() {
                                                                     <>
                                                                         <p className="font-4">MRN</p>
                                                                         <InputBar
-                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
                                                                             value={patientData.mrn}
                                                                             readonly={true}
@@ -100,7 +100,7 @@ function PDProfile() {
                                                                     <>
                                                                         <p className="font-4">First Name</p>
                                                                         <InputBar
-                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
                                                                             value={user.firstName}
                                                                             readonly={true}
@@ -116,7 +116,7 @@ function PDProfile() {
                                                                     <>
                                                                         <p className="font-4">Last Name</p>
                                                                         <InputBar
-                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
                                                                             value={user.lastName}
                                                                             readonly={true}
@@ -132,7 +132,7 @@ function PDProfile() {
                                                                     <>
                                                                         <p className="font-4">Sex</p>
                                                                         <InputBar
-                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
                                                                             value={user.sex}
                                                                             readonly={true}
@@ -159,7 +159,7 @@ function PDProfile() {
                                                                     <>
                                                                         <p className="font-4">Date of Birth</p>
                                                                         <InputBar
-                                                                            customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                            customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
                                                                             value={user.dateOfBirth}
                                                                             readonly={true}
@@ -215,7 +215,7 @@ function PDProfile() {
                                                                         <>
                                                                             <p className="font-4">Email</p>
                                                                             <InputBar
-                                                                                customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
                                                                                 value={user.email}
                                                                                 readonly={true}
@@ -242,7 +242,7 @@ function PDProfile() {
                                                                         <>
                                                                             <p className="font-4">Phone</p>
                                                                             <InputBar
-                                                                                customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
                                                                                 value={user.phoneNumber}
                                                                                 readonly={true}
@@ -269,7 +269,7 @@ function PDProfile() {
                                                                         <>
                                                                             <p className="font-4">Address</p>
                                                                             <InputBar
-                                                                                customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
                                                                                 value={user.address}
                                                                                 readonly={true}
@@ -296,7 +296,7 @@ function PDProfile() {
                                                                         <>
                                                                             <p className="font-4">City</p>
                                                                             <InputBar
-                                                                                customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
                                                                                 value={user.city}
                                                                                 readonly={true}
@@ -312,7 +312,7 @@ function PDProfile() {
                                                                         <>
                                                                             <p className="font-4">State</p>
                                                                             <InputBar
-                                                                                customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
                                                                                 value={user.state}
                                                                                 readonly={true}
@@ -328,7 +328,7 @@ function PDProfile() {
                                                                         <>
                                                                             <p className="font-4">Postal Code</p>
                                                                             <InputBar
-                                                                                customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
                                                                                 value={user.postalCode}
                                                                                 readonly={true}
@@ -362,15 +362,45 @@ function PDProfile() {
                                         ]}
                                     />
                                     <ItemGroup
-                                        customClass="gap-5"
+                                        customClass="gap-5 px-2"
                                         axis={true}
                                         fitParent={true}
                                         items={[
                                             <>
+                                                <ItemGroup
+                                                    customClass="align-items-center gap-6 bg-primary-dark-600 pl-8 pr-2 py-6 br-sm align-items-center justify-items-center hover-box-shadow-sm shadow-primary-neutral-400"
+                                                    axis={false}
+                                                    stretch={true}
+                                                    isClickable={true}
+                                                    items={[
+                                                        <>
+                                                            <BaseIcon
+                                                                height="50px"
+                                                                width="50px"
+                                                                fill="hsl(200, 30%, 35%)"
+                                                                viewBox="-32 0 512 512">
+                                                                <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128zm89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4z" />
+                                                            </BaseIcon>
+                                                            <ItemGroup
+                                                                customClass="gap-1"
+                                                                axis={true}
+                                                                style={{
+                                                                    maxWidth: "150px"
+                                                                }}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-4 font-semibold text-dark-300">Find A Doctor</p>
+                                                                        <p className="font-3 font-medium text-dark-300">Need a partner? Start here</p>
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
                                             </>
                                         ]}
                                     />
-                                    
+                                                                        
                                 </>
                             ]}
                         />
@@ -1308,7 +1338,7 @@ function PDProfile() {
                                                                                             <>
                                                                                                 <p className="font-4">What is your height in centimeters?</p>
                                                                                                 <InputBar
-                                                                                                    customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                                    customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                     placeholder=""
                                                                                                 />
                                                                                             </>
@@ -1333,7 +1363,7 @@ function PDProfile() {
                                                                                             <>
                                                                                                 <p className="font-4">How much do you weigh in kilograms?</p>
                                                                                                 <InputBar
-                                                                                                    customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                                    customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                     placeholder=""
                                                                                                 />
                                                                                             </>
@@ -1358,7 +1388,7 @@ function PDProfile() {
                                                                                             <>
                                                                                                 <p className="font-4">How much calories did you burn?</p>
                                                                                                 <InputBar
-                                                                                                    customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                                    customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                     placeholder=""
                                                                                                 />
                                                                                             </>
@@ -1383,7 +1413,7 @@ function PDProfile() {
                                                                                             <>
                                                                                                 <p className="font-4">How many cups of water did you drink?</p>
                                                                                                 <InputBar
-                                                                                                    customClass='bg-primary-dark-200 py-2 pl-4 b-bottom-4 outline-primary-dark-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                                    customClass='bg-primary-dark-400 py-2 pl-4 b-bottom-4 outline-primary-neutral-400 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                     placeholder=""
                                                                                                 />
                                                                                             </>
