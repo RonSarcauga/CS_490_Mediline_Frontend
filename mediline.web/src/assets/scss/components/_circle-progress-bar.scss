@@ -1,2 +1,15 @@
-body {
+.circle-background {
+    fill: none;
+    stroke: var(--clr-line-color, hsl(200, 45%, 75%));
+}
+
+.circle-progress {
+    fill: none;
+    stroke: var(--color1);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.circle-text {
+    font-size: 1.5rem;
 }
