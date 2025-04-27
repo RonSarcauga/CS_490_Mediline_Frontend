@@ -20,3 +20,35 @@
     pointer-events: none;
 }
 /* End of Checkbox */
+
+/* Style: Refactored Checkbox */
+
+.re-checkbox-wrapper {
+    position: relative;
+    display: inline-block;
+    height: 30px;
+    width: 30px;
+}
+
+.re-checkbox-wrapper input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 100%;
+    width: 100%;
+    cursor: pointer;
+    border: 1px solid var(--clr-line-color, var(--clr-neutral-700));
+    outline: none;
+}
+
+.re-checkbox-wrapper input[type="checkbox"]:checked {
+    background-color: var(--clr-line-color, transparent);
+}
+
+.re-check-icon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+}
+
+/* End of Refactored Checkbox */

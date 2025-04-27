@@ -12,6 +12,9 @@ export default function Checkbox({
     checked = false,
     onChange,
     checkboxClass = "",
+    checkHeight = 30,
+    checkWidth = 30,
+    checkColor = "hsl(210, 70%, 50%)",
     iconClass = "",
 }) {
     const [isChecked, setIsChecked] = useState(checked);
@@ -29,7 +32,7 @@ export default function Checkbox({
     };
 
     return (
-        <label className={`checkbox-wrapper ${checkboxClass}`}>
+        <label className={`re-checkbox-wrapper ${isChecked ? "checked" : ""} ${checkboxClass}`}>
             <input
                 type="checkbox"
                 checked={isChecked}
@@ -40,15 +43,15 @@ export default function Checkbox({
                 className={`${isChecked ? "checked" : ""}`}
             >
                 {isChecked && (
-                    <span className={`check-icon ${iconClass}`}>
+                    <span className={`re-check-icon ${iconClass}`}>
                         <BaseIcon
-                            height={30}
-                            width={30}
+                            height={checkHeight}
+                            width={checkWidth}
                             viewBox="0 0 24 24"
                             fillColor="none">
                             <g id="SVGRepo_bgCarrier" stroke-width="0" />
                             <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                            <g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="hsl(210, 70%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            <g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke={checkColor} stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                             </g>
                         </BaseIcon>
                     </span>
