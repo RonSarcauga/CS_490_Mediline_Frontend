@@ -398,7 +398,22 @@ export const baseUserList = [
         postalCode: "85001",
         role: "Patient",
         password: "password123"
-    }
+    },
+    {
+        "id": 13,
+        "firstName": "Sarah",
+        "lastName": "Johnson",
+        "sex": "Female",
+        "dateOfBirth": "05/14/1985",
+        "email": "sarah.johnson@example.com",
+        "phoneNumber": "180-555-5555",
+        "address": "789 Elm St",
+        "city": "Phoenix",
+        "state": "Arizona",
+        "postalCode": "85002",
+        "role": "Pharmacist",
+        "password": "securepassword456"
+    },
 ];
 
 export const patientDataList = [
@@ -407,77 +422,88 @@ export const patientDataList = [
         mrn: "123456",
         sex: "Male",
         doctor: "214365",
-        appointments: [1,2,3]
+        appointments: [1, 2, 3],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 3,
         mrn: "234567",
         sex: "Female",
         doctor: "214365",
-        appointments: [4]
+        appointments: [4],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 4,
         mrn: "345678",
         sex: "Male",
         doctor: "214365",
-        appointments: [5]
+        appointments: [5],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 5,
         mrn: "456789",
         sex: "Male",
         doctor: "214365",
-        appointments: [6]
+        appointments: [6],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 6,
         mrn: "567890",
-        doctor: "214365",
         sex: "Male",
-        appointments: [7]
+        doctor: "214365",
+        appointments: [7],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 7,
         mrn: "678901",
         doctor: "214365",
         sex: "Female",
-        appointments: [8]
+        appointments: [8],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 8,
         mrn: "789012",
         doctor: "214365",
         sex: "Male",
-        appointments: [9]
+        appointments: [9],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 9,
         mrn: "890123",
         doctor: "214365",
         sex: "Female",
-        appointments: [10]
+        appointments: [10],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 10,
         mrn: "901234",
         doctor: "214365",
         sex: "Male",
-        appointments: [11]
+        appointments: [11],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 11,
         mrn: "112345",
         doctor: "214365",
         sex: "Female",
-        appointments: [12]
+        appointments: [12],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     },
     {
         userId: 12,
         mrn: "113456",
         doctor: "214365",
         sex: "Male",
-        appointments: [13]
+        appointments: [13],
+        pharmacyAddress: "56 Aptos Dr, New York, NY"
     }
 ];
 
@@ -489,6 +515,15 @@ export const doctorDataList = [
         patients: ["123456", "234567", "345678", "456789", "567890", "678901", "789012", "890123", "901234", "112345", "113456"],
         appointments: [1,2,3,4,5,6,7,8,9,10,11,12,13],
         acceptingNewPatients: true
+    }
+];
+
+export const pharmacistDataList = [
+    {
+        userId: 13,
+        patients: ["123456", "234567", "345678", "456789", "567890", "678901", "789012", "890123", "901234", "112345", "113456"],
+        pharmacyName: "Aptos",
+        pharmacyAddress: "56 Aptos Dr, New York, NY",
     }
 ];
 
