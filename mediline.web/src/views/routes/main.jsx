@@ -16,6 +16,8 @@ import PDAppointment from './PDAppointment';
 import PDProfile from './PDProfile';
 import PDDiscussionForum from './PDDiscussionForum';
 import DDHome from './DDHome';
+import PHHome from './PHHome';
+import PHPatient from './PHPatient';
 import DashboardLayout from './DashboardLayout';
 import UserProvider from '../../context/UserProvider';
 import PatientDashboardHome from './PatientDashboardHome';
