@@ -51,7 +51,7 @@ function CircleProgressBar({
                     y="50%"
                     dy="0.3em"
                     textAnchor="middle"
-                    fontSize={Math.max(circleWidth * 0.15, 10)}
+                    fontSize={Math.max(circleWidth * 0.2, 10)}
                     className="circle-text"
                 >
                     {text}
