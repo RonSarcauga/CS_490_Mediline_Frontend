@@ -272,6 +272,12 @@ class DashboardLayoutViewModel {
         return pharmacistDataList.find(pharmacist => pharmacist.userId === id);
     }
 
+    // Helper method to get all of the patients served by a pharmacy
+    getCustomers(address) {
+        const customers = patientDataList.filter(user => user.pharmacyAddress === address);
+        return customers;
+    }
+
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
