@@ -4,6 +4,7 @@ import {
     doctorDataList,
     pharmacistDataList,
     appointmentDataList,
+    vitalHistoryList,
 } from '../assets/js/const';
 
 class DashboardLayoutViewModel {
