@@ -309,7 +309,7 @@ function PDHome() {
                                                                 </>
                                                             ) : (
                                                                 <Container
-                                                                        customClass="br-sm align-items-center justify-content-center bg-primary-dark-400"
+                                                                        customClass="br-sm align-items-center justify-content-center bg-primary-dark-800"
                                                                     fitParent={true}
                                                                     content={[
                                                                         <>
@@ -457,7 +457,7 @@ function PDHome() {
                                                                                         ))
                                                                                     ) : (
                                                                                         <Container
-                                                                                            customClass="align-items-center justify-content-center py-3 br-sm mt-2 bg-primary-dark-400"
+                                                                                            customClass="align-items-center justify-content-center py-3 br-sm mt-2 bg-primary-dark-800"
                                                                                             fitParent={true}
                                                                                             content={[
                                                                                                 <>
@@ -653,7 +653,7 @@ function PDHome() {
                                                                     ))
                                                                 ) : (
                                                                     <Container
-                                                                        customClass="br-sm p-5 align-items-center justify-content-center bg-primary-dark-400"
+                                                                        customClass="br-sm p-5 align-items-center justify-content-center bg-primary-dark-800"
                                                                         fitParent={true}
                                                                         content={[
                                                                             <>
@@ -755,7 +755,7 @@ function PDHome() {
                                                                         items={[
                                                                             <>
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-700"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
@@ -945,7 +945,7 @@ function PDHome() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-700"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
@@ -1002,7 +1002,7 @@ function PDHome() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-700"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
