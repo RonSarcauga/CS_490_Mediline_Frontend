@@ -2,6 +2,7 @@ import {
     baseUserList,
     patientDataList,
     doctorDataList,
+    pharmacistDataList,
     appointmentDataList,
 } from '../assets/js/const';
 
@@ -265,6 +266,12 @@ class DashboardLayoutViewModel {
 
         return weekDays;
     }
+
+    // Helper method to find records in the doctor table by license number
+    getPharmacistData(id) {
+        return pharmacistDataList.find(pharmacist => pharmacist.userId === id);
+    }
+
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
