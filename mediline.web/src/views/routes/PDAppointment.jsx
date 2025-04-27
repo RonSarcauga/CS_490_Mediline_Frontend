@@ -343,7 +343,7 @@ function PDAppointment() {
                                                 header={[
                                                     <>
                                                         <Container
-                                                            customClass="bg-primary-dark-600 p-4 br-sm"
+                                                            customClass="bg-primary-dark-800 p-4 br-sm"
                                                             fitParent={true}
                                                             content={[
                                                                 <>
@@ -561,7 +561,7 @@ function PDAppointment() {
                                                                                                                     fitParent={true}
                                                                                                                     content={[
                                                                                                                         <>
-                                                                                                                            <p className="font-4 font-regular text-dark-300 py-3 px-4 bg-primary-dark-600 br text-justify">Hey, let me tell you something about me and myself</p>
+                                                                                                                            <p className="font-4 font-regular text-dark-300 py-3 px-4 bg-primary-dark-800 br text-justify">Hey, let me tell you something about me and myself</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
@@ -707,7 +707,7 @@ function PDAppointment() {
                                                                         items={[
                                                                             <>
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-700"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
@@ -897,7 +897,7 @@ function PDAppointment() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-700"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
@@ -954,7 +954,7 @@ function PDAppointment() {
                                                                                     ]}
                                                                                 />
                                                                                 <Accordion
-                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-400"
+                                                                                    headerClass="py-4 px-5 br-sm bg-primary-dark-700"
                                                                                     header={[
                                                                                         <>
                                                                                             <ItemGroup
