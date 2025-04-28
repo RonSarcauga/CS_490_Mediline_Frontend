@@ -1524,4 +1524,4 @@ function DDProfile() {
     );
 }
 
-export default PDProfile;
+export default DDProfile;
