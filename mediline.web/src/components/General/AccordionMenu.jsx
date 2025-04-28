@@ -26,7 +26,9 @@ export default function Accordion({
     }, [isExpanded]);
 
     const handleToggle = () => {
+        console.log("Expanded before toggle: ", expanded);
         const nextState = !expanded;
+        console.log("Expanded after toggle: ", nextState);
         setExpanded(nextState);
         if (nextState) onExpand(nextState);
         else onCollapse(nextState);

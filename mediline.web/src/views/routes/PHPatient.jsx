@@ -12,14 +12,14 @@ function PHPatient() {
     const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
 
     const [accordionHeight, setAccordionHeight] = useState(0);
-    const handleAccordionExpand = (isExpanded) => {
-        if (isExpanded) {
-            setAccordionHeight(132);
-        }
-        else {
-            setAccordionHeight(0);
-        }
+    const onExpand = () => {
+        setAccordionHeight(150);
     };
+    const onCollapse = () => {
+        setAccordionHeight(0);
+    };
+
+    console.log(`Accordion Height: ${accordionHeight}`);
 
     return (
         <Container
@@ -476,7 +476,7 @@ function PHPatient() {
                                     ]}
                                 />
                                 <Container
-                                    customClass="gradient-light br-sm b-3 outline-neutral-1100 px-3 pb-4"
+                                    customClass="gradient-light br-sm b-3 outline-neutral-1100 px-3 pb-4 overflow-y-hidden"
                                     fitParent={true}
                                     contentClass="pt-6 pb-3 align-items-center"
                                     content={[
@@ -502,7 +502,8 @@ function PHPatient() {
                                                                         items={[
                                                                             <>
                                                                                 <Accordion
-                                                                                    onExpand={handleAccordionExpand}
+                                                                                    onExpand={onExpand}
+                                                                                    onCollapse={onCollapse}
                                                                                     headerClass="p-5 br-sm bg-primary-dark-600"
                                                                                     header={[
                                                                                         <>
@@ -545,7 +546,7 @@ function PHPatient() {
                                                                                                 <>
                                                                                                     {
                                                                                                         patients.length > 0 ? (
-                                                                                                            patients.slice(0, 2).map((patient) => (
+                                                                                                            patients.slice(0, 3).map((patient) => (
                                                                                                                 <ItemGroup
                                                                                                                     customClass="gap-6 align-items-center"
                                                                                                                     axis={false}
@@ -670,6 +671,10 @@ function PHPatient() {
                                                                         axis={true}
                                                                         stretch={true}
                                                                         fitParent={true}
+                                                                        style={{
+                                                                            maxHeight: `calc(62% - ${accordionHeight}px)`,
+                                                                            transition: "all 0.2s ease"
+                                                                        }}
                                                                         items={[
                                                                             <>
                                                                                 {
