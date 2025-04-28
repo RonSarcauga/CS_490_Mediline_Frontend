@@ -16,6 +16,7 @@ import PDAppointment from './PDAppointment';
 import PDProfile from './PDProfile';
 import PDDiscussionForum from './PDDiscussionForum';
 import DDHome from './DDHome';
+import DDProfile from './DDProfile';
 import PHHome from './PHHome';
 import PHPatient from './PHPatient';
 import DashboardLayout from './DashboardLayout';
@@ -67,12 +68,12 @@ const router = createBrowserRouter([
                 element: <DDHome />,
             },
             {
-                path: 'doctor/patient-profile',
+                path: 'doctor/profile',
                 element: <DoctorPatientProfile />
             },
             {
                 path: 'doctor/appointment',
-                element: <DoctorAppointment />
+                element: <DDProfile />
             },
             {
                 path: 'doctor/discussion-forum',
