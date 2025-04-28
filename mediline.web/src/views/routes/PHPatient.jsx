@@ -2,7 +2,6 @@ import { useState, useContext, useRef, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import Accordion from '../../components/General/AccordionMenu';
-import ContextMenu from '../../components/General/ContextMenu';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
@@ -19,89 +18,6 @@ function PHPatient() {
     const onCollapse = () => {
         setAccordionHeight(0);
     };
-
-    const [people, setPeople] = useState({
-        { id: 1, name: "Johnny", selected: false },
-        { id: 2, name: "Steve", selected: false },
-        { id: 3, name: "Jackson", selected: false },
-        { id: 4, name: "Stephanie", selected: false },
-    });
-
-    const contextMenuRef = useRef(null);
-    const [contextMenu, setContextMenu] = useState({
-        position: {
-            x: 0,
-            y: 0
-        },
-        toggled: false
-    });
-    function handleOnContextMenu(e, rightClickPerson) {
-        e.preventDefault();
-
-        const contextMenuAttr = contextMenuRef.current.getBoundingClientRect();
-
-        const isLeft = e.clientX < window?.innerWidth / 2;
-
-        let x;
-        let y = e.clientY;
-
-        if (isLeft) {
-            x = e.clientX;
-        }
-        else {
-            x = e.clientX - contextMenuAttr.width;
-        }
-
-        setContextMenu({
-            position: {
-                x,
-                y
-            },
-            toggled: true
-        });
-
-        setPeople (
-            p
-        )
-
-        console.log(rightClickPerson);
-    };
-
-    function resetContextMenu() {
-        setPeople(
-            people.map((person) => {
-                return {
-                    ...person,
-                    selected: false,
-                };
-            })
-        );
-
-        setContextMenu({
-            position: {
-                x: 0,
-                y: 0
-            },
-            toggled: false,
-        });
-    };
-
-    useEffect(() => {
-        function handler(e) {
-            if (contextMenuRef.current) {
-                if (!contextMenuRef.current.contains(e.target)) {
-                    resetContextMenu();
-                }
-            }
-        }
-
-        document.addEventListener('click', handler);
-
-        return () => {
-            document.removeEventListener('click', handler);
-        }
-    });
-    
 
     console.log(`Accordion Height: ${accordionHeight}`);
 
@@ -874,7 +790,6 @@ function PHPatient() {
                     </>
                 ]}
             />
-
         </>
     );
 }
