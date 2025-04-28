@@ -28,8 +28,8 @@ export default function Accordion({
     const handleToggle = () => {
         const nextState = !expanded;
         setExpanded(nextState);
-        if (nextState) onExpand();
-        else onCollapse();
+        if (nextState) onExpand(nextState);
+        else onCollapse(nextState);
     };
 
     return (
