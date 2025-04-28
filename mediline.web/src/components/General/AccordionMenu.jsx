@@ -6,6 +6,7 @@ export default function Accordion({
     headerClass = "",
     bodyClass = "",
     toggleClass = "",
+    style,
     header,
     body,
     toggleIcon,
@@ -41,7 +42,10 @@ export default function Accordion({
                 {header}
                 {toggleIcon && <span className={`accordion-toggle`}>{toggleIcon}</span>}
             </div>
-            <div className={`accordion-body ${expanded ? `${bodyClass}` : ""}`}>
+            <div
+                className={`accordion-body ${expanded ? `${bodyClass}` : ""}`}
+                style={{...style}}
+            >
                 {body}
             </div>
         </div>
