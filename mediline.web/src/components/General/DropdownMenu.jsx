@@ -3,7 +3,8 @@ import Container, { ItemGroup } from './Container';
 
 function SimpleDropdownMenu({
     triggerLabel,
-    menuItems
+    menuItems,
+    customBody,
 })
 {
     const [isOpen, setIsOpen] = useState(false);
@@ -72,25 +73,28 @@ function SimpleDropdownMenu({
                 ]}
             />
             {isOpen && (
-                <ul
+                <div
                     className="custom-dropdown-body"
                     ref={bodyRef}
-                    style={{
-                        position: "absolute",
-                        top: "100%",
-                        left: "0",
-                        backgroundColor: "white",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
-                        borderRadius: "4px",
-                        zIndex: 1000,
-                    }}
                 >
-                    {menuItems.map((item, index) => (
-                        <li key={index} className="custom-dropdown-item" style={{ padding: "8px 16px", cursor: "pointer" }}>
-                            {item.label}
-                        </li>
-                    ))}
-                </ul>
+                    {customBody ? (
+                        customBody
+                    ) : (
+                        <ul
+                            className="default-dropdown-body"
+                        >
+                            {menuItems.map((item, index) => (
+                                <li
+                                    key={index}
+                                    className="custom-dropdown-item"
+                                    style={{ padding: "8px 16px", cursor: "pointer" }}
+                                >
+                                    {item.label}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </div>
             )}
         </div>
     );

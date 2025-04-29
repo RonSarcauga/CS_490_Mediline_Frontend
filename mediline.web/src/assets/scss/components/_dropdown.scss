@@ -25,13 +25,19 @@
     left: 0;
     width: auto;
     white-space: nowrap;
+    /*background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;*/
+    z-index: 1000;
+}
+
+.default-dropdown-body {
     background-color: white;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
     margin-top: 5px;
     padding: 0;
     list-style: none;
-    z-index: 1000;
 }
 
 /* Dropdown Menu Item */

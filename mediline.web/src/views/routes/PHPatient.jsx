@@ -747,16 +747,24 @@ function PHPatient() {
                                                                                                                                             </>
                                                                                                                                         ]}
                                                                                                                                     />
-                                                                                                                                    <ItemGroup
-                                                                                                                                        customClass="gap-1 justify-self-end"
-                                                                                                                                        axis={true}
-                                                                                                                                        isClickable={true}
-                                                                                                                                        items={[
-                                                                                                                                            <>
-                                                                                                                                                <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                            </>
+                                                                                                                                    <SimpleDropdownMenu
+                                                                                                                                        triggerLabel={[
+                                                                                                                                            <ItemGroup
+                                                                                                                                                customClass="gap-1 justify-self-end"
+                                                                                                                                                axis={true}
+                                                                                                                                                isClickable={true}
+                                                                                                                                                items={[
+                                                                                                                                                    <>
+                                                                                                                                                        <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                        <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                        <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                    </>
+                                                                                                                                                ]}
+                                                                                                                                            />
+                                                                                                                                        ]}
+                                                                                                                                        menuItems={[
+                                                                                                                                            { label: "View Profile" },
+                                                                                                                                            { label: "Logout" },
                                                                                                                                         ]}
                                                                                                                                     />
                                                                                                                                 </>
@@ -789,13 +797,6 @@ function PHPatient() {
                             ]}
                         />
                     </>
-                ]}
-            />
-            <SimpleDropdownMenu
-                triggerLabel="Options"
-                menuItems={[
-                    { label: "View Profile" },
-                    { label: "Logout" },
                 ]}
             />
         </>
