@@ -43,10 +43,12 @@ function DropdownMenu({
     const adjustDropdownPosition = () => {
         if (triggerRef.current) {
             const rect = triggerRef.current.getBoundingClientRect();
-            console.log("Trigger Dimensions: ", rect);
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            
             setDropdownPosition({
-                top: rect.bottom + offsetY,
-                left: rect.left + offsetX,
+                top: rect.bottom + scrollTop + offsetY,
+                left: rect.left + scrollLeft + offsetX,
             });
         }
         else {

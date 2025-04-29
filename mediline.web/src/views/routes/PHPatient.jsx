@@ -748,6 +748,8 @@ function PHPatient() {
                                                                                                                                         ]}
                                                                                                                                     />
                                                                                                                                     <DropdownMenu
+                                                                                                                                        offsetY={10}
+                                                                                                                                        offsetX={-30}
                                                                                                                                         triggerLabel={[
                                                                                                                                             <ItemGroup
                                                                                                                                                 customClass="gap-1 justify-self-end"
