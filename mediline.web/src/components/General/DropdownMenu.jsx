@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import Container, { ItemGroup } from './Container';
 
 function SimpleDropdownMenu({
     triggerLabel,
@@ -60,9 +61,16 @@ function SimpleDropdownMenu({
 
     return (
         <div className="custom-dropdown-menu" ref={menuRef} style={{ position: "relative" }}>
-            <button className="custom-dropdown-trigger" onClick={handleToggle}>
-                {triggerLabel}
-            </button>
+            <Container
+                customClass="custom-dropdown-trigger"
+                isClickable={true}
+                onClick={handleToggle}
+                content={[
+                    <>
+                        {triggerLabel}
+                    </>
+                ]}
+            />
             {isOpen && (
                 <ul
                     className="custom-dropdown-body"
