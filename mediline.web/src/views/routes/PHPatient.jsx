@@ -2,7 +2,7 @@ import { useState, useContext, useRef, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import Accordion from '../../components/General/AccordionMenu';
-import SimpleDropdownMenu from '../../components/General/DropdownMenu';
+import DropdownMenu from '../../components/General/DropdownMenu';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
@@ -747,7 +747,7 @@ function PHPatient() {
                                                                                                                                             </>
                                                                                                                                         ]}
                                                                                                                                     />
-                                                                                                                                    <SimpleDropdownMenu
+                                                                                                                                    <DropdownMenu
                                                                                                                                         triggerLabel={[
                                                                                                                                             <ItemGroup
                                                                                                                                                 customClass="gap-1 justify-self-end"

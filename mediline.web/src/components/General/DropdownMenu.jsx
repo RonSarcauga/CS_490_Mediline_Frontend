@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import { createPortal } from "react-dom";
 import Container, { ItemGroup } from './Container';
 
-function SimpleDropdownMenu({
+function DropdownMenu({
     triggerLabel,
     menuItems,
     customBody,
@@ -100,4 +101,4 @@ function SimpleDropdownMenu({
     );
 };
 
-export default SimpleDropdownMenu;
+export default DropdownMenu;
