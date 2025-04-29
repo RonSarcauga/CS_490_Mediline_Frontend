@@ -1,9 +1,11 @@
 /* Default Styles for Dropdown Menu */
-.accordion-menu {
+.dropdown-menu {
+    position: relative;
+    display: grid;
     transition: all 0.3s ease-in-out;
 }
 
-.accordion-header {
+.dropdown-header {
     cursor: pointer;
     display: grid;
     grid-template-columns: 1fr auto;
@@ -11,26 +13,28 @@
     align-items: center;
 }
 
-.accordion-body {
+.dropdown-body {
+    position: absolute;
     max-height: 0;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
     text-align: left;
+    z-index: 1000;
 }
 
-.accordion-menu.expanded .accordion-body {
+.dropdown-menu.expanded .drowpdown-body {
     max-height: 9999px;
 }
 
-.accordion-toggle {
+.dropdown-toggle {
     transition: transform 0.3s ease-in-out;
 }
 
-.accordion-menu.expanded .accordion-toggle {
+.dropdown-menu.expanded .dropdown-toggle {
     transform: rotate(-180deg);
 }
 
-.accordion-toggle {
+.dropdown-toggle {
     transform: rotate(0deg);
 }
 /* End of Dropdown Menu Default Styles*/
