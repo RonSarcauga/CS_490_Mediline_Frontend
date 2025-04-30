@@ -23,12 +23,6 @@ function Modal({
             >
                 {title && <h2 className="custom-modal-title">{title}</h2>}
                 <div className="custom-modal-body">{children}</div>
-                <button
-                    className="custom-modal-close-button"
-                    onClick={onClose}
-                >
-                    Close
-                </button>
             </div>
         </div>,
         document.body
