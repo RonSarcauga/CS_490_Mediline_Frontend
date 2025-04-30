@@ -1,4 +1,4 @@
-import { specialties, ratings, doctorList } from '../assets/js/const';
+import { specialties, ratings, } from '../assets/js/const';
 import { useDoctors } from '../hooks/useDoctors';
 
 const FindDoctorViewModel = {
@@ -81,6 +81,7 @@ const FindDoctorViewModel = {
         this.applyFilters();
     },
 
+    // Call to the get doctors method in the service layer
     getDoctorList: function () {
         return useDoctors(this.filters);
     },
