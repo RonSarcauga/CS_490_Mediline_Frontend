@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 function Modal({
+    customClass,
     isOpen,
     onClose,
     title,
@@ -18,7 +19,7 @@ function Modal({
             className="custom-modal-overlay"
             onClick={onClose}
         >
-            <div className="custom-modal-content"
+            <div className={`custom-modal-content ${customClass}`}
                 onClick={(e) => e.stopPropagation()}
             >
                 {title && <h2 className="custom-modal-title">{title}</h2>}
