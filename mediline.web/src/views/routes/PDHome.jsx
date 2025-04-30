@@ -1,12 +1,10 @@
 import { useContext } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
-import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
+import { useNavigate } from 'react-router-dom';\
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import Accordion from '../../components/General/AccordionMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
-import DashboardLayout from './DashboardLayout';
 
 function PDHome() {
     const { currentUser } = useContext(UserContext);
