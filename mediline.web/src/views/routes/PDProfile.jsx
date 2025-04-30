@@ -1007,7 +1007,7 @@ function PDProfile() {
                                                                                                 <>
                                                                                                     {/* This is the element that needs to be invisible until the wrapper element is hovered over */}
                                                                                                     <ItemGroup
-                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hover-reveal"
+                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hidden-element"
                                                                                                         axis={false}
                                                                                                         stretch={true}
                                                                                                         isClickable={true}
