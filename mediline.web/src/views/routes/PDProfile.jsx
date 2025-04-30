@@ -7,6 +7,7 @@ import InputBar from '../../components/General/InputBar';
 import Checkbox from '../../components/General/CheckboxRefactored';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+
 function PDProfile() {
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
