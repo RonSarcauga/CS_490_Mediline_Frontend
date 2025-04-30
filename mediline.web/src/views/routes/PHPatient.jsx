@@ -3,6 +3,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import Accordion from '../../components/General/AccordionMenu';
 import DropdownMenu from '../../components/General/DropdownMenu';
+import Modal from '../../components/General/Modal';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
@@ -20,10 +21,42 @@ function PHPatient() {
         setAccordionHeight(0);
     };
 
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    }
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    }
+
     console.log(`Accordion Height: ${accordionHeight}`);
 
     return (
         <>
+            <button
+                onClick={handleOpenModal}
+                style={{
+                    padding: "10px 20px",
+                    cursor: "pointer"
+                }}
+            >
+                Open Modal
+            </button>
+            <Modal
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+            >
+                <>
+                    <Container
+                        fitParent={true}
+                        content={[
+                            <>
+                                <p>Clicking outside this modal will close it!</p>
+                            </>
+                        ]}
+                    />
+                </>
+            </Modal>
             <Container
                 customClass="p-5"
                 fitParent={true}
@@ -643,9 +676,14 @@ function PHPatient() {
                                                                                                                                                                 <ItemGroup
                                                                                                                                                                     axis={false}
                                                                                                                                                                     stretch={true}
+                                                                                                                                                                    isClickable={true}
+                                                                                                                                                                    onClick={() => {
+                                                                                                                                                                        console.log("Open the modal!");
+                                                                                                                                                                        handleOpenModal;
+                                                                                                                                                                    }}
                                                                                                                                                                     items={[
                                                                                                                                                                         <>
-                                                                                                                                                                            <p>Logout</p>
+                                                                                                                                                                            <p>Review Request</p>
                                                                                                                                                                         </>
                                                                                                                                                                     ]}
                                                                                                                                                                 />
