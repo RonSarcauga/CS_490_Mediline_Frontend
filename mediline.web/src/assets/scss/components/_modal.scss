@@ -21,7 +21,7 @@
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        width: 300px;
+        width: calc(300px + fit-content);
         max-width: 100%;
         text-align: center;
         position: relative;

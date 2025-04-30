@@ -368,7 +368,7 @@ function PDProfile() {
                                         items={[
                                             <>
                                                 <ItemGroup
-                                                    customClass="align-items-center gap-6 bg-primary-dark-700 pl-8 pr-2 py-6 br-sm align-items-center justify-items-center hover-box-shadow-sm shadow-primary-neutral-400"
+                                                    customClass="align-items-center gap-6 bg-primary-dark-600 pl-8 pr-2 py-6 br-sm align-items-center justify-items-center hover-box-shadow-sm shadow-primary-neutral-400"
                                                     axis={false}
                                                     stretch={true}
                                                     isClickable={true}

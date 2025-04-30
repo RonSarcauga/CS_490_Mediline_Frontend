@@ -38,11 +38,163 @@ function PHPatient() {
                 onClose={handleCloseModal}
             >
                 <>
-                    <Container
-                        fitParent={true}
-                        content={[
+                    <ItemGroup
+                        customClass="px-2 pt-2 gap-5"
+                        axis={true}
+                        items={[
                             <>
-                                <p>Clicking outside this modal will close it!</p>
+                                <ItemGroup
+                                    customClass="gap-5"
+                                    axis={true}
+                                    fitParent={true}
+                                    items={[
+                                        <>
+                                            <ItemGroup
+                                                axis={false}
+                                                stretch={true}
+                                                items={[
+                                                    <>
+                                                        <h3 className="font-semibold text-neutral-600 justify-self-start">
+                                                            MEDICATION REQUEST
+                                                        </h3>
+                                                    </>
+                                                ]}
+                                            />
+                                            <Container
+                                                customClass="bg-neutral-1000 p-6"
+                                                fitParent={true}
+                                                headerClass="b-bottom-3 b-top-3 outline-neutral-800 py-3"
+                                                header={[
+                                                    <>
+                                                        <ItemGroup
+                                                            customClass="p-0 align-items-center justify-content-center"
+                                                            axis={false}
+                                                            fitParent={true}
+                                                            style={{
+                                                                gridAutoColumns: "150px"
+                                                            }}
+                                                            items={[
+                                                                <>
+                                                                    <h5 className="font-3 text-neutral-600">ITEM ORDERED</h5>
+                                                                    <h5 className="font-3 text-neutral-600">DURATION</h5>
+                                                                    <h5 className="font-3 text-neutral-600">DOSAGE</h5>
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    </>
+                                                ]}
+                                                contentClass="hideScroll px-0 pt-5 pb-5 b-bottom-3 outline-neutral-800"
+                                                content={[
+                                                    <>
+                                                        <ItemGroup
+                                                            customClass="gap-5"
+                                                            axis={true}
+                                                            fitParent={true}
+                                                            style={{
+                                                                maxHeight: "120px"
+                                                            }}
+                                                            items={[
+                                                                <>
+                                                                    {
+                                                                        patients.length > 0 && (
+                                                                            patients.slice(0, 1).map(() => (
+                                                                                <>
+                                                                                    <ItemGroup
+                                                                                        customClass=" py-1"
+                                                                                        axis={false}
+                                                                                        fitParent={true}
+                                                                                        stretch={true}
+                                                                                        style={{
+                                                                                            gridAutoColumns: "150px"
+                                                                                        }}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">Ozempic</p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                14 days
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                4 mg
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                </>
+                                                                            ))
+                                                                        )
+                                                                    }
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    </>
+                                                ]}
+                                                footer={[
+                                                    <>
+                                                        <ItemGroup
+                                                            customClass="pt-6 gap-3"
+                                                            axis={true}
+                                                            fitParent={true}
+                                                            items={[
+                                                                <>
+                                                                    <Container
+                                                                        customClass="bg-neutral-1000 py-3 b-3 outline-neutral-700 br-sm"
+                                                                        fitParent={true}
+                                                                        isClickable={true}
+                                                                        content={[
+                                                                            <>
+                                                                                <p className="font-semibold text-neutral-600">APPROVE</p>
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    <Container
+                                                                        customClass="bg-neutral-700 py-3 br-sm"
+                                                                        fitParent={true}
+                                                                        isClickable={true}
+                                                                        content={[
+                                                                            <>
+                                                                                <p className="font-semibold text-neutral-1000">REJECT</p>
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    </>
+                                                ]}
+                                            />
+                                        </>
+                                    ]}
+                                />
                             </>
                         ]}
                     />
