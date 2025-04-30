@@ -987,8 +987,9 @@ function PDProfile() {
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
                                                                         <>
+                                                                            {/* This is the element that wraps the entire card. When this is hovered over, the below element should be visible */}
                                                                             <ItemGroup
-                                                                                customClass=" pt-2 pb-6 justify-content-space-between position-relative"
+                                                                                customClass=" pt-2 pb-6 justify-content-space-between position-relative hover-parent"
                                                                                 axis={false}
                                                                                 fitParent={true}
                                                                                 stretch={true}
@@ -1004,8 +1005,9 @@ function PDProfile() {
                                                                                             }}
                                                                                             content={[
                                                                                                 <>
+                                                                                                    {/* This is the element that needs to be invisible until the wrapper element is hovered over */}
                                                                                                     <ItemGroup
-                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center "
+                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hover-reveal"
                                                                                                         axis={false}
                                                                                                         stretch={true}
                                                                                                         isClickable={true}
@@ -1111,7 +1113,7 @@ function PDProfile() {
                                                                                             ]}
                                                                                         />
                                                                                         <Checkbox
-                                                                                            checkboxClass="b-4 outline-primary-dark-600"
+                                                                                            checkboxClass="b-4 outline-primary-dark-600 align-self-center"
                                                                                             checkColor="hsl(210, 20%, 95%)"
                                                                                             label={[
                                                                                                 <p></p>
