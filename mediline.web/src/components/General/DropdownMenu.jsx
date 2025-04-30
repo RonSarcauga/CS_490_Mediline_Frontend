@@ -65,7 +65,7 @@ function DropdownMenu({
         <div ref={menuRef}>
             <div ref={triggerRef}>
                 <Container
-                    customClass="custom-dropdown-trigger"
+                    customClass="custom-dropdown-trigger m-0"
                     isClickable={true}
                     onClick={handleToggle}
                     content={[
@@ -92,13 +92,21 @@ function DropdownMenu({
                         ) : (
                             <ul className="default-dropdown-body">
                                 {menuItems.map((item, index) => (
-                                    <li
-                                        key={index}
-                                        className="custom-dropdown-item"
-                                        style={{ padding: "8px 16px", cursor: "pointer" }}
-                                    >
-                                        {item.label}
-                                    </li>
+                                    React.isValidElement(item) ? (
+                                        <li
+                                            key={index}
+                                            className="custom-dropdown-item"
+                                        >
+                                            {item}
+                                        </li>
+                                    ) : (
+                                        <li
+                                            key={index}
+                                            className="custom-dropdown-item"
+                                        >
+                                            {item.label}
+                                        </li>
+                                    )
                                 ))}
                             </ul>
                         )}

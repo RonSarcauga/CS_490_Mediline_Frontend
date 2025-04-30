@@ -501,6 +501,7 @@ function PHPatient() {
                                                                         <ItemGroup
                                                                             customClass="gap-3"
                                                                             axis={true}
+                                                                            fitParent={true}
                                                                             items={[
                                                                                 <>
                                                                                     <Accordion
@@ -561,6 +562,9 @@ function PHPatient() {
                                                                                                                                 <Container
                                                                                                                                     customClass="b-bottom-3 outline-primary-dark-400 pt-2 pb-5"
                                                                                                                                     fitParent={true}
+                                                                                                                                    style={{
+                                                                                                                                        minWidth: "22vw"
+                                                                                                                                    }}
                                                                                                                                     content={[
                                                                                                                                         <>
                                                                                                                                             <ItemGroup
@@ -568,9 +572,6 @@ function PHPatient() {
                                                                                                                                                 fitParent={true}
                                                                                                                                                 stretch={true}
                                                                                                                                                 axis={false}
-                                                                                                                                                style={{
-                                                                                                                                                    gridAutoColumns: "1fr 8vw"
-                                                                                                                                                }}
                                                                                                                                                 items={[
                                                                                                                                                     <>
                                                                                                                                                         <ItemGroup
@@ -620,16 +621,34 @@ function PHPatient() {
                                                                                                                                                                 </>
                                                                                                                                                             ]}
                                                                                                                                                         />
-                                                                                                                                                        <ItemGroup
-                                                                                                                                                            customClass="gap-1 justify-self-end"
-                                                                                                                                                            axis={true}
-                                                                                                                                                            isClickable={true}
-                                                                                                                                                            items={[
-                                                                                                                                                                <>
-                                                                                                                                                                    <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                                    <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                                    <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                                </>
+                                                                                                                                                        <DropdownMenu
+                                                                                                                                                            offsetY={10}
+                                                                                                                                                            offsetX={-30}
+                                                                                                                                                            triggerLabel={[
+                                                                                                                                                                <ItemGroup
+                                                                                                                                                                    customClass="gap-1 justify-self-end m-0"
+                                                                                                                                                                    axis={true}
+                                                                                                                                                                    isClickable={true}
+                                                                                                                                                                    items={[
+                                                                                                                                                                        <>
+                                                                                                                                                                            <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                                            <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                                            <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                                        </>
+                                                                                                                                                                    ]}
+                                                                                                                                                                />
+                                                                                                                                                            ]}
+                                                                                                                                                            menuItems={[
+                                                                                                                                                                { label: "View Profile" },
+                                                                                                                                                                <ItemGroup
+                                                                                                                                                                    axis={false}
+                                                                                                                                                                    stretch={true}
+                                                                                                                                                                    items={[
+                                                                                                                                                                        <>
+                                                                                                                                                                            <p>Logout</p>
+                                                                                                                                                                        </>
+                                                                                                                                                                    ]}
+                                                                                                                                                                />
                                                                                                                                                             ]}
                                                                                                                                                         />
                                                                                                                                                     </>
@@ -766,7 +785,6 @@ function PHPatient() {
                                                                                                                                         ]}
                                                                                                                                         menuItems={[
                                                                                                                                             { label: "View Profile" },
-                                                                                                                                            { label: "Logout" },
                                                                                                                                         ]}
                                                                                                                                     />
                                                                                                                                 </>
