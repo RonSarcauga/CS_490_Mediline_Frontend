@@ -1,0 +1,34 @@
+.date-picker {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.date-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.date-button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.date-button:hover {
+    background-color: #e0e0e0;
+}
+
+.date-button.selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+.selected-info {
+    margin-top: 20px;
+    font-size: 16px;
+}

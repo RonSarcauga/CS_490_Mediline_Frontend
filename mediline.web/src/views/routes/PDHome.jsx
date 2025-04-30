@@ -14,6 +14,7 @@ function PDHome() {
     const patientData = dashboardLayoutViewModel.getPatientData(user.id);
     const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
     const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
+    const navigate = useNavigate();
     console.log(`User ${user.id}: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
 
     return (
@@ -76,6 +77,7 @@ function PDHome() {
                                                                                                             { disabled: !dashboardLayoutViewModel.hasDoctor(user.id) }
                                                                                                         }
                                                                                                         isClickable={dashboardLayoutViewModel.hasDoctor(user.id)}
+                                                                                                        onClick={() => navigate(`/dashboard/${user.role}/profile/find-a-doctor`)}
                                                                                                         stretch={true}
                                                                                                         axis={false}
                                                                                                         items={[
