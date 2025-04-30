@@ -33,15 +33,6 @@ function PHPatient() {
 
     return (
         <>
-            <button
-                onClick={handleOpenModal}
-                style={{
-                    padding: "10px 20px",
-                    cursor: "pointer"
-                }}
-            >
-                Open Modal
-            </button>
             <Modal
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
@@ -677,10 +668,7 @@ function PHPatient() {
                                                                                                                                                                     axis={false}
                                                                                                                                                                     stretch={true}
                                                                                                                                                                     isClickable={true}
-                                                                                                                                                                    onClick={() => {
-                                                                                                                                                                        console.log("Open the modal!");
-                                                                                                                                                                        handleOpenModal;
-                                                                                                                                                                    }}
+                                                                                                                                                                    onClick={handleOpenModal}
                                                                                                                                                                     items={[
                                                                                                                                                                         <>
                                                                                                                                                                             <p>Review Request</p>
