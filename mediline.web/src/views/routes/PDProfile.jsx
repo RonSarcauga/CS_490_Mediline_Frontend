@@ -372,6 +372,7 @@ function PDProfile() {
                                                     axis={false}
                                                     stretch={true}
                                                     isClickable={true}
+                                                    onClick={() => navigate(`/dashboard/${user.role}/profile/find-a-doctor`)}
                                                     items={[
                                                         <>
                                                             <BaseIcon
