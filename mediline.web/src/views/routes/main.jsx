@@ -60,7 +60,7 @@ const router = createBrowserRouter([
             {
                 path: 'patient/profile/find-a-doctor',
                 element: <PDFindDoctor />,
-            }
+            },
             {
                 path: 'patient/appointment',
                 element: <PDAppointment />,
