@@ -101,7 +101,7 @@ export default function FindADoctorPage() {
                                                                     <h1 className="font-10">Search by</h1>
                                                                     <p className="font-5 mb-3">Specialty, Expertise, or Name</p>
                                                                     <InputBar
-                                                                        customClass='b-2 outline-neutral-800 bg-0 py-1 pr-1 br-none'
+                                                                        customClass='b-2 outline-neutral-800 bg-0 py-1 pr-1 br-lg'
                                                                         onChange={(e) => {
                                                                             FindDoctorViewModel.updateSearch(e.target.value);
                                                                             setFormData({ ...FindDoctorViewModel });
