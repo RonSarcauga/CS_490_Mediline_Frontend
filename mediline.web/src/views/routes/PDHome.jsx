@@ -5,6 +5,7 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import Accordion from '../../components/General/AccordionMenu';
 import Modal from '../../components/General/Modal';
 import DatePicker from '../../components/General/DatePicker';
+import InputBar from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
@@ -25,6 +26,11 @@ function PDHome() {
         setIsModalOpen(false);
     }
 
+    const [selectedDate, setSelectedDate] = useState('');
+    const handleDateSelect = (date) => {
+        setSelectedDate(date.toLocaleDateString());
+    }
+
     return (
         <>
             <Modal
@@ -33,47 +39,57 @@ function PDHome() {
             >
                 <>
                     <ItemGroup
-                        customClass="px-2 pt-2 gap-10"
+                        customClass="px-4 pt-4 pb-2 gap-5"
                         axis={true}
                         fitParent={true}
                         items={[
                             <>
                                 <ItemGroup
-                                    customClass="gap-5"
-                                    axis={true}
+                                    customClass="align-items-center gap-8"
+                                    axis={false}
+                                    stretch={true}
                                     fitParent={true}
-                                    style={{
-                                        minWidth: "50vw"
-                                    }}
+                                    evenSplit={true}
                                     items={[
                                         <>
-                                            <ItemGroup
-                                                customClass="align-items-center justify-content-space-between pb-3"
-                                                axis={false}
+                                            <DatePicker
+                                                disablePastDates={true}
+                                                onDateSelect={handleDateSelect}
+                                            />
+                                            <Container
+                                                customClass="box-shadow-sm p-5 gap-5 text-start"
                                                 fitParent={true}
-                                                stretch={true}
-                                                items={[
+                                                header={[
                                                     <>
-                                                        <h1 className="font-semibold text-neutral-400 justify-self-start">
+                                                        <h1 className="font-semibold text-neutral-100 justify-self-start">
                                                             BOOK APPOINTMENT
                                                         </h1>
                                                     </>
                                                 ]}
-                                            />
-                                        </>
-                                    ]}
-                                />
-                                <ItemGroup
-                                    axis={false}
-                                    stretch={true}
-                                    fitParent={true}
-                                    items={[
-                                        <>
-                                            <DatePicker />
-                                            <Container
-                                                customClass="box-shadow-sm p-5"
-                                                header={[
+                                                content={[
                                                     <>
+                                                        <ItemGroup
+                                                            axis={true}
+                                                            fitParent={true}
+                                                            items={[
+                                                                <form>
+                                                                    <ItemGroup
+                                                                        customClass="gap-2"
+                                                                        axis={true}
+                                                                        fitParent={true}
+                                                                        items={[
+                                                                            <>
+                                                                                <p className="font-medium font-4">Selected Date</p>
+                                                                                <InputBar
+                                                                                    customClass='bg-neutral-1000 py-2 pl-4 b-bottom-6 outline-neutral-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                    placeholder=""
+                                                                                />
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                </form>
+                                                            ]}
+                                                        />
                                                     </>
                                                 ]}
                                             />
