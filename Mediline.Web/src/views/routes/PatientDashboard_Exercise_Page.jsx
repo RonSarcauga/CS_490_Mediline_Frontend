@@ -14,6 +14,7 @@ import { fetchPatientExerciseList, fetchExerciseList, fetchChartData } from '../
 
 
 
+
 {/* This is the navigation bar for the dashboards specifically.
     A separate navigation bar will be used for the landing page */}
 export default function PatientDashboardExercise({

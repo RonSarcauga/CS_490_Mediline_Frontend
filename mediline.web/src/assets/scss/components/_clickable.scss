@@ -5,3 +5,59 @@
 .selected {
     border: 2px solid var(--clr-secondary-400) !important;
 }
+
+/*.schedule-card {
+    height: 5.3rem;
+    width: 4.4rem;
+    border-radius: 10px;
+    align-content: center;
+    justify-items: center;
+}
+
+.schedule-card:hover {
+    @include linear-gradient(to bottom, $gradient-blue);
+    border: 1.75px solid var(--clr-highlight-primary-700);
+    color: black;
+}*/
+
+/* Base Styles for Schedule Card */
+.schedule-card {
+    position: relative;
+    align-content: center;
+    justify-items: center;
+    height: 5.3rem;
+    width: 4.4rem;
+    border-radius: 10px;
+    background: none;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.schedule-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    @include linear-gradient(to bottom, $gradient-blue);
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    z-index: 1;
+}
+
+.schedule-card > * {
+    position: relative;
+    z-index: 2;
+}
+
+.schedule-card:hover::before,
+.schedule-card.chosen::before {
+    opacity: 1;
+}
+
+.schedule-card:hover,
+.schedule-card.chosen {
+    border: 1.75px solid var(--clr-highlight-primary-700);
+    transition: all 0.3s ease-in-out;
+}

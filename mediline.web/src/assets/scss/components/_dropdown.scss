@@ -1,0 +1,58 @@
+/* Default Style: Dropdown Menu */
+.custom-dropdown-menu {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Trigger Button */
+.custom-dropdown-trigger {
+    /*padding: 8px 16px;
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;*/
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+/*.custom-dropdown-trigger:hover {
+    background-color: #e6e6e6;
+}*/
+
+/* Dropdown Content (Hidden by Default) */
+.custom-dropdown-body {
+    position: absolute;
+    /*top: 100%;
+    left: 0;*/
+    width: auto;
+    white-space: nowrap;
+    /*background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;*/
+    z-index: 1000;
+}
+
+.default-dropdown-body {
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    margin-top: 5px;
+    padding: 0;
+    list-style: none;
+}
+
+/* Dropdown Menu Item */
+.custom-dropdown-item {
+    padding: 8px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s ease;
+}
+
+.custom-dropdown-item:last-child {
+    border-bottom: none;
+}
+
+.custom-dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+/* End of Default Styles for Dropdown Menu */

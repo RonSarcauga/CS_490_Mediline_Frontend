@@ -20,7 +20,7 @@ export default function MultiStepRegistration()
     ]
 
     const stepInputs = {
-        1: Object.keys(formData).filter((key) => ["firstname", "lastname", "dateOfBirth"].includes(key)),
+        1: Object.keys(formData).filter((key) => ["firstname", "lastname", "sex", "dateOfBirth"].includes(key)),
         2: Object.keys(formData).filter((key) => ["email", "phone", "address", "city", "state", "postalCode"].includes(key)),
         3: Object.keys(formData).filter((key) => ["password", "confirmPassword"].includes(key)),
         4: Object.keys(formData).filter((key) => ["accountType"].includes(key)),
@@ -30,6 +30,9 @@ export default function MultiStepRegistration()
             }
             else if (formData.accountType === "pharmacist") {
                 return ["pharmacyName", "pharmacyAddress"].includes(key)
+            }
+            else if (formData.accountType === "patient") {
+                return ["pharmacyAddress"].includes(key)
             }
             return false;
         }),
@@ -128,7 +131,9 @@ export default function MultiStepRegistration()
                                                             axis={false}
                                                             fitParent={true}
                                                             stretch={true}
-                                                            evenSplit={true}
+                                                            style={{
+                                                                gridAutoColumns: "1fr 1fr auto"
+                                                            }}
                                                             items={[
                                                                 <>
                                                                     <InputBar
@@ -144,6 +149,13 @@ export default function MultiStepRegistration()
                                                                         onChange={(e) => handleInput('lastname', e.target)}
                                                                         customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                                         placeholder="Last Name"
+                                                                    />
+                                                                    <InputBar
+                                                                        type="text"
+                                                                        value={formData.sex}
+                                                                        onChange={(e) => handleInput('sex', e.target)}
+                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                        placeholder="Sex"
                                                                     />
                                                                 </>
                                                             ]}
@@ -807,6 +819,13 @@ export default function MultiStepRegistration()
                                                     fitParent={true}
                                                     items={[
                                                         <>
+                                                            <InputBar
+                                                                type="text"
+                                                                value={formData.pharmacyAddress}
+                                                                onChange={(e) => handleInput('pharmacyAddress', e.target)}
+                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                placeholder="Pharmacy Address"
+                                                            />
                                                             <Container
                                                                 customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
                                                                 fitParent={true}

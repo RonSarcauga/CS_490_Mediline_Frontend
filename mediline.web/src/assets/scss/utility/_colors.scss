@@ -36,6 +36,19 @@ $colors: (
         1000: hsl(0, 0%, 90%),
         1100: hsl(0, 0%, 100%)
     ),
+    neutral-expanded: (
+        100: hsl(0, 0%, 50%),
+        200: hsl(0, 0%, 55%),
+        300: hsl(0, 0%, 60%),
+        400: hsl(0, 0%, 65%),
+        500: hsl(0, 0%, 70%),
+        600: hsl(0, 0%, 75%),
+        700: hsl(0, 0%, 80%),
+        800: hsl(0, 0%, 85%),
+        900: hsl(0, 0%, 90%),
+        1000: hsl(0, 0%, 95%),
+        1100: hsl(0, 0%, 100%)
+    ),
     dark: (
         100: hsl(200, 30%, 15%),
         200: hsl(200, 30%, 25%),
@@ -49,6 +62,17 @@ $colors: (
         300: hsl(210, 20%, 65%),
         400: hsl(210, 20%, 75%),
         500: hsl(210, 20%, 85%)
+    ),
+    primary-dark: (
+        100: hsl(210, 40%, 80%),
+        200: hsl(210, 40%, 81%),
+        300: hsl(210, 40%, 82%),
+        400: hsl(210, 40%, 83%),
+        500: hsl(210, 40%, 84%),
+        600: hsl(210, 40%, 85%),
+        700: hsl(210, 40%, 86%),
+        800: hsl(210, 40%, 87%),
+        900: hsl(210, 40%, 88%),
     ),
     success: (
         100: hsl(120, 45%, 35%),
@@ -81,6 +105,16 @@ $colors: (
         400: hsl(250, 60%, 70%),
         500: hsl(250, 60%, 80%),
     ),
+    highlight-primary: (
+        100: hsl(200, 100%, 20%),
+        200: hsl(200, 100%, 30%),
+        300: hsl(200, 100%, 40%),
+        400: hsl(200, 100%, 50%),
+        500: hsl(200, 100%, 60%),
+        600: hsl(200, 100%, 70%),
+        700: hsl(200, 100%, 80%),
+        800: hsl(200, 100%, 90%),
+    ),
 );
 
 // Generates utility classes for the color and background
@@ -91,6 +125,9 @@ $colors: (
         }
         .bg-#{$color}-#{$shade} {
             background: $value !important;
+        }
+        .fill-#{$color}-#{$shade} {
+            --clr-fill: #{$value};
         }
         .input-text-#{$color}-#{$shade} input {
             color: $value !important;
@@ -131,6 +168,9 @@ $colors: (
     }
     &-white {
         @include linear-gradient(to bottom, $gradient-white);
+    }
+    &-blue {
+        @include linear-gradient(to bottom, $gradient-blue);
     }
 }
 
