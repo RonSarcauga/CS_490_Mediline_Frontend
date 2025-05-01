@@ -7,7 +7,8 @@ export default function BaseIcon({
     height = 30,
     fillColor = "#1B2B32",
     viewBox = "0 0 24 24",
-    children
+    children,
+    ...attributes
 })
 {
     return (
@@ -17,7 +18,9 @@ export default function BaseIcon({
             height={height}
             viewBox={viewBox}
             preserveAspectRatio="none"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg"
+            {...attributes}
+        >
             <g>
                 {children}
             </g>

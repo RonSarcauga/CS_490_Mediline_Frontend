@@ -255,7 +255,7 @@ export default function FindADoctorPage() {
                                                                                     items={[
                                                                                         <>
                                                                                             <BaseIcon
-                                                                                                fill="none"
+                                                                                                fill="#000000"
                                                                                                 height="20px"
                                                                                                 width="20px"
                                                                                                 viewBox="0 0 1920 1920">

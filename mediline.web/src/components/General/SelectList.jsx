@@ -6,6 +6,8 @@ import { useEffect, forwardRef, useImperativeHandle, useRef, useState } from 're
     For custom event handling, the user can pass an event handler in the form of onSelect.
 */}
 export default forwardRef(function SelectList({
+    triggerClass,
+    contentClass,
     placeholder = "Select an option",
     items = [
         { value: "chocolate", label: "Chocolate" },
@@ -48,14 +50,14 @@ export default forwardRef(function SelectList({
     return (
         <div ref={dropdownRef}>
             <div
-                className={`selectList ${isOpen ? "open" : ""}`}
+                className={`selectList ${triggerClass} ${isOpen ? "open" : ""}`}
                 onClick={toggleDropdown}>
                 <p className="py-3 font-semibold text-neutral-700">{selectedItem ? selectedItem.label : placeholder}</p>
                 <div className={`arrow ${isOpen ? "up" : "down"}`}>
                     <span></span>
                 </div>
                 {isOpen && (
-                    <div className="selectList-content">
+                    <div className={`selectList-content ${contentClass}`}>
                         {items.map((item, index) => (
                             <div
                                 key={index}

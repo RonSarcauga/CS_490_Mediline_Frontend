@@ -1,51 +1,55 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 {/* This is the base component for an accordion. */ }
 export default function Accordion({
     customClass = "",
     headerClass = "",
-    contentClass = "",
-    data=[]
+    bodyClass = "",
+    toggleClass = "",
+    style,
+    header,
+    body,
+    toggleIcon,
+    isExpanded,
+    defaultExpanded = false,
+    onExpand = () => { },
+    onCollapse = () => { }
 })
 {
-    const [selected, setSelected] = useState(null);
+    const [expanded, setExpanded] = useState(isExpanded !== undefined ? isExpanded : defaultExpanded);
 
-    const toggle = (i) => {
-        if (selected == i) {
-            return setSelected(null);
+    // Sync state with parent if `isExpanded` is controlled
+    useEffect(() => {
+        if (isExpanded !== undefined) {
+            setExpanded(isExpanded);
         }
+    }, [isExpanded]);
 
-        setSelected(i);
+    const handleToggle = () => {
+        console.log("Expanded before toggle: ", expanded);
+        const nextState = !expanded;
+        console.log("Expanded after toggle: ", nextState);
+        setExpanded(nextState);
+        if (nextState) onExpand(nextState);
+        else onCollapse(nextState);
     };
 
     return (
-        <div className="accordion">
-            {data.map((item, i) => (
-                <div className={`accordionItem ${customClass}`} key={i}>
-                    <div className={`accordionTitle ${headerClass}`} onClick={() => toggle(i)}>
-                        {item.header}
-                        <span>
-                            {selected === i
-                                ?
-                                <div className="dropdownDown"></div>
-                                :
-                                <div className="dropdownUp"></div>
-                            }
-                            <div className="dropdownIcon"></div>
-                        </span>
-                    </div>
-                    <div
-                        className={
-                            selected === i
-                                ?
-                                `accordionContent show ${contentClass}`
-                                :
-                                'accordionContent'
-                        }>
-                        {item.content}
-                    </div>
-                </div>
-            ))}
+        <div className={`accordion-menu  ${expanded ? "expanded" : ""}`}>
+            <div
+                className={`accordion-header ${headerClass}`}
+                onClick={handleToggle}
+                style={{ cursor: "pointer" }}
+            >
+                {header}
+                {toggleIcon && <span className={`accordion-toggle`}>{toggleIcon}</span>}
+            </div>
+            <div
+                className={`accordion-body ${expanded ? `${bodyClass}` : ""}`}
+                style={{...style}}
+            >
+                {body}
+            </div>
         </div>
     );
-}
+};
