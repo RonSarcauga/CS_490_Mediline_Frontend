@@ -6,14 +6,11 @@ import StatusLabel from '../../components/General/StatusLabel';
 import Container, { ItemGroup } from '../../components/General/Container';
 import CommonIcon from '../../components/General/CommonIcon';
 
-//import hardcoded data if needed
-//import {} from '../../assets/js/const';
 import {doctorDashboardData} from '../../assets/js/const';
+import DoctorDashboardViewModel from '../../viewModels/DDViewModel';
 
 const DoctorDashboardHome = () => {
-
-    //any hardcoded data can go here
-    //const {} = ;
+  const { data, isLoading, error } = DoctorDashboardViewModel.useDashboardData();
   const { patientCount, servingP, appointmentCount, pendingCount, invoices, patientsToday, appointmentsToday} = doctorDashboardData;
   const weekDates = [
     { date: 9, day: "Sun" },

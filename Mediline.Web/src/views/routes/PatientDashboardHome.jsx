@@ -11,8 +11,10 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import CommonIcon from '../../components/General/CommonIcon';
 
 import {patientDashboardData} from '../../assets/js/const';
+import PatientDashboardViewModel from '../../viewModels/PDViewModel';
 
 const PatientDashboardHome = () => {
+  const { data, isLoading, error } = PatientDashboardViewModel.useDashboardData();
   const { doctor, checkout, appointments, user } = patientDashboardData;
   const accordionData = [
     {
@@ -26,9 +28,9 @@ const PatientDashboardHome = () => {
                 <div><CommonIcon name={'calendar'} /> {user.lastAppointment.date} <CommonIcon name={'clock'} /> {user.lastAppointment.time}</div>
                 <div><CommonIcon name={'doctor'} /> {user.lastAppointment.doctor}</div>
                 <strong>Address</strong>
-                {user.address}
+                {data?.address1}, {data?.city}, {data?.state}, {data?.country}, {data?.zipcode}
                 <strong>Phone</strong>
-                {user.phone}
+                {data?.phone}
               </>
           }
         />
@@ -270,9 +272,9 @@ const PatientDashboardHome = () => {
                                             items={
                                               <>
                                                 <EditableUserIcon />
-                                                <div><strong>{user.name}</strong></div>
+                                                <div><strong>{data?.first_name} {data?.last_name}</strong></div>
                                                 <div><strong>MRN:</strong> {user.mrn}</div>
-                                                <div>{user.gender} ● {user.birthday} ({user.age})</div>
+                                                <div>{user.gender} ● {data?.dob} {/*({user.age})*/}</div>
                                               </>
                                             }
                                           />

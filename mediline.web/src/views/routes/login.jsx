@@ -6,12 +6,18 @@ import InputBar from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
 import LoginViewModel from '../../viewModels/LoginViewModel';
 import { UserContext } from '../../context/UserProvider';
+import { useLogin } from '../../hooks/useLogin';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function Login() {
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
+
+    const loginMutation = useLogin();
+
     const navigate = useNavigate();
 
     const { setCurrentUser } = useContext(UserContext);
@@ -29,20 +35,34 @@ export default function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         console.log("Initiate login process!");
-        try {
-            LoginViewModel.email = formData.email;
-            LoginViewModel.password = formData.password;
-            const currentUser = LoginViewModel.login();
-            setCurrentUser(currentUser);
-            console.log("Login successful!", currentUser.user.role);
 
-            // Redirect to the dashboard
-            navigate(`/dashboard/${currentUser.user.role}`);
-        } catch (error) {
-            console.log("Login failed:", error.message);
-        }
+        LoginViewModel.email = formData.email;
+        LoginViewModel.password = formData.password;
+
+        loginMutation.mutate(
+            {
+                email: formData.email,
+                password: formData.password,
+            },
+            {
+                onSuccess: (data) => {
+                    console.log("Full login response:", data);
+                    console.log("Login successful!", data.user?.role);
+
+                    //setCurrentUser(data);
+                    //navigate(`/dashboard/${data.user?.role || 'patient'}`);
+                    navigate(`/${data?.account_type || 'patient'}Home`)
+
+                    LoginViewModel.clearFields();
+                    setFormData({ email: "", password: "" });
+                },
+                onError: (error) => {
+                    console.log("Login failed:", error.message);
+                },
+            }
+        );
     };
-
+    
     const isComplete = Object.values(formData).every((value) => value.trim() !== "");
 
     return (
