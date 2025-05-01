@@ -87,21 +87,23 @@ function PDDiscussionForum() {
                                                 fitParent={true}
                                                 items={[
                                                     <>
-                                                        <ItemGroup
-                                                            customClass="gap-3"
-                                                            axis={true}
-                                                            fitParent={true}
-                                                            items={[
-                                                                <>
-                                                                    <p className="font-5">Biography</p>
-                                                                    <InputBar
-                                                                        customClass='bg-neutral-expanded-1000 py-2 pl-4 br-none input-placeholder-font-4 input-text-placeholder-neutral-800 input-text-neutral-200 input-font-4 input-p-0'
-                                                                        placeholder="Enter a short introduction of yourself..."
-                                                                        value={user.bio}
-                                                                    />
-                                                                </>
-                                                            ]}
-                                                        />
+                                                        <form>
+                                                            <ItemGroup
+                                                                customClass="gap-3"
+                                                                axis={true}
+                                                                fitParent={true}
+                                                                items={[
+                                                                    <>
+                                                                        <p className="font-5">Biography</p>
+                                                                        <InputBar
+                                                                            customClass='bg-neutral-expanded-1000 py-2 pl-4 br-none input-placeholder-font-4 input-text-placeholder-neutral-800 input-text-neutral-200 input-font-4 input-p-0'
+                                                                            placeholder="Enter a short introduction of yourself..."
+                                                                            value={user.bio}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </form>
                                                         <ItemGroup
                                                             customClass="pt-6 gap-3 text-center"
                                                             axis={true}
