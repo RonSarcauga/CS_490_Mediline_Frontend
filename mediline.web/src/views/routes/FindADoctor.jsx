@@ -211,7 +211,7 @@ export default function FindADoctorPage() {
                                                                                         width: "100%"
                                                                                     }}
                                                                                     content={[
-                                                                                        <p className="font-semibold py-1">Update Results</p>
+                                                                                        <p id="update-results" className="font-semibold py-1">Update Results</p>
                                                                                     ]}
                                                                                 />
                                                                             </>
@@ -285,7 +285,7 @@ export default function FindADoctorPage() {
                                                                                     axis={false}
                                                                                     items={[
                                                                                         <>
-                                                                                            <h1 className="font-5 font-medium text-neutral-1100">
+                                                                                            <h1 id="add-doctor-button" className="font-5 font-medium text-neutral-1100">
                                                                                                 Add Doctor
                                                                                             </h1>
                                                                                         </>
@@ -403,7 +403,7 @@ export default function FindADoctorPage() {
                                                                                                                                     <g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="hsl(210, 70%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                     </g>
                                                                                                                                 </BaseIcon>
-                                                                                                                                <p className="font-4 text-primary-500">New Patients</p>
+                                                                                                                                <p id="newPatientStatus" className="font-4 text-primary-500">New Patients</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
