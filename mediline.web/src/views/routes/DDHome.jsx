@@ -26,10 +26,10 @@ function DDHome() {
     }
 
     //console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
-    console.log(`Upcoming Appointments: ${JSON.stringify(dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber), null, 2)}`);
+    //console.log(`Upcoming Appointments: ${JSON.stringify(dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber), null, 2)}`);
     //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getTodaysAppointments(user.id), null, 2)}`);
     //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate), null, 2)}`);
-    console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
+    //console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
     //console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
 
     return (
