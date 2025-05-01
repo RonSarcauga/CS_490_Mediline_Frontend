@@ -1,4 +1,11 @@
+import {
+    baseUserList,
+    patientDataList,
+    doctorDataList
+} from '../assets/js/const';
+
 const RegisterViewModel = {
+/*
   firstname:       "",
   lastname:        "",
   dateOfBirth:     "",
@@ -52,7 +59,8 @@ const RegisterViewModel = {
       zipcode:        this.postalCode,
     };
   }
-    /*
+*/
+    
     // Properties of the view model
     // These properties are used to bind data from the view (UI) to the view model
     firstname: "",
@@ -186,7 +194,6 @@ const RegisterViewModel = {
         this.pharmacyName = "";
         this.pharmacyAddress = "";
     },
-    */
 };
 
 export default RegisterViewModel;
