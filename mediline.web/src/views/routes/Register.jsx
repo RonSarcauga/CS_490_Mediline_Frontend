@@ -5,12 +5,15 @@ import BaseIcon from '../../components/General/BaseIcon';
 import InputBar from '../../components/General/InputBar';
 import ProgressBar from '../../components/LandingPage/ProgressBar';
 import RegistrationViewModel from '../../viewModels/RegisterViewModel';
+import { useRegister } from '../../hooks/useRegister';
 
 export default function MultiStepRegistration()
 {
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState(RegistrationViewModel);
     const navigate = useNavigate();
+
+    const registerMutation = useRegister();
 
     const steps = [
         { id: 1, label: <><span>Personal</span><br /><span>Information</span></> },
@@ -72,14 +75,45 @@ export default function MultiStepRegistration()
     };
 
     const handleSubmit = () => {
-        Object.keys(formData).forEach((key) => {
-            RegistrationViewModel[key] = formData[key];
-        });
+        const withExtra = {
+            ...formData,
+            country: "United States of America",
+        };
+        
+        Object.assign(RegistrationViewModel, withExtra);
+        const payload = RegistrationViewModel.getPayload();
 
-        RegistrationViewModel.addUser();
-
-        navigate('/login');
-    }
+        if (formData.accountType === 'doctor') {
+            payload.fee   = '150';
+            payload.hours = '09:00-21:00';
+        }
+        else if (formData.accountType === 'pharmacist') {
+            payload.hours = '09:00-21:00';
+            payload.account_type = 'pharmacy';
+        }
+        console.log(payload)
+        registerMutation.mutate(
+            payload,
+          {
+            onSuccess: (newUser) => {
+              console.log('Registration success:', newUser);
+      
+              RegistrationViewModel.clearFields();
+              setFormData({ ...RegistrationViewModel });
+              navigate('/login');
+            },
+            onError: (err) => {
+                if (err.response) {
+                    console.error("Status:", err.response.status);
+                    console.error("Headers:", err.response.headers);
+                    console.error("Body:", err.response.data);
+                  } else {
+                    console.error("Network / CORS error:", err);
+                  }
+                }
+            }
+        );
+    };
 
     return (
         <Container
@@ -165,7 +199,7 @@ export default function MultiStepRegistration()
                                                             value={formData.dateOfBirth}
                                                             onChange={(e) => handleInput("dateOfBirth", e.target)}
                                                             customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                            placeholder="Date of Birth (mm/dd/yyyy)"
+                                                            placeholder="Date of Birth (yyyy-mm-dd)"
                                                         />
                                                         <Container
                                                             customClass="button bg-dark-100 justify-items-center align-items-center br-sm"
@@ -667,19 +701,24 @@ export default function MultiStepRegistration()
                                                                 placeholder="Specialty"
                                                             />
                                                             <Container
-                                                                customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
+                                                                customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
                                                                 fitParent={true}
-                                                                isClickable={isCurrentStepComplete}
+                                                                isClickable={isCurrentStepComplete && !registerMutation.isLoading}
                                                                 onClick={handleSubmit}
-                                                                dataAttributes={
-                                                                    { disabled: !isCurrentStepComplete }
-                                                                }
+                                                                dataAttributes={{
+                                                                    disabled: !isCurrentStepComplete || registerMutation.isLoading
+                                                                }}
                                                                 content={[
-                                                                    <p className=" text-decoration-none font-regular text-neutral-1100">
-                                                                        Get Started
+                                                                    <p className="text-decoration-none font-regular text-neutral-1100">
+                                                                    {registerMutation.isLoading ? 'Submitting…' : 'Get Started'}
                                                                     </p>
                                                                 ]}
                                                             />
+                                                            {registerMutation.isError && (
+                                                                <p className="text-error mt-2">
+                                                                    {registerMutation.error.message}
+                                                                </p>
+                                                            )}
                                                         </>
                                                     ]}
                                                 />
@@ -749,19 +788,24 @@ export default function MultiStepRegistration()
                                                                 placeholder="Pharmacy Address"
                                                             />
                                                             <Container
-                                                                customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
+                                                                customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
                                                                 fitParent={true}
-                                                                isClickable={isCurrentStepComplete}
+                                                                isClickable={isCurrentStepComplete && !registerMutation.isLoading}
                                                                 onClick={handleSubmit}
-                                                                dataAttributes={
-                                                                    { disabled: !isCurrentStepComplete }
-                                                                }
+                                                                dataAttributes={{
+                                                                    disabled: !isCurrentStepComplete || registerMutation.isLoading
+                                                                }}
                                                                 content={[
-                                                                    <p className=" text-decoration-none font-regular text-neutral-1100">
-                                                                        Get Started
+                                                                    <p className="text-decoration-none font-regular text-neutral-1100">
+                                                                    {registerMutation.isLoading ? 'Submitting…' : 'Get Started'}
                                                                     </p>
                                                                 ]}
                                                             />
+                                                            {registerMutation.isError && (
+                                                                <p className="text-error mt-2">
+                                                                    {registerMutation.error.message}
+                                                                </p>
+                                                            )}
                                                         </>
                                                     ]}
                                                 />
@@ -827,16 +871,24 @@ export default function MultiStepRegistration()
                                                                 placeholder="Pharmacy Address"
                                                             />
                                                             <Container
-                                                                customClass={`button bg-dark-100 justify-items-center align-items-center br-sm py-4`}
+                                                                customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
                                                                 fitParent={true}
-                                                                isClickable={true}
+                                                                isClickable={isCurrentStepComplete && !registerMutation.isLoading}
                                                                 onClick={handleSubmit}
+                                                                dataAttributes={{
+                                                                    disabled: !isCurrentStepComplete || registerMutation.isLoading
+                                                                }}
                                                                 content={[
-                                                                    <p className=" text-decoration-none font-regular text-neutral-1100">
-                                                                        Get Started
+                                                                    <p className="text-decoration-none font-regular text-neutral-1100">
+                                                                    {registerMutation.isLoading ? 'Submitting…' : 'Get Started'}
                                                                     </p>
                                                                 ]}
                                                             />
+                                                            {registerMutation.isError && (
+                                                                <p className="text-error mt-2">
+                                                                    {registerMutation.error.message}
+                                                                </p>
+                                                            )}
                                                         </>
                                                     ]}
                                                 />
