@@ -29,13 +29,14 @@ export function TopbarItem({
     text,
     to = "/",
     customClass = '',
-    textClass = ''
+    textClass = '',
+    onClick,
 })
 {
     const baseClass = 'topbarItem';
 
     return (
-        <Link to={to} className={`${baseClass} ${customClass}`}>
+        <Link to={to} className={`${baseClass} ${customClass}`} onClick={onClick}>
             {icon}
             <span className={`topbarText ${textClass}`}>
                 {text}
