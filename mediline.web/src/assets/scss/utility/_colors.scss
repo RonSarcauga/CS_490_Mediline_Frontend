@@ -113,6 +113,9 @@ $colors: (
         .bg-#{$color}-#{$shade} {
             background: $value !important;
         }
+        .fill-#{$color}-#{$shade} {
+            --clr-fill: #{$value};
+        }
         .input-text-#{$color}-#{$shade} input {
             color: $value !important;
         }
