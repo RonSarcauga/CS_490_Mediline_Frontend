@@ -5,6 +5,7 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import Accordion from '../../components/General/AccordionMenu';
 import InputBar from '../../components/General/InputBar';
 import Checkbox from '../../components/General/CheckboxRefactored';
+import Modal from '../../components/General/Modal';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
@@ -13,8 +14,17 @@ function PDProfile() {
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const patientData = dashboardLayoutViewModel.getPatientData(user.id);
     const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
-
     const navigate = useNavigate();
+
+    const [activeModal, setActiveModal] = useState(null);
+
+    const handleOpenModal = (modalId) => {
+        setActiveModal(modalId);
+    }
+
+    const handleCloseModal = () => {
+        setActiveModal(null);
+    }
 
     const [activeTab, setActiveTab] = useState("tab1");
 
@@ -1013,6 +1023,7 @@ function PDProfile() {
                                                                                                         axis={false}
                                                                                                         stretch={true}
                                                                                                         isClickable={true}
+                                                                                                        onClick={() => handleOpenModal("exercise")}
                                                                                                         style={{
                                                                                                             bottom: "0",
                                                                                                             left: "45%",
@@ -1487,6 +1498,207 @@ function PDProfile() {
 
     return (
         <>
+            <Modal
+                id="exercise"
+                isOpen={activeModal === "exercise"}
+                onClose={handleCloseModal}
+            >
+                <>
+                    <ItemGroup
+                        customClass="px-2 pt-2 gap-5 text-start"
+                        axis={true}
+                        style={{
+                            gridAutoColumns: "30vw"
+                        }}
+                        items={[
+                            <>
+                                <ItemGroup
+                                    customClass="gap-5"
+                                    axis={true}
+                                    fitParent={true}
+                                    items={[
+                                        <>
+                                            <Container
+                                                customClass="bg-neutral-1100 p-6"
+                                                fitParent={true}
+                                                headerClass="b-bottom-3 outline-neutral-800 py-3"
+                                                header={[
+                                                    <>
+                                                        <ItemGroup
+                                                            customClass="p-0 align-items-center justify-content-space-between"
+                                                            axis={false}
+                                                            fitParent={true}
+                                                            stretch={true}
+                                                            items={[
+                                                                <>
+                                                                    <h3 className="font-semibold text-neutral-600">
+                                                                        ADD REGIMEN
+                                                                    </h3>
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    </>
+                                                ]}
+                                                contentClass="hideScroll px-0 pt-5 pb-5 b-bottom-3 outline-neutral-800"
+                                                content={[
+                                                    <>
+                                                        <ItemGroup
+                                                            customClass="gap-5"
+                                                            axis={true}
+                                                            fitParent={true}
+                                                            style={{
+                                                                maxHeight: "200px"
+                                                            }}
+                                                            items={[
+                                                                <>
+                                                                    {pastAppointments.length > 0 && (
+                                                                        pastAppointments.map(() => (
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    customClass=" pt-2 pb-6 justify-content-space-between position-relative"
+                                                                                    axis={false}
+                                                                                    fitParent={true}
+                                                                                    stretch={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <ItemGroup
+                                                                                                axis={false}
+                                                                                                fitParent={true}
+                                                                                                stretch={true}
+                                                                                                style={{
+                                                                                                    gridAutoColumns: "250px"
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <ItemGroup
+                                                                                                            customClass="gap-2"
+                                                                                                            axis={true}
+                                                                                                            stretch={true}
+                                                                                                            fitParent={true}
+                                                                                                            items={[
+                                                                                                                <>
+                                                                                                                    <h5 className="font-4 text-neutral-600 font-semibold">Sit-Up</h5>
+                                                                                                                    <ItemGroup
+                                                                                                                        customClass="gap-6 align-items-center"
+                                                                                                                        fitParent={true}
+                                                                                                                        axis={false}
+                                                                                                                        stretch={true}
+                                                                                                                        items={[
+                                                                                                                            <>
+                                                                                                                                <ItemGroup
+                                                                                                                                    customClass="align-items-center gap-2"
+                                                                                                                                    axis={false}
+                                                                                                                                    stretch={true}
+                                                                                                                                    items={[
+                                                                                                                                        <>
+                                                                                                                                            <BaseIcon
+                                                                                                                                                height="16px"
+                                                                                                                                                width="16px"
+                                                                                                                                                viewBox="0 1 24 24"
+                                                                                                                                                fillColor="none">
+                                                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                                <g id="SVGRepo_iconCarrier">
+                                                                                                                                                    <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 50%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                                </g>
+                                                                                                                                            </BaseIcon>
+                                                                                                                                            <p className="font-3 font-medium text-neutral-600">1 min</p>
+                                                                                                                                        </>
+                                                                                                                                    ]}
+                                                                                                                                />
+                                                                                                                                <ItemGroup
+                                                                                                                                    customClass="align-items-center gap-1"
+                                                                                                                                    axis={false}
+                                                                                                                                    stretch={true}
+                                                                                                                                    items={[
+                                                                                                                                        <>
+                                                                                                                                            <BaseIcon
+                                                                                                                                                height="18px"
+                                                                                                                                                width="18px"
+                                                                                                                                                viewBox="0 -3.5 25 25"
+                                                                                                                                                fillColor="none">
+                                                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                                <g id="SVGRepo_iconCarrier">
+                                                                                                                                                    <path d="M5 0H11V3.58579L8 6.58579L5 3.58579V0Z" fill="hsl(0, 0%, 50%)" /> <path d="M3.58579 5H0V11H3.58579L6.58579 8L3.58579 5Z" fill="hsl(0, 0%, 50%)" />
+                                                                                                                                                    <path d="M5 12.4142V16H11V12.4142L8 9.41421L5 12.4142Z" fill="hsl(0, 0%, 50%)" />
+                                                                                                                                                    <path d="M12.4142 11H16V5H12.4142L9.41421 8L12.4142 11Z" fill="hsl(0, 0%, 50%)" />
+                                                                                                                                                </g>
+                                                                                                                                            </BaseIcon>
+                                                                                                                                            <p className="font-3 font-medium text-neutral-600">10 reps</p>
+                                                                                                                                        </>
+                                                                                                                                    ]}
+                                                                                                                                />
+                                                                                                                            </>
+                                                                                                                        ]}
+                                                                                                                    />
+                                                                                                                </>
+                                                                                                            ]}
+                                                                                                        />
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <Checkbox
+                                                                                                checkboxClass="b-4 outline-neutral-800 fill-neutral-1100 align-self-center"
+                                                                                                checkColor="hsl(0, 0%, 40%)"
+                                                                                                label={[
+                                                                                                    <p></p>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ))
+                                                                    )}
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    </>
+                                                ]}
+                                                footer={[
+                                                    <>
+                                                        <ItemGroup
+                                                            customClass="pt-6 gap-3 text-center"
+                                                            axis={true}
+                                                            fitParent={true}
+                                                            items={[
+                                                                <>
+                                                                    <Container
+                                                                        customClass="bg-neutral-1000 py-3 b-3 outline-neutral-700 br-sm"
+                                                                        fitParent={true}
+                                                                        isClickable={true}
+                                                                        content={[
+                                                                            <>
+                                                                                <p className="font-semibold text-neutral-600">CONFIRM</p>
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    <Container
+                                                                        customClass="bg-neutral-700 py-3 br-sm"
+                                                                        fitParent={true}
+                                                                        isClickable={true}
+                                                                        onClick={handleCloseModal}
+                                                                        content={[
+                                                                            <>
+                                                                                <p className="font-semibold text-neutral-1000">CANCEL</p>
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    </>
+                                                ]}
+                                            />
+                                        </>
+                                    ]}
+                                />
+                            </>
+                        ]}
+                    />
+                </>
+            </Modal>
             <Container
                 customClass="p-5"
                 fitParent={true}
