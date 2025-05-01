@@ -95,7 +95,7 @@ function PDHome() {
                                                                                                     <>
                                                                                                         <p className="font-medium font-4">Selected Date</p>
                                                                                                         <InputBar
-                                                                                                            customClass='bg-neutral-expanded-1000 py-2 pl-4 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-neutral-100 input-font-4 input-p-0'
+                                                                                                            customClass='bg-neutral-expanded-1100 py-2 px-0 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-neutral-100 input-font-4 input-p-0'
                                                                                                             value={selectedDate}
                                                                                                             placeholder=""
                                                                                                             readonly={true}
@@ -113,7 +113,7 @@ function PDHome() {
                                                                                                     <>
                                                                                                         <p className="font-medium font-4">Time</p>
                                                                                                         <InputBar
-                                                                                                            customClass='bg-neutral-expanded-1000 py-2 pl-4 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-neutral-100 input-font-4 input-p-0'
+                                                                                                            customClass='bg-neutral-expanded-1100 py-2 px-0 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-neutral-100 input-font-4 input-p-0'
                                                                                                             placeholder=""
                                                                                                         />
                                                                                                     </>
