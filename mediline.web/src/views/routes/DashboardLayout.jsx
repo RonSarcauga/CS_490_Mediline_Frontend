@@ -112,7 +112,7 @@ function DashboardLayout() {
                                                                 </>
                                                             ]}
                                                         />
-                                                        {user.role !== 'pharmacist' && (
+                                                        {user.role !== 'Pharmacist' && (
                                                             <Container
                                                                 key="discussion"
                                                                 customClass={`nav-item ${location.pathname === pathNames.discussion ? " active" : ""}`}
