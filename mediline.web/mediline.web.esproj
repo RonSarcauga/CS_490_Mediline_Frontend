@@ -11,8 +11,6 @@
   <ItemGroup>
     <Folder Include="node_modules\" />
     <Folder Include="src\assets\fonts\" />
-    <Folder Include="src\models\" />
-    <Folder Include="src\models\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="jsconfig.json" />
