@@ -689,7 +689,7 @@ function DDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Active Medications</h5>
                                             </>
                                         ]}
-                                        contentClass="px-5 pt-7 pb-5"
+                                        contentClass="px-5 pt-7 pb-3"
                                         content={[
                                             <>
                                                 <ItemGroup
@@ -713,7 +713,7 @@ function DDProfile() {
                                         footer={[
                                             <>
                                                 <ItemGroup
-                                                    customClass="gap-5"
+                                                    customClass="gap-0"
                                                     axis={true}
                                                     fitParent={true}
                                                     items={[
@@ -723,7 +723,7 @@ function DDProfile() {
                                                                     pastAppointments.map(() => (
                                                                         <>
                                                                             <ItemGroup
-                                                                                customClass=" py-1"
+                                                                                customClass=" py-5 position-relative hover-parent"
                                                                                 axis={false}
                                                                                 fitParent={true}
                                                                                 stretch={true}
@@ -732,6 +732,45 @@ function DDProfile() {
                                                                                 }}
                                                                                 items={[
                                                                                     <>
+                                                                                        <Container
+                                                                                            customClass="bg-primary-dark-500 position-absolute hidden-element"
+                                                                                            style={{
+                                                                                                height: "1.5px",
+                                                                                                width: "100%",
+                                                                                                bottom: "0",
+                                                                                                left: "0"
+                                                                                            }}
+                                                                                            content={[
+                                                                                                <>
+                                                                                                    <ItemGroup
+                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center"
+                                                                                                        axis={false}
+                                                                                                        stretch={true}
+                                                                                                        isClickable={true}
+                                                                                                        style={{
+                                                                                                            bottom: "0",
+                                                                                                            left: "45%",
+                                                                                                            transform: "translateY(50%)"
+                                                                                                        }}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <BaseIcon
+                                                                                                                    fill="none"
+                                                                                                                    height="28px"
+                                                                                                                    width="28px">
+                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                    <g id="SVGRepo_iconCarrier">
+                                                                                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="hsl(210, 20%, 55%)" />
+                                                                                                                    </g>
+                                                                                                                </BaseIcon>
+                                                                                                                <p className="font-3 font-semibold text-primary-neutral-200">ADD MEDICATION</p>
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                </>
+                                                                                            ]}
+                                                                                        />
                                                                                         <ItemGroup
                                                                                             customClass="gap-2"
                                                                                             axis={true}
@@ -795,7 +834,7 @@ function DDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Medication History</h5>
                                             </>
                                         ]}
-                                        contentClass="px-5 pt-7 pb-5"
+                                        contentClass="px-5 pt-7 pb-3"
                                         content={[
                                             <>
                                                 <ItemGroup
@@ -819,7 +858,7 @@ function DDProfile() {
                                         footer={[
                                             <>
                                                 <ItemGroup
-                                                    customClass="gap-5"
+                                                    customClass="gap-0"
                                                     axis={true}
                                                     fitParent={true}
                                                     items={[
@@ -829,7 +868,7 @@ function DDProfile() {
                                                                     dashboardLayoutViewModel.getUsers().map(() => (
                                                                         <>
                                                                             <ItemGroup
-                                                                                customClass=" py-1"
+                                                                                customClass=" py-5"
                                                                                 axis={false}
                                                                                 fitParent={true}
                                                                                 stretch={true}
@@ -935,8 +974,9 @@ function DDProfile() {
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
                                                                         <>
+                                                                            {/* This is the element that wraps the entire card. When this is hovered over, the below element should be visible */}
                                                                             <ItemGroup
-                                                                                customClass=" pt-2 pb-6 justify-content-space-between position-relative"
+                                                                                customClass=" pt-2 pb-6 justify-content-space-between position-relative hover-parent"
                                                                                 axis={false}
                                                                                 fitParent={true}
                                                                                 stretch={true}
@@ -952,8 +992,9 @@ function DDProfile() {
                                                                                             }}
                                                                                             content={[
                                                                                                 <>
+                                                                                                    {/* This is the element that needs to be invisible until the wrapper element is hovered over */}
                                                                                                     <ItemGroup
-                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center "
+                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hidden-element"
                                                                                                         axis={false}
                                                                                                         stretch={true}
                                                                                                         isClickable={true}
@@ -1056,13 +1097,6 @@ function DDProfile() {
                                                                                                         ]}
                                                                                                     />
                                                                                                 </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <Checkbox
-                                                                                            checkboxClass="b-4 outline-primary-dark-600"
-                                                                                            checkColor="hsl(210, 20%, 95%)"
-                                                                                            label={[
-                                                                                                <p></p>
                                                                                             ]}
                                                                                         />
                                                                                     </>
