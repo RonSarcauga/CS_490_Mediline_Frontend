@@ -1115,7 +1115,7 @@ function PDProfile() {
                                                                                             ]}
                                                                                         />
                                                                                         <Checkbox
-                                                                                            checkboxClass="b-4 outline-primary-dark-600 align-self-center"
+                                                                                            checkboxClass="b-4 outline-primary-dark-600 fill-primary-dark-600 align-self-center"
                                                                                             checkColor="hsl(210, 20%, 95%)"
                                                                                             label={[
                                                                                                 <p></p>
