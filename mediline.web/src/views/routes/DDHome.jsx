@@ -2,6 +2,7 @@ import { useState, useContext } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
+import DropdownMenu from '../../components/General/DropdownMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
@@ -524,16 +525,37 @@ function DDHome() {
                                                                                                                                                                                         </>
                                                                                                                                                                                     ]}
                                                                                                                                                                                 />
-                                                                                                                                                                                <ItemGroup
-                                                                                                                                                                                    customClass="gap-1"
-                                                                                                                                                                                    axis={true}
-                                                                                                                                                                                    isClickable={true}
-                                                                                                                                                                                    items={[
-                                                                                                                                                                                        <>
-                                                                                                                                                                                            <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                                                            <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                                                            <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                                                                        </>
+                                                                                                                                                                                <DropdownMenu
+                                                                                                                                                                                    offsetY={10}
+                                                                                                                                                                                    offsetX={-30}
+                                                                                                                                                                                    triggerLabel={[
+                                                                                                                                                                                        <ItemGroup
+                                                                                                                                                                                            customClass="gap-1 justify-self-end"
+                                                                                                                                                                                            axis={true}
+                                                                                                                                                                                            isClickable={true}
+                                                                                                                                                                                            items={[
+                                                                                                                                                                                                <>
+                                                                                                                                                                                                    <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                                                                    <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                                                                    <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                                                                                </>
+                                                                                                                                                                                            ]}
+                                                                                                                                                                                        />
+                                                                                                                                                                                    ]}
+                                                                                                                                                                                    menuItems={[
+                                                                                                                                                                                        <ItemGroup
+                                                                                                                                                                                            axis={false}
+                                                                                                                                                                                            stretch={true}
+                                                                                                                                                                                            isClickable={true}
+                                                                                                                                                                                            onClick={() => {
+                                                                                                                                                                                                console.log("Open the patient's profile!");
+                                                                                                                                                                                            }}
+                                                                                                                                                                                            items={[
+                                                                                                                                                                                                <>
+                                                                                                                                                                                                    <p>View Profile</p>
+                                                                                                                                                                                                </>
+                                                                                                                                                                                            ]}
+                                                                                                                                                                                        />
                                                                                                                                                                                     ]}
                                                                                                                                                                                 />
                                                                                                                                                                             </>
@@ -682,16 +704,37 @@ function DDHome() {
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
-                                                                                                                    <ItemGroup
-                                                                                                                        customClass="gap-1"
-                                                                                                                        axis={true}
-                                                                                                                        isClickable={true}
-                                                                                                                        items={[
-                                                                                                                            <>
-                                                                                                                                <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                                <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
-                                                                                                                            </>
+                                                                                                                    <DropdownMenu
+                                                                                                                        offsetY={10}
+                                                                                                                        offsetX={-30}
+                                                                                                                        triggerLabel={[
+                                                                                                                            <ItemGroup
+                                                                                                                                customClass="gap-1 justify-self-end"
+                                                                                                                                axis={true}
+                                                                                                                                isClickable={true}
+                                                                                                                                items={[
+                                                                                                                                    <>
+                                                                                                                                        <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                        <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                        <div className="bg-neutral-800 br-lg" style={{ height: "5px", width: "5px" }}></div>
+                                                                                                                                    </>
+                                                                                                                                ]}
+                                                                                                                            />
+                                                                                                                        ]}
+                                                                                                                        menuItems={[
+                                                                                                                            <ItemGroup
+                                                                                                                                axis={false}
+                                                                                                                                stretch={true}
+                                                                                                                                isClickable={true}
+                                                                                                                                onClick={() => {
+                                                                                                                                    console.log("Open the patient's profile!");
+                                                                                                                                }}
+                                                                                                                                items={[
+                                                                                                                                    <>
+                                                                                                                                        <p>View Profile</p>
+                                                                                                                                    </>
+                                                                                                                                ]}
+                                                                                                                            />
                                                                                                                         ]}
                                                                                                                     />
                                                                                                                 </>
