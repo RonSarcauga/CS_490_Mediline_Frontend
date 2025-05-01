@@ -9,6 +9,7 @@ const RegisterViewModel = {
     // These properties are used to bind data from the view (UI) to the view model
     firstname: "",
     lastname: "",
+    sex: "",
     dateOfBirth: "",
     accountType: "",
     email: "",
@@ -33,6 +34,7 @@ const RegisterViewModel = {
             !this.firstname ||
             !this.lastname ||
             !this.email ||
+            !this.sex ||
             !this.dateOfBirth ||
             !this.address ||
             !this.city ||
@@ -63,7 +65,9 @@ const RegisterViewModel = {
             phoneNumber: this.phone,
             address: this.address,
             city: this.city,
+            state: this.state,
             postalCode: this.postalCode,
+            sex: this.sex,
             dateOfBirth: this.dateOfBirth,
             role: this.accountType,
             password: this.password
@@ -118,6 +122,7 @@ const RegisterViewModel = {
     clearFields() {
         this.firstname = "";
         this.lastname = "";
+        this.sex = "";
         this.dateOfBirth = "";
         this.accountType = "";
         this.email = "";

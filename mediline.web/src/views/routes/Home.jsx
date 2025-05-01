@@ -10,8 +10,7 @@ import Container, { ItemGroup, PictureFrame } from '../../components/General/Con
 export default function Home() {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
-    const serviceRef = useRef();
-    console.log("servicesRef:", serviceRef.current);
+    const serviceRef = useRef(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -59,6 +58,7 @@ export default function Home() {
                                     text={"Services"}
                                     onClick={(e) => {
                                         e.preventDefault();
+                                        console.log("Scrolling to ", serviceRef.current);
                                         serviceRef.current.scrollIntoView({ behavior: "smooth" })
                                     }}>
                                 </TopbarItem>
