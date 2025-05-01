@@ -6,6 +6,7 @@ import Accordion from '../../components/General/AccordionMenu';
 import InputBar from '../../components/General/InputBar';
 import Checkbox from '../../components/General/CheckboxRefactored';
 import Modal from '../../components/General/Modal';
+import ExerciseChart from '../../components/Dashboard/ExerciseChart';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 

@@ -1,5 +1,5 @@
 import { specialties, ratings, doctorList } from '../assets/js/const';
-import apiClient from '../models/api'
+import apiClient from '../models/api';
 
 const FindDoctorViewModel = {
     // Contains the data to be displayed in the view
@@ -101,6 +101,22 @@ const FindDoctorViewModel = {
 
             return matchesName && matchesSpecialty && matchesRating && matchesAcceptance;
         });
+    },
+
+    // Fetch doctors from the backend
+    async fetchDoctors() {
+        try {
+            const response = await apiClient.get("/doctor/", { params: this.activeFilters });
+            return response.data.map((doctor, i) => ({
+                ...doctor,
+                rating: `${80 + (i % 5) * 5}%`,
+                acceptingNewPatients: i % 2 === 0
+            }));
+        }
+        catch (error) {
+            console.error("Error fetching doctors: ", error);
+            return [];
+        }
     },
 
     // Call to the get specialties method in the service layer
