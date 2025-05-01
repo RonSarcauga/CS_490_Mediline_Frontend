@@ -3,12 +3,15 @@ import Dashboard from '../../components/Dashboard/Dashboard';
 import Container, { ItemGroup } from '../../components/General/Container';
 import CommonIcon from '../../components/General/CommonIcon';
 import EditableUserIcon from '../../components/General/EditableUserIcon';
+import Chatbox from '../../components/Dashboard/Chatbox';
 
 import { bookingInfo, patientDashboardData } from '../../assets/js/const';
 import AccordionList from '../../components/General/Accordion';
+import {doctorAppointmentData, chatlog} from '../../assets/js/const';
 
 const PatientAppointment = () => {
   const { doctor, checkout, appointments, user } = patientDashboardData;
+  const log = chatlog;
   const { meetingTime, treatment } = bookingInfo;
 
   const accordionData = [
@@ -111,7 +114,7 @@ const PatientAppointment = () => {
                               }
                               content={[
                                 <ItemGroup
-                                  customClass="justify-content-space-between"
+                                  customClass="justify-content-space-between align-items-center"
                                   fitParent={true}
                                   stretch={true}
                                   axis={false}
@@ -134,7 +137,14 @@ const PatientAppointment = () => {
                                       axis={true}
                                       items={[
                                         <div className="font-semibold py-1">PRE-APPOINTMENT CHECKLIST</div>,
-                                        <div className="py-1">Check-in Form</div>,
+                                        <div className="py-1">Check-in Form 
+                                        <ItemGroup>
+                                          customClass= "font-4 font-medium text-neutral-1100 pr-4 pl-4 pt-2 pb-2"
+                                          fitParent={true}
+                                          axis{true}
+                                          items{[<div>Completed</div>]}
+                                          </ItemGroup>
+                                        </div>,
                                         <div className="py-1">Self-Evaluation</div>
                                       ]}
                                     />
@@ -156,6 +166,7 @@ const PatientAppointment = () => {
                             axis={true}
                             items={[
                               <>
+                              {/*
                                 <ItemGroup
                                   customClass="bg-secondary-400 p-4 br-md justify-content-space-between align-items-center"
                                   fitParent={true}
@@ -163,13 +174,14 @@ const PatientAppointment = () => {
                                   items={[
                                     <ItemGroup
                                       axis={false}
+                                      stretch={true} //text does not stack,
                                       fitParent={true}
                                       items={[
                                         <div className="overlay-container">
-                                          <img src="public/img/person-icon.svg" width="70" height="70" />
                                           <svg className="overlay-circle" width="10" height="10">
                                             <circle cx="5" cy="5" r="5" fill="lightgreen" />
                                           </svg>
+                                          <img src="public/img/person-icon.svg" width="40" height="40" />
                                         </div>,
                                         <div className="pl-2 font-medium">{doctor.name}</div>
                                       ]}
@@ -191,8 +203,9 @@ const PatientAppointment = () => {
                                       </div>
                                     </>
                                   ]}
-                                />
-                                <ItemGroup
+                                />*/}
+                                <Chatbox user={0} data={log}></Chatbox>
+                                {/*(<ItemGroup
                                   customClass="p-4 bg-neutral-50 br-bottom-md"
                                   fitParent={true}
                                   axis={true}
@@ -208,7 +221,7 @@ const PatientAppointment = () => {
                                       </button>
                                     </div>
                                   ]}
-                                />
+                                />*/}
                               </>
                             ]}
                           />

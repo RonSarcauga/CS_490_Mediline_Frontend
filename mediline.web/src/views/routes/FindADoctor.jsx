@@ -213,7 +213,7 @@ export default function FindADoctorPage() {
                                                                                         width: "100%"
                                                                                     }}
                                                                                     content={[
-                                                                                        <p className="font-semibold py-1">Update Results</p>
+                                                                                        <p id="update-results" className="font-semibold py-1">Update Results</p>
                                                                                     ]}
                                                                                 />
                                                                             </>
@@ -287,7 +287,7 @@ export default function FindADoctorPage() {
                                                                                     axis={false}
                                                                                     items={[
                                                                                         <>
-                                                                                            <h1 className="font-5 font-medium text-neutral-1100">
+                                                                                            <h1 id="add-doctor-button" className="font-5 font-medium text-neutral-1100">
                                                                                                 Add Doctor
                                                                                             </h1>
                                                                                         </>
@@ -376,104 +376,102 @@ export default function FindADoctorPage() {
 
                                                                                                                 <path d="M25.767 61.373a30.815 30.815 0 0 1-3.779-.88 2.652 2.652 0 0 1-.114-.093l-3.535-6.39 4.541-3.26h-4.752l1.017-6.851 4.11-2.599c.178 7.37 1.759 15.656 2.512 20.073z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
 
-                                                                                                                <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
-                                                                                                            </BaseIcon>
-                                                                                                            <ItemGroup
-                                                                                                                customClass="gap-3"
-                                                                                                                axis={true}
-                                                                                                                stretch={true}
-                                                                                                                items={[
-                                                                                                                    <>
-                                                                                                                        <ItemGroup
-                                                                                                                            customClass="gap-1 align-items-center"
-                                                                                                                            axis={true}
-                                                                                                                            stretch={true}
-                                                                                                                            items={[
-                                                                                                                                <>
-                                                                                                                                    <h1 className="font-semibold font-7">{doctor.name}</h1>
-                                                                                                                                    <h1 className="font-semibold font-5">{doctor.specialization}</h1>
-                                                                                                                                </>
-                                                                                                                            ]}
-                                                                                                                        />
-                                                                                                                        {doctor.acceptingNewPatients ? (
-                                                                                                                            <ItemGroup
-                                                                                                                                customClass="gap-3 align-items-center"
-                                                                                                                                stretch={true}
-                                                                                                                                axis={false}
-                                                                                                                                items={[
-                                                                                                                                    <>
-                                                                                                                                        <BaseIcon
-                                                                                                                                            height={20}
-                                                                                                                                            width={20}
-                                                                                                                                            viewBox="0 0 24 24"
-                                                                                                                                            fillColor="none">
-                                                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                            <g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="hsl(210, 70%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                            </g>
-                                                                                                                                        </BaseIcon>
-                                                                                                                                        <p className="font-4 text-primary-500">New Patients</p>
-                                                                                                                                    </>
-                                                                                                                                ]}
-                                                                                                                            />
-                                                                                                                        ) : (
-                                                                                                                            <ItemGroup
-                                                                                                                                customClass="gap-3 align-items-center"
-                                                                                                                                stretch={true}
-                                                                                                                                axis={false}
-                                                                                                                                items={[
-                                                                                                                                    <>
-                                                                                                                                        <BaseIcon
-                                                                                                                                            height={20}
-                                                                                                                                            width={20}
-                                                                                                                                            viewBox="-3.5 0 19 19"
-                                                                                                                                            fillColor="hsl(0, 70%, 50%)">
-                                                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                            <g id="SVGRepo_iconCarrier">
-                                                                                                                                                <path d="M11.383 13.644A1.03 1.03 0 0 1 9.928 15.1L6 11.172 2.072 15.1a1.03 1.03 0 1 1-1.455-1.456l3.928-3.928L.617 5.79a1.03 1.03 0 1 1 1.455-1.456L6 8.261l3.928-3.928a1.03 1.03 0 0 1 1.455 1.456L7.455 9.716z" />
-                                                                                                                                            </g>
-                                                                                                                                        </BaseIcon>
-                                                                                                                                        <p className="font-4 text-warning-200">New Patients</p>
-                                                                                                                                    </>
-                                                                                                                                ]}
-                                                                                                                            />
-                                                                                                                        )}
-                                                                                                                    </>
-                                                                                                                ]}
-                                                                                                            />
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="align-items-center gap-2 align-self-start"
-                                                                                                    axis={false}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <BaseIcon
-                                                                                                                height={28}
-                                                                                                                width={30}
-                                                                                                                fillColor="none">
-                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                                    <path d="M8 12L11.5409 4.91816C11.81 4.38002 12.4136 4.09731 12.9992 4.23512V4.23512C13.5856 4.37308 14 4.8963 14 5.49867V9.64706H17.5767C18.8334 9.64706 19.7787 10.7925 19.5404 12.0264L18.1565 19.1897C18.0657 19.6601 17.6538 20 17.1747 20H8V12Z" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                    <path d="M4 13C4 12.4477 4.44772 12 5 12H8V20H5C4.44772 20 4 19.5523 4 19V13Z" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                </g>
-                                                                                                            </BaseIcon>
-                                                                                                            <p className="font-semibold">{doctor.rating}</p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                            </>
-                                                                                        ]}
-                                                                                    />
-                                                                                </>
-                                                                            ]}
-                                                                        />
-                                                                    ))
-                                                                )
-                                                            }
+                                                                                                        <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
+                                                                                                    </BaseIcon>
+                                                                                                    <ItemGroup
+                                                                                                        customClass="gap-3"
+                                                                                                        axis={true}
+                                                                                                        stretch={true}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <ItemGroup
+                                                                                                                    customClass="gap-1 align-items-center"
+                                                                                                                    axis={true}
+                                                                                                                    stretch={true}
+                                                                                                                    items={[
+                                                                                                                        <>
+                                                                                                                            <h1 className="font-semibold font-7">{doctor.label}</h1>
+                                                                                                                            <h1 className="font-semibold font-5">{doctor.specialty}</h1>
+                                                                                                                        </>
+                                                                                                                    ]}
+                                                                                                                />
+                                                                                                                {doctor.acceptingNewPatients ? (
+                                                                                                                    <ItemGroup
+                                                                                                                        customClass="gap-3 align-items-center"
+                                                                                                                        stretch={true}
+                                                                                                                        axis={false}
+                                                                                                                        items={[
+                                                                                                                            <>
+                                                                                                                                <BaseIcon
+                                                                                                                                    height={20}
+                                                                                                                                    width={20}
+                                                                                                                                    viewBox="0 0 24 24"
+                                                                                                                                    fillColor="none">
+                                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                    <g id="SVGRepo_iconCarrier"> <path d="M4 12.6111L8.92308 17.5L20 6.5" stroke="hsl(210, 70%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                    </g>
+                                                                                                                                </BaseIcon>
+                                                                                                                                <p id="newPatientStatus" className="font-4 text-primary-500">New Patients</p>
+                                                                                                                            </>
+                                                                                                                        ]}
+                                                                                                                    />
+                                                                                                                ) : (
+                                                                                                                    <ItemGroup
+                                                                                                                        customClass="gap-3 align-items-center"
+                                                                                                                        stretch={true}
+                                                                                                                        axis={false}
+                                                                                                                        items={[
+                                                                                                                            <>
+                                                                                                                                <BaseIcon
+                                                                                                                                    height={20}
+                                                                                                                                    width={20}
+                                                                                                                                    viewBox="-3.5 0 19 19"
+                                                                                                                                    fillColor="hsl(0, 70%, 50%)">
+                                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                    <g id="SVGRepo_iconCarrier">
+                                                                                                                                        <path d="M11.383 13.644A1.03 1.03 0 0 1 9.928 15.1L6 11.172 2.072 15.1a1.03 1.03 0 1 1-1.455-1.456l3.928-3.928L.617 5.79a1.03 1.03 0 1 1 1.455-1.456L6 8.261l3.928-3.928a1.03 1.03 0 0 1 1.455 1.456L7.455 9.716z" />
+                                                                                                                                    </g>
+                                                                                                                                </BaseIcon>
+                                                                                                                                <p className="font-4 text-warning-200">New Patients</p>
+                                                                                                                            </>
+                                                                                                                        ]}
+                                                                                                                    />
+                                                                                                                )}
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                </>
+                                                                                            ]}
+                                                                                        />
+                                                                                        <ItemGroup
+                                                                                            customClass="align-items-center gap-2 align-self-start"
+                                                                                            axis={false}
+                                                                                            items={[
+                                                                                                <>
+                                                                                                    <BaseIcon
+                                                                                                        height={28}
+                                                                                                        width={30}
+                                                                                                        fillColor="none">
+                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                            <path d="M8 12L11.5409 4.91816C11.81 4.38002 12.4136 4.09731 12.9992 4.23512V4.23512C13.5856 4.37308 14 4.8963 14 5.49867V9.64706H17.5767C18.8334 9.64706 19.7787 10.7925 19.5404 12.0264L18.1565 19.1897C18.0657 19.6601 17.6538 20 17.1747 20H8V12Z" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            <path d="M4 13C4 12.4477 4.44772 12 5 12H8V20H5C4.44772 20 4 19.5523 4 19V13Z" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                        </g>
+                                                                                                    </BaseIcon>
+                                                                                                    <p className="font-semibold">{doctor.rating}</p>
+                                                                                                </>
+                                                                                            ]}
+                                                                                        />
+                                                                                    </>
+                                                                                ]}
+                                                                            />
+                                                                        </>
+                                                                    ]}
+                                                                />
+                                                            ))}
                                                         />
                                                     </>
                                                 ]}
