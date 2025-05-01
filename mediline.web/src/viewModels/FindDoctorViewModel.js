@@ -1,4 +1,5 @@
 import { specialties, ratings, doctorList } from '../assets/js/const';
+import apiClient from '../models/api'
 
 const FindDoctorViewModel = {
     // Contains the data to be displayed in the view
