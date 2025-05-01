@@ -72,10 +72,25 @@ export default function MultiStepRegistration()
     };
 
     const handleSubmit = () => {
-        Object.assign(RegistrationViewModel, formData);
-      
+        const withExtra = {
+            ...formData,
+            country: "United States of America",
+        };
+        
+        Object.assign(RegistrationViewModel, withExtra);
+        const payload = RegistrationViewModel.getPayload();
+
+        if (formData.accountType === 'doctor') {
+            payload.fee   = '150';
+            payload.hours = '09:00-21:00';
+        }
+        else if (formData.accountType === 'pharmacist') {
+            payload.hours = '09:00-21:00';
+            payload.account_type = 'pharmacy';
+        }
+        console.log(payload)
         registerMutation.mutate(
-          RegistrationViewModel.getPayload(),
+            payload,
           {
             onSuccess: (newUser) => {
               console.log('Registration success:', newUser);
@@ -84,10 +99,16 @@ export default function MultiStepRegistration()
               setFormData({ ...RegistrationViewModel });
               navigate('/login');
             },
-            onError: (error) => {
-              console.error('Registration failed:', error.message);
+            onError: (err) => {
+                if (err.response) {
+                    console.error("Status:", err.response.status);
+                    console.error("Headers:", err.response.headers);
+                    console.error("Body:", err.response.data);
+                  } else {
+                    console.error("Network / CORS error:", err);
+                  }
+                }
             }
-          }
         );
     };
 
@@ -166,7 +187,7 @@ export default function MultiStepRegistration()
                                                             value={formData.dateOfBirth}
                                                             onChange={(e) => handleInput("dateOfBirth", e.target)}
                                                             customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                            placeholder="Date of Birth (mm/dd/yyyy)"
+                                                            placeholder="Date of Birth (yyyy-mm-dd)"
                                                         />
                                                         <Container
                                                             customClass="button bg-dark-100 justify-items-center align-items-center br-sm"
