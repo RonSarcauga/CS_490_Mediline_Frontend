@@ -101,7 +101,7 @@ function PDFindDoctor() {
                                                 stretch={true}
                                                 items={[
                                                     <>
-                                                        <h1 className="font-semibold text-neutral-100 justify-self-start">
+                                                        <h1 className="font-semibold text-neutral-400 justify-self-start">
                                                             FILTERS
                                                         </h1>
                                                         <ItemGroup
@@ -113,7 +113,7 @@ function PDFindDoctor() {
                                                             items={[
                                                                 <>
                                                                     <BaseIcon
-                                                                        fill="#000000"
+                                                                        fill="hsl(0, 0%, 40%)"
                                                                         height="20px"
                                                                         width="20px"
                                                                         viewBox="0 0 1920 1920">
@@ -123,7 +123,7 @@ function PDFindDoctor() {
                                                                             <path d="M960 0v112.941c467.125 0 847.059 379.934 847.059 847.059 0 467.125-379.934 847.059-847.059 847.059-467.125 0-847.059-379.934-847.059-847.059 0-267.106 126.607-515.915 338.824-675.727v393.374h112.94V112.941H0v112.941h342.89C127.058 407.38 0 674.711 0 960c0 529.355 430.645 960 960 960s960-430.645 960-960S1489.355 0 960 0" fill-rule="evenodd" />
                                                                         </g>
                                                                     </BaseIcon>
-                                                                    <h1 className="font-5">
+                                                                    <h1 className="font-5 text-neutral-400">
                                                                         Reset Filter
                                                                     </h1>
                                                                 </>
@@ -186,7 +186,7 @@ function PDFindDoctor() {
                                                                             <p></p>
                                                                         ]}
                                                                     />
-                                                                    <p className="text-neutral-600 font-medium">Accepting New Patients</p>
+                                                                    <p className="text-neutral-400 font-medium">Accepting New Patients</p>
                                                                 </>
                                                             ]}
                                                         />
@@ -203,7 +203,7 @@ function PDFindDoctor() {
                                     items={[
                                         <>
                                             <Container
-                                                customClass="bg-neutral-1100 py-3 b-3 outline-neutral-800 br-sm"
+                                                customClass="bg-neutral-1100 py-3 b-3 outline-neutral-400 br-sm"
                                                 fitParent={true}
                                                 isClickable={true}
                                                 onClick={(e) => {
@@ -215,12 +215,12 @@ function PDFindDoctor() {
                                                 }}
                                                 content={[
                                                     <>
-                                                        <p className="font-semibold text-neutral-600">APPLY FILTERS</p>
+                                                        <p className="font-semibold text-neutral-400">APPLY FILTERS</p>
                                                     </>
                                                 ]}
                                             />
                                             <Container
-                                                customClass="bg-neutral-600 py-3 br-sm"
+                                                customClass="bg-neutral-400 py-3 br-sm"
                                                 fitParent={true}
                                                 isClickable={true}
                                                 content={[
@@ -268,31 +268,6 @@ function PDFindDoctor() {
                                                                 axis={false}
                                                                 items={[
                                                                     <>
-                                                                        <ItemGroup
-                                                                            customClass="bg-neutral-1100 br-sm align-items-center justify-items-center px-3 gap-3"
-                                                                            isClickable={true}
-                                                                            onClick={clearFilters}
-                                                                            stretch={true}
-                                                                            axis={false}
-                                                                            items={[
-                                                                                <>
-                                                                                    <BaseIcon
-                                                                                        fill="#000000"
-                                                                                        height="20px"
-                                                                                        width="20px"
-                                                                                        viewBox="0 0 1920 1920">
-                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                        <g id="SVGRepo_iconCarrier">
-                                                                                            <path d="M960 0v112.941c467.125 0 847.059 379.934 847.059 847.059 0 467.125-379.934 847.059-847.059 847.059-467.125 0-847.059-379.934-847.059-847.059 0-267.106 126.607-515.915 338.824-675.727v393.374h112.94V112.941H0v112.941h342.89C127.058 407.38 0 674.711 0 960c0 529.355 430.645 960 960 960s960-430.645 960-960S1489.355 0 960 0" fill-rule="evenodd" />
-                                                                                        </g>
-                                                                                    </BaseIcon>
-                                                                                    <h1 className="font-5">
-                                                                                        Reset Filter
-                                                                                    </h1>
-                                                                                </>
-                                                                            ]}
-                                                                        />
                                                                         <ItemGroup
                                                                             customClass="bg-neutral-1100 br-sm align-items-center justify-items-center px-4 gap-2"
                                                                             isClickable={true}
@@ -390,7 +365,7 @@ function PDFindDoctor() {
                                     />
                                 </>
                             ]}
-                            contentClass="pt-5 px-3"
+                            contentClass="pt-8 px-3"
                             content={[
                                 <>
 
@@ -400,71 +375,6 @@ function PDFindDoctor() {
                                         fitParent={true}
                                         items={[
                                             <>
-                                                <ItemGroup
-                                                    customClass="gap-5 justify-content-space-between"
-                                                    axis={false}
-                                                    fitParent={true}
-                                                    stretch={true}
-                                                    items={[
-                                                        <>
-                                                            <ItemGroup
-                                                                customClass="gap-4"
-                                                                axis={false}
-                                                                stretch={true}
-                                                                style={{
-                                                                    gridAutoColumns: "275px"
-                                                                }}
-                                                                items={[
-                                                                    <>
-                                                                        <SelectList
-                                                                            ref={specialtyDropdownRef}
-                                                                            triggerClass="bg-neutral-1100 b-0"
-                                                                            contentClass="b-left-0 b-right-0 b-bottom-0 b-top-1 outline-neutral-900"
-                                                                            items={formData.getSpecialties()}
-                                                                            onSelect={(item) => {
-                                                                                FindDoctorViewModel.updateFilter("specialty", item.value);
-                                                                                setFormData({ ...FindDoctorViewModel });
-                                                                            }}
-                                                                            placeholder="Specialty"
-                                                                        />
-                                                                        <SelectList
-                                                                            ref={ratingDropdownRef}
-                                                                            triggerClass="bg-neutral-1100 b-0"
-                                                                            contentClass="b-left-0 b-right-0 b-bottom-0 b-top-1 outline-neutral-900"
-                                                                            items={formData.getRatings()}
-                                                                            onSelect={(item) => {
-                                                                                FindDoctorViewModel.updateFilter("rating", item.value);
-                                                                                setFormData({ ...FindDoctorViewModel });
-                                                                            }}
-                                                                            placeholder="Rating"
-                                                                        />
-                                                                    </>
-                                                                ]}
-                                                            />
-                                                            <ItemGroup
-                                                                customClass="align-items-center gap-4"
-                                                                axis={false}
-                                                                stretch={true}
-                                                                items={[
-                                                                    <>
-                                                                        <Checkbox
-                                                                            checkboxClass="b-2 outline-neutral-1100 bg-neutral-1100 align-self-center"
-                                                                            checked={formData.filters.acceptingNewPatients}
-                                                                            onChange={(checked) => {
-                                                                                FindDoctorViewModel.updateFilter("acceptingNewPatients", checked);
-                                                                                setFormData({ ...FindDoctorViewModel });
-                                                                            }}
-                                                                            label={[
-                                                                                <p></p>
-                                                                            ]}
-                                                                        />
-                                                                        <p>Accepting New Patients</p>
-                                                                    </>
-                                                                ]}
-                                                            />
-                                                        </>
-                                                    ]}
-                                                />
                                                 <ItemGroup
                                                     customClass="gap-5 hideScroll"
                                                     axis={true}
