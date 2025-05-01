@@ -124,7 +124,7 @@ function DatePicker({
                         className="date-slot"
                         style={{
                             cursor: day ? 'pointer' : 'default',
-                            backgroundColor: day && day === selectedDate ? '#007BFF' : '#FFF',
+                            backgroundColor: day && day === selectedDate ? 'hsl(210, 70%, 50%)' : '#FFF',
                             color: day && day === selectedDate ? '#FFF' : '#000',
                             border: day ? '1px solid #CCC' : 'none',
                         }}
