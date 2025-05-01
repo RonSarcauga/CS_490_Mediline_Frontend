@@ -1,18 +1,78 @@
 import { discussionPosts, userList } from '../assets/js/const';
+import { discussionPostsList, discussionProfiles, repliesTable, baseUserList } from '../assets/js/const';
 
 class DiscussionForumViewModel {
     // Initialize the view model with mock data
-    posts = [...discussionPosts];
-    users = [...userList];
+    posts = [...discussionPostsList];
+    users = [...baseUserList];
 
     // Helper method to retrieve posts
     getPosts() {
         return this.posts; // Return the current list of posts
     }
 
+    // Helper method to retrieve replies to a post by post ID
+    getPostReplies(postId, offset, limit) {
+        const replies = repliesTable.filter(reply => reply.postId === postId);
+
+        const sortedReplies = replies.sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+
+        return sortedReplies.slice(offset, offset + limit);
+    }
+
+    // Helper method to add a new reply
+    addReply({ postId, parentReplyId, content }) {
+        if (!postId || !content) {
+            throw new Error("Invalid reply object. Ensure postId and content are provided.");
+        }
+
+        // Generate ID and createDate
+        const newReply = {
+            id: Math.random().toString(36).substr(2, 9),
+            postId: postId,
+            parentReplyId: parentReplyId || null,
+            content: content,
+            createDate: new Date().toISOString(),
+        };
+
+        // Add the new reply to the Replies table
+        this.repliesTable = [...this.repliesTable, newReply];
+    }
+    // Helper method to retrieve nested replies for a given parent reply ID
+    getNestedReplies(postID, parentReplyID) {
+        const postReplies = repliesTable.filter(reply => reply.postId === postID);
+
+        const nestedReplies = postReplies.filter(reply => reply.parentReplyId === parentReplyID);
+
+        return nestedReplies
+    }
+
+    // Helper method to retrieve the number of replies to a discussion post
+    getReplyCount(postId) {
+        const numReplies = repliesTable.filter(reply => reply.postId === postId);
+        
+        return numReplies.length;
+    }
+
     // Helper method to retrieve users
     getUsers() {
         return this.users; // Return the list of users that authored the posts
+    }
+
+    // Helper method to retrieve discussion forum profiles
+    getProfiles() {
+        return this.discussionProfiles; // Return the list of profiles
+    }
+
+    // Helper method to retrieve discussion forum profiles by ID
+    getProfilesById(id) {
+        const record = discussionProfiles.find(user => user.userId === id);
+
+        if (!record) {
+            return [];
+        }
+
+        return record;
     }
 
     // Helper method to add a new post

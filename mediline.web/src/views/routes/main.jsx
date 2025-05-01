@@ -13,7 +13,15 @@ import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
 import PDHome from './PDHome';
+import PDAppointment from './PDAppointment';
+import PDProfile from './PDProfile';
+import PDFindDoctor from './PDFindDoctor';
 import PDDiscussionForum from './PDDiscussionForum';
+import DDHome from './DDHome';
+import DDProfile from './DDProfile';
+import DDAppointment from './DDAppointment';
+import PHHome from './PHHome';
+import PHPatient from './PHPatient';
 import DashboardLayout from './DashboardLayout';
 import UserProvider from '../../context/UserProvider';
 import PatientDashboardHome from './PatientDashboardHome';
@@ -49,12 +57,36 @@ const router = createBrowserRouter([
                 element: <PDHome />,
             },
             {
+                path: 'patient/profile',
+                element: <PDProfile />,
+            },
+            {
+                path: 'patient/profile/find-a-doctor',
+                element: <PDFindDoctor />,
+            },
+            {
+                path: 'patient/appointment',
+                element: <PDAppointment />,
+            },
+            {
                 path: 'patient/discussion-forum',
                 element: <PDDiscussionForum />,
             },
             {
                 path: 'doctor',
-                element: <PDHome />,
+                element: <DDHome />,
+            },
+            {
+                path: 'doctor/profile',
+                element: <DDProfile />
+            },
+            {
+                path: 'doctor/profile/:patientId',
+                element: <DDProfile />
+            },
+            {
+                path: 'doctor/appointment',
+                element: <DDAppointment />
             },
             {
                 path: 'doctor/discussion-forum',
@@ -62,7 +94,11 @@ const router = createBrowserRouter([
             },
             {
                 path: 'pharmacist',
-                element: <PDHome />,
+                element: <PHHome />,
+            },
+            {
+                path: 'pharmacist/profile',
+                element: <PHPatient />,
             },
             {
                 path: 'pharmacist/discussion-forum',

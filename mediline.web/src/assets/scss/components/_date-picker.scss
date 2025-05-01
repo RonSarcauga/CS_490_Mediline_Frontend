@@ -1,0 +1,55 @@
+.date-picker-wrapper {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 1.2rem;
+    text-align: center;
+}
+
+.date-picker-header {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    grid-auto-flow: column;
+}
+
+.date-grid {
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.date-grid > * {
+    text-align: center;
+}
+
+.date-grid > .day-name {
+    font-weight: bold;
+}
+
+.date-grid > .date-slot {
+    padding: 10px;
+}
+
+.date-button {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.date-button:hover {
+    background-color: #e0e0e0;
+}
+
+.date-button.selected {
+    background-color: #007bff;
+    color: #fff;
+    border-color: #0056b3;
+}
+
+.selected-info {
+    margin-top: 20px;
+    font-size: 16px;
+}
