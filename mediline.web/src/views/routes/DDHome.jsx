@@ -18,6 +18,8 @@ function DDHome() {
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
     const hours = Array.from({ length: 10 }, (_, i) => 8 + i);
 
+    const navigate = useNavigate();
+
     const handleDateSelect = (date) => {
         const formattedDate = `${date.month} ${date.date}, ${date.year}`;
         setSelectedDate(formattedDate);
@@ -549,6 +551,7 @@ function DDHome() {
                                                                                                                                                                                             isClickable={true}
                                                                                                                                                                                             onClick={() => {
                                                                                                                                                                                                 console.log("Open the patient's profile!");
+                                                                                                                                                                                                navigate(`/dashboard/${user.role}/profile/${dashboardLayoutViewModel.getPatientByMRN(appt.patientMRN).userId}`);
                                                                                                                                                                                             }}
                                                                                                                                                                                             items={[
                                                                                                                                                                                                 <>
