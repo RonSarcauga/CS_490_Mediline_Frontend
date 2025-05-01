@@ -63,6 +63,7 @@ export default function PatientDashboardExercise({
             if (data) {
                 setExerciseList(data); // Store the data in state
             }
+            
         };
     
         fetchData2();

@@ -43,6 +43,7 @@ export const submitForm = async (formData) => {
     const { data } = await axios.post(`/exercise/`, formData);
     console.log('Submitted data:', data);
     return data;
+    
 }
 
 
