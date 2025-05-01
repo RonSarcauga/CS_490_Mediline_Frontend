@@ -79,29 +79,6 @@ function PDDiscussionForum() {
                                                             items={[
                                                                 <>
                                                                     <ItemGroup
-                                                                        customClass="bg-neutral-1100 br-sm align-items-center justify-items-center px-4 gap-2"
-                                                                        isClickable={true}
-                                                                        stretch={true}
-                                                                        axis={false}
-                                                                        items={[
-                                                                            <>
-                                                                                <BaseIcon
-                                                                                    fill="none"
-                                                                                    height="28px"
-                                                                                    width="28px">
-                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                    <g id="SVGRepo_iconCarrier">
-                                                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M3 7C3 6.44772 3.44772 6 4 6H20C20.5523 6 21 6.44772 21 7C21 7.55228 20.5523 8 20 8H4C3.44772 8 3 7.55228 3 7ZM6 12C6 11.4477 6.44772 11 7 11H17C17.5523 11 18 11.4477 18 12C18 12.5523 17.5523 13 17 13H7C6.44772 13 6 12.5523 6 12ZM9 17C9 16.4477 9.44772 16 10 16H14C14.5523 16 15 16.4477 15 17C15 17.5523 14.5523 18 14 18H10C9.44772 18 9 17.5523 9 17Z" fill="#000000" />
-                                                                                    </g>
-                                                                                </BaseIcon>
-                                                                                <h1 className="font-4 font-semibold">
-                                                                                    Filter
-                                                                                </h1>
-                                                                            </>
-                                                                        ]}
-                                                                    />
-                                                                    <ItemGroup
                                                                         customClass="bg-dark-100 br-sm align-items-center justify-items-center pl-1 py-1"
                                                                         isClickable={!isCreating}
                                                                         onClick={handleCreate}
