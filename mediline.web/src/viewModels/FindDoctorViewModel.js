@@ -1,5 +1,6 @@
 import { specialties, ratings, doctorList } from '../assets/js/const';
 import apiClient from '../models/api';
+import { useQuery } from '@tanstack/react-query'; 
 
 const FindDoctorViewModel = {
     // Contains the data to be displayed in the view
