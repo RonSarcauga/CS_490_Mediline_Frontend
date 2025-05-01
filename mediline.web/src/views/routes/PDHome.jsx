@@ -39,58 +39,126 @@ function PDHome() {
             >
                 <>
                     <ItemGroup
-                        customClass="px-4 pt-4 pb-2 gap-5"
+                        customClass="pl-4 pr-6 pt-4 pb-2 gap-5"
                         axis={true}
                         fitParent={true}
                         items={[
                             <>
                                 <ItemGroup
-                                    customClass="align-items-center gap-8"
+                                    customClass="align-items-center gap-15"
                                     axis={false}
                                     stretch={true}
                                     fitParent={true}
-                                    evenSplit={true}
+                                    style={{
+                                        gridAutoColumns: "1fr auto"
+                                    }}
                                     items={[
                                         <>
                                             <DatePicker
                                                 disablePastDates={true}
                                                 onDateSelect={handleDateSelect}
                                             />
-                                            <Container
-                                                customClass="box-shadow-sm p-5 gap-5 text-start"
+                                            <ItemGroup
+                                                customClass="text-start"
+                                                axis={true}
                                                 fitParent={true}
-                                                header={[
-                                                    <>
-                                                        <h1 className="font-semibold text-neutral-100 justify-self-start">
-                                                            BOOK APPOINTMENT
-                                                        </h1>
-                                                    </>
-                                                ]}
-                                                content={[
-                                                    <>
+                                                items={[
+                                                    <form>
                                                         <ItemGroup
+                                                            customClass="gap-4"
                                                             axis={true}
                                                             fitParent={true}
                                                             items={[
-                                                                <form>
+                                                                <>
+                                                                    <h1 className="font-semibold text-neutral-100 justify-self-start">
+                                                                        BOOK APPOINTMENT
+                                                                    </h1>
                                                                     <ItemGroup
-                                                                        customClass="gap-2"
+                                                                        customClass="gap-8"
                                                                         axis={true}
                                                                         fitParent={true}
                                                                         items={[
                                                                             <>
-                                                                                <p className="font-medium font-4">Selected Date</p>
-                                                                                <InputBar
-                                                                                    customClass='bg-neutral-1000 py-2 pl-4 b-bottom-6 outline-neutral-600 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
-                                                                                    placeholder=""
+                                                                                <ItemGroup
+                                                                                    customClass="gap-4"
+                                                                                    axis={true}
+                                                                                    fitParent={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-2"
+                                                                                                axis={true}
+                                                                                                style={{
+                                                                                                    width: "100%"
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <p className="font-medium font-4">Selected Date</p>
+                                                                                                        <InputBar
+                                                                                                            customClass='bg-neutral-expanded-1000 py-2 pl-4 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-neutral-100 input-font-4 input-p-0'
+                                                                                                            value={selectedDate}
+                                                                                                            placeholder=""
+                                                                                                            readonly={true}
+                                                                                                        />
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-2"
+                                                                                                axis={true}
+                                                                                                style={{
+                                                                                                    width: "100%"
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <p className="font-medium font-4">Time</p>
+                                                                                                        <InputBar
+                                                                                                            customClass='bg-neutral-expanded-1000 py-2 pl-4 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-neutral-100 input-font-4 input-p-0'
+                                                                                                            placeholder=""
+                                                                                                        />
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <ItemGroup
+                                                                                    customClass="gap-4 text-center"
+                                                                                    axis={true}
+                                                                                    fitParent={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <Container
+                                                                                                customClass="bg-neutral-1100 py-3 b-3 outline-neutral-400 br-sm"
+                                                                                                fitParent={true}
+                                                                                                isClickable={true}
+                                                                                                content={[
+                                                                                                    <>
+                                                                                                        <p className="font-semibold text-neutral-400">CONFIRM</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <Container
+                                                                                                customClass="bg-neutral-200 py-3 br-sm text-center align-self-end"
+                                                                                                fitParent={true}
+                                                                                                isClickable={true}
+                                                                                                onClick={handleCloseModal}
+                                                                                                content={[
+                                                                                                    <>
+                                                                                                        <p className="font-semibold text-neutral-1100">CANCEL</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
                                                                                 />
                                                                             </>
                                                                         ]}
                                                                     />
-                                                                </form>
+                                                                </>
                                                             ]}
                                                         />
-                                                    </>
+                                                    </form>
                                                 ]}
                                             />
                                         </>
