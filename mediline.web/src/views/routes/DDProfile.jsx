@@ -11,15 +11,17 @@ function DDProfile() {
     const { currentUser } = useContext(UserContext);
     const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
-    const { userId } = useParams();
+    const { patientId } = useParams();
 
     const defaultPatientId = 1;
-    const patientId = userId || defaultPatientId;
-    const currentPatient = dashboardLayoutViewModel.getUsers().find(user => user.id === patientId);
+    const numPatientId = patientId ? parseInt(patientId, 10) : null;
+    const currentPatientId = numPatientId || defaultPatientId;
+    const currentPatient = dashboardLayoutViewModel.getUsers().find(user => user.id === currentPatientId);
 
-    const patientData = dashboardLayoutViewModel.getPatientData(patientId);
-    const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(patientId);
+    const patientData = dashboardLayoutViewModel.getPatientData(currentPatientId);
+    const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(currentPatientId);
 
+    console.log(`Patient Data: ${patientData}`);
 
     const [activeTab, setActiveTab] = useState("tab1");
 
