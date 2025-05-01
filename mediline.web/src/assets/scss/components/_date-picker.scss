@@ -1,13 +1,34 @@
-.date-picker {
-    font-family: Arial, sans-serif;
+.date-picker-wrapper {
+    display: grid;
+    grid-auto-flow: row;
+    gap: 1.2rem;
     text-align: center;
 }
 
+.date-picker-header {
+    display: grid;
+    align-items: center;
+    justify-content: space-between;
+    grid-auto-flow: column;
+}
+
 .date-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    text-align: center;
+    grid-template-columns: repeat(7, 1fr);
     gap: 10px;
+}
+
+.date-grid > * {
+    text-align: center;
+}
+
+.date-grid > .day-name {
+    font-weight: bold;
+}
+
+.date-grid > .date-slot {
+    padding: 10px;
 }
 
 .date-button {
