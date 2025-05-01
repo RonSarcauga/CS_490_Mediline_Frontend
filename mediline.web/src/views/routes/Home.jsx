@@ -10,7 +10,7 @@ import Container, { ItemGroup, PictureFrame } from '../../components/General/Con
 export default function Home() {
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
-    const serviceRef = useRef(null);W
+    const serviceRef = useRef(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
