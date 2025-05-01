@@ -176,7 +176,7 @@ function PDFindDoctor() {
                                                             items={[
                                                                 <>
                                                                     <Checkbox
-                                                                        checkboxClass="b-2 outline-neutral-900 bg-neutral-1100 align-self-center"
+                                                                        checkboxClass="b-2 outline-neutral-900 fill-neutral-1100 align-self-center"
                                                                         checked={formData.filters.acceptingNewPatients}
                                                                         onChange={(checked) => {
                                                                             FindDoctorViewModel.updateFilter("acceptingNewPatients", checked);
