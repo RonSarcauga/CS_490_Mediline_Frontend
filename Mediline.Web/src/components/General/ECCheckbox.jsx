@@ -13,6 +13,8 @@ export default function ECCheckbox({
     label = "item",
     time = "0 min",
     reps = "0 reps",
+    id = "0",
+    personal = false,
     checked,
     onChange
 })
@@ -27,6 +29,7 @@ export default function ECCheckbox({
             onChange(e.target.checked);
         }
     }
+    reps = reps + " reps"
 
     return (
         <ItemGroup
@@ -65,10 +68,9 @@ export default function ECCheckbox({
                         
                     </label>
                     {label}
-                    <FaClock />
-                    {time}
-                    <BsChevronDoubleUp />
-                    {reps}
+                    {personal && <BsChevronDoubleUp />}
+                    {personal && reps}
+                    
                 </>
             ]}
         />

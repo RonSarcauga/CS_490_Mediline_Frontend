@@ -9,6 +9,9 @@ import { BsClipboard2HeartFill } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
 import React, { useRef, useEffect, useState } from "react";
 import { Chart } from "chart.js/auto";
+import ExerciseChart from '../../components/Dashboard/ExerciseChart';
+import { fetchPatientExerciseList, fetchExerciseList, fetchChartData } from '../../viewModels/ExercisePage.js';
+
 
 
 
@@ -19,6 +22,9 @@ export default function PatientDashboardExercise({
 }) {
     const [showNewElement, setShowNewElement] = useState(false);
     const [graphState, setGraphState] = useState("exercise");
+    const [exerciseData, setExerciseData] = useState([]);
+    const [exerciseList, setExerciseList] = useState([]);
+    const [chartData, setChartData] = useState([]);
 
     const handleButtonClick = () => {
         if (showNewElement === true) {
@@ -37,18 +43,42 @@ export default function PatientDashboardExercise({
     const setGraphStateSl =() => {
         setGraphState("sleep");
     }
-    let chartDataExercise = [0, 1, .5, 2, 1, 3]
-    let chartDataSleep = [1, 2, 3, 4, 5, 3]
-    let chartDataWater = [10, 4, .6, 3, 1, ]
-
     let ecBank1 = ["Push Ups", "Sit Ups", "Squats", "Planks", "Crunches", "Burpees", "Lunges", "Jumping Jacks", "Mountain Climbers", "High Knees"]
-    let ecBank2 = ["3 reps", "5 reps", "10 reps", "15 reps", "20 reps", "25 reps", "30 reps", "35 reps", "40 reps", "45 reps"]
-    let ecBank3 = ["5 min", "10 min", "15 min", "20 min", "25 min", "30 min", "35 min", "40 min", "45 min", "50 min"]
 
-    let currEcc1 = ["Muscle Ups", "Handstand Push Ups", "One Arm Push Ups", "One Arm Pull Ups", "Planche Push Ups"]
-    let currEcc2 = ["5 reps", "10 reps", "15 reps", "20 reps", "25 reps"]
-    let currEcc3 = ["5 min", "10 min", "15 min", "20 min", "25 min"]
-  
+    
+
+
+    useEffect(() => {
+        const fetchData1 = async () => {
+            const data = await fetchPatientExerciseList();
+            if (data) {
+                setExerciseData(data); // Store the data in state
+            }
+        };
+    
+        fetchData1();
+    }, []);
+    useEffect(() => {
+        const fetchData2 = async () => {
+            const data = await fetchChartData();
+            if (data) {
+                setExerciseList(data); // Store the data in state
+            }
+            
+        };
+    
+        fetchData2();
+    }, []);
+    useEffect(() => {
+        const fetchData3 = async () => {
+            const data = await fetchChartData();
+            if (data) {
+                setChartData(data); // Store the data in state
+            }
+        };
+    
+        fetchData3();
+    }, []);
 
     return (
         <div className="background"
@@ -147,7 +177,7 @@ export default function PatientDashboardExercise({
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {!showNewElement && <ExerciseList exerciseBank1={ecBank1} exerciseBank2={ecBank2} exerciseBank3={ecBank3}/>}
+                                                                    {!showNewElement && <ExerciseList exerciseBank1={ecBank1} />}
                                                                     {showNewElement && <WeeklyForm />}
 
                                                                 </>
@@ -180,31 +210,17 @@ export default function PatientDashboardExercise({
 
                                                                         items={[
                                                                             <>
-                                                                                <ECCheckbox
-                                                                                    label={currEcc1[0]}
-                                                                                    reps={currEcc2[0]}
-                                                                                    time={currEcc3[0]}
+                                                                                {exerciseData.map((ecc1, index) => (
+                                                                                    <ECCheckbox
+                                                                                    label={ecc1.type_of_exercise}
+                                                                                    reps={ecc1.reps}
+                                                                                    personal = {true}
+                                                                                    id = {ecc1.exercise_id}
                                                                                 />
-                                                                                <ECCheckbox
-                                                                                    label={currEcc1[1]}
-                                                                                    reps={currEcc2[1]}
-                                                                                    time={currEcc3[1]}
-                                                                                />
-                                                                                <ECCheckbox
-                                                                                    label={currEcc1[2]}
-                                                                                    reps={currEcc2[2]}
-                                                                                    time={currEcc3[2]}
-                                                                                />
-                                                                                <ECCheckbox
-                                                                                    label={currEcc1[3]}
-                                                                                    reps={currEcc2[3]}
-                                                                                    time={currEcc3[3]}
-                                                                                />
-                                                                                <ECCheckbox
-                                                                                    label={currEcc1[4]}
-                                                                                    reps={currEcc2[4]}
-                                                                                    time={currEcc3[4]}
-                                                                                />
+                                                                                ))
+                                                                                }
+                                                                                
+                                                                                
                                                                             </>
                                                                         ]}
                                                                     />
@@ -236,17 +252,15 @@ export default function PatientDashboardExercise({
 
                                                                         items={[
                                                                             <>
-                                                                                {graphState === "exercise" && <ExerciseChart inputData={chartDataExercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)"/>}
-                                                                                {graphState === "water" && <ExerciseChart inputData={chartDataWater} inputLabel="Water" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)"/>}
-                                                                                {graphState === "sleep" && <ExerciseChart inputData={chartDataSleep} inputLabel="Sleep" />}
+                                                                                {graphState === "exercise" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)"/>}
+                                                                                {graphState === "water" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)"/>}
+                                                                                {graphState === "sleep" && <ExerciseChart inputData={chartData.sleep} inputLabel="Sleep" />}
                                                                             </>
                                                                         ]}
                                                                     />
                                                                     <ItemGroup
                                                                         customClass="p-5 mt-5 fit-parent gap-1"
                                                                         axis={true}
-                                                                        
-
                                                                         items={[
                                                                             <>
                                                                                 <ItemGroup
@@ -576,6 +590,7 @@ function ExerciseList({
     )
 }
 function WeeklyForm() {
+    
     return (
         <ItemGroup
             customClass=""
@@ -609,7 +624,7 @@ function WeeklyForm() {
                             </>
                         ]}
                     />
-                    <form>
+                    <form >
                         <ItemGroup
                             customClass="gap-3 bg-neutral-1100 mb-2 mt-2 ml-5 p-2 br-xs"
                             axis={true}
@@ -621,6 +636,7 @@ function WeeklyForm() {
                                     <h2>Exercise</h2>
                                     <div>How many hours did you spend exercising this week?</div>
                                     <InputBar
+                                        name="exercise"
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
 
@@ -638,6 +654,7 @@ function WeeklyForm() {
                                     <h2>Sleep</h2>
                                     <div>How many hours of sleep did you get?</div>
                                     <InputBar
+                                        name = "sleep"
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
 
@@ -655,6 +672,7 @@ function WeeklyForm() {
                                     <h2>Hydration</h2>
                                     <div>How many liters of water did you drink this week?</div>
                                     <InputBar
+                                        name = "water"
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
 
