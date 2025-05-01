@@ -101,7 +101,7 @@ function PDFindDoctor() {
                                                 stretch={true}
                                                 items={[
                                                     <>
-                                                        <h1 className="font-semibold text-neutral-400 justify-self-start">
+                                                        <h1 className="font-semibold text-neutral-200 justify-self-start">
                                                             FILTERS
                                                         </h1>
                                                         <ItemGroup
@@ -113,7 +113,7 @@ function PDFindDoctor() {
                                                             items={[
                                                                 <>
                                                                     <BaseIcon
-                                                                        fill="hsl(0, 0%, 40%)"
+                                                                        fill="hsl(0, 0%, 10%)"
                                                                         height="20px"
                                                                         width="20px"
                                                                         viewBox="0 0 1920 1920">
@@ -123,7 +123,7 @@ function PDFindDoctor() {
                                                                             <path d="M960 0v112.941c467.125 0 847.059 379.934 847.059 847.059 0 467.125-379.934 847.059-847.059 847.059-467.125 0-847.059-379.934-847.059-847.059 0-267.106 126.607-515.915 338.824-675.727v393.374h112.94V112.941H0v112.941h342.89C127.058 407.38 0 674.711 0 960c0 529.355 430.645 960 960 960s960-430.645 960-960S1489.355 0 960 0" fill-rule="evenodd" />
                                                                         </g>
                                                                     </BaseIcon>
-                                                                    <h1 className="font-5 text-neutral-400">
+                                                                    <h1 className="font-5 text-neutral-200">
                                                                         Reset Filter
                                                                     </h1>
                                                                 </>
@@ -176,7 +176,7 @@ function PDFindDoctor() {
                                                             items={[
                                                                 <>
                                                                     <Checkbox
-                                                                        checkboxClass="b-2 outline-neutral-900 fill-neutral-1100 align-self-center"
+                                                                        checkboxClass="b-2 outline-neutral-700 fill-neutral-1100 align-self-center"
                                                                         checked={formData.filters.acceptingNewPatients}
                                                                         onChange={(checked) => {
                                                                             FindDoctorViewModel.updateFilter("acceptingNewPatients", checked);
@@ -186,7 +186,7 @@ function PDFindDoctor() {
                                                                             <p></p>
                                                                         ]}
                                                                     />
-                                                                    <p className="text-neutral-400 font-medium">Accepting New Patients</p>
+                                                                    <p className="text-neutral-300 font-medium">Accepting New Patients</p>
                                                                 </>
                                                             ]}
                                                         />
@@ -203,7 +203,7 @@ function PDFindDoctor() {
                                     items={[
                                         <>
                                             <Container
-                                                customClass="bg-neutral-1100 py-3 b-3 outline-neutral-400 br-sm"
+                                                customClass="bg-neutral-1100 py-3 b-3 outline-neutral-200 br-sm"
                                                 fitParent={true}
                                                 isClickable={true}
                                                 onClick={(e) => {
@@ -215,14 +215,15 @@ function PDFindDoctor() {
                                                 }}
                                                 content={[
                                                     <>
-                                                        <p className="font-semibold text-neutral-400">APPLY FILTERS</p>
+                                                        <p className="font-semibold text-neutral-100">APPLY FILTERS</p>
                                                     </>
                                                 ]}
                                             />
                                             <Container
-                                                customClass="bg-neutral-400 py-3 br-sm"
+                                                customClass="bg-neutral-200 py-3 br-sm"
                                                 fitParent={true}
                                                 isClickable={true}
+                                                onClick={handleCloseModal}
                                                 content={[
                                                     <>
                                                         <p className="font-semibold text-neutral-1100">CANCEL</p>
