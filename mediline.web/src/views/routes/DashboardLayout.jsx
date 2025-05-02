@@ -9,16 +9,15 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 
 function DashboardLayout() {
     const { logout, currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
     const location = useLocation();
 
-    const basePath = `/dashboard/${user.role}`;
+    const basePath = `/dashboard/${currentUser.role}`;
 
     const pathNames = {
-        appointment: `/dashboard/${user.role}/appointment`,
-        profile: `/dashboard/${user.role}/profile`,
-        discussion: `/dashboard/${user.role}/discussion-forum`,
+        appointment: `/dashboard/${currentUser.role}/appointment`,
+        profile: `/dashboard/${currentUser.role}/profile`,
+        discussion: `/dashboard/${currentUser.role}/discussion-forum`,
     };
 
     const handleLogout = () => {
@@ -26,7 +25,7 @@ function DashboardLayout() {
         navigate(`/`);
     }
 
-   console.log(`User: ${user.firstName} ${user.lastName}, Role: ${user.role}`);
+   console.log(`User: ${currentUser.data.first_name} ${currentUser.data.last_name}, Role: ${currentUser.data.role}`);
 
     return (
         <Container
@@ -112,7 +111,7 @@ function DashboardLayout() {
                                                                 </>
                                                             ]}
                                                         />
-                                                        {user.role !== 'Pharmacist' && (
+                                                        {currentUser.role !== 'Pharmacist' && (
                                                             <Container
                                                                 key="discussion"
                                                                 customClass={`nav-item ${location.pathname === pathNames.discussion ? " active" : ""}`}
