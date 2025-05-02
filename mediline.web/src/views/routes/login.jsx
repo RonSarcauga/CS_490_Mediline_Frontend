@@ -16,7 +16,7 @@ export default function Login() {
         password: "",
     });
 
-    const loginMutation = useLogin();
+    //const loginMutation = useLogin();
 
     const navigate = useNavigate();
 
@@ -32,35 +32,49 @@ export default function Login() {
         console.log(`Password: ${formData.password}`);
     };
 
-    const handleLogin = (e) => {
+    // Asynchronous login function
+    const handleLogin = async (e) => {
         e.preventDefault();
         console.log("Initiate login process!");
 
+        // Fill in the form data
         LoginViewModel.email = formData.email;
         LoginViewModel.password = formData.password;
 
-        loginMutation.mutate(
-            {
-                email: formData.email,
-                password: formData.password,
-            },
-            {
-                onSuccess: (data) => {
-                    console.log("Full login response:", data);
-                    console.log("Login successful!", data.user?.role);
+        // Fetch and store the current user returned by the login method
+        const currentUser = await LoginViewModel.login();
 
-                    //setCurrentUser(data);
-                    //navigate(`/dashboard/${data.user?.role || 'patient'}`);
-                    navigate(`/${data?.account_type || 'patient'}Home`)
+        // Logs the current user object
+        //console.log(`Current user role: ${currentUser.role}\nCurrent user data: ${currentUser.data}`);
 
-                    LoginViewModel.clearFields();
-                    setFormData({ email: "", password: "" });
-                },
-                onError: (error) => {
-                    console.log("Login failed:", error.message);
-                },
-            }
-        );
+        // Set the current user so that client-side validation works
+        setCurrentUser(currentUser);
+
+        // Navigate to the appropriate dashboard
+        navigate(`/dashboard/${currentUser.role}`);
+
+        //loginMutation.mutate(
+        //    {
+        //        email: formData.email,
+        //        password: formData.password,
+        //    },
+        //    {
+        //        onSuccess: (data) => {
+        //            console.log("Full login response:", data);
+        //            console.log("Login successful!", data.user?.role);
+
+        //            //setCurrentUser(data);
+        //            //navigate(`/dashboard/${data.user?.role || 'patient'}`);
+        //            navigate(`/${data?.account_type || 'patient'}Home`)
+
+        //            LoginViewModel.clearFields();
+        //            setFormData({ email: "", password: "" });
+        //        },
+        //        onError: (error) => {
+        //            console.log("Login failed:", error.message);
+        //        },
+        //    }
+        //);
     };
     
     const isComplete = Object.values(formData).every((value) => value.trim() !== "");
