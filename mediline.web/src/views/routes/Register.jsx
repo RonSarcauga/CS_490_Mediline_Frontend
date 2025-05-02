@@ -94,22 +94,22 @@ export default function MultiStepRegistration()
         console.log(payload)
         registerMutation.mutate(
             payload,
-          {
-            onSuccess: (newUser) => {
-              console.log('Registration success:', newUser);
+            {
+                onSuccess: (newUser) => {
+                    console.log('Registration success:', newUser);
       
-              RegistrationViewModel.clearFields();
-              setFormData({ ...RegistrationViewModel });
-              navigate('/login');
-            },
-            onError: (err) => {
-                if (err.response) {
-                    console.error("Status:", err.response.status);
-                    console.error("Headers:", err.response.headers);
-                    console.error("Body:", err.response.data);
-                  } else {
-                    console.error("Network / CORS error:", err);
-                  }
+                    RegistrationViewModel.clearFields();
+                    setFormData({ ...RegistrationViewModel });
+                    navigate('/login');
+                },
+                onError: (err) => {
+                    if (err.response) {
+                        console.error("Status:", err.response.status);
+                        console.error("Headers:", err.response.headers);
+                        console.error("Body:", err.response.data);
+                    } else {
+                        console.error("Network / CORS error:", err);
+                    }
                 }
             }
         );
