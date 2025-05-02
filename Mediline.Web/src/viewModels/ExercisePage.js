@@ -1,4 +1,3 @@
-
 import axios from '../assets/js/api.js';
 
 const patientId = 300; //temp hardcoded
@@ -39,11 +38,47 @@ export const fetchChartData = async () => {
     };
 };
 
+export const fetchMedicationList = async () => {
+    const { data } = await axios.get(`/prescription/user/${patientId}`);
+    const medications = [];
+
+    for (let i = 0; i < data.length; i++) {
+        const medId = data[i].prescription_id;
+        const prescriptionData = await fetchPrescriptionList(medId);
+
+        for (let j = 0; j < prescriptionData.name.length; j++) {
+            medications.push({
+                name: prescriptionData.name[j],
+                dosage: prescriptionData.dosage[j],
+            });
+        }
+    }
+    console.log('Fetched medications:', medications);
+
+    return medications; // Return an array of objects
+};
+
+const fetchPrescriptionList = async (medId = 0) => {
+    const { data } = await axios.get(`/prescription/${medId}/medications`)
+    console.log('Fetched data:', data);
+    let medList = new Array(data.length)
+    let doseList = new Array(data.length)
+    for(var i = 0; i < data.length; i++) {
+        medList[i] = data[i].name;
+        doseList[i] = data[i].dosage;
+    }
+
+    return {
+        name:medList,
+        dosage:doseList
+    };
+};
+
 export const submitForm = async (formData) => {
     const { data } = await axios.post(`/exercise/`, formData);
     console.log('Submitted data:', data);
     return data;
-    
+
 }
 
 
