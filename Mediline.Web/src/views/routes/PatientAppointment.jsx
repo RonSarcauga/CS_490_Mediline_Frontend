@@ -125,8 +125,8 @@ const PatientAppointment = () => {
                                       axis={true}
                                       items={[
                                         <div className="font-semibold py-1">MEETING TIME</div>,
-                                        <div className="py-1"><CommonIcon name="calendar" />{meetingTime.date} <CommonIcon name="clock" />{meetingTime.time}</div>,
-                                        <div className="py-1"><CommonIcon name="doctor" />{meetingTime.doctor}</div>,
+                                        <div className="py-1 mr-3"><CommonIcon name="calendar"/>{meetingTime.date} <CommonIcon name="clock"/>{meetingTime.time}</div>,
+                                        <div className="py-1 mr-3"><CommonIcon name="doctor"/>{meetingTime.doctor}</div>,
                                         <div className="font-semibold pt-4">TREATMENT</div>,
                                         <div className="pb-4">{treatment}</div>
                                       ]}
@@ -137,15 +137,12 @@ const PatientAppointment = () => {
                                       axis={true}
                                       items={[
                                         <div className="font-semibold py-1">PRE-APPOINTMENT CHECKLIST</div>,
-                                        <div className="py-1">Check-in Form 
-                                        <ItemGroup>
-                                          customClass= "font-4 font-medium text-neutral-1100 pr-4 pl-4 pt-2 pb-2"
-                                          fitParent={true}
-                                          axis{true}
-                                          items{[<div>Completed</div>]}
-                                          </ItemGroup>
+                                        <div className="py-1"> Check-in Form -----
+                                          <span style={{backgroundColor: '#00A000', padding: '4px 8px', borderRadius: '4px'}} className="ml-3 text-neutral-1100">Completed</span>
                                         </div>,
-                                        <div className="py-1">Self-Evaluation</div>
+                                        <div className="py-1">Self-Evaluation -----
+                                        <span style={{backgroundColor: '#00A000', padding: '4px 8px', borderRadius: '4px'}} className="ml-3 text-neutral-1100">Completed</span>
+                                        </div>
                                       ]}
                                     />
                                   ]}

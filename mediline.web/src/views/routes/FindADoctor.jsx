@@ -213,7 +213,11 @@ export default function FindADoctorPage() {
                                                                                         width: "100%"
                                                                                     }}
                                                                                     content={[
+<<<<<<< Updated upstream
                                                                                         <p id="update-results" className="font-semibold py-1">Update Results</p>
+=======
+                                                                                        <p id = "update-results" className="font-semibold py-1">Update Results</p>
+>>>>>>> Stashed changes
                                                                                     ]}
                                                                                 />
                                                                             </>
@@ -287,7 +291,11 @@ export default function FindADoctorPage() {
                                                                                     axis={false}
                                                                                     items={[
                                                                                         <>
+<<<<<<< Updated upstream
                                                                                             <h1 id="add-doctor-button" className="font-5 font-medium text-neutral-1100">
+=======
+                                                                                            <h1 id = "add-doctor-button" className="font-5 font-medium text-neutral-1100">
+>>>>>>> Stashed changes
                                                                                                 Add Doctor
                                                                                             </h1>
                                                                                         </>
