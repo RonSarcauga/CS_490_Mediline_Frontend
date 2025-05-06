@@ -5,7 +5,7 @@ const CommonIcon = ({ name }) => {
   const iconMap = {
     'calendar': (
       <>
-        <path d="M4 4V16H20V4H4ZM16 6H8V12H16V6ZM6 14H18V16H6V14Z" />
+        <path stroke="#707070" d="M4 4V16H20V4H4ZM16 6H8V12H16V6ZM6 14H18V16H6V14Z" />
       </>
     ),
     'clock': (
