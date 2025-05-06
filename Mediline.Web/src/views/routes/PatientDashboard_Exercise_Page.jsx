@@ -10,7 +10,7 @@ import { IoMdDownload } from "react-icons/io";
 import React, { useRef, useEffect, useState } from "react";
 import { Chart } from "chart.js/auto";
 import ExerciseChart from '../../components/Dashboard/ExerciseChart';
-import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList } from '../../viewModels/ExercisePage.js';
+import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm } from '../../viewModels/ExercisePage.js';
 
 
 
@@ -569,6 +569,27 @@ function ExerciseList({
     )
 }
 function WeeklyForm() {
+    const [formData, setFormData] = useState({
+        exercise: "",
+        sleep: "",
+        height: "",
+        calories: "",
+        weight: ""
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value, // Update the specific field in the state
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+        console.log("Form submitted with data:", formData);
+        submitForm(formData)
+    };
 
     return (
         <ItemGroup
@@ -584,7 +605,6 @@ function WeeklyForm() {
                         }}
                         items={[
                             <>
-
                                 <ItemGroup
                                     customClass=""
                                     axis={true}
@@ -593,17 +613,14 @@ function WeeklyForm() {
                                     }}
                                     items={[
                                         <>
-
-                                            <h1>
-                                                Weekly Survey
-                                            </h1>
+                                            <h1>Weekly Survey</h1>
                                         </>
                                     ]}
                                 />
                             </>
                         ]}
                     />
-                    <form >
+                    <form onSubmit={handleSubmit}>
                         <ItemGroup
                             customClass="gap-3 bg-neutral-1100 mb-2 mt-2 ml-5 p-2 br-xs"
                             axis={true}
@@ -616,9 +633,10 @@ function WeeklyForm() {
                                     <div>How many hours did you spend exercising this week?</div>
                                     <InputBar
                                         name="exercise"
+                                        value={formData.exercise} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
-
                                 </>
                             ]}
                         />
@@ -634,9 +652,10 @@ function WeeklyForm() {
                                     <div>How many hours of sleep did you get?</div>
                                     <InputBar
                                         name="sleep"
+                                        value={formData.sleep} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
-
                                 </>
                             ]}
                         />
@@ -648,24 +667,63 @@ function WeeklyForm() {
                             }}
                             items={[
                                 <>
-                                    <h2>Hydration</h2>
-                                    <div>How many liters of water did you drink this week?</div>
+                                    <h2>Height</h2>
+                                    <div>How many calories did you eat this week?</div>
                                     <InputBar
-                                        name="water"
+                                        name="height"
+                                        value={formData.height} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
-
                                 </>
                             ]}
                         />
-
+                        <ItemGroup
+                            customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                            axis={true}
+                            style={{
+                                width: "52vw"
+                            }}
+                            items={[
+                                <>
+                                    <h2>Calories</h2>
+                                    <div>How many calories did you eat this week?</div>
+                                    <InputBar
+                                        name="calories"
+                                        value={formData.calories} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
+                                    />
+                                </>
+                            ]}
+                        />
+                        <ItemGroup
+                            customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                            axis={true}
+                            style={{
+                                width: "52vw"
+                            }}
+                            items={[
+                                <>
+                                    <h2>Weight</h2>
+                                    <div>How much do you weigh?</div>
+                                    <InputBar
+                                        name="weight"
+                                        value={formData.weight} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
+                                    />
+                                </>
+                            ]}
+                        />
+                        <button type="submit" className="submit-button">
+                            Submit
+                        </button>
                     </form>
                 </>
             ]}
         />
-
-
-    )
+    );
 }
 
 

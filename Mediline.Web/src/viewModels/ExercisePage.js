@@ -1,6 +1,7 @@
 import axios from '../assets/js/api.js';
 
 const patientId = 300; //temp hardcoded
+const doctorId = 15; //temp hardcoded
 
 export const fetchExerciseList = async () => {
     const { data } = await axios.get(`/exercise/`);
@@ -75,10 +76,22 @@ const fetchPrescriptionList = async (medId = 0) => {
 };
 
 export const submitForm = async (formData) => {
-    const { data } = await axios.post(`/exercise/`, formData);
-    console.log('Submitted data:', data);
-    return data;
-
-}
+    try {
+        const response = await axios.post(`/report/user/${patientId}`, {
+            calories_intake: Number(formData.calories),
+            doctor_id: doctorId,
+            height: Number(formData.height),
+            hours_of_exercise: Number(formData.exercise),
+            hours_of_sleep: Number(formData.sleep),
+            report_id: 1,
+            weight: Number(formData.weight),
+        }); // Replace '/form/submit' with your API endpoint
+        console.log('Form submitted successfully:', response.data);
+        return response.data; // Return the response if needed
+    } catch (error) {
+        console.error('Error submitting form:', error);
+        throw error; // Re-throw the error if you want to handle it elsewhere
+    }
+};
 
 
