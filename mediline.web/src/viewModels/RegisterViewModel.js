@@ -1,57 +1,115 @@
-const RegisterViewModel = {
-    firstname:       "",
-    lastname:        "",
-    dateOfBirth:     "",
-    accountType:     "",
-    email:           "",
-    phone:           "",
-    address:         "",
-    address2:        "",
-    city:            "",
-    state:           "",
-    postalCode:      "",
-    country:         "", 
-    password:        "",
-    confirmPassword: "",
-    licenseNumber:   "",
-    specialty:       "",
-    pharmacyName:    "",
-    pharmacyAddress: "",
+import apiClient from '../models/api'
 
-    clearFields() {
-        Object.keys(this).forEach(key => {
-            if (typeof this[key] === "string") this[key] = "";
-        });
-    },
+const RegisterViewModel = {
+    firstname: "",
+    lastname: "",
+    sex: "",
+    dateOfBirth: "",
+    role: "",
+    email: "",
+    phone: "",
+    address: "",
+    city: "",
+    state: "",
+    postalCode: "",
+    password: "",
+    confirmPassword: "",
+    licenseNumber: "",
+    specialty: "",
+    pharmacyName: "",
+    pharmacyAddress: "",
+    pharmacyCity: "",
+    pharmacyPostalCode: "",
+    pharmacyState: "",
 
     getPayload() {
-        const acct =
-            this.accountType === "pharmacist"
-            ? "pharmacy"
-            : this.accountType;
+        const payload = {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            sex: this.sex,
+            dateOfBirth: this.dateOfBirth,
+            role: this.role,
+            email: this.email,
+            phone: this.phone,
+            address: this.address,
+            city: this.city,
+            state: this.state,
+            postalCode: this.postalCode,
+            password: this.password,
+            confirmPassword: this.confirmPassword,
+            licenseNumber: this.licenseNumber,
+            specialty: this.specialty,
+            pharmacyName: this.pharmacyName,
+            pharmacyAddress: this.pharmacyAddress,
+            pharmacyCity: this.pharmacyCity,
+            pharmacyPostalCode: this.pharmacyPostalCode,
+            pharmacyState: this.pharmacyState,
+        };
 
-        return {
-            "firstname": "",
-            "lastname": "",
-            "sex": "",
-            "dateOfBirth": "",
-            "role": "",
-            "email": "",
-            "phone": "",
-            "address": "",
-            "city": "",
-            "state": "",
-            "postalCode": "",
-            "password": "",
-            "confirmPassword": "",
-            "licenseNumber": "",
-            "specialty": "",
-            "pharmacyName": "",
-            "pharmacyAddress": "",
-            "pharmacyCity": "",
-            "pharmacyPostalCode": "",
-            "pharmacyState": ""
+        console.log(payload["role"]);
+
+        // Remove empty fields dynamically
+        // Object.keys(payload).forEach(key => {
+        //    if (!payload[key]) delete payload[key];
+        //});
+
+        return payload;
+    },
+
+    // Helper method that calls the service layer
+    clearFields() {
+        this.firstname = "";
+        this.lastname = "";
+        this.sex = "";
+        this.dateOfBirth = "";
+        this.role = "";
+        this.email = "";
+        this.phone = "";
+        this.address = "";
+        this.city = "";
+        this.state = "";
+        this.postalCode = "";
+        this.password = "";
+        this.confirmPassword = "";
+        this.licenseNumber = "";
+        this.specialty = "";
+        this.pharmacyName = "";
+        this.pharmacyAddress = "";
+    },
+
+    async register() {
+        const payload = this.getPayload();
+
+        // Basic validation
+        if (
+            !this.firstname ||
+            !this.lastname ||
+            !this.email ||
+            !this.sex ||
+            !this.dateOfBirth ||
+            !this.address ||
+            !this.city ||
+            !this.state ||
+            !this.postalCode ||
+            !this.role ||
+            !this.password ||
+            !this.confirmPassword
+        ) {
+            throw new Error("Invalid input: Ensure all required fields are filled.");
         }
+
+        try {
+            const response = await apiClient.post('/auth/register', JSON.stringify(payload), {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            console.log(`Registration successful:\n${JSON.stringify(response.data, null, 2)}`);
+        } catch (error) {
+            console.error("Registration failed:", error.response?.data || error.message);
+        }
+    },
+
     /*
     // Properties of the view model
     // These properties are used to bind data from the view (UI) to the view model

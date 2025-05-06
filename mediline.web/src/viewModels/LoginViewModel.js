@@ -11,6 +11,17 @@ const LoginViewModel = {
         this.password = "";
     },
 
+    getPayload() {
+        const payload = {
+            email: this.email,
+            password: this.password
+        };
+
+        console.log(JSON.stringify(payload, null, 2));
+
+        return payload;
+    },
+
     // Method to login
     async login() {
         // Checks for an email or password inside the input fields
@@ -18,16 +29,31 @@ const LoginViewModel = {
             throw new Error("Email and password are required.");
         }
 
+        const payload = JSON.stringify(this.getPayload());
+        console.log(payload);
+
+        try {
+            const response = await apiClient.post('/auth/login', payload, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
+            console.log(`Login successful:\n${JSON.stringify(response.data, null, 2)}`);
+            return response.data;
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
+        }
+
         // Get the current user from the backend
-        const currentUser = await this.getCurrentUser();
+        //const currentUser = await this.getCurrentUser();
 
         // Check if the current user is null
-        if (!currentUser) {
-            throw new Error("Invalid email or password.");
-        }
-        else {
-            return currentUser;
-        }
+        //if (!currentUser) {
+        //    throw new Error("Invalid email or password.");
+        //}
+        //else {
+        //    return currentUser;
+        //}
     },
 
     // Asynchronous method for fetching user information
@@ -36,10 +62,10 @@ const LoginViewModel = {
         try {
             // HTTP Get
             // Gets user info from the API client
-            const response = await apiClient.get(`/user/${userId}`);
+            const response = await apiClient.get(`/base_users/${userId}`);
 
             // Logs the data returned by the backend to the console
-            // console.log(JSON.stringify(response.data, null, 2));
+            console.log(JSON.stringify(response.data, null, 2));
 
             // Returns a user data object to the 
             return response.data;
@@ -64,24 +90,24 @@ const LoginViewModel = {
             );
 
             // Stores the account type and the user IDs that are returned by the API
-            const accountType = response.data.account_type;
-            const userId = response.data.user_id;
+            //const role = response.data.role;
+            //const userId = response.data.user_id;
 
             // Stores the object returned by the Fetch User Data method
-            const userData = await this.fetchUserData(userId);
+            //const userData = await this.fetchUserData(userId);
 
             // Logs the account type and user info
             // console.log(`Role: ${accountType}\nUser Data: ${JSON.stringify(userData, null, 2)}`);
 
             // Creates a current user object 
-            const currentUser = {
-                role: accountType,
-                data: userData
-            }
+            //const currentUser = {
+            //    role: role,
+            //    data: userData
+            //}
             //console.log(`Current user:\n${JSON.stringify(currentUser, null, 2)}}`);
 
             // Returns the current user object
-            return currentUser;
+            return response.data;
         }
         catch (error) {
             console.error("Error: ", error);

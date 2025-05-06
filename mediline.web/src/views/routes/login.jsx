@@ -45,13 +45,13 @@ export default function Login() {
         const currentUser = await LoginViewModel.login();
 
         // Logs the current user object
-        //console.log(`Current user role: ${currentUser.role}\nCurrent user data: ${currentUser.data}`);
+        console.log(`Current user role: ${currentUser.role}\nCurrent user ID: ${currentUser.id}`);
 
         // Set the current user so that client-side validation works
         setCurrentUser(currentUser);
 
         // Navigate to the appropriate dashboard
-        navigate(`/dashboard/${currentUser.role}`);
+        navigate(`/dashboard/${currentUser.role.toLowerCase()}`);
 
         //loginMutation.mutate(
         //    {

@@ -26,16 +26,13 @@ export default function MultiStepRegistration()
         1: Object.keys(formData).filter((key) => ["firstname", "lastname", "sex", "dateOfBirth"].includes(key)),
         2: Object.keys(formData).filter((key) => ["email", "phone", "address", "city", "state", "postalCode"].includes(key)),
         3: Object.keys(formData).filter((key) => ["password", "confirmPassword"].includes(key)),
-        4: Object.keys(formData).filter((key) => ["accountType"].includes(key)),
+        4: Object.keys(formData).filter((key) => ["role"].includes(key)),
         5: Object.keys(formData).filter((key) => {
-            if (formData.accountType === "doctor") {
+            if (formData.role === "doctor") {
                 return ["licenseNumber", "specialty"].includes(key);
             }
-            else if (formData.accountType === "pharmacist") {
-                return ["pharmacyName", "pharmacyAddress"].includes(key)
-            }
-            else if (formData.accountType === "patient") {
-                return ["pharmacyAddress"].includes(key)
+            else if (formData.role === "pharmacist" || formData.role === "patient") {
+                return ["pharmacyName", "pharmacyAddress", "pharmacyCity", "pharmacyPostalCode", "pharmacyState"].includes(key)
             }
             return false;
         }),
@@ -50,7 +47,7 @@ export default function MultiStepRegistration()
     const validatePasswordMatch = formData.password === formData.confirmPassword && formData.password.trim() !== "" && formData.confirmPassword.trim() !== "";
 
     function handleClick(role) {
-        handleInput("accountType", { value: role });
+        handleInput("role", { value: role });
     }
 
     const handleStepClick = (step) => {
@@ -74,7 +71,20 @@ export default function MultiStepRegistration()
         });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        console.log("Submit registration data!");
+
+        Object.keys(formData).forEach((key) => {
+            RegistrationViewModel[key] = formData[key];
+        });
+
+        console.log(JSON.stringify(RegistrationViewModel.getPayload(), null, 2));
+
+        await RegistrationViewModel.register();
+
+        navigate('/login');
+
+        /*
         const withExtra = {
             ...formData,
             country: "United States of America",
@@ -113,6 +123,7 @@ export default function MultiStepRegistration()
                 }
             }
         );
+        */
     };
 
     return (
@@ -446,7 +457,7 @@ export default function MultiStepRegistration()
                                                                 key='doctor'
                                                                 id='doctor'
                                                                 customClass={
-                                                                    `gap-3 br-sm justify-items-center b-4 outline-neutral-1000 hover-outline-secondary-400 py-15 px-4 ${formData.accountType === 'doctor' ? 'selected' : ''}`
+                                                                    `gap-3 br-sm justify-items-center b-4 outline-neutral-1000 hover-outline-secondary-400 py-15 px-4 ${formData.role === 'doctor' ? 'selected' : ''}`
                                                                 }
                                                                 isClickable={true}
                                                                 onClick={() => handleClick("doctor")}
@@ -508,7 +519,7 @@ export default function MultiStepRegistration()
                                                                 key='pharmacist'
                                                                 id='pharmacist'
                                                                 customClass={
-                                                                    `gap-3 br-sm justify-items-center b-4 outline-neutral-1000 hover-outline-secondary-400 py-15 px-4 ${formData.accountType === 'pharmacist' ? 'selected' : ''}`
+                                                                    `gap-3 br-sm justify-items-center b-4 outline-neutral-1000 hover-outline-secondary-400 py-15 px-4 ${formData.role === 'pharmacist' ? 'selected' : ''}`
                                                                 }
                                                                 isClickable={true}
                                                                 onClick={() => handleClick('pharmacist')}
@@ -570,7 +581,7 @@ export default function MultiStepRegistration()
                                                                 key='patient'
                                                                 id='patient'
                                                                 customClass={
-                                                                    `gap-3 br-sm justify-items-center b-4 outline-neutral-1000 hover-outline-secondary-400 py-15 px-12 ${formData.accountType === 'patient' ? 'selected' : ''}`
+                                                                    `gap-3 br-sm justify-items-center b-4 outline-neutral-1000 hover-outline-secondary-400 py-15 px-12 ${formData.role === 'patient' ? 'selected' : ''}`
                                                                 }
                                                                 isClickable={true}
                                                                 onClick={() => handleClick('patient')}
@@ -626,9 +637,9 @@ export default function MultiStepRegistration()
                                                 <Container
                                                     customClass='button bg-dark-100 br-sm text-center'
                                                     dataAttributes={
-                                                        { disabled: !formData.accountType || formData.accountType.trim() === "" }
+                                                        { disabled: !formData.role || formData.role.trim() === "" }
                                                     }
-                                                    isClickable={!!formData.accountType}
+                                                    isClickable={!!formData.role}
                                                     onClick={handleNext}
                                                     fitParent={true}
                                                     content={[
@@ -642,7 +653,7 @@ export default function MultiStepRegistration()
                             ]}
                         />
                     )}
-                    {currentStep === 5 && formData.accountType === "doctor" && (
+                    {currentStep === 5 && formData.role === "doctor" && (
                         <Container
                             customClass="align-items-center bg-neutral-1100 br box-shadow-sm gap-15"
                             fitParent={true}
@@ -729,7 +740,7 @@ export default function MultiStepRegistration()
                             ]}
                         />
                     )}
-                    {currentStep === 5 && formData.accountType === "pharmacist" && (
+                    {currentStep === 5 && formData.role === "pharmacist" && (
                         <Container
                             customClass="align-items-center bg-neutral-1100 br box-shadow-sm gap-15"
                             fitParent={true}
@@ -762,7 +773,7 @@ export default function MultiStepRegistration()
                                                         <>
                                                             <h1 className='font-semibold font-8 text-neutral-100'>You're almost there {formData.firstname}!</h1>
                                                             <p className='font-5 text-neutral-700'>
-                                                                We need some more information before we can get started.
+                                                                We just need some information about your pharmacy.
                                                             </p>
                                                         </>
                                                     ]}
@@ -778,7 +789,7 @@ export default function MultiStepRegistration()
                                                                 value={formData.pharmacyName}
                                                                 onChange={(e) => handleInput('pharmacyName', e.target)}
                                                                 customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                placeholder="Pharmacy"
+                                                                placeholder="Pharmacy Name"
                                                             />
                                                             <InputBar
                                                                 type="text"
@@ -786,6 +797,38 @@ export default function MultiStepRegistration()
                                                                 onChange={(e) => handleInput('pharmacyAddress', e.target)}
                                                                 customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                                 placeholder="Pharmacy Address"
+                                                            />
+                                                            <ItemGroup
+                                                                customClass="gap-4"
+                                                                axis={false}
+                                                                fitParent={true}
+                                                                stretch={true}
+                                                                evenSplit={true}
+                                                                items={[
+                                                                    <>
+                                                                        <InputBar
+                                                                            type="text"
+                                                                            value={formData.pharmacyCity}
+                                                                            onChange={(e) => handleInput('pharmacyCity', e.target)}
+                                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                            placeholder="City"
+                                                                        />
+                                                                        <InputBar
+                                                                            type="text"
+                                                                            value={formData.pharmacyState}
+                                                                            onChange={(e) => handleInput('pharmacyState', e.target)}
+                                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                            placeholder="State"
+                                                                        />
+                                                                        <InputBar
+                                                                            type="text"
+                                                                            value={formData.pharmacyPostalCode}
+                                                                            onChange={(e) => handleInput('pharmacyPostalCode', e.target)}
+                                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                            placeholder="Postal Code"
+                                                                        />
+                                                                    </>
+                                                                ]}
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
@@ -816,7 +859,7 @@ export default function MultiStepRegistration()
                             ]}
                         />
                     )}
-                    {currentStep === 5 && formData.accountType === "patient" && (
+                    {currentStep === 5 && formData.role === "patient" && (
                         <Container
                             customClass="align-items-center bg-neutral-1100 br box-shadow-sm gap-15"
                             fitParent={true}
@@ -849,7 +892,7 @@ export default function MultiStepRegistration()
                                                         <>
                                                             <h1 className='font-semibold font-8 text-neutral-100'>You're almost there {formData.firstname}!</h1>
                                                             <p className='font-5 text-neutral-700 text-justify'>
-                                                                Before you log in and see your dashboard, we need to ask you a few questions.
+                                                                Before you log in, tell us about your preferred pharmacy.
                                                             </p>
                                                         </>
                                                     ]}
@@ -865,10 +908,49 @@ export default function MultiStepRegistration()
                                                         <>
                                                             <InputBar
                                                                 type="text"
+                                                                value={formData.pharmacyName}
+                                                                onChange={(e) => handleInput('pharmacyName', e.target)}
+                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                placeholder="Pharmacy Name"
+                                                            />
+                                                            <InputBar
+                                                                type="text"
                                                                 value={formData.pharmacyAddress}
                                                                 onChange={(e) => handleInput('pharmacyAddress', e.target)}
                                                                 customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                placeholder="Pharmacy Address"
+                                                                placeholder="Address"
+                                                            />
+                                                            <ItemGroup
+                                                                customClass="gap-4"
+                                                                axis={false}
+                                                                fitParent={true}
+                                                                stretch={true}
+                                                                evenSplit={true}
+                                                                items={[
+                                                                    <>
+                                                                        <InputBar
+                                                                            type="text"
+                                                                            value={formData.pharmacyCity}
+                                                                            onChange={(e) => handleInput('pharmacyCity', e.target)}
+                                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                            placeholder="City"
+                                                                        />
+                                                                        <InputBar
+                                                                            type="text"
+                                                                            value={formData.pharmacyState}
+                                                                            onChange={(e) => handleInput('pharmacyState', e.target)}
+                                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                            placeholder="State"
+                                                                        />
+                                                                        <InputBar
+                                                                            type="text"
+                                                                            value={formData.pharmacyPostalCode}
+                                                                            onChange={(e) => handleInput('pharmacyPostalCode', e.target)}
+                                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                            placeholder="Postal Code"
+                                                                        />
+                                                                    </>
+                                                                ]}
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
