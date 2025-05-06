@@ -22,34 +22,85 @@ class DashboardLayoutViewModel {
     }
 
     // Helper method to format a user's birthday
-    formatBirthDate(birthDate)
-    {
+    //formatBirthDate(birthDate)
+    //{
+    //    const months = [
+    //        "January", "February", "March", "April", "May", "June",
+    //        "July", "August", "September", "October", "November", "December"
+    //    ];
+
+    //    const [month, day, year] = birthDate.split("/");
+    //    const monthName = months[parseInt(month) - 1]; // Convert month number to name
+
+    //    return `${monthName} ${parseInt(day)}, ${year}`;
+    //}
+
+    formatBirthDate(birthDate) {
+
         const months = [
-            "January", "February", "March", "April", "May", "June",
-            "July", "August", "September", "October", "November", "December"
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
         ];
 
-        const [month, day, year] = birthDate.split("/");
-        const monthName = months[parseInt(month) - 1]; // Convert month number to name
+        let dateObj;
 
-        return `${monthName} ${parseInt(day)}, ${year}`;
+        if (birthDate.includes("-")) {  // Handles ISO format (YYYY-MM-DD)
+            dateObj = new Date(birthDate);
+        } else if (birthDate.includes("/")) {  // Handles MM/DD/YYYY format
+            const [month, day, year] = birthDate.split("/");
+            dateObj = new Date(`${year}-${month}-${day}`);
+        } else {
+            throw new Error("Unsupported date format");
+        }
+
+        // Format dates properly
+        const monthName = months[dateObj.getMonth()];  // Convert month number to name
+        const day = dateObj.getDate();
+        const year = dateObj.getFullYear();
+
+        return `${monthName} ${day}, ${year}`;
     }
 
     // Helper method to calculate the age of a user
-    calculateAge(birthDate)
-    {
-        const [month, day, year] = birthDate.split("/");
-        const date = new Date(year, month - 1, day); // Convert to Date object
-        const today = new Date();
+    //calculateAge(birthDate)
+    //{
+    //    const [month, day, year] = birthDate.split("/");
+    //    const date = new Date(year, month - 1, day); // Convert to Date object
+    //    const today = new Date();
 
-        let age = today.getFullYear() - date.getFullYear();
+    //    let age = today.getFullYear() - date.getFullYear();
 
-        // Adjust age if the birthday hasn't occurred yet this year
-        const hasBirthdayOccurred =
-            today.getMonth() > date.getMonth() ||
-            (today.getMonth() === date.getMonth() && today.getDate() >= date.getDate());
+    //    // Adjust age if the birthday hasn't occurred yet this year
+    //    const hasBirthdayOccurred =
+    //        today.getMonth() > date.getMonth() ||
+    //        (today.getMonth() === date.getMonth() && today.getDate() >= date.getDate());
 
-        return hasBirthdayOccurred ? age : age - 1;
+    //    return hasBirthdayOccurred ? age : age - 1;
+    //}
+
+    calculateAge(birthDate) {
+        let dateObj;
+
+            // Detect and parse different formats dynamically
+            if (birthDate.includes("-")) {  // Handles ISO format (YYYY-MM-DD)
+                dateObj = new Date(birthDate);
+            } else if (birthDate.includes("/")) {  // Handles MM/DD/YYYY format
+                const [month, day, year] = birthDate.split("/");
+                dateObj = new Date(`${year}-${month}-${day}`);
+            } else {
+                throw new Error("Unsupported date format");
+            }
+
+            // Get today's date
+            const today = new Date();
+            let age = today.getFullYear() - dateObj.getFullYear();
+
+            // Adjust age if the birthday hasn't occurred yet this year
+            const hasBirthdayOccurred =
+                today.getMonth() > dateObj.getMonth() ||
+                (today.getMonth() === dateObj.getMonth() && today.getDate() >= dateObj.getDate());
+
+            return hasBirthdayOccurred ? age : age - 1;
     }
 
     // Helper method to change the format of the phone number
@@ -73,29 +124,50 @@ class DashboardLayoutViewModel {
     };
 
     // Helper method to find records in the patient table by ID
-    getPatientData(id)
-    {
-        console.log(`Patient ID: ${id}`);
-        return patientDataList.find(patient => patient.userId === id);
-    };
+    //getPatientData(id)
+    //{
+    //    console.log(`Patient ID: ${id}`);
+    //    return patientDataList.find(patient => patient.userId === id);
+    //};
 
-    // Asynchronous method for fetching patient data
-    async fetchPatientData(userId) {
+    // Helper method to find records in the patient table by ID
+    async getPatientData(userId) {
         try {
+            console.log(`User ID: ${userId}`)
+
             // HTTP Get
             // Gets user info from the API client
-            const response = await apiClient.get(`/user/${userId}`);
+            const response = await apiClient.get(`/patients/data/${userId}`);
+            const patient = response.data;
 
             // Logs the data returned by the backend to the console
-            // console.log(JSON.stringify(response.data, null, 2));
+            console.log(`Patient data: ${JSON.stringify(patient, null, 2)}`);
 
             // Returns a user data object to the 
-            return response.data;
+            return patient;
         }
         catch (error) {
             console.error("Error: ", error);
         }
-    };
+    }
+
+    // Asynchronous method for fetching patient data
+    //async fetchPatientData(userId) {
+    //    try {
+    //        // HTTP Get
+    //        // Gets user info from the API client
+    //        const patient = await this.getPatientData(userId);
+
+    //        // Logs the data returned by the backend to the console
+    //        console.log(JSON.stringify(patient.data, null, 2));
+
+    //        // Returns a user data object to the 
+    //        return patient;
+    //    }
+    //    catch (error) {
+    //        console.error("Error: ", error);
+    //    }
+    //};
 
     // Helper method to find records in the patient table by MRN
     getPatientByMRN(mrn) {
@@ -120,24 +192,41 @@ class DashboardLayoutViewModel {
     };
 
     // Helper method to retrieve appointment data
-    getPastAppointmentsSorted(id)
-    {
-        // Fetch the patient's records from the appointment table
-        const patientRecord = patientDataList.find(patient => patient.userId === id);
+    //getPastAppointmentsSorted(id)
+    //{
+    //    // Fetch the patient's records from the appointment table
+    //    const patientRecord = patientDataList.find(patient => patient.userId === id);
 
-        // Return if there are no appointments on record
-        if (!patientRecord) return [];
+    //    // Return if there are no appointments on record
+    //    if (!patientRecord) return [];
 
-        // Get the patient's MRN
-        const patientMRN = patientRecord.mrn;
+    //    // Get the patient's MRN
+    //    const patientMRN = patientRecord.mrn;
 
-        // Filter appointments where the appointment date is before today
-        const pastAppointments = appointmentDataList.filter(appt => appt.patientMRN === patientMRN && new Date(appt.appointmentDate) < new Date());
+    //    // Filter appointments where the appointment date is before today
+    //    const pastAppointments = appointmentDataList.filter(appt => appt.patientMRN === patientMRN && new Date(appt.appointmentDate) < new Date());
 
-        // Sort filtered appointments by date in descending order
-        pastAppointments.sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
+    //    // Sort filtered appointments by date in descending order
+    //    pastAppointments.sort((a, b) => new Date(b.appointmentDate) - new Date(a.appointmentDate));
 
-        return pastAppointments;
+    //    return pastAppointments;
+    //}
+
+    async getPastAppointmentsSorted(id) {
+        try {
+            // HTTP Get
+            // Gets user info from the API client
+            const response = await apiClient.get(`/appointments/past/${id}`);
+
+            // Logs the data returned by the backend to the console
+            console.log(JSON.stringify(response.data, null, 2));
+
+            // Returns a user data object to the 
+            return response.data;
+        }
+        catch (error) {
+            console.error("Error: ", error);
+        }
     }
 
     // Helper method to retrieve upcoming appointments

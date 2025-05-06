@@ -25,7 +25,7 @@ function DashboardLayout() {
         navigate(`/`);
     }
 
-   console.log(`User: ${currentUser.data.first_name} ${currentUser.data.last_name}, Role: ${currentUser.data.role}`);
+   console.log(`User: ${currentUser.firstname} ${currentUser.lastname}, Role: ${currentUser.role}`);
 
     return (
         <Container

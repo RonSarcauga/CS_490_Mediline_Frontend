@@ -11,12 +11,19 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 
 function PDHome() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    const patientData = dashboardLayoutViewModel.getPatientData(user.id);
-    const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
-    const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
-    const navigate = useNavigate();
-    console.log(`User ${user.id}: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
+    console.log(`User ${currentUser.id}: ${currentUser.firstname} ${currentUser.lastname} ${currentUser.dateOfBirth}`);
+
+    //const user = dashboardLayoutViewModel.fetchPatientData(currentUser.id);
+    const user = dashboardLayoutViewModel.getPatientData(currentUser.id);
+
+    console.log(`Patient Dashboard User: ${user()}`);
+
+    //console.log(`Patient Dashboard User: ${JSON.stringify(user, null, 2)}`)
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const patientData = dashboardLayoutViewModel.getPatientData(currentUser.id);
+    //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.patient_id);
+    //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
+    //const navigate = useNavigate();
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
@@ -878,8 +885,8 @@ function PDHome() {
                                                                                                     axis={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <h3 className="font-semibold font-6">{user.firstName} {user.lastName}</h3>
-                                                                                                            <h3 className="font-regular font-4 text-neutral-600">MRN: {patientData.mrn}</h3>
+                                                                                                            <h3 className="font-semibold font-6">{currentUser.firstname} {currentUser.lastname}</h3>
+                                                                                                            <h3 className="font-regular font-4 text-neutral-600">MRN: {currentUser.mrn}</h3>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -889,9 +896,9 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{patientData.sex}</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{user.sex}</p>
                                                                                                             <div className="bg-neutral-600 br-lg" style={{ height: "9px", width: "9px" }}></div>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{/*dashboardLayoutViewModel.formatBirthDate(user.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(user.dateOfBirth)} yrs)*/}</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(currentUser.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(currentUser.dateOfBirth)} yrs)</p>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -980,7 +987,7 @@ function PDHome() {
                                                                                                                                     fitParent={true}
                                                                                                                                     items={[
                                                                                                                                         <>
-                                                                                                                                            {
+                                                                                                                                            {/*
                                                                                                                                                 pastAppointments.length > 0 ? (
                                                                                                                                                     <>
                                                                                                                                                         <ItemGroup
@@ -1060,7 +1067,7 @@ function PDHome() {
                                                                                                                                                 ) : (
                                                                                                                                                     <p className="font-3 font-semibold text-neutral-600">There are no appointments on record</p>
                                                                                                                                                 )
-                                                                                                                                            }
+                                                                                                                                            */}
                                                                                                                                         </>
                                                                                                                                     ]}
                                                                                                                                 />
@@ -1087,7 +1094,7 @@ function PDHome() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">PHONE</h5>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(user.phoneNumber)}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {user.phoneNumber}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />

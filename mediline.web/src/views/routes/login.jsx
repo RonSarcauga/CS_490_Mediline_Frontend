@@ -51,7 +51,7 @@ export default function Login() {
         setCurrentUser(currentUser);
 
         // Navigate to the appropriate dashboard
-        navigate(`/dashboard/${currentUser.role.toLowerCase()}`);
+        navigate(`/dashboard/${currentUser.role}`);
 
         //loginMutation.mutate(
         //    {
