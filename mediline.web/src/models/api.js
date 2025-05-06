@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-    baseURL: 'https://cs-490-mediline-backend-1021109447710.us-central1.run.app/',
+    baseURL: 'http://localhost:5555/',
     headers: {
         'Content-Type': 'application/json',
     },

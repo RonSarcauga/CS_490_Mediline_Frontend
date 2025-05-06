@@ -221,7 +221,7 @@ function PDHome() {
                                                                                         stretch={true}
                                                                                         items={[
                                                                                             <>
-                                                                                                {
+                                                                                                {/*
                                                                                                     dashboardLayoutViewModel.hasDoctor(user.id) ? (
                                                                                                         <ItemGroup
                                                                                                             customClass="button bg-dark-100 br-sm align-items-center justify-items-center px-4 py-3"
@@ -266,7 +266,7 @@ function PDHome() {
                                                                                                             ]}
                                                                                                         />
                                                                                                     )
-                                                                                                }
+                                                                                                */}
                                                                                             </>
                                                                                         ]}
                                                                                     />
@@ -287,7 +287,7 @@ function PDHome() {
                                                     contentClass="pt-6 pb-3 align-items-center"
                                                     content={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 dashboardLayoutViewModel.hasDoctor(user.id) ? (
                                                                     <>
                                                                         <ItemGroup
@@ -473,7 +473,7 @@ function PDHome() {
                                                                         ]}
                                                                     />
                                                                 )
-                                                            }
+                                                            */}
                                                         </>
                                                     ]}
                                                 />
@@ -542,7 +542,7 @@ function PDHome() {
                                                                             }}
                                                                             items={[
                                                                                 <>
-                                                                                    {
+                                                                                    {/*
                                                                                         pastAppointments.length > 0 ? (
                                                                                             pastAppointments.map((appt) => (
                                                                                                 <ItemGroup
@@ -621,7 +621,7 @@ function PDHome() {
                                                                                                 ]}
                                                                                             />
                                                                                         )
-                                                                                    }
+                                                                                    */}
                                                                                 </>
                                                                             ]}
                                                                         />
@@ -663,7 +663,7 @@ function PDHome() {
                                                     contentClass="pt-6"
                                                     content={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 upcomingAppointments.length > 0 ? (
                                                                     upcomingAppointments.map((appt) => (
                                                                         <Container
@@ -817,7 +817,7 @@ function PDHome() {
                                                                         ]}
                                                                     />
                                                                 )
-                                                            }
+                                                            */}
                                                         </>
                                                     ]}
                                                 />
@@ -891,7 +891,7 @@ function PDHome() {
                                                                                                         <>
                                                                                                             <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{patientData.sex}</p>
                                                                                                             <div className="bg-neutral-600 br-lg" style={{ height: "9px", width: "9px" }}></div>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(user.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(user.dateOfBirth)} yrs)</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{/*dashboardLayoutViewModel.formatBirthDate(user.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(user.dateOfBirth)} yrs)*/}</p>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />

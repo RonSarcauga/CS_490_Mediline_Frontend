@@ -7,6 +7,8 @@ import {
     vitalHistoryList,
 } from '../assets/js/const';
 
+import apiClient from '../models/api';
+
 class DashboardLayoutViewModel {
     // Retrieves a list of users from the user table
     users = [...baseUserList];
@@ -75,6 +77,24 @@ class DashboardLayoutViewModel {
     {
         console.log(`Patient ID: ${id}`);
         return patientDataList.find(patient => patient.userId === id);
+    };
+
+    // Asynchronous method for fetching patient data
+    async fetchPatientData(userId) {
+        try {
+            // HTTP Get
+            // Gets user info from the API client
+            const response = await apiClient.get(`/user/${userId}`);
+
+            // Logs the data returned by the backend to the console
+            // console.log(JSON.stringify(response.data, null, 2));
+
+            // Returns a user data object to the 
+            return response.data;
+        }
+        catch (error) {
+            console.error("Error: ", error);
+        }
     };
 
     // Helper method to find records in the patient table by MRN
