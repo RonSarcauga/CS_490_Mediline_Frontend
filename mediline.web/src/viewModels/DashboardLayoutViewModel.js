@@ -17,29 +17,39 @@ class DashboardLayoutViewModel {
         //console.log(`Users Inside Local Storage: `, JSON.parse(localStorage.getItem("baseUserList")));
         return JSON.parse(localStorage.getItem("baseUserList")) || baseUserList;
         // return this.users; // Return the list of users that authored the posts
-    }
+    } 
 
-    // Helper method to format a user's birthday
-    formatBirthDate(birthDate)
-    {
+    // Helper method to format a birth date into "Month Day, Year"
+    formatBirthDate(birthDate, format = "default") {
         const months = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
 
-        const [month, day, year] = birthDate.split("/");
-        const monthName = months[parseInt(month) - 1]; // Convert month number to name
+        // Ensure birthDate is in a standard format
+        const date = this.parseDate(birthDate);
+        if (!date) return "Invalid date format";
 
-        return `${monthName} ${parseInt(day)}, ${year}`;
-    }
+        switch (format) {
+            case "MM/DD/YYYY":
+                return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}/${date.getFullYear()}`;
+            case "DD/MM/YYYY":
+                return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+            case "YYYY-MM-DD":
+                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+            case "Month Day, Year":
+                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+            default:
+                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`; // Default format
+        }
+    };
 
     // Helper method to calculate the age of a user
-    calculateAge(birthDate)
-    {
-        const [month, day, year] = birthDate.split("/");
-        const date = new Date(year, month - 1, day); // Convert to Date object
-        const today = new Date();
+    calculateAge(birthDate) {
+        const date = this.parseDate(birthDate);
+        if (!date) return "Invalid date";
 
+        const today = new Date();
         let age = today.getFullYear() - date.getFullYear();
 
         // Adjust age if the birthday hasn't occurred yet this year
@@ -48,21 +58,106 @@ class DashboardLayoutViewModel {
             (today.getMonth() === date.getMonth() && today.getDate() >= date.getDate());
 
         return hasBirthdayOccurred ? age : age - 1;
-    }
+    };
+
+    // Utility function to parse various common date formats
+    parseDate(dateString) {
+        // Try parsing ISO format first (YYYY-MM-DD)
+        let date = new Date(dateString);
+        if (!isNaN(date.getTime())) return date;
+
+        // Try parsing other common formats
+        const delimiters = ["/", "-"];
+        for (const delimiter of delimiters) {
+            const parts = dateString.split(delimiter);
+            if (parts.length === 3) {
+                let [part1, part2, part3] = parts.map(p => parseInt(p, 10));
+
+                // Determine format based on value constraints
+                if (part1 > 31) { // YYYY-MM-DD or YYYY/DD/MM
+                    date = new Date(part1, part2 - 1, part3);
+                } else if (part3 > 31) { // MM/DD/YYYY or DD/MM/YYYY
+                    date = new Date(part3, part1 - 1, part2);
+                }
+
+                if (!isNaN(date.getTime())) return date;
+            }
+        }
+    
+        return null; // Return null if no valid date format was found
+    };
+
+    // Helper method to format a user's birthday
+    //formatBirthDate(birthDate)
+    //{
+    //    const months = [
+    //        "January", "February", "March", "April", "May", "June",
+    //        "July", "August", "September", "October", "November", "December"
+    //    ];
+
+    //    const [month, day, year] = birthDate.split("/");
+    //    const monthName = months[parseInt(month) - 1]; // Convert month number to name
+
+    //    return `${monthName} ${parseInt(day)}, ${year}`;
+    //}
+
+    //// Helper method to calculate the age of a user
+    //calculateAge(birthDate)
+    //{
+    //    const [month, day, year] = birthDate.split("/");
+    //    const date = new Date(year, month - 1, day); // Convert to Date object
+    //    const today = new Date();
+
+    //    let age = today.getFullYear() - date.getFullYear();
+
+    //    // Adjust age if the birthday hasn't occurred yet this year
+    //    const hasBirthdayOccurred =
+    //        today.getMonth() > date.getMonth() ||
+    //        (today.getMonth() === date.getMonth() && today.getDate() >= date.getDate());
+
+    //    return hasBirthdayOccurred ? age : age - 1;
+    //}
 
     // Helper method to change the format of the phone number
-    formatPhoneNumber(phoneNumber)
-    {
-        // A regex patttern that is used to parse through the stored phone number
-        const match = phoneNumber.match(/^(\d{3})-(\d{3})-(\d{4})$/);
+    formatPhoneNumber(phoneNumber, format = "default") {
+    if (!phoneNumber || typeof phoneNumber !== "string") {
+        throw new Error("Invalid phone number input. Expected a string.");
+    }
+        // Remove all non-numeric characters
+        const cleaned = phoneNumber.replace(/\D/g, "");
 
-        if (!match) {
-            throw new Error("Invalid phone number format. Expected ###-###-####.");
+        // Ensure it's a valid 10-digit phone number
+        if (cleaned.length !== 10) {
+            throw new Error("Invalid phone number format. Expected a 10-digit number.");
         }
 
-        // Extract matched groups and reformat
-        return `(${match[1]}) ${match[2]} ${match[3]}`;
-    }
+        switch (format) {
+            case "dashes":
+                return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+            case "parentheses":
+                return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+            case "international":
+                return `+1-${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+            case "spaces":
+                return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
+            case "compact":
+                return `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6)}`;
+            default:
+                return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`; // Default format
+        }
+
+    };
+
+    capitalize(string) {
+        if (!string || typeof string !== "string") {
+            throw new Error(`Expected a string. Got ${typeof string} instead.`);
+        }
+
+        const capitalized = string.slice(0,1).toUpperCase() + string.slice(1);
+        console.log(`Formatted string: ${capitalized}`);
+
+        return capitalized;
+    };
 
     // Helper method to changes the format of the time string
     formatTimeString(timeString) {

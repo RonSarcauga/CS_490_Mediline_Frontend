@@ -12,7 +12,7 @@ import FindDoctorViewModel from '../../viewModels/FindDoctorViewModel';
 
 function PDFindDoctor() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
 
     // Used to manage the form data
@@ -301,7 +301,7 @@ function PDFindDoctor() {
                                                                             }
                                                                             onClick={(e) => {
                                                                                 e.preventDefault();
-                                                                                navigate(`/dashboard/${user.role}`);
+                                                                                navigate(`/dashboard/${currentUser.role}`);
                                                                             }}
                                                                             stretch={true}
                                                                             axis={false}

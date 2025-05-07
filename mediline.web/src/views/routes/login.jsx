@@ -32,18 +32,18 @@ export default function Login() {
         console.log(`Password: ${formData.password}`);
     };
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         console.log("Initiate login process!");
         try {
             LoginViewModel.email = formData.email;
             LoginViewModel.password = formData.password;
-            const currentUser = LoginViewModel.login();
+            const currentUser = await LoginViewModel.login();
             setCurrentUser(currentUser);
-            console.log("Login successful!", currentUser.user.role);
+            console.log("Login successful!", currentUser);
 
             // Redirect to the dashboard
-            navigate(`/dashboard/${currentUser.user.role}`);
+            navigate(`/dashboard/${currentUser.role}`);
         } catch (error) {
             console.log("Login failed:", error.message);
         }

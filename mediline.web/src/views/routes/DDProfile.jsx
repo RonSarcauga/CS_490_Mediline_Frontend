@@ -10,7 +10,7 @@ import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 function DDProfile() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
     const { patientId } = useParams();
 
@@ -514,7 +514,7 @@ function DDProfile() {
                                                                             customClass="bg-primary-dark-800 px-5 py-2 br-sm"
                                                                             isClickable={true}
                                                                             onClick={() => {
-                                                                                navigate(`/dashboard/${user.role}/appointment`);
+                                                                                navigate(`/dashboard/${currentUser.role}/appointment`);
                                                                             }}
                                                                             content={[
                                                                                 <>
@@ -1744,7 +1744,6 @@ function DDProfile() {
                                                                                 <InputBar
                                                                                     customClass='bg-neutral-expanded-1100 py-2 px-0 br-none b-bottom-5 outline-neutral-600 input-placeholder-font-4 input-text-placeholder-neutral-800 input-text-neutral-200 input-font-4 input-p-0'
                                                                                     placeholder="e.g. Ozempic"
-                                                                                    value={user.bio}
                                                                                 />
                                                                             </>
                                                                         ]}

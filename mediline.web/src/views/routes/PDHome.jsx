@@ -11,12 +11,12 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 
 function PDHome() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    const patientData = dashboardLayoutViewModel.getPatientData(user.id);
-    const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
-    const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const patientData = dashboardLayoutViewModel.getPatientData(user.id);
+    //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
+    //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
     const navigate = useNavigate();
-    console.log(`User ${user.id}: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
+    console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}`);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
@@ -222,13 +222,13 @@ function PDHome() {
                                                                                         items={[
                                                                                             <>
                                                                                                 {
-                                                                                                    dashboardLayoutViewModel.hasDoctor(user.id) ? (
+                                                                                                    currentUser.doctor !== null ? (
                                                                                                         <ItemGroup
                                                                                                             customClass="button bg-dark-100 br-sm align-items-center justify-items-center px-4 py-3"
                                                                                                             dataAttributes={
-                                                                                                                { disabled: !dashboardLayoutViewModel.hasDoctor(user.id) }
+                                                                                                                { disabled: currentUser.doctor === null }
                                                                                                             }
-                                                                                                            isClickable={dashboardLayoutViewModel.hasDoctor(user.id)}
+                                                                                                            isClickable={currentUser.doctor !== null}
                                                                                                             onClick={handleOpenModal}
                                                                                                             stretch={true}
                                                                                                             axis={false}
@@ -243,8 +243,8 @@ function PDHome() {
                                                                                                     ) : (
                                                                                                         <ItemGroup
                                                                                                             customClass="button bg-dark-100 br-sm align-items-center justify-items-center pr-4 pl-2 gap-1"
-                                                                                                            isClickable={!dashboardLayoutViewModel.hasDoctor(user.id)}
-                                                                                                            onClick={() => navigate(`/dashboard/${user.role}/profile/find-a-doctor`)}
+                                                                                                            isClickable={currentUser.doctor === null}
+                                                                                                            onClick={() => navigate(`/dashboard/${currentUser.role}/profile/find-a-doctor`)}
                                                                                                             stretch={true}
                                                                                                             axis={false}
                                                                                                             items={[
@@ -288,7 +288,7 @@ function PDHome() {
                                                     content={[
                                                         <>
                                                             {
-                                                                dashboardLayoutViewModel.hasDoctor(user.id) ? (
+                                                                currentUser.doctor !== null ? (
                                                                     <>
                                                                         <ItemGroup
                                                                             customClass="px-4 align-items-center gap-10"
@@ -349,7 +349,7 @@ function PDHome() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3 text-neutral-600">DOCTOR</h5>
                                                                                                                         <p className="font-3 font-medium text-neutral-600">
-                                                                                                                            Dr. {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).lastName}
+                                                                                                                            Dr. {/*dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).firstName*/} {/*dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).lastName*/}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -363,7 +363,7 @@ function PDHome() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3 text-neutral-600">STATUS</h5>
                                                                                                                         <p className="font-3 font-medium text-neutral-600">
-                                                                                                                            {
+                                                                                                                            {/*
                                                                                                                                 dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).acceptingNewPatients ?
                                                                                                                                     (
                                                                                                                                         <ItemGroup
@@ -382,7 +382,7 @@ function PDHome() {
                                                                                                                                             ]}
                                                                                                                                         />
                                                                                                                                     )
-                                                                                                                            }
+                                                                                                                            */}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -423,7 +423,7 @@ function PDHome() {
                                                                                                                                                 <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                             </g>
                                                                                                                                         </BaseIcon>
-                                                                                                                                        <p className="font-3 font-medium text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(pastAppointments[0].appointmentDate)}</p>
+                                                                                                                                        <p className="font-3 font-medium text-neutral-600">{/*dashboardLayoutViewModel.formatBirthDate(pastAppointments[0].appointmentDate)*/}</p>
                                                                                                                                     </>
                                                                                                                                 ]}
                                                                                                                             />
@@ -444,7 +444,7 @@ function PDHome() {
                                                                                                                                                 <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                             </g>
                                                                                                                                         </BaseIcon>
-                                                                                                                                        <p className="font-3 font-medium text-neutral-600">{pastAppointments[0].startTime}</p>
+                                                                                                                                        <p className="font-3 font-medium text-neutral-600">{/*pastAppointments[0].startTime*/}</p>
                                                                                                                                     </>
                                                                                                                                 ]}
                                                                                                                             />
@@ -542,7 +542,7 @@ function PDHome() {
                                                                             }}
                                                                             items={[
                                                                                 <>
-                                                                                    {
+                                                                                    {/*
                                                                                         pastAppointments.length > 0 ? (
                                                                                             pastAppointments.map((appt) => (
                                                                                                 <ItemGroup
@@ -621,7 +621,7 @@ function PDHome() {
                                                                                                 ]}
                                                                                             />
                                                                                         )
-                                                                                    }
+                                                                                    */}
                                                                                 </>
                                                                             ]}
                                                                         />
@@ -663,7 +663,7 @@ function PDHome() {
                                                     contentClass="pt-6"
                                                     content={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 upcomingAppointments.length > 0 ? (
                                                                     upcomingAppointments.map((appt) => (
                                                                         <Container
@@ -817,7 +817,7 @@ function PDHome() {
                                                                         ]}
                                                                     />
                                                                 )
-                                                            }
+                                                            */}
                                                         </>
                                                     ]}
                                                 />
@@ -869,7 +869,7 @@ function PDHome() {
                                                                                         <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                     </BaseIcon>
                                                                                     <ItemGroup
-                                                                                        customClass="justify-items-center gap-6"
+                                                                                        customClass="justify-items-center gap-4"
                                                                                         axis={true}
                                                                                         items={[
                                                                                             <>
@@ -878,8 +878,8 @@ function PDHome() {
                                                                                                     axis={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <h3 className="font-semibold font-6">{user.firstName} {user.lastName}</h3>
-                                                                                                            <h3 className="font-regular font-4 text-neutral-600">MRN: {patientData.mrn}</h3>
+                                                                                                            <h3 className="font-semibold font-6">{currentUser.firstName} {currentUser.lastName}</h3>
+                                                                                                            {/*<h3 className="font-regular font-4 text-neutral-600">MRN: {patientData.mrn}</h3>*/}
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -889,9 +889,9 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{patientData.sex}</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.capitalize(currentUser.sex)}</p>
                                                                                                             <div className="bg-neutral-600 br-lg" style={{ height: "9px", width: "9px" }}></div>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(user.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(user.dateOfBirth)} yrs)</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(currentUser.dob)} ({dashboardLayoutViewModel.calculateAge(currentUser.dob)} yrs)</p>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -980,7 +980,7 @@ function PDHome() {
                                                                                                                                     fitParent={true}
                                                                                                                                     items={[
                                                                                                                                         <>
-                                                                                                                                            {
+                                                                                                                                            {/*
                                                                                                                                                 pastAppointments.length > 0 ? (
                                                                                                                                                     <>
                                                                                                                                                         <ItemGroup
@@ -1060,7 +1060,7 @@ function PDHome() {
                                                                                                                                                 ) : (
                                                                                                                                                     <p className="font-3 font-semibold text-neutral-600">There are no appointments on record</p>
                                                                                                                                                 )
-                                                                                                                                            }
+                                                                                                                                            */}
                                                                                                                                         </>
                                                                                                                                     ]}
                                                                                                                                 />
@@ -1075,7 +1075,7 @@ function PDHome() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">ADDRESS</h5>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{user.address}, {user.city}, {user.state}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{currentUser.address1}, {currentUser.city}, {currentUser.state}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
@@ -1087,7 +1087,7 @@ function PDHome() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">PHONE</h5>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(user.phoneNumber)}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(currentUser.phone)}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
