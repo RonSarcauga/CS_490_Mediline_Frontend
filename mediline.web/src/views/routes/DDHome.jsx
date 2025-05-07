@@ -10,11 +10,11 @@ function DDHome() {
     const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }));
 
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    const doctorData = dashboardLayoutViewModel.getDoctorData(user.id);
-    const todaysAppointments = dashboardLayoutViewModel.getTodaysAppointments(user.id);
-    const selectedAppointments = dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate);
-    const patients = dashboardLayoutViewModel.getPatients(doctorData.licenseNumber);
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const doctorData = dashboardLayoutViewModel.getDoctorData(user.id);
+    //const todaysAppointments = dashboardLayoutViewModel.getTodaysAppointments(user.id);
+    //const selectedAppointments = dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate);
+    //const patients = dashboardLayoutViewModel.getPatients(doctorData.licenseNumber);
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
     const hours = Array.from({ length: 10 }, (_, i) => 8 + i);
 
@@ -130,7 +130,7 @@ function DDHome() {
                                                                                                             <path d="M68,47.4c-0.2-0.1-0.3-0.2-0.5-0.3c-0.4-0.2-0.9-0.2-1.3,0.1c-2.1,1.3-4.6,2.1-7.2,2.1c-0.3,0-0.7,0-1,0 c-0.5,1.3-1,2.6-1.7,3.7c0.4,0.2,0.9,0.3,1.4,0.6c5.7,2.5,9.7,5.6,12.5,9.8H75c2.2,0,4-1.8,4-4v-1.9C79,52.6,73.3,49.6,68,47.4z" />
                                                                                                             <path d="M66.9,34.2c0-4.9-3.6-8.9-7.9-8.9c-2.2,0-4.1,1-5.6,2.5c3.5,3.6,5.7,8.7,5.7,14.4c0,0.3,0,0.5,0,0.8 C63.4,43,66.9,39.1,66.9,34.2z" />
                                                                                                         </BaseIcon>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{doctorData.patients.length}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*doctorData.patients.length*/}</h4>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -148,7 +148,7 @@ function DDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{todaysAppointments.length}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*todaysAppointments.length*/}</h4>
                                                                                                         <p className="font-3 text-neutral-600">Patients Today</p>
                                                                                                     </>
                                                                                                 ]}
@@ -225,7 +225,7 @@ function DDHome() {
                                                                                                                 <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(200, 30%, 25%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                             </g>
                                                                                                         </BaseIcon>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber).length}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber).length*/}</h4>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -243,7 +243,7 @@ function DDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{todaysAppointments.length}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*todaysAppointments.length*/}</h4>
                                                                                                         <p className="font-3 text-neutral-600">Bookings Today</p>
                                                                                                     </>
                                                                                                 ]}
@@ -395,7 +395,7 @@ function DDHome() {
                                                                                                                         fitParent={true}
                                                                                                                         items={[
                                                                                                                             <>
-                                                                                                                                {
+                                                                                                                                {/*
                                                                                                                                     selectedAppointments.map((appt) => (
                                                                                                                                         parseInt(appt.startTime.split(":")[0], 10) === hour ? (
                                                                                                                                             <Container
@@ -523,7 +523,7 @@ function DDHome() {
                                                                                                                                                                                     items={[
                                                                                                                                                                                         <>
                                                                                                                                                                                             <h5 className="font-3 font-medium text-neutral-600">Starts</h5>
-                                                                                                                                                                                            <h5 className="font-3 font-semibold">{dashboardLayoutViewModel.formatTimeString(appt.startTime)}</h5>
+                                                                                                                                                                                            {<h5 className="font-3 font-semibold">{dashboardLayoutViewModel.formatTimeString(appt.startTime)}</h5>}
                                                                                                                                                                                         </>
                                                                                                                                                                                     ]}
                                                                                                                                                                                 />
@@ -575,7 +575,7 @@ function DDHome() {
                                                                                                                                             </>
                                                                                                                                         )
                                                                                                                                     ))
-                                                                                                                                }
+                                                                                                                                */}
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
@@ -650,7 +650,7 @@ function DDHome() {
                                                             fitParent={true}
                                                             items={[
                                                                 <>
-                                                                    {patients.length > 0 ? (
+                                                                    {/*patients.length > 0 ? (
                                                                         patients.map((patient) => (
                                                                             <ItemGroup
                                                                                 customClass="gap-6 align-items-center"
@@ -752,7 +752,7 @@ function DDHome() {
                                                                         ))
                                                                     ) : (
                                                                         <p>Hello world!</p>
-                                                                    )}
+                                                                    )*/}
                                                                 </>
                                                             ]}
                                                         />

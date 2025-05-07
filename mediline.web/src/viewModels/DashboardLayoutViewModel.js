@@ -215,6 +215,8 @@ class DashboardLayoutViewModel {
         return pastAppointments;
     }
 
+
+
     // Helper method to retrieve upcoming appointments
     getUpcomingAppointmentsSorted(id) {
         // Find the patient's MRN using their (base) user ID
@@ -320,6 +322,8 @@ class DashboardLayoutViewModel {
 
         return todaysAppointments;
     }
+
+    // Helper method tp fetch appointments
 
     // Helper method to get a list of the doctor's appointments for a selected date
     getAppointmentsByDate(id, date) {
