@@ -9,9 +9,9 @@ import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 function PHPatient() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
-    const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
+    const users = dashboardLayoutViewModel.getUsers();
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
 
     const [accordionHeight, setAccordionHeight] = useState(0);
     const onExpand = () => {
@@ -96,8 +96,8 @@ function PHPatient() {
                                                             items={[
                                                                 <>
                                                                     {
-                                                                        patients.length > 0 && (
-                                                                            patients.slice(0, 1).map(() => (
+                                                                        users.length > 0 && (
+                                                                            users.slice(0, 1).map(() => (
                                                                                 <>
                                                                                     <ItemGroup
                                                                                         customClass=" py-1"
@@ -170,6 +170,7 @@ function PHPatient() {
                                                                         customClass="bg-neutral-1000 py-3 b-3 outline-neutral-700 br-sm"
                                                                         fitParent={true}
                                                                         isClickable={true}
+                                                                        onClick={handleCloseModal}
                                                                         content={[
                                                                             <>
                                                                                 <p className="font-semibold text-neutral-600">APPROVE</p>
@@ -180,6 +181,7 @@ function PHPatient() {
                                                                         customClass="bg-neutral-700 py-3 br-sm"
                                                                         fitParent={true}
                                                                         isClickable={true}
+                                                                        onClick={handleCloseModal}
                                                                         content={[
                                                                             <>
                                                                                 <p className="font-semibold text-neutral-1000">REJECT</p>
@@ -278,7 +280,7 @@ function PHPatient() {
                                                                             items={[
                                                                                 <>
                                                                                     {
-                                                                                        patients.length > 0 && (
+                                                                                        users.length > 0 && (
                                                                                             <>
                                                                                                 <ItemGroup
                                                                                                     customClass="gap-2"
@@ -289,7 +291,7 @@ function PHPatient() {
                                                                                                         <>
                                                                                                             <h5 className="font-3">NAME</h5>
                                                                                                             <p className="font-3 font-medium text-justify">
-                                                                                                                {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).lastName}
+                                                                                                                {users[0].firstName} {users[0].lastName}
                                                                                                             </p>
                                                                                                         </>
                                                                                                     ]}
@@ -303,7 +305,7 @@ function PHPatient() {
                                                                                                         <>
                                                                                                             <h5 className="font-3">DATE OF BIRTH</h5>
                                                                                                             <p className="font-3 font-medium text-justify">
-                                                                                                                {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).dateOfBirth}
+                                                                                                                {users[0].dateOfBirth}
                                                                                                             </p>
                                                                                                         </>
                                                                                                     ]}
@@ -410,7 +412,7 @@ function PHPatient() {
                                                                                         items={[
                                                                                             <>
                                                                                                 {
-                                                                                                    patients.length > 0 && (
+                                                                                                    users.length > 0 && (
                                                                                                         <>
                                                                                                             <ItemGroup
                                                                                                                 customClass="gap-7"
@@ -428,7 +430,7 @@ function PHPatient() {
                                                                                                                                 <>
                                                                                                                                     <h5 className="font-3">EMAIL</h5>
                                                                                                                                     <p className="font-3 font-medium text-justify">
-                                                                                                                                        {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).dateOfBirth}
+                                                                                                                                        {users[0].email}
                                                                                                                                     </p>
                                                                                                                                 </>
                                                                                                                             ]}
@@ -448,13 +450,13 @@ function PHPatient() {
                                                                                                                                         items={[
                                                                                                                                             <>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).address},
+                                                                                                                                                    {users[0].address},
                                                                                                                                                 </p>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).city}, {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).state}
+                                                                                                                                                    {users[0].city}, {users[0].state}
                                                                                                                                                 </p>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).postalCode}
+                                                                                                                                                    {users[0].postalCode}
                                                                                                                                                 </p>
                                                                                                                                             </>
                                                                                                                                         ]}
@@ -474,7 +476,7 @@ function PHPatient() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3">PHONE</h5>
                                                                                                                         <p className="font-3 font-medium text-justify">
-                                                                                                                            {dashboardLayoutViewModel.getUsers().find(user => user.id === patients[0].userId).phoneNumber}
+                                                                                                                            {users[0].phoneNumber}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -584,8 +586,8 @@ function PHPatient() {
                                                                             items={[
                                                                                 <>
                                                                                     {
-                                                                                        patients.length > 0 && (
-                                                                                            patients.map(() => (
+                                                                                        users.length > 0 && (
+                                                                                            users.map(() => (
                                                                                                 <>
                                                                                                     <ItemGroup
                                                                                                         customClass=" py-1"
@@ -724,8 +726,8 @@ function PHPatient() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         {
-                                                                                                            patients.length > 0 ? (
-                                                                                                                patients.slice(0, 3).map((patient) => (
+                                                                                                            users.length > 0 ? (
+                                                                                                                users.slice(0, 3).map((user) => (
                                                                                                                     <ItemGroup
                                                                                                                         customClass="gap-6 align-items-center"
                                                                                                                         axis={false}
@@ -786,7 +788,7 @@ function PHPatient() {
                                                                                                                                                                         items={[
                                                                                                                                                                             <>
                                                                                                                                                                                 <p className="font-regular text-neutral-100 font-4">
-                                                                                                                                                                                    {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(patient.mrn).userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(patient.mrn).userId).lastName}
+                                                                                                                                                                                    {user.firstName} {user.lastName}
                                                                                                                                                                                 </p>
                                                                                                                                                                                 <p className="font-regular text-neutral-600 font-3">
                                                                                                                                                                                     Medication
@@ -877,8 +879,8 @@ function PHPatient() {
                                                                             items={[
                                                                                 <>
                                                                                     {
-                                                                                        patients.length > 0 ? (
-                                                                                            patients.map((patient) => (
+                                                                                        users.length > 0 ? (
+                                                                                            users.map((user) => (
                                                                                                 <ItemGroup
                                                                                                     customClass="gap-6 align-items-center"
                                                                                                     axis={false}
@@ -936,7 +938,7 @@ function PHPatient() {
                                                                                                                                                     items={[
                                                                                                                                                         <>
                                                                                                                                                             <p className="font-regular text-neutral-100 font-4">
-                                                                                                                                                                {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(patient.mrn).userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(patient.mrn).userId).lastName}
+                                                                                                                                                                {user.firstName} {user.lastName}
                                                                                                                                                             </p>
                                                                                                                                                         </>
                                                                                                                                                     ]}

@@ -42,8 +42,17 @@ export default function Login() {
             setCurrentUser(currentUser);
             console.log("Login successful!", currentUser);
 
+            let basePath = null;
+
+            if (currentUser.role === "pharmacy") {
+                basePath = `/dashboard/pharmacist`;
+            }
+            else {
+                basePath = `/dashboard/${currentUser.role}`;
+            }
+
             // Redirect to the dashboard
-            navigate(`/dashboard/${currentUser.role}`);
+            navigate(`${basePath}`);
         } catch (error) {
             console.log("Login failed:", error.message);
         }

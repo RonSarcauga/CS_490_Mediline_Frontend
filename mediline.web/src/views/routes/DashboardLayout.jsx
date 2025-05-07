@@ -12,12 +12,19 @@ function DashboardLayout() {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const basePath = `/dashboard/${currentUser.role}`;
+    let basePath = null;
+
+    if (currentUser.role !== 'pharmacy') {
+        basePath = `/dashboard/${currentUser.role}`;
+    }
+    else {
+        basePath = `/dashboard/pharmacist`;
+    }
 
     const pathNames = {
-        appointment: `/dashboard/${currentUser.role}/appointment`,
-        profile: `/dashboard/${currentUser.role}/profile`,
-        discussion: `/dashboard/${currentUser.role}/discussion-forum`,
+        appointment: `${basePath}/appointment`,
+        profile: `${basePath}/profile`,
+        discussion: `${basePath}/discussion-forum`,
     };
 
     const handleLogout = () => {
@@ -111,7 +118,7 @@ function DashboardLayout() {
                                                                 </>
                                                             ]}
                                                         />
-                                                        {currentUser.role !== 'pharmacist' && (
+                                                        {currentUser.role !== 'pharmacy' && (
                                                             <Container
                                                                 key="discussion"
                                                                 customClass={`nav-item ${location.pathname === pathNames.discussion ? " active" : ""}`}

@@ -8,9 +8,10 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 
 function PHHome() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
-    const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
+    const users = dashboardLayoutViewModel.getUsers();
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
+    //const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
 
     return (
         <Container
@@ -108,13 +109,13 @@ function PHHome() {
                                                                                                                     <CircleProgressBar
                                                                                                                         circleWidth="150"
                                                                                                                         fraction="8"
-                                                                                                                        total={`${pharmacistData.patients.length}`}
+                                                                                                                        total={`${users.length}`}
                                                                                                                         strokeColor="hsl(210, 35%, 50%)"
                                                                                                                         progressColor="hsl(200, 70%, 70%)"
                                                                                                                     />
                                                                                                                     <CircleProgressBar
-                                                                                                                        fraction={pharmacistData.patients.length - 8}
-                                                                                                                        total={pharmacistData.patients.length}
+                                                                                                                        fraction={users.length - 8}
+                                                                                                                        total={users.length}
                                                                                                                         circleWidth="150"
                                                                                                                         strokeColor="hsl(0, 0%, 40%)"
                                                                                                                         progressColor="hsl(45, 60%, 60%)"
@@ -255,7 +256,7 @@ function PHHome() {
                                                                         items={[
                                                                             <>
                                                                                 {
-                                                                                    patients.map(() => (
+                                                                                    users.map(() => (
                                                                                         <ItemGroup
                                                                                             axis={false}
                                                                                             style={{
@@ -346,7 +347,7 @@ function PHHome() {
                                                             items={[
                                                                 <>
                                                                     {
-                                                                        patients.map((patient) => (
+                                                                        users.map((user) => (
                                                                             <ItemGroup
                                                                                 customClass="align-items-center"
                                                                                 axis={false}
@@ -356,8 +357,8 @@ function PHHome() {
                                                                                 }}
                                                                                 items={[
                                                                                     <>
-                                                                                        <h5 className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.getUsers().find(user => user.id === patient.userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === patient.userId).lastName}</h5>
-                                                                                        <h5 className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(patient.doctor).userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(patient.doctor).userId).lastName}</h5>
+                                                                                        <h5 className="font-3 font-semibold text-neutral-600">{user.firstName} {user.lastName}</h5>
+                                                                                        <h5 className="font-3 font-semibold text-neutral-600">Dr. {user.firstName} {user.lastName}</h5>
                                                                                         <h5 className="font-3 font-semibold text-neutral-600">Ozempic</h5>
                                                                                         <h5 className="font-3 font-semibold text-neutral-600">14 days</h5>
                                                                                         <h5 className="font-3 font-semibold text-neutral-600">1000 mg</h5>
@@ -365,7 +366,7 @@ function PHHome() {
                                                                                             customClass="bg-success-500 br"
                                                                                             items={[
                                                                                                 <>
-                                                                                                    <h3 className="text-success-100 font-semibold font-3 py-1 px-3 br">Fulfilled</h3>
+                                                                                                    <h3 className="text-success-100 font-semibold font-3 py-1 px-3 br">Filled</h3>
                                                                                                 </>
                                                                                             ]}
                                                                                         />
