@@ -20,7 +20,7 @@ class DashboardLayoutViewModel {
     } 
 
     // Helper method to format a birth date into "Month Day, Year"
-    formatBirthDate(birthDate) {
+    formatBirthDate(birthDate, format = "default") {
         const months = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
@@ -30,8 +30,18 @@ class DashboardLayoutViewModel {
         const date = this.parseDate(birthDate);
         if (!date) return "Invalid date format";
 
-        const monthName = months[date.getMonth()];
-        return `${monthName} ${date.getDate()}, ${date.getFullYear()}`;
+        switch (format) {
+            case "MM/DD/YYYY":
+                return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}/${date.getFullYear()}`;
+            case "DD/MM/YYYY":
+                return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+            case "YYYY-MM-DD":
+                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+            case "Month Day, Year":
+                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+            default:
+                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`; // Default format
+        }
     };
 
     // Helper method to calculate the age of a user
@@ -109,7 +119,7 @@ class DashboardLayoutViewModel {
     //}
 
     // Helper method to change the format of the phone number
-    formatPhoneNumber(phoneNumber) {
+    formatPhoneNumber(phoneNumber, format = "default") {
     if (!phoneNumber || typeof phoneNumber !== "string") {
         throw new Error("Invalid phone number input. Expected a string.");
     }
@@ -121,8 +131,32 @@ class DashboardLayoutViewModel {
             throw new Error("Invalid phone number format. Expected a 10-digit number.");
         }
 
-        // Reformat into (###) ###-####
-        return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+        switch (format) {
+            case "dashes":
+                return `${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+            case "parentheses":
+                return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+            case "international":
+                return `+1-${cleaned.slice(0, 3)}-${cleaned.slice(3, 6)}-${cleaned.slice(6)}`;
+            case "spaces":
+                return `${cleaned.slice(0, 3)} ${cleaned.slice(3, 6)} ${cleaned.slice(6)}`;
+            case "compact":
+                return `${cleaned.slice(0, 3)}.${cleaned.slice(3, 6)}.${cleaned.slice(6)}`;
+            default:
+                return `(${cleaned.slice(0, 3)}) ${cleaned.slice(3, 6)}-${cleaned.slice(6)}`; // Default format
+        }
+
+    };
+
+    capitalize(string) {
+        if (!string || typeof string !== "string") {
+            throw new Error(`Expected a string. Got ${typeof string} instead.`);
+        }
+
+        const capitalized = string.slice(0,1).toUpperCase() + string.slice(1);
+        console.log(`Formatted string: ${capitalized}`);
+
+        return capitalized;
     };
 
     // Helper method to changes the format of the time string
