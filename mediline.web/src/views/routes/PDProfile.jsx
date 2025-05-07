@@ -146,7 +146,7 @@ function PDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentUser.gender}
+                                                                            value={dashboardLayoutViewModel.capitalize(currentUser.sex)}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -256,7 +256,7 @@ function PDProfile() {
                                                                             <InputBar
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
-                                                                                value={dashboardLayoutViewModel.formatPhoneNumber(currentUser.phone)}
+                                                                                value={dashboardLayoutViewModel.formatPhoneNumber(currentUser.phone, "dashes")}
                                                                                 readonly={true}
                                                                             />
                                                                         </>
