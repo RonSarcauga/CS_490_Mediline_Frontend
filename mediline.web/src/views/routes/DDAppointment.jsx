@@ -9,16 +9,16 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 
 function DDAppointment() {
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const { userId } = useParams();
 
-    const defaultPatientId = 1;
-    const patientId = userId || defaultPatientId;
-    const currentPatient = dashboardLayoutViewModel.getUsers().find(user => user.id === patientId);
+    //const defaultPatientId = 1;
+    //const patientId = userId || defaultPatientId;
+    //const currentPatient = dashboardLayoutViewModel.getUsers().find(user => user.id === patientId);
 
-    const patientData = dashboardLayoutViewModel.getPatientData(patientId);
-    const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(patientId);
-    console.log(`User ${user.id}: ${user.firstName} ${user.lastName} ${user.dateOfBirth}`);
+    //const patientData = dashboardLayoutViewModel.getPatientData(patientId);
+    //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(patientId);
+    console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}`);
 
     return (
         <Container
@@ -100,7 +100,7 @@ function DDAppointment() {
                                                 contentClass="px-6 pt-6 pb-3 align-items-center"
                                                 content={[
                                                     <>
-                                                        {
+                                                        {/*
                                                             dashboardLayoutViewModel.hasDoctor(currentPatient.id) ? (
                                                                 <>
                                                                     <ItemGroup
@@ -339,7 +339,7 @@ function DDAppointment() {
                                                                     ]}
                                                                 />
                                                             )
-                                                        }
+                                                        */}
                                                     </>
                                                 ]}
                                             />
@@ -378,7 +378,7 @@ function DDAppointment() {
                                                                                         </>
                                                                                     ]}
                                                                                 />
-                                                                                <h5 className="font-semibold font-5 text-primary-neutral-100">{dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).firstName.toUpperCase()} {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).lastName.toUpperCase()}</h5>
+                                                                                <h5 className="font-semibold font-5 text-primary-neutral-100">{/*dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).firstName.toUpperCase()*/} {/*dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(pastAppointments[0].doctorLicenseNumber).userId).lastName.toUpperCase()*/}</h5>
                                                                             </>
                                                                         ]}
                                                                     />
@@ -537,8 +537,8 @@ function DDAppointment() {
                                                                                                 axis={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h3 className="font-semibold font-6">{currentPatient.firstName} {currentPatient.lastName}</h3>
-                                                                                                        <h3 className="font-regular font-4 text-neutral-600">MRN: {patientData.mrn}</h3>
+                                                                                                        <h3 className="font-semibold font-6">{/*{currentPatient.firstName} {currentPatient.lastName}*/}</h3>
+                                                                                                        <h3 className="font-regular font-4 text-neutral-600">MRN: {/*patientData.mrn*/}</h3>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -548,9 +548,9 @@ function DDAppointment() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{patientData.sex}</p>
+                                                                                                        <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{/*patientData.sex*/}</p>
                                                                                                         <div className="bg-neutral-600 br-lg" style={{ height: "9px", width: "9px" }}></div>
-                                                                                                        <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(user.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(user.dateOfBirth)} yrs)</p>
+                                                                                                        <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{/*{dashboardLayoutViewModel.formatBirthDate(user.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(user.dateOfBirth)} yrs)*/}</p>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -639,7 +639,7 @@ function DDAppointment() {
                                                                                                                                 fitParent={true}
                                                                                                                                 items={[
                                                                                                                                     <>
-                                                                                                                                        {
+                                                                                                                                        {/*
                                                                                                                                             pastAppointments.length > 0 ? (
                                                                                                                                                 <>
                                                                                                                                                     <ItemGroup
@@ -719,7 +719,7 @@ function DDAppointment() {
                                                                                                                                             ) : (
                                                                                                                                                 <p className="font-3 font-semibold text-neutral-600">There are no appointments on record</p>
                                                                                                                                             )
-                                                                                                                                        }
+                                                                                                                                        */}
                                                                                                                                     </>
                                                                                                                                 ]}
                                                                                                                             />
@@ -734,7 +734,7 @@ function DDAppointment() {
                                                                                                                     items={[
                                                                                                                         <>
                                                                                                                             <h5 className="font-3 text-neutral-600">ADDRESS</h5>
-                                                                                                                            <p className="font-3 font-semibold text-neutral-600">{user.address}, {user.city}, {user.state}</p>
+                                                                                                                            <p className="font-3 font-semibold text-neutral-600">{/*{user.address}, {user.city}, {user.state}*/}</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
@@ -746,7 +746,7 @@ function DDAppointment() {
                                                                                                                     items={[
                                                                                                                         <>
                                                                                                                             <h5 className="font-3 text-neutral-600">PHONE</h5>
-                                                                                                                            <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(user.phoneNumber)}</p>
+                                                                                                                            <p className="font-3 font-semibold text-neutral-600">+1 {/*dashboardLayoutViewModel.formatPhoneNumber(user.phoneNumber)*/}</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
