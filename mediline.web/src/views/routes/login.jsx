@@ -43,7 +43,7 @@ export default function Login() {
             console.log("Login successful!", currentUser);
 
             // Redirect to the dashboard
-            navigate(`/dashboard/${currentUser.accountType}`);
+            navigate(`/dashboard/${currentUser.role}`);
         } catch (error) {
             console.log("Login failed:", error.message);
         }
