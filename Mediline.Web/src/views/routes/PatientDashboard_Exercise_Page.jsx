@@ -10,7 +10,7 @@ import { IoMdDownload } from "react-icons/io";
 import React, { useRef, useEffect, useState } from "react";
 import { Chart } from "chart.js/auto";
 import ExerciseChart from '../../components/Dashboard/ExerciseChart';
-import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm } from '../../viewModels/ExercisePage.js';
+import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm, submitExercise } from '../../viewModels/ExercisePage.js';
 
 
 
@@ -45,11 +45,7 @@ export default function PatientDashboardExercise({
     const setGraphStateSl = () => {
         setGraphState("sleep");
     }
-    let ecBank1 = ["Push Ups", "Sit Ups", "Squats", "Planks", "Crunches", "Burpees", "Lunges", "Jumping Jacks", "Mountain Climbers", "High Knees"]
-
-
-
-
+    
     useEffect(() => {
         const fetchData1 = async () => {
             const data = await fetchPatientExerciseList();
@@ -62,7 +58,7 @@ export default function PatientDashboardExercise({
     }, []);
     useEffect(() => {
         const fetchData2 = async () => {
-            const data = await fetchChartData();
+            const data = await fetchExerciseList();
             if (data) {
                 setExerciseList(data); // Store the data in state
             }
@@ -190,7 +186,7 @@ export default function PatientDashboardExercise({
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {!showNewElement && <ExerciseList exerciseBank1={ecBank1} />}
+                                                                    {!showNewElement && <ExerciseList exerciseBank1={exerciseList} currentEcc={exerciseData} />}
                                                                     {showNewElement && <WeeklyForm />}
 
                                                                 </>
@@ -433,141 +429,105 @@ export default function PatientDashboardExercise({
 
 function ExerciseList({
     exerciseBank1 = [],
-    exerciseBank2 = [],
-    exerciseBank3 = []
+    currentEcc = []
 }) {
+    const [selectedExercises, setSelectedExercises] = useState({});
+
+    const handleCheckboxChange = (exercise) => {
+        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
+        setSelectedExercises((prevSelected) => {
+            if (prevSelected[exerciseKey] !== undefined) {
+                // Remove exercise if already selected
+                const { [exerciseKey]: _, ...rest } = prevSelected;
+                return rest;
+            } else {
+                // Add exercise if not already selected
+                return { ...prevSelected, [exerciseKey]: "" }; // Default reps to an empty string
+            }
+        });
+    };
+
+    const handleRepsChange = (exercise, reps) => {
+        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
+        setSelectedExercises((prevSelected) => ({
+            ...prevSelected,
+            [exerciseKey]: reps, // Update reps for the selected exercise
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+        console.log("Selected Exercises with Reps:", selectedExercises);
+        submitExercise(selectedExercises); // Call the submit function with selected exercises
+    };
+
+    // Filter out exercises that already exist in currentEcc
+    const filteredExercises = exerciseBank1.filter(
+        (exercise) =>
+            !currentEcc.some((ecc) => ecc.exercise_id === exercise.exercise_id)
+    );
+
     return (
         <>
-            <ItemGroup
-                customClass=" p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
-                axis={true}
-                style={{
-                    width: "54vw",
-                }}
-                items={[
-                    <>
-                        <h1>
-                            Exercise List
-                        </h1>
-                    </>
-                ]}
-            />
-
-            <ItemGroup
-                customClass=" gap-5 fit-parent pl-5 pr-5"
-                axis={false}
-                style={{
-                    width: "30vw"
-                }}
-                items={[
-                    <>
-
-                        <ECCheckbox
-                            label={exerciseBank1[0]}
-                            reps={exerciseBank2[0]}
-                            time={exerciseBank3[0]}
-                        />
-                        <ECCheckbox
-                            label={exerciseBank1[1]}
-                            reps={exerciseBank2[1]}
-                            time={exerciseBank3[1]}
-                        />
-
-                    </>
-                ]}
-            />
-            <ItemGroup
-                customClass=" gap-5 fit-parent pl-5 pr-5"
-                axis={false}
-                style={{
-                    width: "30vw"
-                }}
-                items={[
-                    <>
-                        <ECCheckbox
-                            label={exerciseBank1[2]}
-                            reps={exerciseBank2[2]}
-                            time={exerciseBank3[2]}
-                        />
-                        <ECCheckbox
-                            label={exerciseBank1[3]}
-                            reps={exerciseBank2[3]}
-                            time={exerciseBank3[3]}
-                        />
-
-                    </>
-                ]}
-            />
-            <ItemGroup
-                customClass=" gap-5 fit-parent pl-5 pr-5"
-                axis={false}
-                style={{
-                    width: "30vw"
-                }}
-                items={[
-                    <>
-                        <ECCheckbox
-                            label={exerciseBank1[4]}
-                            reps={exerciseBank2[4]}
-                            time={exerciseBank3[4]}
-                        />
-                        <ECCheckbox
-                            label={exerciseBank1[5]}
-                            reps={exerciseBank2[5]}
-                            time={exerciseBank3[5]}
-                        />
-
-                    </>
-                ]}
-            />
-            <ItemGroup
-                customClass=" gap-5 fit-parent pl-5 pr-5"
-                axis={false}
-                style={{
-                    width: "30vw"
-                }}
-                items={[
-                    <>
-                        <ECCheckbox
-                            label={exerciseBank1[6]}
-                            reps={exerciseBank2[6]}
-                            time={exerciseBank3[6]}
-                        />
-                        <ECCheckbox
-                            label={exerciseBank1[7]}
-                            reps={exerciseBank2[7]}
-                            time={exerciseBank3[7]}
-                        />
-
-                    </>
-                ]}
-            />
-            <ItemGroup
-                customClass=" gap-5 fit-parent pl-5 pr-5"
-                axis={false}
-                style={{
-                    width: "30vw"
-                }}
-                items={[
-                    <>
-                        <ECCheckbox
-                            label={exerciseBank1[8]}
-                            reps={exerciseBank2[8]}
-                            time={exerciseBank3[8]}
-                        />
-                        <ECCheckbox
-                            label={exerciseBank1[9]}
-                            reps={exerciseBank2[9]}
-                            time={exerciseBank3[9]}
-                        />
-
-                    </>
-                ]}
-            />
+            <form onSubmit={handleSubmit}>
+                <ItemGroup
+                    customClass="p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
+                    axis={true}
+                    style={{
+                        width: "54vw",
+                    }}
+                    items={[
+                        <>
+                            <h1>Exercise List</h1>
+                        </>
+                    ]}
+                />
+                {filteredExercises.map((exercise, index) => (
+                    <ItemGroup
+                        key={index}
+                        customClass="gap-5 pl-5 pr-5"
+                        axis={false}
+                        style={{
+                            width: "30vw",
+                        }}
+                        items={[
+                            <>
+                                <ECCheckbox
+                                    label={exercise.type_of_exercise}
+                                    onChange={() => handleCheckboxChange(exercise)}
+                                />
+                                {selectedExercises[exercise.exercise_id] !== undefined && (
+                                    <ItemGroup
+                                        customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                                        axis={true}
+                                        style={{
+                                            width: "10vw",
+                                        }}
+                                        items={[
+                                            <InputBar
+                                                name={`${exercise.exercise_id}-reps`}
+                                                value={selectedExercises[exercise.exercise_id]} // Controlled input
+                                                onChange={(e) =>
+                                                    handleRepsChange(exercise, e.target.value)
+                                                }
+                                                placeholder="Enter reps"
+                                                customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
+                                            />
+                                        ]}
+                                    />
+                                )}
+                            </>
+                        ]}
+                    />
+                ))}
+                <button type="submit" className="submit-button">
+                    Submit
+                </button>
+            </form>
         </>
-
-    )
+    );
 }
+
 function WeeklyForm() {
     const [formData, setFormData] = useState({
         exercise: "",
