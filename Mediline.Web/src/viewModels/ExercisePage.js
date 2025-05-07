@@ -5,7 +5,7 @@ const doctorId = 15; //temp hardcoded
 
 export const fetchExerciseList = async () => {
     const { data } = await axios.get(`/exercise/`);
-    console.log('Fetched data:', data);
+    console.log('Fetched exercises:', data);
     return data;
 };
 
@@ -85,13 +85,44 @@ export const submitForm = async (formData) => {
             hours_of_sleep: Number(formData.sleep),
             report_id: 1,
             weight: Number(formData.weight),
-        }); // Replace '/form/submit' with your API endpoint
+        }); 
         console.log('Form submitted successfully:', response.data);
-        return response.data; // Return the response if needed
+        return response.data; 
     } catch (error) {
         console.error('Error submitting form:', error);
-        throw error; // Re-throw the error if you want to handle it elsewhere
+        throw error; 
     }
 };
+
+export const submitExercise = async (exerciseData) => {
+    try {
+        // Log the entire exerciseData object for debugging
+        console.log('Exercise data:', exerciseData);
+
+        // Iterate over the keys and values of exerciseData
+        const exercises = Object.entries(exerciseData);
+
+        // Send a POST request for each exercise
+        const responses = await Promise.all(
+            exercises.map(async ([exerciseId, reps]) => {
+                const response = await axios.post(`/exercise/${exerciseId}`, {
+                    reps: reps, // Convert reps to a number
+                    patient_id: patientId,
+                    doctor_id: doctorId,
+                    status: "in_progress"
+                });
+                console.log(`Exercise ${exerciseId} submitted successfully:`, response.data);
+                return response.data;
+            })
+        );
+
+        console.log('All exercises submitted successfully:', responses);
+        return responses;
+    } catch (error) {
+        console.error('Error submitting exercise data:', error);
+        throw error;
+    }
+};
+
 
 
