@@ -7,6 +7,7 @@ import Accordion from '../../components/General/Accordion';
 import RatedIcon from '../../components/General/RatedIcon';
 import StatusLabel from '../../components/General/StatusLabel';
 import Chatbox from '../../components/Dashboard/Chatbox';
+import SharedChatBox from '../../components/Dashboard/SharedChatBox';
 
 //import hardcoded data if needed
 //import {} from '../../assets/js/const';
