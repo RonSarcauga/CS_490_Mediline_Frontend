@@ -16,7 +16,7 @@ function PDHome() {
     //const user = dashboardLayoutViewModel.fetchPatientData(currentUser.id);
     const user = dashboardLayoutViewModel.getPatientData(currentUser.id);
 
-    console.log(`Patient Dashboard User: ${user()}`);
+    console.log(`Patient Dashboard User: ${user}`);
 
     //console.log(`Patient Dashboard User: ${JSON.stringify(user, null, 2)}`)
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
