@@ -16,7 +16,7 @@ function PDHome() {
     //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
     //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
     const navigate = useNavigate();
-    console.log(`User ${currentUser.id}: ${currentUser.data.firstName} ${currentUser.lastName} ${currentUser.data.dateOfBirth}`);
+    console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}`);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
@@ -889,9 +889,9 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{/*patientData.sex*/}</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{currentUser.gender}</p>
                                                                                                             <div className="bg-neutral-600 br-lg" style={{ height: "9px", width: "9px" }}></div>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(currentUser.dateOfBirth)} ({dashboardLayoutViewModel.calculateAge(currentUser.dateOfBirth)} yrs)</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(currentUser.dob)} ({dashboardLayoutViewModel.calculateAge(currentUser.dob)} yrs)</p>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -1087,7 +1087,7 @@ function PDHome() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">PHONE</h5>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(currentUser.phoneNumber)}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(currentUser.phone)}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
