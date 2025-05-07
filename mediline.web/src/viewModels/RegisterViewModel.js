@@ -24,6 +24,7 @@ const RegisterViewModel = {
   specialty:       "",
   pharmacyName:    "",
   pharmacyAddress: "",
+  gender:          "",
 
   clearFields() {
     Object.keys(this).forEach(key => {
@@ -57,6 +58,7 @@ const RegisterViewModel = {
       state:          this.state,
       username:       this.email,
       zipcode:        this.postalCode,
+      gender:         this.gender
     };
   }
 
