@@ -984,11 +984,11 @@ function DDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
                                                                         <>
-                                                                            {/* This is the element that wraps the entire card. When this is hovered over, the below element should be visible */}
+                                                                            {// This is the element that wraps the entire card. When this is hovered over, the below element should be visible }
                                                                             <ItemGroup
                                                                                 customClass=" pt-2 pb-6 justify-content-space-between position-relative hover-parent"
                                                                                 axis={false}
@@ -1006,7 +1006,7 @@ function DDProfile() {
                                                                                             }}
                                                                                             content={[
                                                                                                 <>
-                                                                                                    {/* This is the element that needs to be invisible until the wrapper element is hovered over */}
+                                                                                                    {// This is the element that needs to be invisible until the wrapper element is hovered over }
                                                                                                     <ItemGroup
                                                                                                         customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hidden-element"
                                                                                                         axis={false}
@@ -1120,7 +1120,7 @@ function DDProfile() {
                                                                         </>
                                                                     ))
                                                                 )
-                                                            }
+                                                            */}
                                                         </>
                                                     ]}
                                                 />
@@ -1149,7 +1149,7 @@ function DDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
                                                                         <>
@@ -1234,7 +1234,7 @@ function DDProfile() {
                                                                         </>
                                                                     ))
                                                                 )
-                                                            }
+                                                            */}
                                                         </>
                                                     ]}
                                                 />
