@@ -869,7 +869,7 @@ function PDHome() {
                                                                                         <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                     </BaseIcon>
                                                                                     <ItemGroup
-                                                                                        customClass="justify-items-center gap-6"
+                                                                                        customClass="justify-items-center gap-4"
                                                                                         axis={true}
                                                                                         items={[
                                                                                             <>
@@ -889,7 +889,7 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{currentUser.gender}</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.capitalize(currentUser.sex)}</p>
                                                                                                             <div className="bg-neutral-600 br-lg" style={{ height: "9px", width: "9px" }}></div>
                                                                                                             <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(currentUser.dob)} ({dashboardLayoutViewModel.calculateAge(currentUser.dob)} yrs)</p>
                                                                                                         </>
