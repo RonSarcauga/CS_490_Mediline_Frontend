@@ -10,7 +10,7 @@ import { IoMdDownload } from "react-icons/io";
 import React, { useRef, useEffect, useState } from "react";
 import { Chart } from "chart.js/auto";
 import ExerciseChart from '../../components/Dashboard/ExerciseChart';
-import { fetchPatientExerciseList, fetchExerciseList, fetchChartData } from '../../viewModels/ExercisePage.js';
+import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm } from '../../viewModels/ExercisePage.js';
 
 
 
@@ -25,6 +25,8 @@ export default function PatientDashboardExercise({
     const [exerciseData, setExerciseData] = useState([]);
     const [exerciseList, setExerciseList] = useState([]);
     const [chartData, setChartData] = useState([]);
+    const [medicationList, setMedicationList] = useState([]);
+
 
     const handleButtonClick = () => {
         if (showNewElement === true) {
@@ -34,18 +36,18 @@ export default function PatientDashboardExercise({
         }
         // Replace the element when the button is pressed
     };
-    const setGraphStateEc =() => {
+    const setGraphStateEc = () => {
         setGraphState("exercise");
     }
-    const setGraphStateWa =() => {
+    const setGraphStateWa = () => {
         setGraphState("water");
     }
-    const setGraphStateSl =() => {
+    const setGraphStateSl = () => {
         setGraphState("sleep");
     }
     let ecBank1 = ["Push Ups", "Sit Ups", "Squats", "Planks", "Crunches", "Burpees", "Lunges", "Jumping Jacks", "Mountain Climbers", "High Knees"]
 
-    
+
 
 
     useEffect(() => {
@@ -55,7 +57,7 @@ export default function PatientDashboardExercise({
                 setExerciseData(data); // Store the data in state
             }
         };
-    
+
         fetchData1();
     }, []);
     useEffect(() => {
@@ -64,9 +66,9 @@ export default function PatientDashboardExercise({
             if (data) {
                 setExerciseList(data); // Store the data in state
             }
-            
+
         };
-    
+
         fetchData2();
     }, []);
     useEffect(() => {
@@ -76,13 +78,24 @@ export default function PatientDashboardExercise({
                 setChartData(data); // Store the data in state
             }
         };
-    
+
         fetchData3();
     }, []);
+    useEffect(() => {
+        const fetchData4 = async () => {
+            const data = await fetchMedicationList();
+            if (data) {
+                setMedicationList(data); // Store the data in state
+            }
+        };
+
+        fetchData4();
+    }, []);
+
 
     return (
         <div className="background"
-        style={{maxHeight: "50px", overflowY:"visible"}}>
+            style={{ maxHeight: "50px", overflowY: "visible" }}>
             <div className="dashboardContainer">
                 <Topbar
                     header={[
@@ -212,15 +225,15 @@ export default function PatientDashboardExercise({
                                                                             <>
                                                                                 {exerciseData.map((ecc1, index) => (
                                                                                     <ECCheckbox
-                                                                                    label={ecc1.type_of_exercise}
-                                                                                    reps={ecc1.reps}
-                                                                                    personal = {true}
-                                                                                    id = {ecc1.exercise_id}
-                                                                                />
+                                                                                        label={ecc1.type_of_exercise}
+                                                                                        reps={ecc1.reps}
+                                                                                        personal={true}
+                                                                                        id={ecc1.exercise_id}
+                                                                                    />
                                                                                 ))
                                                                                 }
-                                                                                
-                                                                                
+
+
                                                                             </>
                                                                         ]}
                                                                     />
@@ -252,8 +265,8 @@ export default function PatientDashboardExercise({
 
                                                                         items={[
                                                                             <>
-                                                                                {graphState === "exercise" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)"/>}
-                                                                                {graphState === "water" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)"/>}
+                                                                                {graphState === "exercise" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)" />}
+                                                                                {graphState === "water" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)" />}
                                                                                 {graphState === "sleep" && <ExerciseChart inputData={chartData.sleep} inputLabel="Sleep" />}
                                                                             </>
                                                                         ]}
@@ -331,43 +344,9 @@ export default function PatientDashboardExercise({
                                                                                         </>
                                                                                     ]}
                                                                                 />
-                                                                                <ItemGroup
-                                                                                    customClass="p-3 align-items-center gap-3 fit-parent"
-                                                                                    axis={false}
-                                                                                    style={{
-                                                                                        width: "10vw",
-                                                                                    }}
-                                                                                    items={[
-                                                                                        <>
-                                                                                            <BsCircleHalf />
-                                                                                            <ItemGroup
-                                                                                                customClass="fit-parent"
-                                                                                                axis={true}
-                                                                                                style={{
-                                                                                                    width: "15vw",
-                                                                                                }}
-                                                                                                items={[
-                                                                                                    <div>
-                                                                                                        Ibuprofen
-                                                                                                    </div>
-                                                                                                ]}
-                                                                                            />
-                                                                                            <ItemGroup
-                                                                                                customClass="justify-content-right pl-30 "
-                                                                                                axis={true}
-                                                                                                style={{
-                                                                                                    width: "10vw",
-                                                                                                }}
-                                                                                                items={[
-                                                                                                    <div>
-                                                                                                        1/Day
-                                                                                                    </div>
-                                                                                                ]}
-                                                                                            />
-
-                                                                                        </>
-                                                                                    ]}
-                                                                                />
+                                                                                {medicationList.map((medication, index) => (
+                                                                                    <Medications key={index} name={medication.name} dosage={medication.dosage} />
+                                                                                ))}
                                                                             </>
                                                                         ]}
                                                                     />
@@ -484,13 +463,13 @@ function ExerciseList({
                     <>
 
                         <ECCheckbox
-                            label= {exerciseBank1[0]}
-                            reps= {exerciseBank2[0]}
+                            label={exerciseBank1[0]}
+                            reps={exerciseBank2[0]}
                             time={exerciseBank3[0]}
                         />
                         <ECCheckbox
-                            label= {exerciseBank1[1]}
-                            reps= {exerciseBank2[1]}
+                            label={exerciseBank1[1]}
+                            reps={exerciseBank2[1]}
                             time={exerciseBank3[1]}
                         />
 
@@ -506,13 +485,13 @@ function ExerciseList({
                 items={[
                     <>
                         <ECCheckbox
-                            label= {exerciseBank1[2]}
-                            reps= {exerciseBank2[2]}
+                            label={exerciseBank1[2]}
+                            reps={exerciseBank2[2]}
                             time={exerciseBank3[2]}
                         />
                         <ECCheckbox
-                            label= {exerciseBank1[3]}
-                            reps= {exerciseBank2[3]}
+                            label={exerciseBank1[3]}
+                            reps={exerciseBank2[3]}
                             time={exerciseBank3[3]}
                         />
 
@@ -528,13 +507,13 @@ function ExerciseList({
                 items={[
                     <>
                         <ECCheckbox
-                            label= {exerciseBank1[4]}
-                            reps= {exerciseBank2[4]}
+                            label={exerciseBank1[4]}
+                            reps={exerciseBank2[4]}
                             time={exerciseBank3[4]}
                         />
                         <ECCheckbox
-                            label= {exerciseBank1[5]}
-                            reps= {exerciseBank2[5]}
+                            label={exerciseBank1[5]}
+                            reps={exerciseBank2[5]}
                             time={exerciseBank3[5]}
                         />
 
@@ -550,13 +529,13 @@ function ExerciseList({
                 items={[
                     <>
                         <ECCheckbox
-                            label= {exerciseBank1[6]}
-                            reps= {exerciseBank2[6]}
+                            label={exerciseBank1[6]}
+                            reps={exerciseBank2[6]}
                             time={exerciseBank3[6]}
                         />
                         <ECCheckbox
-                            label= {exerciseBank1[7]}
-                            reps= {exerciseBank2[7]}
+                            label={exerciseBank1[7]}
+                            reps={exerciseBank2[7]}
                             time={exerciseBank3[7]}
                         />
 
@@ -572,13 +551,13 @@ function ExerciseList({
                 items={[
                     <>
                         <ECCheckbox
-                            label= {exerciseBank1[8]}
-                            reps= {exerciseBank2[8]}
+                            label={exerciseBank1[8]}
+                            reps={exerciseBank2[8]}
                             time={exerciseBank3[8]}
                         />
                         <ECCheckbox
-                            label= {exerciseBank1[9]}
-                            reps= {exerciseBank2[9]}
+                            label={exerciseBank1[9]}
+                            reps={exerciseBank2[9]}
                             time={exerciseBank3[9]}
                         />
 
@@ -590,7 +569,28 @@ function ExerciseList({
     )
 }
 function WeeklyForm() {
-    
+    const [formData, setFormData] = useState({
+        exercise: "",
+        sleep: "",
+        height: "",
+        calories: "",
+        weight: ""
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value, // Update the specific field in the state
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+        console.log("Form submitted with data:", formData);
+        submitForm(formData)
+    };
+
     return (
         <ItemGroup
             customClass=""
@@ -605,7 +605,6 @@ function WeeklyForm() {
                         }}
                         items={[
                             <>
-
                                 <ItemGroup
                                     customClass=""
                                     axis={true}
@@ -614,17 +613,14 @@ function WeeklyForm() {
                                     }}
                                     items={[
                                         <>
-
-                                            <h1>
-                                                Weekly Survey
-                                            </h1>
+                                            <h1>Weekly Survey</h1>
                                         </>
                                     ]}
                                 />
                             </>
                         ]}
                     />
-                    <form >
+                    <form onSubmit={handleSubmit}>
                         <ItemGroup
                             customClass="gap-3 bg-neutral-1100 mb-2 mt-2 ml-5 p-2 br-xs"
                             axis={true}
@@ -637,9 +633,10 @@ function WeeklyForm() {
                                     <div>How many hours did you spend exercising this week?</div>
                                     <InputBar
                                         name="exercise"
+                                        value={formData.exercise} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
-
                                 </>
                             ]}
                         />
@@ -654,10 +651,11 @@ function WeeklyForm() {
                                     <h2>Sleep</h2>
                                     <div>How many hours of sleep did you get?</div>
                                     <InputBar
-                                        name = "sleep"
+                                        name="sleep"
+                                        value={formData.sleep} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
-
                                 </>
                             ]}
                         />
@@ -669,24 +667,103 @@ function WeeklyForm() {
                             }}
                             items={[
                                 <>
-                                    <h2>Hydration</h2>
-                                    <div>How many liters of water did you drink this week?</div>
+                                    <h2>Height</h2>
+                                    <div>How many calories did you eat this week?</div>
                                     <InputBar
-                                        name = "water"
+                                        name="height"
+                                        value={formData.height} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
                                         customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
                                     />
-
                                 </>
                             ]}
                         />
-
+                        <ItemGroup
+                            customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                            axis={true}
+                            style={{
+                                width: "52vw"
+                            }}
+                            items={[
+                                <>
+                                    <h2>Calories</h2>
+                                    <div>How many calories did you eat this week?</div>
+                                    <InputBar
+                                        name="calories"
+                                        value={formData.calories} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
+                                    />
+                                </>
+                            ]}
+                        />
+                        <ItemGroup
+                            customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                            axis={true}
+                            style={{
+                                width: "52vw"
+                            }}
+                            items={[
+                                <>
+                                    <h2>Weight</h2>
+                                    <div>How much do you weigh?</div>
+                                    <InputBar
+                                        name="weight"
+                                        value={formData.weight} // Controlled input
+                                        onChange={handleInputChange} // Update state on input change
+                                        customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
+                                    />
+                                </>
+                            ]}
+                        />
+                        <button type="submit" className="submit-button">
+                            Submit
+                        </button>
                     </form>
                 </>
             ]}
         />
-
-
-    )
+    );
 }
 
 
+function Medications({ name = "", dosage = "" }) {
+    return (
+        <ItemGroup
+            customClass="p-3 align-items-center gap-3 fit-parent"
+            axis={false}
+            style={{
+                width: "10vw",
+            }}
+            items={[
+                <>
+                    <BsCircleHalf />
+                    <ItemGroup
+                        customClass="fit-parent"
+                        axis={true}
+                        style={{
+                            width: "15vw",
+                        }}
+                        items={[
+                            <div key="name">
+                                {name}
+                            </div>
+                        ]}
+                    />
+                    <ItemGroup
+                        customClass="justify-content-right pl-30"
+                        axis={true}
+                        style={{
+                            width: "10vw",
+                        }}
+                        items={[
+                            <div key="dosage">
+                                {dosage}/Day
+                            </div>
+                        ]}
+                    />
+                </>
+            ]}
+        />
+    );
+}
