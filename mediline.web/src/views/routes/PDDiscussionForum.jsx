@@ -11,10 +11,10 @@ import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewMo
 
 function PDDiscussionForum() {
     const posts = discussionForumViewModel.getPosts();
-    const users = discussionForumViewModel.getUsers();
+    //const users = discussionForumViewModel.getUsers();
 
     const { currentUser } = useContext(UserContext);
-    const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
+    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
 
     const [replyCounts, setReplyCounts] = useState({});
 
@@ -98,7 +98,6 @@ function PDDiscussionForum() {
                                                                         <InputBar
                                                                             customClass='bg-neutral-expanded-1100 py-2 px-0 br-none b-bottom-5 outline-neutral-600 input-placeholder-font-4 input-text-placeholder-neutral-800 input-text-neutral-200 input-font-4 input-p-0'
                                                                             placeholder="Enter a short introduction of yourself..."
-                                                                            value={user.bio}
                                                                         />
                                                                     </>
                                                                 ]}
@@ -289,7 +288,7 @@ function PDDiscussionForum() {
                                                                                                                         <path d="M25.767 61.373a30.815 30.815 0 0 1-3.779-.88 2.652 2.652 0 0 1-.114-.093l-3.535-6.39 4.541-3.26h-4.752l1.017-6.851 4.11-2.599c.178 7.37 1.759 15.656 2.512 20.073z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                                         <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                                     </BaseIcon>
-                                                                                                                    <h3 className="font-semibold text-neutral-100 font-4">{user.firstName} {user.lastName}</h3>
+                                                                                                                    <h3 className="font-semibold text-neutral-100 font-4">{currentUser.firstName} {currentUser.lastName}</h3>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
@@ -370,7 +369,7 @@ function PDDiscussionForum() {
                                                                     />
                                                                 </form>
                                                             )}
-                                                            {posts.map((post) => {
+                                                            {/*posts.map((post) => {
                                                                 const currentCount = replyCounts[post.postId] || 1;
                                                                 const replies = discussionForumViewModel.getPostReplies(post.postId, 0, currentCount);
 
@@ -684,7 +683,7 @@ function PDDiscussionForum() {
                                                                         />
                                                                     </>
                                                                 )
-                                                            })}
+                                                            })*/}
                                                             <div></div>
                                                         </>
                                                     ]}
@@ -749,8 +748,8 @@ function PDDiscussionForum() {
                                                                                         axis={true}
                                                                                         items={[
                                                                                             <>
-                                                                                                <h3 className="font-semibold font-7">{user.firstName} {user.lastName}</h3>
-                                                                                                <h3 className="font-regular font-4 text-neutral-700">{user.email}</h3>
+                                                                                                <h3 className="font-semibold font-7">{currentUser.firstName} {currentUser.lastName}</h3>
+                                                                                                <h3 className="font-regular font-4 text-neutral-700">{currentUser.email}</h3>
                                                                                             </>
                                                                                         ]}
                                                                                     />
@@ -787,7 +786,7 @@ function PDDiscussionForum() {
                                                                                 <>
                                                                                     <h3 className="text-neutral-700 font-semibold font-4">BIO</h3>
                                                                                     <p className="font-3">
-                                                                                        {discussionForumViewModel.getProfilesById(user.id).bio}
+                                                                                        {discussionForumViewModel.getProfilesById(currentUser.id).bio}
                                                                                     </p>
                                                                                 </>
                                                                             ]}
@@ -810,8 +809,8 @@ function PDDiscussionForum() {
                                                                                                 <ItemGroup
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <h3 className={`font-semibold font-4 py-2 px-4 br ${user.role === "patient" ? "bg-success-500 text-success-100" : "bg-primary-800 text-primary-400"}`}>
-                                                                                                                {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                                                                                                            <h3 className={`font-semibold font-4 py-2 px-4 br ${currentUser.role === "patient" ? "bg-success-500 text-success-100" : "bg-primary-800 text-primary-400"}`}>
+                                                                                                                {currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1)}
                                                                                                             </h3>
                                                                                                         </>
                                                                                                     ]}
@@ -820,7 +819,7 @@ function PDDiscussionForum() {
                                                                                                     items={[
                                                                                                         <>
                                                                                                             <h3 className="text-user-300 bg-user-500 font-semibold font-4 py-2 px-4 br">
-                                                                                                                {user.firstName} {user.lastName}
+                                                                                                                {currentUser.firstName} {currentUser.lastName}
                                                                                                             </h3>
                                                                                                         </>
                                                                                                     ]}
