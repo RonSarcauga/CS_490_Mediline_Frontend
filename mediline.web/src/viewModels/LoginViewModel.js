@@ -11,6 +11,7 @@
 //export default LoginViewModel;
 
 import { baseUserList } from '../assets/js/const';
+import axiosInstance from '../assets/js/api';
 
 const LoginViewModel = {
     // Input fields for the login page
