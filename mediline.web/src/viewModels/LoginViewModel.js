@@ -35,20 +35,32 @@ const LoginViewModel = {
 
         try {
             // Retrieving data from the login endpoint
-            const response = await axiosInstance.post('/auth/login', payload, {
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            });
+            const response = await axiosInstance.post('/auth/login', payload);
             console.log(`Login successful:\n${JSON.stringify(response.data, null, 2)}`);
 
+            const token = response.data.token;
+
+            // Split the JWT into three parts (Header, Payload, Signature)
+            const payloadBase64 = token.split(".")[1];
+
+            // Decode the Base64 string and parse the JSON
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+
+            console.log(`Decoded Token: ${decodedPayload}`);
+
+            // Extract the user ID
+            const userId = decodedPayload.sub;
+            const accountType = decodedPayload.acct_type;
+
+            localStorage.setItem("jwtToken", token);
+
             // Stores the user object
-            const user = await this.fetchUserData(response.data.user_id);
+            const user = await this.fetchUserData(userId);
 
             // Combines the necessary fields
             const currentUser = {
-                user_id: user.user_id,
-                role: response.data.account_type,
+                user_id: userId,
+                role: accountType.toLowerCase(),
                 address1: user.address1,
                 address2: user.address2,
                 city: user.city,
@@ -79,7 +91,12 @@ const LoginViewModel = {
         try {
             // HTTP Get
             // Gets user info from the API client
-            const response = await axiosInstance.get(`/user/${userId}`);
+            const response = await axiosInstance.get(`/user/${userId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
 
             // Logs the data returned by the backend to the console
             console.log(`User information: ${JSON.stringify(response.data, null, 2)}`);
