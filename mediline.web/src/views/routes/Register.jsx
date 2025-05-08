@@ -79,8 +79,9 @@ export default function MultiStepRegistration()
             ...formData,
             country: "United States of America",
         };
-
+        console.log(formData)
         Object.assign(RegistrationViewModel, withExtra);
+        RegistrationViewModel.gender = formData.sex
         const payload = RegistrationViewModel.getPayload();
 
         if (formData.accountType === 'doctor') {
