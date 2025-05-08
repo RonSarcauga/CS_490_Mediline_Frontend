@@ -12,6 +12,7 @@ import FindDoctorViewModel from '../../viewModels/FindDoctorViewModel';
 
 function PDFindDoctor() {
     const { currentUser } = useContext(UserContext);
+    const doctorList = FindDoctorViewModel.fetchDoctors();
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
 
