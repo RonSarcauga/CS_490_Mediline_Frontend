@@ -1,4 +1,3 @@
-import { discussionPosts, userList } from '../assets/js/const';
 import { discussionPostsList, discussionProfiles, repliesTable, baseUserList } from '../assets/js/const';
 
 class DiscussionForumViewModel {
