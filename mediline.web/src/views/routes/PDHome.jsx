@@ -15,7 +15,7 @@ function PDHome() {
     const pastAppointments = dashboardLayoutViewModel.getPastAppointments(currentUser.user_id);
     const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointments(currentUser.user_id);
     const navigate = useNavigate();
-    console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}`);
+    console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}\nToken: ${localStorage.getItem("jwtToken")}`);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
@@ -440,7 +440,7 @@ function PDHome() {
                                                                                                                                                 <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                             </g>
                                                                                                                                         </BaseIcon>
-                                                                                                                                        <p className="font-3 font-medium text-neutral-600">{dashboardLayoutViewModel.getAppointmentData(pastAppointments[0].appointment.appointment_id).startDate}</p>
+                                                                                                                                        <p className="font-3 font-medium text-neutral-600">{dashboardLayoutViewModel.splitDateTime(dashboardLayoutViewModel.getAppointmentData(pastAppointments[0].appointment.appointment_id).startDate).time}</p>
                                                                                                                                     </>
                                                                                                                                 ]}
                                                                                                                             />
