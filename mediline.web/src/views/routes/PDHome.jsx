@@ -981,7 +981,7 @@ function PDHome() {
                                                                                                                                     fitParent={true}
                                                                                                                                     items={[
                                                                                                                                         <>
-                                                                                                                                            {/*
+                                                                                                                                            {
                                                                                                                                                 pastAppointments.length > 0 ? (
                                                                                                                                                     <>
                                                                                                                                                         <ItemGroup
@@ -1061,7 +1061,7 @@ function PDHome() {
                                                                                                                                                 ) : (
                                                                                                                                                     <p className="font-3 font-semibold text-neutral-600">There are no appointments on record</p>
                                                                                                                                                 )
-                                                                                                                                            */}
+                                                                                                                                            }
                                                                                                                                         </>
                                                                                                                                     ]}
                                                                                                                                 />
