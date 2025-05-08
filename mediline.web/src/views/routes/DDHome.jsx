@@ -5,11 +5,13 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import DropdownMenu from '../../components/General/DropdownMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import { DoctorDashboardViewModel } from '../../viewModels/DDViewModel'; 
 
 function DDHome() {
     const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }));
 
     const { currentUser } = useContext(UserContext);
+    console.log(currentUser.user_id)
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const doctorData = dashboardLayoutViewModel.getDoctorData(user.id);
     //const todaysAppointments = dashboardLayoutViewModel.getTodaysAppointments(user.id);
@@ -17,6 +19,8 @@ function DDHome() {
     //const patients = dashboardLayoutViewModel.getPatients(doctorData.licenseNumber);
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
     const hours = Array.from({ length: 10 }, (_, i) => 8 + i);
+
+    const { data, isLoading, error } = DoctorDashboardViewModel.useDashboardData(currentUser.user_id);
 
     const navigate = useNavigate();
 
@@ -130,7 +134,7 @@ function DDHome() {
                                                                                                             <path d="M68,47.4c-0.2-0.1-0.3-0.2-0.5-0.3c-0.4-0.2-0.9-0.2-1.3,0.1c-2.1,1.3-4.6,2.1-7.2,2.1c-0.3,0-0.7,0-1,0 c-0.5,1.3-1,2.6-1.7,3.7c0.4,0.2,0.9,0.3,1.4,0.6c5.7,2.5,9.7,5.6,12.5,9.8H75c2.2,0,4-1.8,4-4v-1.9C79,52.6,73.3,49.6,68,47.4z" />
                                                                                                             <path d="M66.9,34.2c0-4.9-3.6-8.9-7.9-8.9c-2.2,0-4.1,1-5.6,2.5c3.5,3.6,5.7,8.7,5.7,14.4c0,0.3,0,0.5,0,0.8 C63.4,43,66.9,39.1,66.9,34.2z" />
                                                                                                         </BaseIcon>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*doctorData.patients.length*/}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{data.patientCount}</h4>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -148,7 +152,7 @@ function DDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*todaysAppointments.length*/}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{data.upcomingCount}</h4>
                                                                                                         <p className="font-3 text-neutral-600">Patients Today</p>
                                                                                                     </>
                                                                                                 ]}
@@ -243,7 +247,7 @@ function DDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*todaysAppointments.length*/}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{data.patientsToday.length}</h4>
                                                                                                         <p className="font-3 text-neutral-600">Bookings Today</p>
                                                                                                     </>
                                                                                                 ]}

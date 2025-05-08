@@ -1,21 +1,32 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from '../assets/js/api.js';
 
-const doctorId = 535; //temp hardcoded
+async function fetchDoctorHomeData(doctorId) {
+    const [patCount, patToday, pendCount, ratings, upCount] = await Promise.all([
+      axios.get(`/doctor/${doctorId}/doctor-patients/count`),
+      axios.get(`/doctor/${doctorId}/patients-today`),
+      axios.get(`/doctor/${doctorId}/pending-appointments/count`),
+      //axios.get(`/doctor/${doctorId}/ratings`),
+      axios.get(`/doctor/${doctorId}/upcoming-appointments/count`),
+    ]);
+  
+    return {
+        patientCount: patCount.data.total_patients,
+        patientsToday: patToday.data,
+        pendingCount: pendCount.data.pending_appointments_count,
+        //rating: ratings.data.average_rating,
+        upcomingCount: upCount.data.upcoming_appointments_count,
+        //accepting patients
+        //invoices  
+    };
+}
 
-const fetchDoctorDashboardData = async () => {
-    const { data } = await axios.get(`/doctor/${doctorId}`);
-    console.log('Fetched data:', data);
-    return data;
-}; 
-
-const DoctorDashboardViewModel = {
-    useDashboardData: function () {
+export const DoctorDashboardViewModel = {
+    useDashboardData(doctorId) {
         return useQuery({
             queryKey: ['doctorDashboard', doctorId],
-            queryFn: fetchDoctorDashboardData
-        })
+            queryFn: () => fetchDoctorHomeData(doctorId),
+        });
     },
 };
-
 export default DoctorDashboardViewModel;
