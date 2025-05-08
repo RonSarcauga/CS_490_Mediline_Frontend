@@ -38,6 +38,8 @@ class DashboardLayoutViewModel {
                 return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
             case "YYYY-MM-DD":
                 return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+            case "MM-DD-YYYY":
+                return `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}-${date.getFullYear()}`;
             case "Month Day, Year":
                 return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
             default:
@@ -302,14 +304,14 @@ class DashboardLayoutViewModel {
     // Asynchronous method to fetch upcoming appointments
     async getUpcomingAppointments(user_id) {
         try {
-            const response = await axiosInstance.get(`/appointment/upcoming/${user_id}`, {
+            const response = await axiosInstance.get(`/appointment/upcoming/${user_id}?sort_by=start_date&order_by=desc`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             });
 
-            console.log(`Past appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
+            console.log(`Upcoming appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
 
             const appointments = response.data;
 
