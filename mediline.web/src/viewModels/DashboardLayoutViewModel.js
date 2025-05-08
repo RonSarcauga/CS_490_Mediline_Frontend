@@ -38,6 +38,8 @@ class DashboardLayoutViewModel {
                 return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
             case "YYYY-MM-DD":
                 return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+            case "MM-DD-YYYY":
+                return `${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}-${date.getFullYear()}`;
             case "Month Day, Year":
                 return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
             default:
@@ -216,7 +218,12 @@ class DashboardLayoutViewModel {
 
     async getAppointmentInvoice(user_id, create_date) {
         try {
-            const response = await axiosInstance.get(`/payment/user/${user_id}?sort_by=created_at&order_by=desc`);
+            const response = await axiosInstance.get(`/payment/user/${user_id}?sort_by=created_at&order_by=desc`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
 
             const invoices = response.data;
 
@@ -236,7 +243,12 @@ class DashboardLayoutViewModel {
 
     async getAppointmentData(appointment_id) {
         try {
-            const response = await axiosInstance.get(`/appointment/${appointment_id}`);
+            const response = await axiosInstance.get(`/appointment/${appointment_id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
 
             console.log(`Appointment ID: ${appointment_id}\n${response.data}`);
 
@@ -250,7 +262,12 @@ class DashboardLayoutViewModel {
     async getPastAppointments(id) {
         try {
             // Retrieving data from the medical record endpoint
-            const response = await axiosInstance.get(`/medical_record/${id}?sort_by=created_at&order_by=desc`);
+            const response = await axiosInstance.get(`/medical_record/${id}?sort_by=created_at&order_by=desc`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
             console.log(`Past appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
 
             // Stores the response in a constant
@@ -287,9 +304,14 @@ class DashboardLayoutViewModel {
     // Asynchronous method to fetch upcoming appointments
     async getUpcomingAppointments(user_id) {
         try {
-            const response = await axiosInstance.get(`/appointment/upcoming/${user_id}`);
+            const response = await axiosInstance.get(`/appointment/upcoming/${user_id}?sort_by=start_date&order_by=desc`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
 
-            console.log(`Past appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
+            console.log(`Upcoming appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
 
             const appointments = response.data;
 
