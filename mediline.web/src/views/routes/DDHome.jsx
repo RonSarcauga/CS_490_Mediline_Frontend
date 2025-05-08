@@ -5,7 +5,7 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import DropdownMenu from '../../components/General/DropdownMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
-import { DoctorDashboardViewModel } from '../../viewModels/DDViewModel'; 
+import  DoctorDashboardViewModel  from '../../viewModels/DDViewModel'; 
 
 function DDHome() {
     const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }));
@@ -20,7 +20,10 @@ function DDHome() {
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
     const hours = Array.from({ length: 10 }, (_, i) => 8 + i);
 
-    const { data, isLoading, error } = DoctorDashboardViewModel.useDashboardData(currentUser.user_id);
+    const { data, status, isLoading, isError, error } = DoctorDashboardViewModel.useDashboardData(currentUser.user_id);
+    console.log(`data: ${data}`)
+    console.log(`isLoading: ${isLoading}`)
+    console.log(`error: ${error}`)
 
     const navigate = useNavigate();
 
@@ -35,7 +38,8 @@ function DDHome() {
     //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate), null, 2)}`);
     //console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
     //console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
-
+    if (isLoading) return <p>Loading…</p>;
+    if (isError)   return <p>Error: {error.message}</p>;
     return (
         <Container
             customClass="p-5"
