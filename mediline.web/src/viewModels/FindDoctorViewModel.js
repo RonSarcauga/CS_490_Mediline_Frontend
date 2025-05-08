@@ -116,8 +116,7 @@
 //export default FindDoctorViewModel;
 
 import { specialties, ratings, doctorList } from '../assets/js/const';
-import apiClient from '../models/api';
-import { useQuery } from '@tanstack/react-query';
+import axiosInstance from '../assets/js/api';
 
 const FindDoctorViewModel = {
     // Contains the data to be displayed in the view
@@ -224,12 +223,20 @@ const FindDoctorViewModel = {
     // Fetch doctors from the backend
     async fetchDoctors() {
         try {
-            const response = await apiClient.get("/doctor/", { params: this.activeFilters });
-            return response.data.map((doctor, i) => ({
-                ...doctor,
-                rating: `${80 + (i % 5) * 5}%`,
-                acceptingNewPatients: i % 2 === 0
-            }));
+            const response = await axiosInstance.get("/doctor/", {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            console.log(`Doctors fetched: ${response.data}`);
+
+            //return response.data.map((doctor, i) => ({
+            //    ...doctor,
+            //    rating: `${80 + (i % 5) * 5}%`,
+            //    acceptingNewPatients: i % 2 === 0
+            //}));
         }
         catch (error) {
             console.error("Error fetching doctors: ", error);
