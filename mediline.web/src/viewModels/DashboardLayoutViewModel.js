@@ -6,6 +6,7 @@ import {
     appointmentDataList,
     vitalHistoryList,
 } from '../assets/js/const';
+import axiosInstance from '../assets/js/api';
 
 class DashboardLayoutViewModel {
     // Retrieves a list of users from the user table
@@ -85,6 +86,25 @@ class DashboardLayoutViewModel {
         }
     
         return null; // Return null if no valid date format was found
+    };
+
+    splitDateTime(dateTime) {
+        if (!dateTime || typeof dateTime !== "string") {
+            throw new Error("Invalid input. Expected a DateTime string.");
+        }
+
+        const dateObj = new Date(dateTime);
+        if (isNaN(dateObj.getTime())) {
+            throw new Error("Invalid DateTime format.");
+        }
+
+        // Extract date in "YYYY-MM-DD" format
+        const formattedDate = dateObj.toISOString().split("T")[0];
+
+        // Extract time in "HH:MM" format
+        const formattedTime = dateObj.toISOString().split("T")[1].split("Z")[0].slice(0, 5);
+
+        return { date: formattedDate, time: formattedTime };
     };
 
     // Helper method to format a user's birthday
@@ -194,6 +214,55 @@ class DashboardLayoutViewModel {
         return patient ? patient.doctor !== null : false;
     };
 
+    async getAppointmentInvoice(user_id, create_date) {
+        try {
+            const response = await axiosInstance.get(`/payment/user/${user_id}?sort_by=created_at&order_by=desc`);
+
+            const invoices = response.data;
+
+            invoices.map((invoice) => {
+                const date1 = new Date(invoice.created_at).toISOString().split("T")[0];
+                const date2 = new Date(create_date).toISOString().split("T")[0];
+
+                if (date1 === date2) {
+                    console.log("Invoices found!");
+                    return invoice;
+                }
+            });
+        } catch (error) {
+            console.error(`No invoices on record: ${error.response?.data || error.message}`);
+        }
+    }
+
+    async getAppointmentData(appointment_id) {
+        try {
+            const response = await axiosInstance.get(`/appointment/${appointment_id}`);
+
+            console.log(`Appointment ID: ${appointment_id}\n${response.data}`);
+
+            return response.data;
+        } catch (error) {
+            console.error(`No appointment on record: ${error.response?.data || error.message}`);
+        }
+    }
+
+    // Helper method to fetch a patient's past appointments
+    async getPastAppointments(id) {
+        try {
+            // Retrieving data from the medical record endpoint
+            const response = await axiosInstance.get(`/medical_record/${id}?sort_by=created_at&order_by=desc`);
+            console.log(`Past appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
+
+            // Stores the response in a constant
+            const appointments = response.data;
+
+            // Returns the constant
+            return appointments;
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
+        }
+    }
+
     // Helper method to retrieve appointment data
     getPastAppointmentsSorted(id)
     {
@@ -215,7 +284,20 @@ class DashboardLayoutViewModel {
         return pastAppointments;
     }
 
+    // Asynchronous method to fetch upcoming appointments
+    async getUpcomingAppointments(user_id) {
+        try {
+            const response = await axiosInstance.get(`/appointment/upcoming/${user_id}`);
 
+            console.log(`Past appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
+
+            const appointments = response.data;
+
+            return appointments;
+        } catch (error) {
+            console.error(`No appointments on record: ${error.response?.data || error.message}`);
+        }
+    }
 
     // Helper method to retrieve upcoming appointments
     getUpcomingAppointmentsSorted(id) {
