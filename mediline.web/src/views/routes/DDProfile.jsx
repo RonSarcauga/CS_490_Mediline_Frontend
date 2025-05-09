@@ -8,21 +8,31 @@ import Checkbox from '../../components/General/CheckboxRefactored';
 import Modal from '../../components/General/Modal';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import  DoctorDashboardViewModel  from '../../viewModels/DDViewModel'; 
+
 function DDProfile() {
     const { currentUser } = useContext(UserContext);
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
+    
     const { patientId } = useParams();
-
     const defaultPatientId = 1;
-    const numPatientId = patientId ? parseInt(patientId, 10) : null;
-    const currentPatientId = numPatientId || defaultPatientId;
-    const currentPatient = dashboardLayoutViewModel.getUsers().find(user => user.id === currentPatientId);
+    const currentPatientId = patientId ? parseInt(patientId, 10) : defaultPatientId;
 
-    const patientData = dashboardLayoutViewModel.getPatientData(currentPatientId);
-    const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(currentPatientId);
+    console.log('patientID:', currentPatientId);
+    const { data, status, isLoading, isError, error } = DoctorDashboardViewModel.useDoctorPatient(currentPatientId);
+    console.log('data:', data);
+    console.log(`isLoading: ${isLoading}`)
+    console.log(`error: ${error}`)
 
-    console.log(`Patient Data: ${patientData}`);
+    //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(currentPatientId);
+
+    console.log('patient data:', data);
+
+    if (isLoading) return <p>Loading…</p>;
+    if (isError)   return <p>Error: {error.message}</p>;
+
+    const nextAppt = dashboardLayoutViewModel.getNextUpcomingAppointment(data.nextAppointment);
 
     const [activeModal, setActiveModal] = useState(null);
 
@@ -92,7 +102,7 @@ function DDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={patientData.mrn}
+                                                                            value={data.patientInfo.user_id}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -121,7 +131,7 @@ function DDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentPatient.firstName}
+                                                                            value={data.patientInfo.first_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -137,7 +147,7 @@ function DDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentPatient.lastName}
+                                                                            value={data.patientInfo.last_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -153,7 +163,7 @@ function DDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentPatient.sex}
+                                                                            value={data.patientInfo.gender}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -180,7 +190,7 @@ function DDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentPatient.dateOfBirth}
+                                                                            value={data.patientInfo.dob}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -236,7 +246,7 @@ function DDProfile() {
                                                                             <InputBar
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
-                                                                                value={currentPatient.email}
+                                                                                value={data.patientInfo.email}
                                                                                 readonly={true}
                                                                             />
                                                                         </>
@@ -263,7 +273,7 @@ function DDProfile() {
                                                                             <InputBar
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
-                                                                                value={currentPatient.phoneNumber}
+                                                                                value={data.patientInfo.phone}
                                                                                 readonly={true}
                                                                             />
                                                                         </>
@@ -290,7 +300,7 @@ function DDProfile() {
                                                                             <InputBar
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
-                                                                                value={currentPatient.address}
+                                                                                value={data.patientInfo.address1}
                                                                                 readonly={true}
                                                                             />
                                                                         </>
@@ -317,7 +327,7 @@ function DDProfile() {
                                                                             <InputBar
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
-                                                                                value={currentPatient.city}
+                                                                                value={data.patientInfo.city}
                                                                                 readonly={true}
                                                                             />
                                                                         </>
@@ -333,7 +343,7 @@ function DDProfile() {
                                                                             <InputBar
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
-                                                                                value={currentPatient.state}
+                                                                                value={data.patientInfo.state}
                                                                                 readonly={true}
                                                                             />
                                                                         </>
@@ -349,7 +359,7 @@ function DDProfile() {
                                                                             <InputBar
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder=""
-                                                                                value={currentPatient.postalCode}
+                                                                                value={data.patientInfo.zipcode}
                                                                                 readonly={true}
                                                                             />
                                                                         </>
@@ -454,7 +464,9 @@ function DDProfile() {
                                                                                                                                     <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                 </g>
                                                                                                                             </BaseIcon>
-                                                                                                                            <p className="font-3 font-medium text-neutral-600">{new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })}</p>
+                                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                                {dashboardLayoutViewModel.splitDateTime(nextAppt.start_date).date}
+                                                                                                                            </p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
@@ -474,7 +486,7 @@ function DDProfile() {
                                                                                             <>
                                                                                                 <h5 className="font-3 text-neutral-600">DOCTOR</h5>
                                                                                                 <p className="font-3 font-medium text-neutral-600">
-                                                                                                    {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(patientData.doctor).userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(patientData.doctor).userId).lastName}
+                                                                                                    {nextAppt.doctor_name}
                                                                                                 </p>
                                                                                             </>
                                                                                         ]}
@@ -488,7 +500,7 @@ function DDProfile() {
                                                                                             <>
                                                                                                 <h5 className="font-3 text-neutral-600">TREATMENT</h5>
                                                                                                 <p className="font-3 font-medium text-neutral-600">
-                                                                                                    Consultation
+                                                                                                    {nextAppt.treatment}
                                                                                                 </p>
                                                                                             </>
                                                                                         ]}
@@ -501,9 +513,7 @@ function DDProfile() {
                                                                                         items={[
                                                                                             <>
                                                                                                 <h5 className="font-3 text-neutral-600">STARTS</h5>
-                                                                                                <p className="font-3 font-medium text-neutral-600">
-                                                                                                    09:00
-                                                                                                </p>
+                                                                                                {dashboardLayoutViewModel.splitDateTime(nextAppt.start_date).time}
                                                                                             </>
                                                                                         ]}
                                                                                     />
@@ -553,7 +563,7 @@ function DDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map((appt) => (
                                                                         <>
@@ -659,7 +669,7 @@ function DDProfile() {
                                                                             />
                                                                         </>
                                                                     ))
-                                                                )
+                                                                )*/
                                                             }
                                                         </>
                                                     ]}
@@ -731,7 +741,7 @@ function DDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
                                                                         <>
@@ -827,7 +837,7 @@ function DDProfile() {
                                                                             />
                                                                         </>
                                                                     ))
-                                                                )
+                                                                )*/
                                                             }
                                                         </>
                                                     ]}
@@ -877,7 +887,7 @@ function DDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {
+                                                            {/*
                                                                 dashboardLayoutViewModel.getUsers().length > 0 && (
                                                                     dashboardLayoutViewModel.getUsers().map(() => (
                                                                         <>
@@ -933,7 +943,7 @@ function DDProfile() {
                                                                             />
                                                                         </>
                                                                     ))
-                                                                )
+                                                                )*/
                                                             }
                                                         </>
                                                     ]}
@@ -1533,7 +1543,7 @@ function DDProfile() {
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {pastAppointments.length > 0 && (
+                                                                    {/*pastAppointments.length > 0 && (
                                                                         pastAppointments.map(() => (
                                                                             <>
                                                                                 <ItemGroup
@@ -1632,7 +1642,7 @@ function DDProfile() {
                                                                                 />
                                                                             </>
                                                                         ))
-                                                                    )}
+                                                                    )*/}
                                                                 </>
                                                             ]}
                                                         />

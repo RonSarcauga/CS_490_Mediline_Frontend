@@ -549,6 +549,21 @@ class DashboardLayoutViewModel {
         return customers;
     }
 
+    getNextUpcomingAppointment(appointments) {
+        if (!Array.isArray(appointments)) return null;
+
+        const now = new Date();
+      
+        const upcoming = appointments
+            .filter((appt) =>
+                ["CONFIRMED"].includes(appt.status?.toUpperCase()) &&
+                new Date(appt.start_date) > now
+            )
+            .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
+      
+        return upcoming.length > 0 ? upcoming[0] : null;
+    }
+
 };
 
 export const dashboardLayoutViewModel = new DashboardLayoutViewModel();
