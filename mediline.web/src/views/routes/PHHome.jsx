@@ -1,17 +1,43 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import CircleProgressBar from '../../components/General/CircleProgressBar';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel'; 
+
 
 function PHHome() {
     const { currentUser } = useContext(UserContext);
     const users = dashboardLayoutViewModel.getUsers();
+    console.log('user:', currentUser);
+    const [medications, setMedications] = useState([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const loadMeds = async () => {
+            setLoading(true);
+            try {
+                const result = await PharmaDashboardViewModel.fetchMedicationslist(currentUser.user_id);
+                setMedications(result);
+            } catch (err) {
+                console.error("Failed to load medications", err);
+            }
+            setLoading(false);
+        };
+      
+        loadMeds();
+    }, [currentUser.user_id]);
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
     //const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
+    const { data, status, isLoading, isError, error } = PharmaDashboardViewModel.usePharmaHome(currentUser.user_id);
+    console.log('data:', data);
+    console.log(`isLoading: ${isLoading}`)
+    console.log(`error: ${error}`)
+
+    if (isLoading) return <p>Loading…</p>;
+    if (isError)   return <p>Error: {error.message}</p>;
 
     return (
         <Container
@@ -108,14 +134,14 @@ function PHHome() {
                                                                                                                 <>
                                                                                                                     <CircleProgressBar
                                                                                                                         circleWidth="150"
-                                                                                                                        fraction="8"
-                                                                                                                        total={`${users.length}`}
+                                                                                                                        fraction={data.countRx.collected_prescription+13} // temp number
+                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription+20} // temp number 
                                                                                                                         strokeColor="hsl(210, 35%, 50%)"
                                                                                                                         progressColor="hsl(200, 70%, 70%)"
                                                                                                                     />
                                                                                                                     <CircleProgressBar
-                                                                                                                        fraction={users.length - 8}
-                                                                                                                        total={users.length}
+                                                                                                                        fraction={data.countRx.processing_prescription+7} // temp number
+                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription+20} // temp number
                                                                                                                         circleWidth="150"
                                                                                                                         strokeColor="hsl(0, 0%, 40%)"
                                                                                                                         progressColor="hsl(45, 60%, 60%)"
@@ -256,7 +282,7 @@ function PHHome() {
                                                                         items={[
                                                                             <>
                                                                                 {
-                                                                                    users.map(() => (
+                                                                                    users.map(() => ( //inventory goes here if it works
                                                                                         <ItemGroup
                                                                                             axis={false}
                                                                                             style={{
@@ -264,8 +290,8 @@ function PHHome() {
                                                                                             }}
                                                                                             items={[
                                                                                                 <>
-                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">Ozempic</h5>
-                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">100 units</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">data.inventoryStock.medication_name</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">data.inventoryStock.quantity</h5>
                                                                                                 </>
                                                                                             ]}
                                                                                         />
@@ -326,7 +352,7 @@ function PHHome() {
                                                                     <h5 className="font-3 text-neutral-600">PATIENT</h5>
                                                                     <h5 className="font-3 text-neutral-600">DOCTOR</h5>
                                                                     <h5 className="font-3 text-neutral-600">MEDICATION</h5>
-                                                                    <h5 className="font-3 text-neutral-600">DURATION</h5>
+                                                                    <h5 className="font-3 text-neutral-600">ASSIGNED</h5>
                                                                     <h5 className="font-3 text-neutral-600">DOSAGE</h5>
                                                                     <h5 className="font-3 text-neutral-600">STATUS</h5>
                                                                 </>
@@ -346,35 +372,36 @@ function PHHome() {
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {
-                                                                        users.map((user) => (
+                                                                    {loading ? (
+                                                                        <p className="font-3 text-neutral-700">Loading prescriptions...</p>
+                                                                        ) : medications.length === 0 ? (
+                                                                        <p className="font-3 text-neutral-700">No prescriptions found.</p>
+                                                                        ) : (
+                                                                        medications.map((med, idx) => (
                                                                             <ItemGroup
-                                                                                customClass="align-items-center"
-                                                                                axis={false}
-                                                                                fitParent={true}
-                                                                                style={{
-                                                                                    gridAutoColumns: "1fr"
-                                                                                }}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <h5 className="font-3 font-semibold text-neutral-600">{user.firstName} {user.lastName}</h5>
-                                                                                        <h5 className="font-3 font-semibold text-neutral-600">Dr. {user.firstName} {user.lastName}</h5>
-                                                                                        <h5 className="font-3 font-semibold text-neutral-600">Ozempic</h5>
-                                                                                        <h5 className="font-3 font-semibold text-neutral-600">14 days</h5>
-                                                                                        <h5 className="font-3 font-semibold text-neutral-600">1000 mg</h5>
-                                                                                        <ItemGroup
-                                                                                            customClass="bg-success-500 br"
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <h3 className="text-success-100 font-semibold font-3 py-1 px-3 br">Filled</h3>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                    </>
-                                                                                ]}
+                                                                            key={idx}
+                                                                            customClass="align-items-center"
+                                                                            axis={false}
+                                                                            fitParent={true}
+                                                                            style={{ gridAutoColumns: "1fr" }}
+                                                                            items={[
+                                                                                <>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.patientName}</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">Dr. {med.doctorName}</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.medication}</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.splitDateTime(med.date).date}</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.dosage}</h5>
+                                                                                <ItemGroup
+                                                                                    customClass={`br ${med.status === 'Filled' ? 'bg-success-500' : 'bg-warning-500'}`}
+                                                                                    items={[
+                                                                                        <h3 className="text-white font-semibold font-3 py-1 px-3 br">{med.status}</h3>
+                                                                                    ]}
+                                                                                />
+                                                                                </>
+                                                                            ]}
                                                                             />
                                                                         ))
-                                                                    }
+                                                                    )}
                                                                 </>
                                                             ]}
                                                         />
