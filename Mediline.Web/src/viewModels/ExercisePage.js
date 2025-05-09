@@ -1,7 +1,6 @@
 import axios from '../assets/js/api.js';
 
-const patientId = 300; //temp hardcoded
-const doctorId = 15; //temp hardcoded
+
 
 export const fetchExerciseList = async () => {
     const { data } = await axios.get(`/exercise/`);
@@ -9,14 +8,24 @@ export const fetchExerciseList = async () => {
     return data;
 };
 
-export const fetchPatientExerciseList = async () => {
-    const { data } = await axios.get(`/exercise/user/${patientId}`);
+export const fetchPatientExerciseList = async (patientId) => {
+    const { data } = await axios.get(`/exercise/user/${patientId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+        }
+    });
     console.log('Fetched data:', data);
     return data;
 };
 
-export const fetchChartData = async () => {
-    const { data } = await axios.get(`/report/user/${patientId}`);
+export const fetchChartData = async (patientId) => {
+    const { data } = await axios.get(`/report/user/${patientId}`,{
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+        }
+    });
     console.log('Fetched data:', data);
     let chartDataCalorie = new Array(data.length)
     let chartDataHeight = new Array(data.length)
@@ -39,8 +48,13 @@ export const fetchChartData = async () => {
     };
 };
 
-export const fetchMedicationList = async () => {
-    const { data } = await axios.get(`/prescription/user/${patientId}`);
+export const fetchMedicationList = async (patientId) => {
+    const { data } = await axios.get(`/prescription/user/${patientId}`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+        }
+    });
     const medications = [];
 
     for (let i = 0; i < data.length; i++) {
@@ -60,7 +74,12 @@ export const fetchMedicationList = async () => {
 };
 
 const fetchPrescriptionList = async (medId = 0) => {
-    const { data } = await axios.get(`/prescription/${medId}/medications`)
+    const { data } = await axios.get(`/prescription/${medId}/medications`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+        }
+    })
     console.log('Fetched data:', data);
     let medList = new Array(data.length)
     let doseList = new Array(data.length)
@@ -75,7 +94,7 @@ const fetchPrescriptionList = async (medId = 0) => {
     };
 };
 
-export const submitForm = async (formData) => {
+export const submitForm = async (formData, patientId) => {
     try {
         const response = await axios.post(`/report/user/${patientId}`, {
             calories_intake: Number(formData.calories),
@@ -85,6 +104,12 @@ export const submitForm = async (formData) => {
             hours_of_sleep: Number(formData.sleep),
             report_id: 1,
             weight: Number(formData.weight),
+        },
+        {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+            }
         }); 
         console.log('Form submitted successfully:', response.data);
         return response.data; 
@@ -94,22 +119,25 @@ export const submitForm = async (formData) => {
     }
 };
 
-export const submitExercise = async (exerciseData) => {
+export const submitExercise = async (exerciseData, patientId, doctorId) => {
     try {
-        // Log the entire exerciseData object for debugging
+
         console.log('Exercise data:', exerciseData);
 
-        // Iterate over the keys and values of exerciseData
         const exercises = Object.entries(exerciseData);
 
-        // Send a POST request for each exercise
         const responses = await Promise.all(
             exercises.map(async ([exerciseId, reps]) => {
                 const response = await axios.post(`/exercise/${exerciseId}`, {
-                    reps: reps, // Convert reps to a number
+                    reps: reps, 
                     patient_id: patientId,
                     doctor_id: doctorId,
                     status: "in_progress"
+                } , {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                    }
                 });
                 console.log(`Exercise ${exerciseId} submitted successfully:`, response.data);
                 return response.data;

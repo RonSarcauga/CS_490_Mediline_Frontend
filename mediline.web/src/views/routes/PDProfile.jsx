@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
@@ -9,9 +9,27 @@ import Modal from '../../components/General/Modal';
 import ExerciseChart from '../../components/Dashboard/ExerciseChart';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm, submitExercise } from '../../viewModels/ExercisePage.js';
+import { BsCircleHalf } from "react-icons/bs";
+import { BsClipboard2HeartFill } from "react-icons/bs";
+import { IoMdDownload } from "react-icons/io";
+import ECCheckbox from '../../components/General/ECCheckbox';
 
 function PDProfile() {
+    const [showNewElement, setShowNewElement] = useState(false);
+    const [graphState, setGraphState] = useState("exercise");
+    const [exerciseData, setExerciseData] = useState([]);
+    const [exerciseList, setExerciseList] = useState([]);
+    const [chartData, setChartData] = useState([]);
+    const [medicationList, setMedicationList] = useState([]);
     const { currentUser } = useContext(UserContext);
+    const [formData, setFormData] = useState({
+        exercise: "",
+        sleep: "",
+        height: "",
+        calories: "",
+        weight: ""
+    });
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const patientData = dashboardLayoutViewModel.getPatientData(user.id);
     //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
@@ -26,16 +44,81 @@ function PDProfile() {
     const handleCloseModal = () => {
         setActiveModal(null);
     }
+    const setGraphStateEc = () => {
+        setGraphState("exercise");
+    }
+    const setGraphStateWa = () => {
+        setGraphState("water");
+    }
+    const setGraphStateSl = () => {
+        setGraphState("sleep");
+    }
+
+    useEffect(() => {
+        const fetchData1 = async () => {
+            const data = await fetchPatientExerciseList(currentUser.user_id);
+            if (data) {
+                setExerciseData(data); // Store the data in state
+            }
+        };
+
+        fetchData1();
+    }, []);
+    useEffect(() => {
+        const fetchData2 = async () => {
+            const data = await fetchExerciseList();
+            if (data) {
+                setExerciseList(data); // Store the data in state
+            }
+
+        };
+
+        fetchData2();
+    }, []);
+    useEffect(() => {
+        const fetchData3 = async () => {
+            const data = await fetchChartData(currentUser.user_id);
+            if (data) {
+                setChartData(data); // Store the data in state
+            }
+        };
+
+        fetchData3();
+    }, []);
+    useEffect(() => {
+        const fetchData4 = async () => {
+            const data = await fetchMedicationList(currentUser.user_id);
+            if (data) {
+                setMedicationList(data); // Store the data in state
+            }
+        };
+
+        fetchData4();
+    }, []);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: value, // Update the specific field in the state
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent the default form submission behavior
+        console.log("Form submitted with data:", formData);
+        submitForm(formData)
+    };
+
 
     const [activeTab, setActiveTab] = useState("tab1");
 
     const tabs = [
-        {id: "tab1", label: "Overview"},
-        {id: "tab2", label: "Encounters"},
-        {id: "tab3", label: "Medications"},
-        {id: "tab4", label: "Regimens"},
-        {id: "tab5", label: "Graphs"},
-        {id: "tab6", label: "Forms"},
+        { id: "tab1", label: "Overview" },
+        { id: "tab2", label: "Encounters" },
+        { id: "tab3", label: "Medications" },
+        { id: "tab4", label: "Regimens" },
+        { id: "tab5", label: "Graphs" },
+        { id: "tab6", label: "Forms" },
     ]
 
     const tabContent = {
@@ -185,7 +268,7 @@ function PDProfile() {
                                             </>
                                         ]}
                                     />
-                                    
+
                                 </>
                             ]}
                         />
@@ -413,7 +496,7 @@ function PDProfile() {
                                             </>
                                         ]}
                                     />
-                                                                        
+
                                 </>
                             ]}
                         />
@@ -783,7 +866,11 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {/*
+                                                            {medicationList.map((medication, index) => (
+                                                                <Medications key={index} name={medication.name} dosage={medication.dosage} />
+                                                            ))
+
+                                                            /*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
                                                                         <>
@@ -996,7 +1083,16 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {/*
+                                                            {
+                                                                exerciseData.map((ecc1, index) => (
+                                                                    <ECCheckbox
+                                                                        label={ecc1.type_of_exercise}
+                                                                        reps={ecc1.reps}
+                                                                        personal={true}
+                                                                        id={ecc1.exercise_id}
+                                                                    />
+                                                                ))
+                                                            /*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
                                                                         <>
@@ -1305,7 +1401,59 @@ function PDProfile() {
                                                     }}
                                                     content={[
                                                         <>
-                                                            <h5 className="font-semibold font-5 text-neutral-700">INSERT GRAPH HERE</h5>
+                                                            <ItemGroup
+                                                                customClass="bg-neutral-1100 br-sm pl-5 pt-5 ml-5 mt-5 fit-parent"
+                                                                axis={true}
+
+                                                                items={[
+                                                                    <>
+                                                                        {graphState === "exercise" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)" />}
+                                                                        {graphState === "water" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)" />}
+                                                                        {graphState === "sleep" && <ExerciseChart inputData={chartData.sleep} inputLabel="Sleep" />}
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                            <ItemGroup
+                                                                customClass="p-5 mt-5 fit-parent gap-1"
+                                                                axis={true}
+                                                                items={[
+                                                                    <>
+                                                                        <ItemGroup
+                                                                            customClass="bg-neutral-1100 br-right-sm gap-1 p-5 fit-parent"
+                                                                            axis={true}
+                                                                            isClickable={true}
+                                                                            onClick={setGraphStateEc}
+                                                                            items={[
+                                                                                <>
+                                                                                    <h2>Exercise</h2>
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                        <ItemGroup
+                                                                            customClass="bg-neutral-1100 br-right-sm gap-10 p-5 fit-parent"
+                                                                            axis={true}
+                                                                            isClickable={true}
+                                                                            onClick={setGraphStateWa}
+                                                                            items={[
+                                                                                <>
+                                                                                    <h2>Hydration</h2>
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                        <ItemGroup
+                                                                            customClass="bg-neutral-1100 br-right-sm gap-10 p-5 fit-parent"
+                                                                            axis={true}
+                                                                            isClickable={true}
+                                                                            onClick={setGraphStateSl}
+                                                                            items={[
+                                                                                <>
+                                                                                    <h2>Sleep</h2>
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
                                                         </>
                                                     ]}
                                                 />
@@ -1371,7 +1519,7 @@ function PDProfile() {
                                                 fitParent={true}
                                                 items={[
                                                     <>
-                                                        <form>
+                                                        <form onSubmit={handleSubmit}>
                                                             <ItemGroup
                                                                 customClass="gap-8"
                                                                 axis={true}
@@ -1400,6 +1548,7 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">What is your height in centimeters?</p>
                                                                                                             <InputBar
+                                                                                                                name="height"
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
@@ -1425,6 +1574,9 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">How much do you weigh in kilograms?</p>
                                                                                                             <InputBar
+                                                                                                                name="weight"
+                                                                                                                value={formData.weight} // Controlled input
+                                                                                                                onChange={handleInputChange} // Update state on input change
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
@@ -1450,6 +1602,9 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">How much calories did you burn?</p>
                                                                                                             <InputBar
+                                                                                                                name="calories"
+                                                                                                                value={formData.calories} // Controlled input
+                                                                                                                onChange={handleInputChange} // Update state on input change
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
@@ -1473,8 +1628,39 @@ function PDProfile() {
                                                                                                     fitParent={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p className="font-4">How many cups of water did you drink?</p>
+                                                                                                            <p className="font-4">How many hours of sleep did you get?</p>
                                                                                                             <InputBar
+                                                                                                                name="sleep"
+                                                                                                                value={formData.sleep} // Controlled input
+                                                                                                                onChange={handleInputChange} // Update state on input change
+                                                                                                                customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
+                                                                                                                placeholder=""
+                                                                                                            />
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-6"
+                                                                                        axis={false}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        evenSplit={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-3"
+                                                                                                    axis={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <p className="font-4">How many hours did you exercise for?</p>
+                                                                                                            <InputBar
+                                                                                                                name="exercise"
+                                                                                                                value={formData.exercise} // Controlled input
+                                                                                                                onChange={handleInputChange}
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
@@ -1809,6 +1995,147 @@ function PDProfile() {
                 ]}
             />
         </>
+    );
+}
+
+function ExerciseList({
+    exerciseBank1 = [],
+    currentEcc = []
+}) {
+    const [selectedExercises, setSelectedExercises] = useState({});
+
+    const handleCheckboxChange = (exercise) => {
+        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
+        setSelectedExercises((prevSelected) => {
+            if (prevSelected[exerciseKey] !== undefined) {
+                // Remove exercise if already selected
+                const { [exerciseKey]: _, ...rest } = prevSelected;
+                return rest;
+            } else {
+                // Add exercise if not already selected
+                return { ...prevSelected, [exerciseKey]: "" }; // Default reps to an empty string
+            }
+        });
+    };
+
+    const handleRepsChange = (exercise, reps) => {
+        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
+        setSelectedExercises((prevSelected) => ({
+            ...prevSelected,
+            [exerciseKey]: reps, // Update reps for the selected exercise
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault(); // Prevent default form submission behavior
+        console.log("Selected Exercises with Reps:", selectedExercises);
+        submitExercise(selectedExercises); // Call the submit function with selected exercises
+    };
+
+    // Filter out exercises that already exist in currentEcc
+    const filteredExercises = exerciseBank1.filter(
+        (exercise) =>
+            !currentEcc.some((ecc) => ecc.exercise_id === exercise.exercise_id)
+    );
+
+    return (
+        <>
+            <form onSubmit={handleSubmit}>
+                <ItemGroup
+                    customClass="p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
+                    axis={true}
+                    style={{
+                        width: "54vw",
+                    }}
+                    items={[
+                        <>
+                            <h1>Exercise List</h1>
+                        </>
+                    ]}
+                />
+                {filteredExercises.map((exercise, index) => (
+                    <ItemGroup
+                        key={index}
+                        customClass="gap-5 pl-5 pr-5"
+                        axis={false}
+                        style={{
+                            width: "30vw",
+                        }}
+                        items={[
+                            <>
+                                <ECCheckbox
+                                    label={exercise.type_of_exercise}
+                                    onChange={() => handleCheckboxChange(exercise)}
+                                />
+                                {selectedExercises[exercise.exercise_id] !== undefined && (
+                                    <ItemGroup
+                                        customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                                        axis={true}
+                                        style={{
+                                            width: "10vw",
+                                        }}
+                                        items={[
+                                            <InputBar
+                                                name={`${exercise.exercise_id}-reps`}
+                                                value={selectedExercises[exercise.exercise_id]} // Controlled input
+                                                onChange={(e) =>
+                                                    handleRepsChange(exercise, e.target.value)
+                                                }
+                                                placeholder="Enter reps"
+                                                customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
+                                            />
+                                        ]}
+                                    />
+                                )}
+                            </>
+                        ]}
+                    />
+                ))}
+                <button type="submit" className="submit-button">
+                    Submit
+                </button>
+            </form>
+        </>
+    );
+}
+function Medications({ name = "", dosage = "" }) {
+    return (
+        <ItemGroup
+            customClass="p-3 align-items-center gap-3 fit-parent"
+            axis={false}
+            style={{
+                width: "10vw",
+            }}
+            items={[
+                <>
+                    <BsCircleHalf />
+                    <ItemGroup
+                        customClass="fit-parent"
+                        axis={true}
+                        style={{
+                            width: "15vw",
+                        }}
+                        items={[
+                            <div key="name">
+                                {name}
+                            </div>
+                        ]}
+                    />
+                    <ItemGroup
+                        customClass="justify-content-right pl-30"
+                        axis={true}
+                        style={{
+                            width: "10vw",
+                        }}
+                        items={[
+                            <div key="dosage">
+                                {dosage}/Day
+                            </div>
+                        ]}
+                    />
+                </>
+            ]}
+        />
     );
 }
 
