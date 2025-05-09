@@ -17,14 +17,6 @@ async function fetchDoctorHomeData(doctorId) {
         axios.get(`/doctor/${doctorId}/upcoming-appointments/count`, authHeaders()),
         //accepting patients
     ]);
-
-    console.log('fetchDoctorHomeData results:', {
-        allPatients: allPat.data,
-        pendingAppointments: pendCount.data,
-        upcomingAppointments: upCount.data,
-        //accepting patients
-    });
-
     return {
         allPatients: allPat.data,
         pendingCount: pendCount.data.pending_appointments_count,
@@ -37,13 +29,7 @@ async function fetchDoctorPatientData(patientId) {
     const [patInfo, nextApp] = await Promise.all([
         axios.get(`/patient/${patientId}/info`, authHeaders()),
         //axios.get(`/appointment/upcoming/${patientId}`, authHeaders()),
-    ]);
-    
-    console.log('fetchDoctorPatientData results:', {
-        patientInfo: patInfo.data,
-        //nextAppointment: nextApp.data,
-    });
-    
+    ]); 
     return {
         patientInfo: patInfo.data,
         //nextAppointment: nextApp.data,

@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
@@ -22,13 +22,19 @@ function DDHome() {
     const hours = Array.from({ length: 15 }, (_, i) => 8 + i);
 
     const { data, status, isLoading, isError, error } = DoctorDashboardViewModel.useDoctorHome(currentUser.user_id);
-    console.log('data:', data);
-    console.log(`isLoading: ${isLoading}`)
-    console.log(`error: ${error}`)
+    //console.log('data:', data);
+    //console.log(`isLoading: ${isLoading}`)
+    //console.log(`error: ${error}`)
 
     const { data: patientsToday = [] } =  DoctorDashboardViewModel.usePatientsByDate(currentUser.user_id, isoDate);
-    console.log('pats:', patientsToday);
-    const justTodayCount = patientsToday.length;
+    //console.log('pats:', patientsToday);
+    const initialPatientsCountRef = useRef(null);
+    useEffect(() => {
+        if (patientsToday && initialPatientsCountRef.current === null) {
+            initialPatientsCountRef.current = patientsToday.length;
+        }
+    }, [patientsToday]);
+    const justTodayCount = initialPatientsCountRef.current;
 
     const navigate = useNavigate();
 
