@@ -28,11 +28,17 @@ async function fetchDoctorHomeData(doctorId) {
 async function fetchDoctorPatientData(patientId) {
     const [patInfo, nextApp] = await Promise.all([
         axios.get(`/patient/${patientId}/info`, authHeaders()),
-        //axios.get(`/appointment/upcoming/${patientId}`, authHeaders()),
-    ]); 
+        axios.get(`/appointment/upcoming/${patientId}`, authHeaders()),
+    ]);
+    
+    console.log('fetchDoctorPatientData results:', {
+        patientInfo: patInfo.data,
+        nextAppointment: nextApp.data,
+    });
+    
     return {
         patientInfo: patInfo.data,
-        //nextAppointment: nextApp.data,
+        nextAppointment: nextApp.data,
     };
 }
 
