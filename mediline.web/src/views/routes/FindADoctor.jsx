@@ -12,6 +12,10 @@ export default function FindADoctorPage() {
     // Used to manage the form data
     const [formData, setFormData] = useState(FindDoctorViewModel);
 
+    // Used for fetching and loading the data
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
     // References for the select lists which can be used to invoke internal methods
     const specialtyDropdownRef = useRef();
     const ratingDropdownRef = useRef();
@@ -60,6 +64,40 @@ export default function FindADoctorPage() {
             console.log("Did the filters get reset?\n", FindDoctorViewModel.filters);
         }
     }, [searchQuery]);
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    const fetchData = async () => {
+        const result = await FindDoctorViewModel.fetchDashboardData();
+        setData(result);
+        setLoading(false);
+    }
+
+    if (loading) return (
+        <Container
+            customClass="align-items-center justify-content-center"
+            fitParent={true}
+            content={[
+                <>
+                    <p>Loading data</p>
+                </>
+            ]}
+        />
+    );
+
+    if (!data || !data.specialties) return (
+        <Container
+            customClass="align-items-center justify-content-center"
+            fitParent={true}
+            content={[
+                <>
+                    <p>Error loading data</p>
+                </>
+            ]}
+        />
+    );
 
     return (
         <Container
@@ -182,9 +220,9 @@ export default function FindADoctorPage() {
                                                                             <>
                                                                                 <SelectList
                                                                                     ref={specialtyDropdownRef}
-                                                                                    items={formData.getSpecialties()}
+                                                                                    items={FindDoctorViewModel.getSpecialties(data.doctors)}
                                                                                     onSelect={(item) => {
-                                                                                        FindDoctorViewModel.updateFilter("specialty", item.value);
+                                                                                        FindDoctorViewModel.updateFilter("specialty", item.label);
                                                                                         setFormData({ ...FindDoctorViewModel });
                                                                                     }}
                                                                                     placeholder="Specialty"
@@ -201,11 +239,29 @@ export default function FindADoctorPage() {
                                                                                 <Button
                                                                                     customClass="br-lg bg-primary-500"
                                                                                     isClickable={true}
-                                                                                    onClick={(e) => {
+                                                                                    onClick={async (e) => {
                                                                                         e.preventDefault();
-                                                                                        FindDoctorViewModel.applyFilters();
-                                                                                        setFormData({ ...FindDoctorViewModel });
-                                                                                        console.log("Filters applied: ", FindDoctorViewModel.filters);
+
+                                                                                        // Set loading state to true
+                                                                                        setLoading(true);
+
+                                                                                        try {
+                                                                                            // Apply filters and fetch the filtered list of doctors
+                                                                                            const filteredDoctors = await FindDoctorViewModel.applyFilters();
+
+                                                                                            // Update the state with the filtered doctors
+                                                                                            setData((prevData) => ({
+                                                                                                ...prevData,
+                                                                                                doctors: filteredDoctors,
+                                                                                            }));
+
+                                                                                            console.log("Filters applied: ", FindDoctorViewModel.filters);
+                                                                                        } catch (error) {
+                                                                                            console.error("Error applying filters: ", error);
+                                                                                        } finally {
+                                                                                            // Set loading state to false and close the modal
+                                                                                            setLoading(false);
+                                                                                        }
                                                                                     }}
                                                                                     style={{
                                                                                         width: "100%"
@@ -249,7 +305,30 @@ export default function FindADoctorPage() {
                                                                                 <ItemGroup
                                                                                     customClass="b-3 outline-neutral-1000 br-sm align-items-center justify-items-center px-3 gap-3"
                                                                                     isClickable={true}
-                                                                                    onClick={clearFilters}
+                                                                                    onClick={async (e) => {
+                                                                                        e.preventDefault();
+
+                                                                                        // Set loading state to true
+                                                                                        setLoading(true);
+
+                                                                                        try {
+                                                                                            // Apply filters and fetch the filtered list of doctors
+                                                                                            const unfilteredDoctors = await FindDoctorViewModel.clearFilters();
+
+                                                                                            // Update the state with the filtered doctors
+                                                                                            setData((prevData) => ({
+                                                                                                ...prevData,
+                                                                                                doctors: unfilteredDoctors,
+                                                                                            }));
+
+                                                                                            console.log("Filters applied: ", FindDoctorViewModel.filters);
+                                                                                        } catch (error) {
+                                                                                            console.error("Error applying filters: ", error);
+                                                                                        } finally {
+                                                                                            // Set loading state to false and close the modal
+                                                                                            setLoading(false);
+                                                                                        }
+                                                                                    }}
                                                                                     stretch={true}
                                                                                     axis={false}
                                                                                     items={[
@@ -301,20 +380,20 @@ export default function FindADoctorPage() {
                                                             customClass="gap-5"
                                                             axis={true}
                                                             fitParent={true}
-                                                            items={formData.getDoctorList().map((doctor) => (
+                                                            items={data.doctors.map((doctor) => (
                                                                 <Container
-                                                                    key={doctor.value}
-                                                                    customClass={`p-10 bg-neutral-1100 b-2 outline-neutral-900 hover-b-4 hover-outline-secondary-400 br-sm ${FindDoctorViewModel.doctorId === doctor.value ? 'selected' : ''}`}
+                                                                    key={doctor.user_id}
+                                                                    customClass={`p-10 bg-neutral-1100 b-2 outline-neutral-900 hover-b-4 hover-outline-secondary-400 br-sm ${FindDoctorViewModel.doctorId === doctor.user_id ? 'selected' : ''}`}
                                                                     isClickable={true}
                                                                     onClick={() => {
-                                                                        if (FindDoctorViewModel.doctorId !== null && FindDoctorViewModel.doctorId === doctor.value) {
+                                                                        if (FindDoctorViewModel.doctorId !== null && FindDoctorViewModel.doctorId === doctor.user_id) {
                                                                             FindDoctorViewModel.doctorId = null;
                                                                         }
                                                                         else {
-                                                                            FindDoctorViewModel.doctorId = doctor.value;
+                                                                            FindDoctorViewModel.doctorId = doctor.user_id;
                                                                         }
                                                                         setFormData({ ...FindDoctorViewModel });
-                                                                        console.log("You selected ", doctor.value);
+                                                                        console.log("You selected ", FindDoctorViewModel.doctorId);
                                                                     }}
                                                                     fitParent={true}
                                                                     content={[
@@ -381,12 +460,12 @@ export default function FindADoctorPage() {
                                                                                                                     stretch={true}
                                                                                                                     items={[
                                                                                                                         <>
-                                                                                                                            <h1 className="font-semibold font-7">{doctor.label}</h1>
-                                                                                                                            <h1 className="font-semibold font-5">{doctor.specialty}</h1>
+                                                                                                                            <h1 className="font-semibold font-5">{doctor.name}</h1>
+                                                                                                                            <h1 className="font-semibold font-4">{doctor.specialization}</h1>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
-                                                                                                                {doctor.acceptingNewPatients ? (
+                                                                                                                {doctor.user.accepting_patients ? (
                                                                                                                     <ItemGroup
                                                                                                                         customClass="gap-3 align-items-center"
                                                                                                                         stretch={true}
@@ -452,7 +531,7 @@ export default function FindADoctorPage() {
                                                                                                             <path d="M4 13C4 12.4477 4.44772 12 5 12H8V20H5C4.44772 20 4 19.5523 4 19V13Z" stroke="#333333" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                         </g>
                                                                                                     </BaseIcon>
-                                                                                                    <p className="font-semibold">{doctor.rating}</p>
+                                                                                                    <p className="font-semibold">{doctor.rating}%</p>
                                                                                                 </>
                                                                                             ]}
                                                                                         />
