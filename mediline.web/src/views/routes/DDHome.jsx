@@ -28,13 +28,15 @@ function DDHome() {
 
     const { data: patientsToday = [] } =  DoctorDashboardViewModel.usePatientsByDate(currentUser.user_id, isoDate);
     //console.log('pats:', patientsToday);
-    const initialPatientsCountRef = useRef(null);
+    const [onlyTodaysPatients, setInitialPatientCount] = useState(null);
     useEffect(() => {
-        if (patientsToday && initialPatientsCountRef.current === null) {
-            initialPatientsCountRef.current = patientsToday.length;
+        if (
+            Array.isArray(patientsToday) &&
+            onlyTodaysPatients === null
+        ) {
+            setInitialPatientCount(patientsToday.length);
         }
-    }, [patientsToday]);
-    const justTodayCount = initialPatientsCountRef.current;
+    }, [patientsToday, onlyTodaysPatients]);
 
     const navigate = useNavigate();
 
@@ -168,7 +170,7 @@ function DDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{justTodayCount}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{onlyTodaysPatients !== null ? `${onlyTodaysPatients}` : '...'}</h4>
                                                                                                         <p className="font-3 text-neutral-600">Patients Today</p>
                                                                                                     </>
                                                                                                 ]}
@@ -417,7 +419,7 @@ function DDHome() {
                                                                                                                             <>
                                                                                                                                 {
                                                                                                                                     patientsToday.map((appt) => (
-                                                                                                                                        new Date(appt.visit_time).getHours()-8 === hour ? (
+                                                                                                                                        new Date(appt.visit_time).getHours() === hour ? (
                                                                                                                                             <Container
                                                                                                                                                 customClass="gradient-white b-5 outline-neutral-1100 br-sm py-3"
                                                                                                                                                 fitParent={true}

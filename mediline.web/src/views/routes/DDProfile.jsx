@@ -14,24 +14,25 @@ function DDProfile() {
     const { currentUser } = useContext(UserContext);
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     const navigate = useNavigate();
+    
     const { patientId } = useParams();
-
     const defaultPatientId = 1;
-    const numPatientId = patientId ? parseInt(patientId, 10) : null;
-    const currentPatientId = numPatientId || defaultPatientId;
+    const currentPatientId = patientId ? parseInt(patientId, 10) : defaultPatientId;
 
     console.log('patientID:', currentPatientId);
     const { data, status, isLoading, isError, error } = DoctorDashboardViewModel.useDoctorPatient(currentPatientId);
     console.log('data:', data);
     console.log(`isLoading: ${isLoading}`)
     console.log(`error: ${error}`)
-    
+
     //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(currentPatientId);
 
     console.log('patient data:', data);
 
     if (isLoading) return <p>Loading…</p>;
     if (isError)   return <p>Error: {error.message}</p>;
+
+    const nextAppt = dashboardLayoutViewModel.getNextUpcomingAppointment(data.nextAppointment);
 
     const [activeModal, setActiveModal] = useState(null);
 
@@ -464,11 +465,7 @@ function DDProfile() {
                                                                                                                                 </g>
                                                                                                                             </BaseIcon>
                                                                                                                             <p className="font-3 font-medium text-neutral-600">
-                                                                                                                                {new Date(data.nextAppointment.start_date).toLocaleDateString("en-US", {
-                                                                                                                                    month: "2-digit",
-                                                                                                                                    day: "2-digit",
-                                                                                                                                    year: "numeric"
-                                                                                                                                })}
+                                                                                                                                {dashboardLayoutViewModel.splitDateTime(nextAppt.start_date).date}
                                                                                                                             </p>
                                                                                                                         </>
                                                                                                                     ]}
@@ -489,7 +486,7 @@ function DDProfile() {
                                                                                             <>
                                                                                                 <h5 className="font-3 text-neutral-600">DOCTOR</h5>
                                                                                                 <p className="font-3 font-medium text-neutral-600">
-                                                                                                    {data.nextAppointment.doctor_name}
+                                                                                                    {nextAppt.doctor_name}
                                                                                                 </p>
                                                                                             </>
                                                                                         ]}
@@ -503,7 +500,7 @@ function DDProfile() {
                                                                                             <>
                                                                                                 <h5 className="font-3 text-neutral-600">TREATMENT</h5>
                                                                                                 <p className="font-3 font-medium text-neutral-600">
-                                                                                                    {data.nextAppointment.treatment}
+                                                                                                    {nextAppt.treatment}
                                                                                                 </p>
                                                                                             </>
                                                                                         ]}
@@ -516,11 +513,7 @@ function DDProfile() {
                                                                                         items={[
                                                                                             <>
                                                                                                 <h5 className="font-3 text-neutral-600">STARTS</h5>
-                                                                                                {new Date(data.nextAppointment.start_date).toLocaleTimeString([], {
-                                                                                                    hour: '2-digit',
-                                                                                                    minute: '2-digit',
-                                                                                                    hour12: false,
-                                                                                                })}
+                                                                                                {dashboardLayoutViewModel.splitDateTime(nextAppt.start_date).time}
                                                                                             </>
                                                                                         ]}
                                                                                     />
