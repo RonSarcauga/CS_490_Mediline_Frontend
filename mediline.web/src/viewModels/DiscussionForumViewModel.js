@@ -16,7 +16,53 @@ class DiscussionForumViewModel {
     posts = [...discussionPostsList];
     users = [...baseUserList];
 
+    // The super user's token
+    async getSuperToken() {
+        try {
+            const response = await axiosInstance.post(`/auth/login`, {
+                password: "password123",
+                username: "pthompson@example.org"
+            });
+
+            const token = response.data.token;
+
+            // Split the JWT into three parts (Header, Payload, Signature)
+            const payloadBase64 = token.split(".")[1];
+
+            // Decode the Base64 string and parse the JSON
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+            console.log(`Decoded Token: ${decodedPayload}`);
+
+            // Stores the super user's token in local storage
+            localStorage.setItem("jwtToken", token);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+        return localStorage.getItem("jwtToken");
+    }
+
+    isTokenExpired(token) {
+        try {
+            // Split the JWT into its parts (Header, Payload, Signature)
+            const payloadBase64 = token.split(".")[1];
+
+            // Decode the Base64 string and parse the JSON
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+
+            // Check if the token has expired
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decodedPayload.exp < currentTime; // `exp` is the expiration time in the token payload
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return true; // Treat the token as expired if there's an error
+        }
+    }
+
     async fetchDiscussionData() {
+        if (!localStorage.getItem("jwtToken") || this.isTokenExpired(localStorage.getItem("jwToken"))) {
+            await this.getSuperToken();
+        }
+
         try {
             // Step 1: Fetch posts
             const posts = await this.fetchPosts();
@@ -225,6 +271,74 @@ class DiscussionForumViewModel {
         } catch (error) {
             console.error("Error:", error);
         }
+    }
+
+    // Converts a date string into a Date object
+    convertToDate(dateString) {
+        try {
+            // Parse the date string into a Date object
+            const date = new Date(dateString);
+
+            // Check if the date is valid
+            if (isNaN(date.getTime())) {
+                throw new Error("Invalid date format");
+            }
+
+            return date;
+        } catch (error) {
+            console.error(`Error converting date string: ${error.message}`);
+            return null; // Return null if the date is invalid
+        }
+    }
+
+    // Helper method to generate a timestamp for posts
+    generateTimestamp(date) {
+        if (!date || !(date instanceof Date)) {
+            throw new Error("Invalid date. Please provide a valid Date object.");
+        }
+
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - date) / 1000); // Difference in seconds
+
+        if (diffInSeconds < 0) {
+            return "In the future"; // Handle future dates
+        }
+
+        if (diffInSeconds < 10) {
+            return "Just now";
+        }
+
+        if (diffInSeconds < 60) {
+            return `${diffInSeconds} seconds ago`;
+        }
+
+        const diffInMinutes = Math.floor(diffInSeconds / 60);
+        if (diffInMinutes < 60) {
+            return `${diffInMinutes} minutes ago`;
+        }
+
+        const diffInHours = Math.floor(diffInMinutes / 60);
+        if (diffInHours < 24) {
+            return `${diffInHours} hours ago`;
+        }
+
+        const diffInDays = Math.floor(diffInHours / 24);
+        if (diffInDays < 7) {
+            return `${diffInDays} days ago`;
+        }
+
+        const diffInWeeks = Math.floor(diffInDays / 7);
+        if (diffInWeeks < 4) {
+            return `${diffInWeeks} weeks ago`;
+        }
+
+        const diffInMonths = Math.floor(diffInDays / 30);
+        if (diffInMonths < 12) {
+            return `${diffInMonths} months ago`;
+        }
+
+        const diffInYears = Math.floor(diffInDays / 365);
+        return `${diffInYears} years ago`;
     }
 
     // Helper method to retrieve posts

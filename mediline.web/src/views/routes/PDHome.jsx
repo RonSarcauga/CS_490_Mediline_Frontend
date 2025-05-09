@@ -8,7 +8,7 @@ import DatePicker from '../../components/General/DatePicker';
 import InputBar from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
-import { PDHomeViewModel } from '../../viewModels/PDHomeViewModel';
+import { pdHomeVM } from '../../viewModels/PDHomeViewModel';
 
 function PDHome() {
     const { currentUser } = useContext(UserContext);
@@ -42,7 +42,7 @@ function PDHome() {
 
     // Main function that fetches dashboard data
     const fetchData = async () => {
-        const result = await PDHomeViewModel.fetchData(currentUser.user_id);
+        const result = await pdHomeVM.fetchData(currentUser.user_id);
         setData(result);
         setLoading(false);
     }
@@ -643,8 +643,8 @@ function PDHome() {
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
-                                                                                                            <p className="font-3 font-semibold text-neutral-600">{PDHomeViewModel.getAppointmentData(appt.appointment.appointment_id).treatment}</p>
-                                                                                                            <p className="font-3 font-semibold text-neutral-600">${PDHomeViewModel.getAppointmentData(appt.appointment.appointment_id).fee}</p>
+                                                                                                            <p className="font-3 font-semibold text-neutral-600">{pdHomeVM.getAppointmentData(appt.appointment.appointment_id).treatment}</p>
+                                                                                                            <p className="font-3 font-semibold text-neutral-600">${pdHomeVM.getAppointmentData(appt.appointment.appointment_id).fee}</p>
                                                                                                             <ItemGroup
                                                                                                                 items={[
                                                                                                                     <>
