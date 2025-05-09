@@ -23,6 +23,48 @@ const FindDoctorViewModel = {
         setByDropdown: false,
     },
 
+    // The super user's token
+    getSuperToken: async function () {
+        try {
+            const response = await axiosInstance.post(`/auth/login`, {
+                password: "password123",
+                username: "pthompson@example.org"
+            });
+
+            const token = response.data.token;
+
+            // Split the JWT into three parts (Header, Payload, Signature)
+            const payloadBase64 = token.split(".")[1];
+
+            // Decode the Base64 string and parse the JSON
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+            console.log(`Decoded Token: ${decodedPayload}`);
+
+            // Stores the super user's token in local storage
+            localStorage.setItem("jwtToken", token);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+        return localStorage.getItem("jwtToken");
+    },
+
+    isTokenExpired(token) {
+        try {
+            // Split the JWT into its parts (Header, Payload, Signature)
+            const payloadBase64 = token.split(".")[1];
+
+            // Decode the Base64 string and parse the JSON
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+
+            // Check if the token has expired
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decodedPayload.exp < currentTime; // `exp` is the expiration time in the token payload
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return true; // Treat the token as expired if there's an error
+        }
+    },
+
     doctorId: null,
 
     filterByURL: false,
@@ -84,6 +126,7 @@ const FindDoctorViewModel = {
 
     // Call to the update filter method in the service layer
     updateFilter: function (field, value) {
+        console.log(`${field}: ${value}`);
         this.activeFilters[field] = value;
     },
 
@@ -162,13 +205,17 @@ const FindDoctorViewModel = {
 
     async fetchDashboardData() {
         try {
+            if (!localStorage.getItem("jwtToken") || this.isTokenExpired(localStorage.getItem("jwToken"))) {
+                await this.getSuperToken();
+            }
+
             const [doctors] = await Promise.all([
                 this.fetchDoctors()
             ]);
 
             //console.log(`Is doctors populated?\n${JSON.stringify(doctors, null, 2)}`);
 
-            console.log("Doctors Before Extracting:", JSON.stringify(doctors, null, 2));
+            //console.log("Doctors Before Extracting:", JSON.stringify(doctors, null, 2));
 
             if (!Array.isArray(doctors) || doctors.length === 0) {
                 console.error("Doctors data is invalid:", doctors);
@@ -177,29 +224,72 @@ const FindDoctorViewModel = {
 
             const specialties = this.getSpecialties(doctors);
 
+            console.log(`Specialties:\n${JSON.stringify(specialties, null, 2)}`);
+
             return {
                 doctors: doctors,
                 specialties: specialties
             };
         } catch (error) {
             console.error("Error fetching dashboard data: ", error);
-            return null;
+            return { doctors: [], specialties: [] };
         }
     },
 
     // Fetch doctors and their ratings in one function call
+    //async fetchDoctors() {
+    //    try {
+    //        const response = await axiosInstance.get("/doctor/", {
+    //            headers: {
+    //                "Content-Type": "application/json",
+    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    //            }
+    //        });
+
+    //        const doctors = response.data;
+
+    //        // Fetch ratings for all doctors concurrently using Promise.all
+    //        const doctorsWithRatings = await Promise.all(
+    //            doctors.map(async (doctor) => {
+    //                const rating = await this.getDoctorRating(doctor.user_id);
+    //                const percentRating = Math.round(parseFloat(rating) * 10);
+    //                const user = await this.getUserInfo(doctor.user_id);
+
+    //                return {
+    //                    ...doctor,
+    //                    user: user,
+    //                    rating: percentRating,
+    //                    acceptingPatients: user.accepting_patients
+    //                };
+    //            })
+    //        );
+
+    //        //console.log(`Is it an array: ${Array.isArray(doctorsWithRatings)}\nDoctors With Ratings: ${doctorsWithRatings}`);
+
+    //        return doctorsWithRatings;
+    //    } catch (error) {
+    //        console.error("Error fetching doctors or ratings:", error);
+    //        return [];
+    //    }
+    //},
+
     async fetchDoctors() {
         try {
             const response = await axiosInstance.get("/doctor/", {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                },
             });
 
             const doctors = response.data;
 
-            // Fetch ratings for all doctors concurrently using Promise.all
+            if (!Array.isArray(doctors) || doctors.length === 0) {
+                console.error("No doctors returned from API:", doctors);
+                return [];
+            }
+
+            // Fetch ratings and user info concurrently
             const doctorsWithRatings = await Promise.all(
                 doctors.map(async (doctor) => {
                     const rating = await this.getDoctorRating(doctor.user_id);
@@ -210,12 +300,12 @@ const FindDoctorViewModel = {
                         ...doctor,
                         user: user,
                         rating: percentRating,
-                        acceptingPatients: user.accepting_patients
+                        acceptingPatients: user.accepting_patients,
                     };
                 })
             );
 
-            //console.log(`Is it an array: ${Array.isArray(doctorsWithRatings)}\nDoctors With Ratings: ${doctorsWithRatings}`);
+            console.log("Doctors with ratings:", doctorsWithRatings);
 
             return doctorsWithRatings;
         } catch (error) {
@@ -223,6 +313,7 @@ const FindDoctorViewModel = {
             return [];
         }
     },
+
 
     // Fetch rating for a specific doctor
     async getDoctorRating(id) {
@@ -280,21 +371,44 @@ const FindDoctorViewModel = {
     },
 
     // Call to the get specialties method in the service layer
-    getSpecialties(doctors) { 
-        console.log("Doctors Inside The Passed Parameter:", JSON.stringify(doctors, null, 2));
-        console.log("Is Doctors An Array?", Array.isArray(doctors));
+    //getSpecialties(doctors) {
+    //    console.log("Doctors Inside The Passed Parameter:", JSON.stringify(doctors, null, 2));
+    //    console.log("Is Doctors An Array?", Array.isArray(doctors));
 
-        if (!Array.isArray(doctors)) {
-            console.error("Doctors is not an array:", doctors);
+    //    if (!Array.isArray(doctors)) {
+    //        console.error("Doctors is not an array:", doctors);
+    //        return [];
+    //    }
+
+    //    const specialties = doctors.map((doctor) => doctor.specialization);
+
+    //    //console.log(`Specialties:\n${JSON.stringify(specialties, null, 2)}`);
+
+    //    // Convert specialties into objects that can be inputted into the Select List component
+    //    return specialties.map((specialty) => ({
+    //        label: specialty,
+    //        value: specialty.replace(/\s+/g, "").toLowerCase() // Formats value for consistency
+    //    }));
+    //},
+
+    getSpecialties(doctors) {
+        if (!Array.isArray(doctors) || doctors.length === 0) {
+            console.error("Invalid or empty doctors array:", doctors);
             return [];
         }
 
-        const specialties = doctors.map((doctor) => doctor.specialization);
+        // Extract and deduplicate specialties
+        const specialtiesSet = new Set();
+        doctors.forEach((doctor) => {
+            if (doctor.specialization) {
+                specialtiesSet.add(doctor.specialization.trim());
+            }
+        });
 
-        // Convert specialties into objects that can be inputted into the Select List component
-        return specialties.map((specialty) => ({
+        // Convert the Set to an array of objects for the Select List component
+        return Array.from(specialtiesSet).map((specialty) => ({
             label: specialty,
-            value: specialty.replace(/\s+/g, "").toLowerCase() // Formats value for consistency
+            value: specialty.replace(/\s+/g, "").toLowerCase(), // Format value for consistency
         }));
     },
 
