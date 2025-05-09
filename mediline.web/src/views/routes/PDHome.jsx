@@ -28,8 +28,15 @@ function PDHome() {
 
     const [selectedDate, setSelectedDate] = useState('');
     const handleDateSelect = (date) => {
-        setSelectedDate(date.toLocaleDateString());
-    }
+        const today = new Date();
+        today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
+        if (date >= today) {
+            setSelectedDate(date.toLocaleDateString());
+        } else {
+            console.error("Selected date must be today or later.");
+        }
+    };
+
 
     // Used to manage data from API calls
     const [data, setData] = useState(null);
