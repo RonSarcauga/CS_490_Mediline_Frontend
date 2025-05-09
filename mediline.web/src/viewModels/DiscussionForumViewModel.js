@@ -16,7 +16,53 @@ class DiscussionForumViewModel {
     posts = [...discussionPostsList];
     users = [...baseUserList];
 
+    // The super user's token
+    async getSuperToken() {
+        try {
+            const response = await axiosInstance.post(`/auth/login`, {
+                password: "password123",
+                username: "pthompson@example.org"
+            });
+
+            const token = response.data.token;
+
+            // Split the JWT into three parts (Header, Payload, Signature)
+            const payloadBase64 = token.split(".")[1];
+
+            // Decode the Base64 string and parse the JSON
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+            console.log(`Decoded Token: ${decodedPayload}`);
+
+            // Stores the super user's token in local storage
+            localStorage.setItem("jwtToken", token);
+        } catch (error) {
+            console.error("Error:", error);
+        }
+        return localStorage.getItem("jwtToken");
+    }
+
+    isTokenExpired(token) {
+        try {
+            // Split the JWT into its parts (Header, Payload, Signature)
+            const payloadBase64 = token.split(".")[1];
+
+            // Decode the Base64 string and parse the JSON
+            const decodedPayload = JSON.parse(atob(payloadBase64));
+
+            // Check if the token has expired
+            const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
+            return decodedPayload.exp < currentTime; // `exp` is the expiration time in the token payload
+        } catch (error) {
+            console.error("Error decoding token:", error);
+            return true; // Treat the token as expired if there's an error
+        }
+    }
+
     async fetchDiscussionData() {
+        if (!localStorage.getItem("jwtToken") || this.isTokenExpired(localStorage.getItem("jwToken"))) {
+            await this.getSuperToken();
+        }
+
         try {
             // Step 1: Fetch posts
             const posts = await this.fetchPosts();
