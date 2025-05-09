@@ -1,122 +1,6 @@
-//import { specialties, ratings, } from '../assets/js/const';
-//import { useDoctors } from '../hooks/useDoctors';
-
-//const FindDoctorViewModel = {
-//    // Contains the data to be displayed in the view
-//    filters: {
-//        name: "",
-//        specialty: "",
-//        rating: "",
-//        acceptingNewPatients: false,
-//        search: "",
-//        setByDropdown: false,
-//    },
-
-//    // Stores and manages the active filters
-//    activeFilters: {
-//        name: "",
-//        specialty: "",
-//        rating: "",
-//        acceptingNewPatients: false,
-//        search: "",
-//        setByDropdown: false,
-//    },
-
-//    doctorId: null,
-
-//    filterByURL: false,
-
-//    // Helper functions which would be used to make calls to the appropriate methods in the service layer
-
-//    // Call to the update filter method in the service layer
-//    updateFilter: function (field, value) {
-//        this.activeFilters[field] = value;
-//    },
-
-//    // Call to the apply filter method in the service layer
-//    applyFilters() {
-//        this.filters = { ...this.activeFilters };
-//    },
-
-//    // Call to the update search filter method in the service layer
-//    updateSearch: function (query) {
-//        this.activeFilters.search = query;
-//        console.log("Search String: ", query);
-
-//        // Determines if the filter has already been applied in a dropdown
-//        if (!query.trim()) {
-//            this.activeFilters.name = "";
-//            if (!this.activeFilters.setByDropdown) {
-//                this.activeFilters.specialty = "";
-//            }
-//            return;
-//        }
-
-//        // Check if the query matches a specialty label
-//        const isSpecialty = specialties.some((s) => s.label.toLowerCase() === query.toLowerCase());
-
-//        if (isSpecialty && !this.activeFilters.setByDropdown) {
-//            // If the query matches a specialty label and specialty is not set by the SelectList
-//            this.activeFilters.specialty = specialties.find((s) => s.label.toLowerCase() === query.toLowerCase())?.value;
-//            this.activeFilters.name = "";
-//        }
-//        else {
-//            // Assume it's a name search and update only the name filter
-//            this.activeFilters.name = query;
-//            if (!this.activeFilters.setByDropdown) {
-//                this.activeFilters.specialty = "";
-//            }
-//        }
-//    },
-
-//    // Call to the clear filters method in the service layer
-//    clearFilters: function () {
-//        this.activeFilters = {
-//            name: "",
-//            specialty: "",
-//            rating: "",
-//            search: "",
-//            acceptingNewPatients: false,
-//        };
-//        this.applyFilters();
-//    },
-
-//    // Call to the get doctors method in the service layer
-//    getDoctorList: function () {
-//        return useDoctors(this.filters);
-//    },
-
-//    // Fetch doctors from the backend
-//    async fetchDoctors() {
-//        try {
-//            const response = await apiClient.get("/doctor/", { params: this.activeFilters });
-//            return response.data.map((doctor, i) => ({
-//                ...doctor,
-//                rating: `${80 + (i % 5) * 5}%`,
-//                acceptingNewPatients: i % 2 === 0
-//            }));
-//        }
-//        catch (error) {
-//            console.error("Error fetching doctors: ", error);
-//            return [];
-//        }
-//    },
-
-//    // Call to the get specialties method in the service layer
-//    getSpecialties: function () {
-//        return specialties;
-//    },
-
-//    // Call to the get ratings method in the service layer
-//    getRatings: function () {
-//        return ratings;
-//    },
-//};
-
-//export default FindDoctorViewModel;
-
 import { specialties, ratings, doctorList } from '../assets/js/const';
 import axiosInstance from '../assets/js/api';
+import js from '@eslint/js';
 
 const FindDoctorViewModel = {
     // Contains the data to be displayed in the view
@@ -144,8 +28,31 @@ const FindDoctorViewModel = {
     filterByURL: false,
 
     // Helper functions which would be used to make calls to the appropriate methods in the service layer
+    //filterDoctors: function (doctors) {
+    //    const { name, specialty, rating, acceptingNewPatients } = this.filters;
+
+    //    // Convert the rating range to numerical values
+    //    const [minRating, maxRating] = rating
+    //        ? rating.split("-").map((r) => parseFloat(r.replace("%", "")))
+    //        : [null, null];
+
+    //    return doctors.filter((doctor) => {
+    //        const doctorRating = parseFloat(doctor.rating);
+
+    //        // Check if the doctor matches the filters
+    //        const matchesName = !name || doctor.name.toLowerCase().includes(name.toLowerCase());
+    //        const matchesSpecialty = !specialty || doctor.specialization.toLowerCase() === specialty.toLowerCase();
+    //        const matchesRating = !rating || (doctorRating >= minRating && doctorRating <= maxRating);
+    //        const matchesAcceptance = !acceptingNewPatients || doctor.acceptingNewPatients;
+
+    //        return matchesName && matchesSpecialty && matchesRating && matchesAcceptance;
+    //    });
+    //},
+
     filterDoctors: function (doctors) {
-        const { name, specialty, rating, acceptingNewPatients } = this.filters;
+        const { name, specialty, rating, acceptingNewPatients, search } = this.filters;
+
+        console.log(`Active Filters: ${JSON.stringify(this.filters, null, 2)}`);
 
         // Convert the rating range to numerical values
         const [minRating, maxRating] = rating
@@ -159,11 +66,21 @@ const FindDoctorViewModel = {
             const matchesName = !name || doctor.name.toLowerCase().includes(name.toLowerCase());
             const matchesSpecialty = !specialty || doctor.specialization.toLowerCase() === specialty.toLowerCase();
             const matchesRating = !rating || (doctorRating >= minRating && doctorRating <= maxRating);
-            const matchesAcceptance = !acceptingNewPatients || doctor.acceptingNewPatients;
 
-            return matchesName && matchesSpecialty && matchesRating && matchesAcceptance;
+            // Handle acceptingNewPatients filter for both true and false
+            const matchesAcceptance =
+                acceptingNewPatients === false || doctor.acceptingPatients === acceptingNewPatients;
+
+            // Check if the search query matches the doctor's name or specialty
+            const matchesSearch =
+                !search ||
+                doctor.name.toLowerCase().includes(search.toLowerCase()) ||
+                doctor.specialization.toLowerCase().includes(search.toLowerCase());
+
+            return matchesName && matchesSpecialty && matchesRating && matchesAcceptance && matchesSearch;
         });
     },
+
 
     // Call to the update filter method in the service layer
     updateFilter: function (field, value) {
@@ -171,9 +88,23 @@ const FindDoctorViewModel = {
     },
 
     // Call to the apply filter method in the service layer
-    applyFilters() {
+    applyFilters: async function () {
+        // Update the filters with the current active filters
         this.filters = { ...this.activeFilters };
+
+        // Fetch the list of doctors from the backend
+        const doctors = await this.fetchDoctors();
+
+        // Apply the filters to the fetched doctors
+        const filteredDoctors = this.filterDoctors(doctors);
+
+        // Return the filtered list of doctors
+        return filteredDoctors;
     },
+
+    //applyFilters() {
+    //    this.filters = { ...this.activeFilters };
+    //},
 
     // Call to the update search filter method in the service layer
     updateSearch: function (query) {
@@ -207,7 +138,7 @@ const FindDoctorViewModel = {
     },
 
     // Call to the clear filters method in the service layer
-    clearFilters: function () {
+    clearFilters: async function () {
         this.activeFilters = {
             name: "",
             specialty: "",
@@ -215,29 +146,18 @@ const FindDoctorViewModel = {
             search: "",
             acceptingNewPatients: false,
         };
-        this.applyFilters();
+
+        this.filters = { ...this.activeFilters };
+
+        const doctors = await this.fetchDoctors();
+
+        return doctors;
     },
 
     // Call to the get doctors method in the service layer
-    getDoctorList: function () {
-        return doctorList.filter((doctor) => {
-            const { name, specialty, rating, acceptingNewPatients } = this.filters;
-
-            // Converts the rating and rating range to numerical values
-            const [minRating, maxRating] = rating ? rating.split('-').map((r) => parseFloat(r.replace('%', ''))) : [null, null];
-            const doctorRating = parseFloat(doctor.rating.replace('%', ''));
-
-            // Maps the value returned by the select list to the appropriate label in the specialties list
-            const specialtyLabel = specialties.find((s) => s.value === specialty)?.label;
-
-            // Filtering logic (this should be performed by the back end)
-            const matchesName = !name || doctor.label.toLowerCase().includes(name.toLowerCase());
-            const matchesSpecialty = !specialty || doctor.specialty.toLowerCase() === specialtyLabel.toLowerCase();
-            const matchesRating = !rating || (doctorRating >= minRating && doctorRating <= maxRating);
-            const matchesAcceptance = !acceptingNewPatients || doctor.acceptingNewPatients;
-
-            return matchesName && matchesSpecialty && matchesRating && matchesAcceptance;
-        });
+    getDoctorList: async function () {
+        const doctors = await this.fetchDoctors(); // Fetch doctors from the backend
+        return this.filterDoctors(doctors); // Apply filters to the fetched doctors
     },
 
     async fetchDashboardData() {
@@ -284,10 +204,13 @@ const FindDoctorViewModel = {
                 doctors.map(async (doctor) => {
                     const rating = await this.getDoctorRating(doctor.user_id);
                     const percentRating = Math.round(parseFloat(rating) * 10);
+                    const user = await this.getUserInfo(doctor.user_id);
 
                     return {
                         ...doctor,
-                        rating: percentRating
+                        user: user,
+                        rating: percentRating,
+                        acceptingPatients: user.accepting_patients
                     };
                 })
             );
@@ -315,6 +238,44 @@ const FindDoctorViewModel = {
         } catch (error) {
             console.error("Error fetching doctor rating:", error);
             return "0";
+        }
+    },
+
+    async getUserInfo(userId) {
+        try {
+            const response = await axiosInstance.get(`/user/${userId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching user info:", error);
+        }
+    },
+
+    // Function to add a doctor
+    async addDoctor(userId) {
+        const payload = {
+            patient_id: userId,
+            doctor_id: this.doctorId
+        }
+
+        console.log(`Patient ${userId} is adding doctor ${this.doctorId}\n${JSON.stringify(payload, null, 2)}`);
+
+        try {
+            const response = await axiosInstance.post(`/request/patient/${userId}/doctor/${this.doctorId}`, payload, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            const user = response.data
+            console.log("Doctor successfully added!\n ", JSON.stringify(user, null, 2));
+        } catch (error) {
+            console.error("Error adding a doctor:", error);
         }
     },
 
