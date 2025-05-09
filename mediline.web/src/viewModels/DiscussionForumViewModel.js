@@ -1,14 +1,236 @@
 import { discussionPostsList, discussionProfiles, repliesTable, baseUserList } from '../assets/js/const';
+import axiosInstance from '../assets/js/api';
 
 class DiscussionForumViewModel {
+    // Form Data
+    inputs = {
+        title: "",
+        content: "",
+        bio: "",
+        userId: "",
+        postId: "",
+        comment: ""
+    }
+
     // Initialize the view model with mock data
     posts = [...discussionPostsList];
     users = [...baseUserList];
 
-    // Helper method to retrieve posts
-    getPosts() {
-        return this.posts; // Return the current list of posts
+    async fetchDiscussionData() {
+        try {
+            // Step 1: Fetch posts
+            const posts = await this.fetchPosts();
+            if (posts.length === 0) {
+                console.log("No posts found.");
+                return { posts: [], message: "No posts found" };
+            }
+
+            // Step 2: Fetch user information
+            const userIds = posts.map((post) => post.user_id);
+            const users = await this.fetchUsers(userIds);
+
+            // Step 3: Fetch comments
+            const postIds = posts.map((post) => post.post_id);
+            const comments = await this.fetchComments(postIds);
+
+            // Step 4: Combine all data
+            const combinedPosts = await this.combinePosts(posts, users, comments);
+
+            return {
+                posts: combinedPosts,
+            };
+        } catch (error) {
+            console.error("Error fetching discussion data:", error);
+            return {
+                posts: [],
+                error: error.response?.data || error.message,
+            };
+        }
     }
+
+    async fetchPosts() {
+        try {
+            const response = await axiosInstance.get("/social_media/", {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                },
+            });
+
+            const posts = response.data || [];
+            console.log(`Fetched Posts:\n${JSON.stringify(posts, null, 2)}`);
+            return posts;
+        } catch (error) {
+            console.error("Error fetching posts:", error);
+            return [];
+        }
+    }
+
+    async fetchUsers(userIds) {
+        const uniqueUserIds = [...new Set(userIds)];
+        const users = [];
+
+        for (const userId of uniqueUserIds) {
+            try {
+                console.log(userId);
+                const response = await axiosInstance.get(`/user/${userId}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                    },
+                });
+                users.push(response.data);
+            } catch (error) {
+                console.error(`Error fetching user info for User ID ${userId}:`, error);
+            }
+        }
+        console.log(`Fetched Users:\n${JSON.stringify(users, null, 2)}`);
+        return users;
+    }
+
+    async fetchComments(postIds) {
+        const comments = [];
+
+        for (const postId of postIds) {
+            try {
+                const response = await axiosInstance.get(`/social_media/${postId}/comments`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                    },
+                });
+                comments.push(...response.data);
+            } catch (error) {
+                console.error(`Error fetching comments for Post ID ${postId}:`, error);
+            }
+        }
+
+        console.log(`Fetched Comments:\n${JSON.stringify(comments, null, 2)}`);
+        return comments;
+    }
+
+    async combinePosts(posts, users, comments) {
+        const userCache = new Map(); // Cache to store user data by user_id
+
+        // Helper function to fetch user data and cache it
+        const fetchUserData = async (userId) => {
+            if (userCache.has(userId)) {
+                return userCache.get(userId); // Return cached user data
+            }
+
+            const user = await this.getUser(userId); // Fetch user data from the API
+            if (user) {
+                userCache.set(userId, user); // Cache the user data
+            }
+            return user;
+        };
+
+        // Enrich comments with user data
+        const enrichedComments = await Promise.all(
+            comments.map(async (comment) => {
+                const user = await fetchUserData(comment.user_id); // Fetch user data for the comment author
+                return {
+                    ...comment,
+                    user: user ? { first_name: user.first_name, last_name: user.last_name } : null, // Attach only the required fields
+                };
+            })
+        );
+
+        // Enrich posts with comments and user data
+        const enrichedPosts = posts.map((post) => {
+            const postComments = enrichedComments.filter((comment) => comment.post_id === post.post_id);
+            const user = users.find((user) => user.user_id === post.user_id);
+
+            return {
+                ...post,
+                user, // Attach the matched user
+                comments: postComments, // Attach enriched comments
+            };
+        });
+
+        console.log(`Enriched Posts:\n${JSON.stringify(enrichedPosts, null, 2)}`);
+        return enrichedPosts;
+    }
+
+
+    async getUser(userId) {
+        try {
+            const response = await axiosInstance.get(`/user/${userId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            console.log(`User fetched!\n${JSON.stringify(response.data, null, 2)}`);
+            return response.data;
+        } catch (error) {
+            console.error("Error fetching a user:", error);
+        }
+    }
+
+    //async getCommentsById(postId) {
+    //    try {
+    //        const response = await axiosInstance.post(`/social_media/${postId}/comments`, {
+    //            headers: {
+    //                "Content-Type": "application/json",
+    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    //            }
+    //        });
+
+    //        return response.data;
+    //    } catch (error) {
+    //        console.error("Error:", error);
+    //    }
+    //}
+
+    async createPost(title, content, id) {
+        try {
+            const payload = {
+                content: content,
+                title: title,
+            }
+
+            console.log(`User ${id} Post fields: ${JSON.stringify(payload, null, 2)}`);
+
+            const response = await axiosInstance.post(`/social_media/${id}/post`, payload, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            
+            console.log(`Successfully created a post!\n${JSON.stringify(response.data)}`);
+
+            return response.data;
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    async postComment(userId, postId, content) {
+        try {
+            const payload = {
+                content: content,
+            }
+
+            console.log(`My current payload:\n${JSON.stringify(payload, null, 2)}`)
+
+            const response = await axiosInstance.post(`/social_media/${userId}/post/${postId}/comment`, payload, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            return response.data;
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
+
+    // Helper method to retrieve posts
+    //getPosts() {
+    //    return this.posts; // Return the current list of posts
+    //}
 
     // Helper method to retrieve replies to a post by post ID
     getPostReplies(postId, offset, limit) {
