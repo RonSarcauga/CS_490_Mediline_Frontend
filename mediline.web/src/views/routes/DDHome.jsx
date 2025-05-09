@@ -1,27 +1,48 @@
-import { useState, useContext } from 'react';
+import React, { useRef, useEffect, useState, useContext } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import DropdownMenu from '../../components/General/DropdownMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import  DoctorDashboardViewModel  from '../../viewModels/DDViewModel'; 
+
 
 function DDHome() {
     const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }));
-
+    const [patientsByDate, setPatientsByDate] = useState([]);
     const { currentUser } = useContext(UserContext);
+    const isoDate = new Date(selectedDate).toISOString().split('T')[0];
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const doctorData = dashboardLayoutViewModel.getDoctorData(user.id);
     //const todaysAppointments = dashboardLayoutViewModel.getTodaysAppointments(user.id);
     //const selectedAppointments = dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate);
     //const patients = dashboardLayoutViewModel.getPatients(doctorData.licenseNumber);
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
-    const hours = Array.from({ length: 10 }, (_, i) => 8 + i);
+    const hours = Array.from({ length: 15 }, (_, i) => 8 + i);
+
+    const { data, status, isLoading, isError, error } = DoctorDashboardViewModel.useDoctorHome(currentUser.user_id);
+    //console.log('data:', data);
+    //console.log(`isLoading: ${isLoading}`)
+    //console.log(`error: ${error}`)
+
+    const { data: patientsToday = [] } =  DoctorDashboardViewModel.usePatientsByDate(currentUser.user_id, isoDate);
+    //console.log('pats:', patientsToday);
+    const [onlyTodaysPatients, setInitialPatientCount] = useState(null);
+    useEffect(() => {
+        if (
+            Array.isArray(patientsToday) &&
+            onlyTodaysPatients === null
+        ) {
+            setInitialPatientCount(patientsToday.length);
+        }
+    }, [patientsToday, onlyTodaysPatients]);
 
     const navigate = useNavigate();
 
-    const handleDateSelect = (date) => {
+    const handleDateSelect = async (date) => {
         const formattedDate = `${date.month} ${date.date}, ${date.year}`;
+ 
         setSelectedDate(formattedDate);
     }
 
@@ -31,7 +52,8 @@ function DDHome() {
     //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate), null, 2)}`);
     //console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
     //console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
-
+    if (isLoading) return <p>Loading…</p>;
+    if (isError)   return <p>Error: {error.message}</p>;
     return (
         <Container
             customClass="p-5"
@@ -130,7 +152,7 @@ function DDHome() {
                                                                                                             <path d="M68,47.4c-0.2-0.1-0.3-0.2-0.5-0.3c-0.4-0.2-0.9-0.2-1.3,0.1c-2.1,1.3-4.6,2.1-7.2,2.1c-0.3,0-0.7,0-1,0 c-0.5,1.3-1,2.6-1.7,3.7c0.4,0.2,0.9,0.3,1.4,0.6c5.7,2.5,9.7,5.6,12.5,9.8H75c2.2,0,4-1.8,4-4v-1.9C79,52.6,73.3,49.6,68,47.4z" />
                                                                                                             <path d="M66.9,34.2c0-4.9-3.6-8.9-7.9-8.9c-2.2,0-4.1,1-5.6,2.5c3.5,3.6,5.7,8.7,5.7,14.4c0,0.3,0,0.5,0,0.8 C63.4,43,66.9,39.1,66.9,34.2z" />
                                                                                                         </BaseIcon>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*doctorData.patients.length*/}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{data.allPatients.doctor_patients_count}</h4>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -148,7 +170,7 @@ function DDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*todaysAppointments.length*/}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{onlyTodaysPatients !== null ? `${onlyTodaysPatients}` : '...'}</h4>
                                                                                                         <p className="font-3 text-neutral-600">Patients Today</p>
                                                                                                     </>
                                                                                                 ]}
@@ -225,7 +247,7 @@ function DDHome() {
                                                                                                                 <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(200, 30%, 25%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                             </g>
                                                                                                         </BaseIcon>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*dashboardLayoutViewModel.getUpcomingAppointmentsDoctor(doctorData.licenseNumber).length*/}</h4>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{data.upcomingCount}</h4>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -243,8 +265,8 @@ function DDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{/*todaysAppointments.length*/}</h4>
-                                                                                                        <p className="font-3 text-neutral-600">Bookings Today</p>
+                                                                                                        <h4 className="font-semibold font-9 text-dark-200">{data.pendingCount}</h4>
+                                                                                                        <p className="font-3 text-neutral-600">Bookings Pending</p>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
@@ -395,9 +417,9 @@ function DDHome() {
                                                                                                                         fitParent={true}
                                                                                                                         items={[
                                                                                                                             <>
-                                                                                                                                {/*
-                                                                                                                                    selectedAppointments.map((appt) => (
-                                                                                                                                        parseInt(appt.startTime.split(":")[0], 10) === hour ? (
+                                                                                                                                {
+                                                                                                                                    patientsToday.map((appt) => (
+                                                                                                                                        new Date(appt.visit_time).getHours() === hour ? (
                                                                                                                                             <Container
                                                                                                                                                 customClass="gradient-white b-5 outline-neutral-1100 br-sm py-3"
                                                                                                                                                 fitParent={true}
@@ -453,8 +475,8 @@ function DDHome() {
                                                                                                                                                                                     axis={true}
                                                                                                                                                                                     items={[
                                                                                                                                                                                         <>
-                                                                                                                                                                                            <h5 className="font-3 font-medium text-neutral-600">MRN: {appt.patientMRN}</h5>
-                                                                                                                                                                                            <h5 className="font-3 font-medium">{dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(appt.patientMRN).userId).firstName} {dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(appt.patientMRN).userId).lastName}</h5>
+                                                                                                                                                                                            <h5 className="font-3 font-medium text-neutral-600">MRN: {appt.patient_id}</h5>
+                                                                                                                                                                                            <h5 className="font-3 font-medium">{appt.first_name} {appt.last_name}</h5>
                                                                                                                                                                                         </>
                                                                                                                                                                                     ]}
                                                                                                                                                                                 />
@@ -470,7 +492,7 @@ function DDHome() {
                                                                                                                                                                                                 stretch={true}
                                                                                                                                                                                                 items={[
                                                                                                                                                                                                     <>
-                                                                                                                                                                                                        <h5 className="font-3 font-semibold">{dashboardLayoutViewModel.getPatientByMRN(appt.patientMRN).sex}</h5>
+                                                                                                                                                                                                        <h5 className="font-3 font-semibold">{dashboardLayoutViewModel.capitalize(appt.gender)}</h5>
                                                                                                                                                                                                     </>
                                                                                                                                                                                                 ]}
                                                                                                                                                                                             />
@@ -500,7 +522,7 @@ function DDHome() {
                                                                                                                                                                                                                 <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                                                                                             </g>
                                                                                                                                                                                                         </BaseIcon>
-                                                                                                                                                                                                        <h5 className="font-3 font-semibold">{dashboardLayoutViewModel.calculateAge(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(appt.patientMRN).userId).dateOfBirth)}</h5>
+                                                                                                                                                                                                        <h5 className="font-3 font-semibold">{dashboardLayoutViewModel.calculateAge(appt.dob)}</h5>
                                                                                                                                                                                                     </>
                                                                                                                                                                                                 ]}
                                                                                                                                                                                             />
@@ -523,7 +545,7 @@ function DDHome() {
                                                                                                                                                                                     items={[
                                                                                                                                                                                         <>
                                                                                                                                                                                             <h5 className="font-3 font-medium text-neutral-600">Starts</h5>
-                                                                                                                                                                                            {<h5 className="font-3 font-semibold">{dashboardLayoutViewModel.formatTimeString(appt.startTime)}</h5>}
+                                                                                                                                                                                            {<h5 className="font-3 font-semibold">{appt.visit_time.split('T')[1].slice(0, 5)}</h5>}
                                                                                                                                                                                         </>
                                                                                                                                                                                     ]}
                                                                                                                                                                                 />
@@ -551,7 +573,7 @@ function DDHome() {
                                                                                                                                                                                             isClickable={true}
                                                                                                                                                                                             onClick={() => {
                                                                                                                                                                                                 console.log("Open the patient's profile!");
-                                                                                                                                                                                                navigate(`/dashboard/${user.role}/profile/${dashboardLayoutViewModel.getPatientByMRN(appt.patientMRN).userId}`);
+                                                                                                                                                                                                navigate(`/dashboard/doctor/profile/${appt.patient_id}`);
                                                                                                                                                                                             }}
                                                                                                                                                                                             items={[
                                                                                                                                                                                                 <>
@@ -575,7 +597,7 @@ function DDHome() {
                                                                                                                                             </>
                                                                                                                                         )
                                                                                                                                     ))
-                                                                                                                                */}
+                                                                                                                                }
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
@@ -650,8 +672,8 @@ function DDHome() {
                                                             fitParent={true}
                                                             items={[
                                                                 <>
-                                                                    {/*patients.length > 0 ? (
-                                                                        patients.map((patient) => (
+                                                                    {data.allPatients.doctor_patients_count > 0 ? (
+                                                                        data.allPatients.patients.map((patient) => (
                                                                             <ItemGroup
                                                                                 customClass="gap-6 align-items-center"
                                                                                 axis={false}
@@ -702,7 +724,7 @@ function DDHome() {
                                                                                                                                 <path d="M25.767 61.373a30.815 30.815 0 0 1-3.779-.88 2.652 2.652 0 0 1-.114-.093l-3.535-6.39 4.541-3.26h-4.752l1.017-6.851 4.11-2.599c.178 7.37 1.759 15.656 2.512 20.073z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                                                 <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                                             </BaseIcon>
-                                                                                                                            <p className="font-regular text-neutral-100 font-4">{patient.firstName} {patient.lastName}</p>
+                                                                                                                            <p className="font-regular text-neutral-100 font-4">{patient.first_name} {patient.last_name}</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
@@ -729,8 +751,8 @@ function DDHome() {
                                                                                                                             stretch={true}
                                                                                                                             isClickable={true}
                                                                                                                             onClick={() => {
-                                                                                                                                console.log("Open the patient's profile! ", patient.id);
-                                                                                                                                navigate(`/dashboard/${user.role}/profile/${patient.id}`);
+                                                                                                                                console.log("Open the patient's profile! ", patient.patient_id);
+                                                                                                                                navigate(`/dashboard/doctor/profile/${patient.patient_id}`);
                                                                                                                             }}
                                                                                                                             items={[
                                                                                                                                 <>
@@ -751,8 +773,8 @@ function DDHome() {
                                                                             />
                                                                         ))
                                                                     ) : (
-                                                                        <p>Hello world!</p>
-                                                                    )*/}
+                                                                        <p>No Patients...</p>
+                                                                    )}
                                                                 </>
                                                             ]}
                                                         />

@@ -32,6 +32,7 @@ import DoctorAppointment from './DoctorAppointment';
 import PatientAppointment from './PatientAppointment';
 import PharmacistHome from './PharmacistHome';
 import PharmacistPatientProfile from './PharmacistPatientProfile';
+import ErrorBoundary from './ErrorBoundary';
 
 const queryClient = new QueryClient();
 
@@ -156,8 +157,10 @@ createRoot(document.getElementById('root')).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
             <UserProvider>
-                <RouterProvider router={router} />
+                <ErrorBoundary>
+                    <RouterProvider router={router} />
+                </ErrorBoundary>
             </UserProvider>
         </QueryClientProvider>
-    </StrictMode>,
-);
+    </StrictMode>
+  );
