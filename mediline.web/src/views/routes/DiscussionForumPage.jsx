@@ -1,13 +1,61 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useState, useEffect } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
 
 function DiscussionForumPage() {
-    const posts = discussionForumViewModel.getPosts();
-    const users = discussionForumViewModel.getUsers();
+    //const posts = discussionForumViewModel.getPosts();
+    //const users = discussionForumViewModel.getUsers();
     const navigate = useNavigate();
+
+    // Used to manage data from API calls
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    // Custom hook to fetch data to be displayed in the discussion forum page
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    const fetchData = async () => {
+        // Set loading state
+        setLoading(true); 
+
+        // Call to the centralized data fetching function
+        const result = await discussionForumViewModel.fetchDiscussionData();
+        console.log(`Data to be displayed: ${JSON.stringify(result.posts, null, 2)}`);
+
+        // Update the state with fetched data
+        setData(result); 
+
+        // Clear loading state
+        setLoading(false); 
+    };
+
+    if (loading) return (
+        <Container
+            customClass="align-items-center justify-content-center"
+            fitParent={true}
+            content={[
+                <>
+                    <p>Loading data</p>
+                </>
+            ]}
+        />
+    );
+
+    if (!data) return (
+        <Container
+            customClass="align-items-center justify-content-center"
+            fitParent={true}
+            content={[
+                <>
+                    <p>Error loading data</p>
+                </>
+            ]}
+        />
+    );
 
     return (
         <>
@@ -167,7 +215,7 @@ function DiscussionForumPage() {
                                                             axis={true}
                                                             items={
                                                                 <>
-                                                                    {posts.map((post, index) => (
+                                                                    {data.posts.map((post, index) => (
                                                                         <>
                                                                             <Container
                                                                                 key={index}
@@ -217,11 +265,11 @@ function DiscussionForumPage() {
                                                                                                                                 <path d="M25.767 61.373a30.815 30.815 0 0 1-3.779-.88 2.652 2.652 0 0 1-.114-.093l-3.535-6.39 4.541-3.26h-4.752l1.017-6.851 4.11-2.599c.178 7.37 1.759 15.656 2.512 20.073z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                                                 <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
                                                                                                                             </BaseIcon>
-                                                                                                                            <h3 className="font-medium text-neutral-700 font-4">{users.find(user => user.id === post.authorId).firstName} {users.find(user => user.id === post.authorId).lastName}</h3>
+                                                                                                                            <h3 className="font-medium text-neutral-700 font-4">{post.user.first_name} {post.user.last_name}</h3>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
-                                                                                                                <p className="text-neutral-700">{post.timestamp}</p>
+                                                                                                                <p className="text-neutral-700">{discussionForumViewModel.generateTimestamp(discussionForumViewModel.convertToDate(post.created_at))}</p>
                                                                                                             </>
                                                                                                         ]}
                                                                                                     />
@@ -269,7 +317,7 @@ function DiscussionForumPage() {
                                                                                                                                     </g>
                                                                                                                                 </g>
                                                                                                                             </BaseIcon>
-                                                                                                                            <p className="text-neutral-600 font-semibold pb-1"><small>{discussionForumViewModel.getReplyCount(post.postId)} replies</small></p>
+                                                                                                                            <p className="text-neutral-600 font-semibold pb-1"><small>{post.comments.length === 0 ? "No" : post.comments.length} {post.comments.length === 1 ? "reply" : "replies"}</small></p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
