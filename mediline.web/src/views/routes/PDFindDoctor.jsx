@@ -69,14 +69,18 @@ function PDFindDoctor() {
     }, [searchQuery]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const result = await FindDoctorViewModel.fetchDashboardData();
-            setData(result);
-            setLoading(false);
-        }
-
         fetchData();
     }, [])
+
+    const fetchData = async () => {
+        const result = await FindDoctorViewModel.fetchDashboardData();
+        setData(result);
+        setLoading(false);
+    }
+
+    const addDoctor = async (userId) => {
+        const request = await FindDoctorViewModel.addDoctor(userId);
+    }
 
     console.log(`Specialties: ${JSON.stringify(data, null, 2)}`);
 
@@ -190,7 +194,7 @@ function PDFindDoctor() {
                                                                         contentClass="b-2 outline-neutral-800 text-start"
                                                                         items={data.specialties}
                                                                         onSelect={(item) => {
-                                                                            FindDoctorViewModel.updateFilter("specialty", item.value);
+                                                                            FindDoctorViewModel.updateFilter("specialty", item.label);
                                                                             setFormData({ ...FindDoctorViewModel });
                                                                         }}
                                                                         placeholder="Specialty"
@@ -246,12 +250,30 @@ function PDFindDoctor() {
                                                 customClass="bg-neutral-1100 py-3 b-3 outline-neutral-200 br-sm"
                                                 fitParent={true}
                                                 isClickable={true}
-                                                onClick={(e) => {
+                                                onClick={async (e) => {
                                                     e.preventDefault();
-                                                    FindDoctorViewModel.applyFilters();
-                                                    setFormData({ ...FindDoctorViewModel });
-                                                    handleCloseModal();
-                                                    console.log("Filters applied: ", FindDoctorViewModel.filters);
+
+                                                    // Set loading state to true
+                                                    setLoading(true);
+
+                                                    try {
+                                                        // Apply filters and fetch the filtered list of doctors
+                                                        const filteredDoctors = await FindDoctorViewModel.applyFilters();
+
+                                                        // Update the state with the filtered doctors
+                                                        setData((prevData) => ({
+                                                            ...prevData,
+                                                            doctors: filteredDoctors,
+                                                        }));
+
+                                                        console.log("Filters applied: ", FindDoctorViewModel.filters);
+                                                    } catch (error) {
+                                                        console.error("Error applying filters: ", error);
+                                                    } finally {
+                                                        // Set loading state to false and close the modal
+                                                        setLoading(false);
+                                                        handleCloseModal();
+                                                    }
                                                 }}
                                                 content={[
                                                     <>
@@ -341,6 +363,7 @@ function PDFindDoctor() {
                                                                             }
                                                                             onClick={(e) => {
                                                                                 e.preventDefault();
+                                                                                addDoctor(currentUser.user_id, );
                                                                                 navigate(`/dashboard/${currentUser.role}`);
                                                                             }}
                                                                             stretch={true}
@@ -425,18 +448,19 @@ function PDFindDoctor() {
                                                     }}
                                                     items={data.doctors.map((doctor) => (
                                                         <Container
-                                                            key={doctor.id}
-                                                            customClass={`p-8 bg-neutral-1100 hover-b-4 hover-outline-secondary-400 br-sm ${FindDoctorViewModel.doctorId === doctor.value ? 'selected' : ''}`}
+                                                            key={doctor.user_id}
+                                                            customClass={`p-8 bg-neutral-1100 hover-b-4 hover-outline-secondary-400 br-sm ${FindDoctorViewModel.doctorId === doctor.user_id ? 'selected' : ''}`}
                                                             isClickable={true}
                                                             onClick={() => {
-                                                                if (FindDoctorViewModel.doctorId !== null && FindDoctorViewModel.doctorId === doctor.id) {
+                                                                if (FindDoctorViewModel.doctorId !== null && FindDoctorViewModel.doctorId === doctor.user_id) {
                                                                     FindDoctorViewModel.doctorId = null;
                                                                 }
                                                                 else {
-                                                                    FindDoctorViewModel.doctorId = doctor.id;
+                                                                    FindDoctorViewModel.doctorId = doctor.user_id;
                                                                 }
+                                                                FindDoctorViewModel.doctorId = doctor.user_id;
                                                                 setFormData({ ...FindDoctorViewModel });
-                                                                console.log("You selected ", doctor.id);
+                                                                console.log("You selected ", FindDoctorViewModel.doctorId);
                                                             }}
                                                             fitParent={true}
                                                             content={[
@@ -508,7 +532,7 @@ function PDFindDoctor() {
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
-                                                                                                        {doctor.acceptingNewPatients ? (
+                                                                                                        {doctor.user.accepting_patients ? (
                                                                                                             <ItemGroup
                                                                                                                 customClass="gap-3 align-items-center"
                                                                                                                 stretch={true}
