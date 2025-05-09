@@ -32,21 +32,21 @@ function PDFindDoctor() {
     const searchQuery = queryParams.get("query");
 
     // The click event for the reset filters button
-    const clearFilters = () => {
-        FindDoctorViewModel.clearFilters();
-        console.log("servicesRef:", specialtyDropdownRef.current);
+    //const clearFilters = () => {
+    //    FindDoctorViewModel.clearFilters();
+    //    console.log("servicesRef:", specialtyDropdownRef.current);
 
-        // Checks that the select lists are not null before invoking the reset method
-        if (specialtyDropdownRef.current) {
-            specialtyDropdownRef.current.reset();
-        }
-        if (ratingDropdownRef.current) {
-            ratingDropdownRef.current.reset();
-        }
+    //    // Checks that the select lists are not null before invoking the reset method
+    //    if (specialtyDropdownRef.current) {
+    //        specialtyDropdownRef.current.reset();
+    //    }
+    //    if (ratingDropdownRef.current) {
+    //        ratingDropdownRef.current.reset();
+    //    }
 
-        // Updates the form data that is displayed on the page
-        setFormData({ ...FindDoctorViewModel });
-    };
+    //    // Updates the form data that is displayed on the page
+    //    setFormData({ ...FindDoctorViewModel });
+    //};
 
     useEffect(() => {// Reset filters when leaving the page
         // Check if a parameter has been passed from the Home Page
@@ -151,7 +151,31 @@ function PDFindDoctor() {
                                                         <ItemGroup
                                                             customClass="bg-neutral-1100 br-sm align-items-center justify-items-center px-3 gap-3"
                                                             isClickable={true}
-                                                            onClick={clearFilters}
+                                                            onClick={async (e) => {
+                                                                e.preventDefault();
+
+                                                                // Set loading state to true
+                                                                setLoading(true);
+
+                                                                try {
+                                                                    // Apply filters and fetch the filtered list of doctors
+                                                                    const unfilteredDoctors = await FindDoctorViewModel.clearFilters();
+
+                                                                    // Update the state with the filtered doctors
+                                                                    setData((prevData) => ({
+                                                                        ...prevData,
+                                                                        doctors: unfilteredDoctors,
+                                                                    }));
+
+                                                                    console.log("Filters applied: ", FindDoctorViewModel.filters);
+                                                                } catch (error) {
+                                                                    console.error("Error applying filters: ", error);
+                                                                } finally {
+                                                                    // Set loading state to false and close the modal
+                                                                    setLoading(false);
+                                                                    handleCloseModal();
+                                                                }
+                                                            }}
                                                             stretch={true}
                                                             axis={false}
                                                             items={[
