@@ -59,7 +59,7 @@ function PDHome() {
         />
     );
 
-    if (!data || !data.specialties) return (
+    if (!data) return (
         <Container
             customClass="align-items-center justify-content-center"
             fitParent={true}

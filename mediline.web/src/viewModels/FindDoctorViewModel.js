@@ -23,6 +23,8 @@ const FindDoctorViewModel = {
         setByDropdown: false,
     },
 
+    specialties: {},
+
     // The super user's token
     getSuperToken: async function () {
         try {
