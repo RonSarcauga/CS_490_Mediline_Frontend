@@ -110,3 +110,5 @@ class PDHomeViewModel {
         }
     }
 }
+
+export const pdHomeVM = new PDHomeViewModel();
