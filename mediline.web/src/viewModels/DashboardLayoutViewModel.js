@@ -45,6 +45,7 @@ class DashboardLayoutViewModel {
         }
     };
 
+    // Asynchronous method to fetch user information
     async getUserInfo(id) {
         try {
             const response = await axiosInstance.get(`/user/${id}`, {
@@ -107,6 +108,7 @@ class DashboardLayoutViewModel {
         return null; // Return null if no valid date format was found
     };
 
+    // Splits the date from time in a Date object
     splitDateTime(dateTime) {
         if (!dateTime || typeof dateTime !== "string") {
             throw new Error("Invalid input. Expected a DateTime string.");
@@ -126,6 +128,7 @@ class DashboardLayoutViewModel {
         return { date: formattedDate, time: formattedTime };
     };
 
+    // Converts a date string into a Date object
     convertToDate(dateString) {
         try {
             // Parse the date string into a Date object
@@ -142,8 +145,6 @@ class DashboardLayoutViewModel {
             return null; // Return null if the date is invalid
         }
     }
-
-
 
     // Helper method to generate a timestamp for posts
     generateTimestamp(date) {
@@ -257,6 +258,7 @@ class DashboardLayoutViewModel {
 
     };
 
+    // Captialize the first letter of a string
     capitalize(string) {
         if (!string || typeof string !== "string") {
             throw new Error(`Expected a string. Got ${typeof string} instead.`);
