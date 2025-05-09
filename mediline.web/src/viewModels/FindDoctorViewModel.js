@@ -50,7 +50,7 @@ const FindDoctorViewModel = {
     //},
 
     filterDoctors: function (doctors) {
-        const { name, specialty, rating, acceptingNewPatients } = this.filters;
+        const { name, specialty, rating, acceptingNewPatients, search } = this.filters;
 
         console.log(`Active Filters: ${JSON.stringify(this.filters, null, 2)}`);
 
@@ -66,11 +66,21 @@ const FindDoctorViewModel = {
             const matchesName = !name || doctor.name.toLowerCase().includes(name.toLowerCase());
             const matchesSpecialty = !specialty || doctor.specialization.toLowerCase() === specialty.toLowerCase();
             const matchesRating = !rating || (doctorRating >= minRating && doctorRating <= maxRating);
-            const matchesAcceptance = !acceptingNewPatients || doctor.acceptingPatients;
 
-            return matchesName && matchesSpecialty && matchesRating && matchesAcceptance;
+            // Handle acceptingNewPatients filter for both true and false
+            const matchesAcceptance =
+                acceptingNewPatients === false || doctor.acceptingPatients === acceptingNewPatients;
+
+            // Check if the search query matches the doctor's name or specialty
+            const matchesSearch =
+                !search ||
+                doctor.name.toLowerCase().includes(search.toLowerCase()) ||
+                doctor.specialization.toLowerCase().includes(search.toLowerCase());
+
+            return matchesName && matchesSpecialty && matchesRating && matchesAcceptance && matchesSearch;
         });
     },
+
 
     // Call to the update filter method in the service layer
     updateFilter: function (field, value) {
@@ -128,7 +138,7 @@ const FindDoctorViewModel = {
     },
 
     // Call to the clear filters method in the service layer
-    clearFilters: function () {
+    clearFilters: async function () {
         this.activeFilters = {
             name: "",
             specialty: "",
@@ -136,7 +146,12 @@ const FindDoctorViewModel = {
             search: "",
             acceptingNewPatients: false,
         };
-        this.applyFilters();
+
+        this.filters = { ...this.activeFilters };
+
+        const doctors = await this.fetchDoctors();
+
+        return doctors;
     },
 
     // Call to the get doctors method in the service layer
