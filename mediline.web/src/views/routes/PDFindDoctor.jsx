@@ -62,7 +62,6 @@ function PDFindDoctor() {
         }
 
         return () => {
-            clearFilters();
             FindDoctorViewModel.filterByURL = false;
             console.log("Did the filters get reset?\n", FindDoctorViewModel.filters);
         }
