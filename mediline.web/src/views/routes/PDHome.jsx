@@ -9,14 +9,14 @@ import InputBar, { InputBarSpecial } from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import { pdHomeVM } from '../../viewModels/PDHomeViewModel';
+import Dashboard from '../../components/Dashboard/Dashboard';
 
 function PDHome() {
     const { currentUser } = useContext(UserContext);
-    const doctorData = currentUser.doctor;
+    const navigate = useNavigate();
     //const pastAppointments = dashboardLayoutViewModel.getPastAppointments(currentUser.user_id);
     //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointments(currentUser.user_id);
-    const navigate = useNavigate();
-    console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}\nToken: ${localStorage.getItem("jwtToken")}`);
+    //console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}\nToken: ${localStorage.getItem("jwtToken")}`);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const handleOpenModal = () => {
@@ -26,21 +26,55 @@ function PDHome() {
         setIsModalOpen(false);
     }
 
-    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString());
     const handleDateSelect = (date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0); // Reset time to midnight for comparison
         if (date >= today) {
-            setSelectedDate(date.toLocaleDateString());
+            const formattedDate = date.toLocaleDateString();
+            setSelectedDate(formattedDate);
+            setAppointmentData((prevData) => ({
+                ...prevData,
+                ['date']: formattedDate
+            }));
         } else {
             console.error("Selected date must be today or later.");
+            const formattedDate = today.toLocaleDateString();
+            setSelectedDate(formattedDate);
+            setAppointmentData((prevData) => ({
+                ...prevData,
+                ['date']: formattedDate,
+            }));
         }
     };
-
 
     // Used to manage data from API calls
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // Used to manage appointment data
+    const [appointmentData, setAppointmentData] = useState({
+        date: '',
+        time: '',
+    });
+
+    const handleInputChange = (field, value) => {
+        setAppointmentData((prevData) => {
+            const updatedData = {
+                ...prevData,
+                [field]: value,
+            };
+            console.log("Updated Appointment Data:", updatedData);
+            return updatedData;
+        });
+    };
+
+    const handleSubmit = () => {
+        console.log(`Appointment Date: ${appointmentData.date}\nAppointment Time: ${appointmentData.time}\nDoctor ID: ${currentUser.doctor.doctor_id}\nUser ID: ${currentUser.user_id}`);
+        setLoading(true);
+        pdHomeVM.bookAppointment(appointmentData.date, appointmentData.time, currentUser.doctor.doctor_id, currentUser.user_id);
+        setLoading(false);
+    }
 
     // Custom hook that is used to refresh tha page
     useEffect(() => {
@@ -49,8 +83,9 @@ function PDHome() {
 
     // Main function that fetches dashboard data
     const fetchData = async () => {
-        const result = await pdHomeVM.fetchData(currentUser.user_id);
+        const result = await pdHomeVM.fetchData(currentUser.user_id, currentUser.doctor);
         setData(result);
+        console.log(`Patient Dashboard Data:\n${JSON.stringify(result, null, 2)}`);
         setLoading(false);
     }
 
@@ -143,7 +178,7 @@ function PDHome() {
                                                                                                         <p className="font-medium font-4">Selected Date</p>
                                                                                                         <InputBar
                                                                                                             customClass='bg-neutral-expanded-1100 py-2 px-0 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-neutral-600 input-text-neutral-100 input-font-4 input-p-0'
-                                                                                                            value={selectedDate}
+                                                                                                            value={appointmentData.date}
                                                                                                             placeholder="Select a date"
                                                                                                             readonly={true}
                                                                                                         />
@@ -165,6 +200,10 @@ function PDHome() {
                                                                                                             inputType="number"
                                                                                                             maxLength={4}
                                                                                                             specialFormat="XX:XX"
+                                                                                                            onChange={(e) => {
+                                                                                                                handleInputChange('time', e.target.value);
+                                                                                                            }}
+                                                                                                            value={appointmentData.time}
                                                                                                         />
                                                                                                     </>
                                                                                                 ]}
@@ -182,6 +221,16 @@ function PDHome() {
                                                                                                 customClass="bg-neutral-1100 py-3 b-3 outline-neutral-400 br-sm"
                                                                                                 fitParent={true}
                                                                                                 isClickable={true}
+                                                                                                onClick={() => {
+                                                                                                    handleSubmit();
+                                                                                                    setLoading(true)
+                                                                                                    setAppointmentData({
+                                                                                                        date: '',
+                                                                                                        time: '',
+                                                                                                    })
+                                                                                                    setLoading(false)
+                                                                                                    handleCloseModal();
+                                                                                                }}
                                                                                                 content={[
                                                                                                     <>
                                                                                                         <p className="font-semibold text-neutral-400">CONFIRM</p>
@@ -193,7 +242,10 @@ function PDHome() {
                                                                                                 fitParent={true}
                                                                                                 isClickable={true}
                                                                                                 onClick={() => {
-                                                                                                    setSelectedDate(null);
+                                                                                                    setAppointmentData({
+                                                                                                        date: '',
+                                                                                                        time: '',
+                                                                                                    })
                                                                                                     handleCloseModal();
                                                                                                 }}
                                                                                                 content={[
@@ -402,7 +454,7 @@ function PDHome() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3 text-neutral-600">DOCTOR</h5>
                                                                                                                         <p className="font-3 font-medium text-neutral-600">
-                                                                                                                            Dr. {doctorData.first_name} {doctorData.last_name}
+                                                                                                                            Dr. {data.doctorInfo.first_name} {data.doctorInfo.last_name}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -416,23 +468,24 @@ function PDHome() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3 text-neutral-600">STATUS</h5>
                                                                                                                         <p className="font-3 font-medium text-neutral-600">
-                                                                                                                            {currentUser.doctor !== null ? (
-                                                                                                                                <ItemGroup
-                                                                                                                                    items={[
-                                                                                                                                        <>
-                                                                                                                                            <h3 className="text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
-                                                                                                                                        </>
-                                                                                                                                    ]}
-                                                                                                                                />
-                                                                                                                            ) : (
-                                                                                                                                <ItemGroup
-                                                                                                                                    items={[
-                                                                                                                                        <>
-                                                                                                                                            <h3 className="text-warning-100 bg-warning-400 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
-                                                                                                                                        </>
-                                                                                                                                    ]}
-                                                                                                                                />
-                                                                                                                            )}
+                                                                                                                            {currentUser.doctor !== null && (
+                                                                                                                                data.doctorInfo.accepting_patients ? (
+                                                                                                                                    <ItemGroup
+                                                                                                                                        items={[
+                                                                                                                                            <>
+                                                                                                                                                <h3 className="text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
+                                                                                                                                            </>
+                                                                                                                                        ]}
+                                                                                                                                    />
+                                                                                                                                ) : (
+                                                                                                                                    <ItemGroup
+                                                                                                                                        items={[
+                                                                                                                                            <>
+                                                                                                                                                <h3 className="text-warning-100 bg-warning-400 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
+                                                                                                                                            </>
+                                                                                                                                        ]}
+                                                                                                                                    />
+                                                                                                                                ))}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -722,136 +775,149 @@ function PDHome() {
                                                     contentClass="pt-6"
                                                     content={[
                                                         <>
-                                                            {
-                                                                data.upcomingAppointments.length > 0 ? (
-                                                                    data.upcomingAppointments.map((appt) => (
-                                                                        <Container
-                                                                            customClass="gradient-white br-sm p-5 align-items-center"
-                                                                            fitParent={true}
-                                                                            content={[
-                                                                                <>
-                                                                                    <ItemGroup
-                                                                                        customClass="px-4 gap-10"
-                                                                                        axis={false}
+                                                            <ItemGroup
+                                                                customClass="hideScroll gap-10"
+                                                                fitParent={true}
+                                                                axis={true}
+                                                                style={{
+                                                                    maxHeight: "130px",
+                                                                    gridAutoRows: "130px"
+                                                                }}
+                                                                items={[
+                                                                    <>
+                                                                        {
+                                                                            data.upcomingAppointments.length > 0 ? (
+                                                                                data.upcomingAppointments.map((appt) => (
+                                                                                    <Container
+                                                                                        customClass="gradient-white br-sm p-5 align-items-center"
                                                                                         fitParent={true}
-                                                                                        stretch={true}
-                                                                                        items={[
+                                                                                        content={[
                                                                                             <>
-                                                                                                <BaseIcon
-                                                                                                    height="70px"
-                                                                                                    width="70px"
-                                                                                                    fillColor='none'
-                                                                                                    viewBox='0 0 61.7998 61.7998'>
-                                                                                                    <circle cx="30.8999" cy="30.8999" fill="hsl(210, 50%, 90%)" r="30.8999" />
-                                                                                                    <path d="M23.255 38.68l15.907.121v12.918l-15.907-.121V38.68z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
-                                                                                                    <path d="M43.971 58.905a30.967 30.967 0 0 1-25.843.14V48.417H43.97z" fill="hsl(210, 50%, 90%)" fill-rule="evenodd" />
-                                                                                                    <path d="M33.403 61.7q-1.238.099-2.503.1-.955 0-1.895-.057l1.03-8.988h2.41z" fill="hsl(210, 40%, 70%)" fill-rule="evenodd" />
-                                                                                                    <path d="M25.657 61.332A34.072 34.072 0 0 1 15.9 57.92a31.033 31.033 0 0 1-7.857-6.225l1.284-3.1 13.925-6.212c0 5.212 1.711 13.482 2.405 18.95z" fill="hsl(210, 40%, 95%)" fill-rule="evenodd" />
-                                                                                                    <path d="M39.165 38.759v3.231c-4.732 5.527-13.773 4.745-15.8-3.412z" fill-rule="evenodd" opacity="0.11" />
-                                                                                                    <path d="M31.129 8.432c21.281 0 12.987 35.266 0 35.266-12.267 0-21.281-35.266 0-35.266z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
-                                                                                                    <path d="M18.365 24.046c-3.07 1.339-.46 7.686 1.472 7.658a31.972 31.972 0 0 1-1.472-7.659z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
-                                                                                                    <path d="M44.14 24.045c3.07 1.339.46 7.687-1.471 7.658a31.993 31.993 0 0 0 1.471-7.658z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
-                                                                                                    <path d="M21.931 14.328c-3.334 3.458-2.161 13.03-2.161 13.03l-1.05-.495c-6.554-25.394 31.634-25.395 25.043 0l-1.05.495s1.174-9.572-2.16-13.03c-4.119 3.995-14.526 3.974-18.622 0z" fill="hsl(210, 30%, 70%)" fill-rule="evenodd" />
-                                                                                                    <path d="M36.767 61.243a30.863 30.863 0 0 0 17.408-10.018l-1.09-2.631-13.924-6.212c0 5.212-1.7 13.393-2.394 18.861z" fill="hsl(210, 40%, 95%)" fill-rule="evenodd" />
-                                                                                                    <path d="M39.162 41.98l-7.926 6.465 6.573 5.913s1.752-9.704 1.353-12.378z" fill="hsl(210, 50%, 90%)" fill-rule="evenodd" />
-                                                                                                    <path d="M23.253 41.98l7.989 6.465-6.645 5.913s-1.746-9.704-1.344-12.378z" fill="hsl(210, 50%, 90%)" fill-rule="evenodd" />
-                                                                                                    <path d="M28.109 51.227l3.137-2.818 3.137 2.818-3.137 2.817-3.137-2.817z" fill="hsl(210, 40%, 70%)" fill-rule="evenodd" />
-                                                                                                    <path d="M25.767 61.373a30.815 30.815 0 0 1-3.779-.88 2.652 2.652 0 0 1-.114-.093l-3.535-6.39 4.541-3.26h-4.752l1.017-6.851 4.11-2.599c.178 7.37 1.759 15.656 2.512 20.073z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
-                                                                                                    <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
-                                                                                                </BaseIcon>
                                                                                                 <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
+                                                                                                    customClass="px-4 gap-10"
+                                                                                                    axis={false}
                                                                                                     fitParent={true}
+                                                                                                    stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <h5 className="font-3 font-semibold">Dr. {currentUser.doctor.first_name} {currentUser.doctor.last_name}</h5>
-                                                                                                            <p className="font-3 font-medium">{currentUser.doctor.specialization}</p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <h5 className="font-3 font-semibold">MEETING TIME</h5>
+                                                                                                            <BaseIcon
+                                                                                                                height="70px"
+                                                                                                                width="70px"
+                                                                                                                fillColor='none'
+                                                                                                                viewBox='0 0 61.7998 61.7998'>
+                                                                                                                <circle cx="30.8999" cy="30.8999" fill="hsl(210, 50%, 90%)" r="30.8999" />
+                                                                                                                <path d="M23.255 38.68l15.907.121v12.918l-15.907-.121V38.68z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
+                                                                                                                <path d="M43.971 58.905a30.967 30.967 0 0 1-25.843.14V48.417H43.97z" fill="hsl(210, 50%, 90%)" fill-rule="evenodd" />
+                                                                                                                <path d="M33.403 61.7q-1.238.099-2.503.1-.955 0-1.895-.057l1.03-8.988h2.41z" fill="hsl(210, 40%, 70%)" fill-rule="evenodd" />
+                                                                                                                <path d="M25.657 61.332A34.072 34.072 0 0 1 15.9 57.92a31.033 31.033 0 0 1-7.857-6.225l1.284-3.1 13.925-6.212c0 5.212 1.711 13.482 2.405 18.95z" fill="hsl(210, 40%, 95%)" fill-rule="evenodd" />
+                                                                                                                <path d="M39.165 38.759v3.231c-4.732 5.527-13.773 4.745-15.8-3.412z" fill-rule="evenodd" opacity="0.11" />
+                                                                                                                <path d="M31.129 8.432c21.281 0 12.987 35.266 0 35.266-12.267 0-21.281-35.266 0-35.266z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
+                                                                                                                <path d="M18.365 24.046c-3.07 1.339-.46 7.686 1.472 7.658a31.972 31.972 0 0 1-1.472-7.659z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
+                                                                                                                <path d="M44.14 24.045c3.07 1.339.46 7.687-1.471 7.658a31.993 31.993 0 0 0 1.471-7.658z" fill="hsl(210, 10%, 95%)" fill-rule="evenodd" />
+                                                                                                                <path d="M21.931 14.328c-3.334 3.458-2.161 13.03-2.161 13.03l-1.05-.495c-6.554-25.394 31.634-25.395 25.043 0l-1.05.495s1.174-9.572-2.16-13.03c-4.119 3.995-14.526 3.974-18.622 0z" fill="hsl(210, 30%, 70%)" fill-rule="evenodd" />
+                                                                                                                <path d="M36.767 61.243a30.863 30.863 0 0 0 17.408-10.018l-1.09-2.631-13.924-6.212c0 5.212-1.7 13.393-2.394 18.861z" fill="hsl(210, 40%, 95%)" fill-rule="evenodd" />
+                                                                                                                <path d="M39.162 41.98l-7.926 6.465 6.573 5.913s1.752-9.704 1.353-12.378z" fill="hsl(210, 50%, 90%)" fill-rule="evenodd" />
+                                                                                                                <path d="M23.253 41.98l7.989 6.465-6.645 5.913s-1.746-9.704-1.344-12.378z" fill="hsl(210, 50%, 90%)" fill-rule="evenodd" />
+                                                                                                                <path d="M28.109 51.227l3.137-2.818 3.137 2.818-3.137 2.817-3.137-2.817z" fill="hsl(210, 40%, 70%)" fill-rule="evenodd" />
+                                                                                                                <path d="M25.767 61.373a30.815 30.815 0 0 1-3.779-.88 2.652 2.652 0 0 1-.114-.093l-3.535-6.39 4.541-3.26h-4.752l1.017-6.851 4.11-2.599c.178 7.37 1.759 15.656 2.512 20.073z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
+                                                                                                                <path d="M36.645 61.266c.588-.098 1.17-.234 1.747-.384.682-.177 1.36-.377 2.034-.579l.134-.043 3.511-6.315-4.541-3.242h4.752l-1.017-6.817-4.11-2.586c-.178 7.332-1.758 15.571-2.51 19.966z" fill="hsl(210, 40%, 93%)" fill-rule="evenodd" />
+                                                                                                            </BaseIcon>
                                                                                                             <ItemGroup
-                                                                                                                customClass="align-items-center gap-2"
-                                                                                                                axis={false}
+                                                                                                                customClass="gap-2"
+                                                                                                                axis={true}
                                                                                                                 stretch={true}
+                                                                                                                fitParent={true}
                                                                                                                 items={[
                                                                                                                     <>
-                                                                                                                        <BaseIcon
-                                                                                                                            height="15px"
-                                                                                                                            width="15px"
-                                                                                                                            viewBox="0 1 24 24"
-                                                                                                                            fillColor="none">
-                                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                            <g id="SVGRepo_iconCarrier">
-                                                                                                                                <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 0%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                            </g>
-                                                                                                                        </BaseIcon>
-                                                                                                                        <p className="font-3 font-medium">{dashboardLayoutViewModel.formatBirthDate(data.pastAppointments[0].appointmentDate)}</p>
+                                                                                                                        <h5 className="font-3 font-semibold">Dr. {appt.doctor_name}</h5>
+                                                                                                                        <p className="font-3 font-medium">{appt.doctorInfo.specialization}</p>
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
                                                                                                             <ItemGroup
-                                                                                                                customClass="align-items-center gap-2"
-                                                                                                                axis={false}
+                                                                                                                customClass="gap-2"
+                                                                                                                axis={true}
                                                                                                                 stretch={true}
+                                                                                                                fitParent={true}
                                                                                                                 items={[
                                                                                                                     <>
-                                                                                                                        <BaseIcon
-                                                                                                                            height="16px"
-                                                                                                                            width="16px"
-                                                                                                                            viewBox="0 1 24 24"
-                                                                                                                            fillColor="none">
-                                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                            <g id="SVGRepo_iconCarrier">
-                                                                                                                                <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 0%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                            </g>
-                                                                                                                        </BaseIcon>
-                                                                                                                        <p className="font-3 font-medium">{appt.startTime} - {appt.endTime}</p>
+                                                                                                                        <h5 className="font-3 font-semibold">MEETING TIME</h5>
+                                                                                                                        <ItemGroup
+                                                                                                                            customClass="align-items-center gap-2"
+                                                                                                                            axis={false}
+                                                                                                                            stretch={true}
+                                                                                                                            items={[
+                                                                                                                                <>
+                                                                                                                                    <BaseIcon
+                                                                                                                                        height="15px"
+                                                                                                                                        width="15px"
+                                                                                                                                        viewBox="0 1 24 24"
+                                                                                                                                        fillColor="none">
+                                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                                            <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 0%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        </g>
+                                                                                                                                    </BaseIcon>
+                                                                                                                                    <p className="font-3 font-medium">{dashboardLayoutViewModel.formatBirthDate(appt.start_date)}</p>
+                                                                                                                                </>
+                                                                                                                            ]}
+                                                                                                                        />
+                                                                                                                        <ItemGroup
+                                                                                                                            customClass="align-items-center gap-2"
+                                                                                                                            axis={false}
+                                                                                                                            stretch={true}
+                                                                                                                            items={[
+                                                                                                                                <>
+                                                                                                                                    <BaseIcon
+                                                                                                                                        height="16px"
+                                                                                                                                        width="16px"
+                                                                                                                                        viewBox="0 1 24 24"
+                                                                                                                                        fillColor="none">
+                                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                                            <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 0%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        </g>
+                                                                                                                                    </BaseIcon>
+                                                                                                                                    <p className="font-3 font-medium">{pdHomeVM.splitDateTime(appt.start_date).time}</p>
+                                                                                                                                </>
+                                                                                                                            ]}
+                                                                                                                        />
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <h5 className="font-3 font-semibold">APPOINTMENT TYPE</h5>
                                                                                                             <ItemGroup
-                                                                                                                customClass="align-items-center gap-2"
-                                                                                                                axis={false}
+                                                                                                                customClass="gap-2"
+                                                                                                                axis={true}
                                                                                                                 stretch={true}
+                                                                                                                fitParent={true}
                                                                                                                 items={[
                                                                                                                     <>
-                                                                                                                        <BaseIcon
-                                                                                                                            height="20px"
-                                                                                                                            width="20px"
-                                                                                                                            viewBox="0 0.5 24 24"
-                                                                                                                            fillColor="none">
-                                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                            <g id="SVGRepo_iconCarrier">
-                                                                                                                                <g stroke="#000000" stroke-width="1.5">
-                                                                                                                                    <path d="M16 16V8a1 1 0 00-1-1H5a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1z" /> <path stroke-linejoin="round" d="M20 7l-4 3v4l4 3V7z" />
-                                                                                                                                </g>
-                                                                                                                            </g>
-                                                                                                                        </BaseIcon>
-                                                                                                                        <p className="font-3 font-medium">{appt.appointmentType}</p>
+                                                                                                                        <h5 className="font-3 font-semibold">APPOINTMENT TYPE</h5>
+                                                                                                                        <ItemGroup
+                                                                                                                            customClass="align-items-center gap-2"
+                                                                                                                            axis={false}
+                                                                                                                            stretch={true}
+                                                                                                                            items={[
+                                                                                                                                <>
+                                                                                                                                    <BaseIcon
+                                                                                                                                        height="20px"
+                                                                                                                                        width="20px"
+                                                                                                                                        viewBox="0 0.5 24 24"
+                                                                                                                                        fillColor="none">
+                                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                                            <g stroke="#000000" stroke-width="1.5">
+                                                                                                                                                <path d="M16 16V8a1 1 0 00-1-1H5a1 1 0 00-1 1v8a1 1 0 001 1h10a1 1 0 001-1z" /> <path stroke-linejoin="round" d="M20 7l-4 3v4l4 3V7z" />
+                                                                                                                                            </g>
+                                                                                                                                        </g>
+                                                                                                                                    </BaseIcon>
+                                                                                                                                    <p className="font-3 font-medium">{appt.treatment}</p>
+                                                                                                                                </>
+                                                                                                                            ]}
+                                                                                                                        />
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
@@ -861,22 +927,22 @@ function PDHome() {
                                                                                             </>
                                                                                         ]}
                                                                                     />
-                                                                                </>
-                                                                            ]}
-                                                                        />
-                                                                    ))
-                                                                ) : (
-                                                                    <Container
-                                                                        customClass="br-sm p-5 align-items-center justify-content-center bg-primary-dark-800"
-                                                                        fitParent={true}
-                                                                        content={[
-                                                                            <>
-                                                                                <p className="text-primary-neutral-100 font-semibold font-4">You have no bookings</p>
-                                                                            </>
-                                                                        ]}
-                                                                    />
-                                                                )
-                                                            }
+                                                                                ))
+                                                                            ) : (
+                                                                                <Container
+                                                                                    customClass="br-sm p-5 align-items-center justify-content-center bg-primary-dark-800"
+                                                                                    fitParent={true}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <p className="text-primary-neutral-100 font-semibold font-4">You have no bookings</p>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            )
+                                                                        }
+                                                                    </>
+                                                                ]}
+                                                            />
                                                         </>
                                                     ]}
                                                 />
@@ -1066,7 +1132,7 @@ function PDHome() {
                                                                                                                                                                                         <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                                                                     </g>
                                                                                                                                                                                 </BaseIcon>
-                                                                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(pastAppointments[0].appointmentDate)}</p>
+                                                                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(data.pastAppointments[0].appointmentDate)}</p>
                                                                                                                                                                             </>
                                                                                                                                                                         ]}
                                                                                                                                                                     />
@@ -1203,7 +1269,44 @@ function PDHome() {
                                                                                             <div className="dropdownDown"></div>
                                                                                         ]}
                                                                                         bodyClass="pt-5 pb-3"
-                                                                                        body={[
+                                                                                        body={Array.isArray(data.prescriptions) && data.prescriptions.length == 0 ? (
+                                                                                            data.prescriptions.slice(0, 1).map((prescription) => (
+                                                                                                <>
+                                                                                                    <ItemGroup
+                                                                                                        customClass={`align-items-center`}
+                                                                                                        fitParent={true}
+                                                                                                        axis={false}
+                                                                                                        stretch={true}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <ItemGroup
+                                                                                                                    customClass={`align-items-center gap-3`}
+                                                                                                                    fitParent={true}
+                                                                                                                    axis={false}
+                                                                                                                    stretch={true}
+                                                                                                                    items={[
+                                                                                                                        <>
+                                                                                                                            <div style={{ height: "35px", width: "35px", position: "relative", background: "orange", borderRadius: "50%" }}>
+                                                                                                                                <div style={{ height: "20px", width: "20px", position: "absolute", background: "white", borderRadius: "50%", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }} />
+                                                                                                                            </div>
+                                                                                                                            <ItemGroup
+                                                                                                                                axis={true}
+                                                                                                                                items={[
+                                                                                                                                    <>
+                                                                                                                                        <h5 className="font-semibold">{prescription.name}</h5>
+                                                                                                                                        <p className="font-dark-400 font-3 font-medium">{prescription.dosage}</p>
+                                                                                                                                    </>
+                                                                                                                                ]}
+                                                                                                                            />
+                                                                                                                        </>
+                                                                                                                    ]}
+                                                                                                                />
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                </>
+                                                                                            ))
+                                                                                        ) : (
                                                                                             <ItemGroup
                                                                                                 axis={true}
                                                                                                 stretch={true}
@@ -1213,7 +1316,7 @@ function PDHome() {
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
-                                                                                        ]}
+                                                                                        )}
                                                                                     />
                                                                                     <Accordion
                                                                                         headerClass="py-4 px-5 br-sm bg-primary-dark-700"
@@ -1259,7 +1362,7 @@ function PDHome() {
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <p className="font-3 font-semibold text-neutral-600">You do not have any forms</p>
+                                                                                                        <p className="font-3 font-semibold text-neutral-600">Be sure to submit your daily survey</p>
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
