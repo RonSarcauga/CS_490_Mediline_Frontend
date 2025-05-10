@@ -646,7 +646,7 @@ function PHPatient() {
                                                                                                                     fitParent={true}
                                                                                                                     items={[
                                                                                                                         <>
-                                                                                                                            <p className="font-3 font-medium text-neutral-600">{med.duration} days</p>
+                                                                                                                            <p className="font-3 font-medium text-neutral-600">{/*{med.duration} days*/}</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />

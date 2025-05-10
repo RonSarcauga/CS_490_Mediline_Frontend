@@ -42,84 +42,52 @@ function isPrescriptionActive(takenDateStr, duration) {
   return now >= start && now <= end;
 }
 
-/*async function fetchActiveMedications(pharmaId) {
-  try {
-    const patientsRes = await fetchPharmacyPatients(pharmaId);
-    const patients = [
-      ...(patientsRes.new_patients || []),
-      ...(patientsRes.other_patients || [])
-    ];
-
-    const allMedications = await Promise.all(
-      patients.map(async (pat) => {
-        try {
-          const res = await axios.get(`/prescription/user/${pat.patient_id}`, authHeaders());
-          const history = res.data;
-
-          // Filter and format active prescriptions
-          return history
-            .filter(entry => isPrescriptionActive(entry.taken_date, entry.duration))
-            .map(entry => ({
-              medication: entry.medication_name,
-              dosage: entry.dosage,
-              patientName: pat.name || `${pat.first_name} ${pat.last_name}`,
-              startDate: entry.taken_date,
-              duration: entry.duration,
-              instructions: entry.medical_instructions,
-              isActive: true
-            }));
-        } catch (err) {
-          console.error(`Error fetching history for patient ${pat.id}:`, err);
-          return []; // fallback: skip this patient
-        }
-      })
-    );
-
-    return allMedications.flat(); // flatten all patient meds
-  } catch (err) {
-    console.error("Error fetching active medications:", err);
-    throw err;
-  }
-}*/
-
-
 async function fetchMedicationslist(pharmaId) {
     try {
         const patientsRes = await fetchPharmacyPatients(pharmaId);
-        const patients = [...patientsRes.new_patients, ...patientsRes.other_patients];       
+        const patients = [
+            ...(patientsRes.new_patients || []),
+            ...(patientsRes.other_patients || [])
+        ];
 
         const allMeds = await Promise.all(
             patients.map(async (pat) => {
-                console.log("pat",pat)
                 try {
-                    const res = await axios.get(`/prescription/patient/${pat.patient_id}/history`, authHeaders());
-                    const history = res.data;
-                    console.log("hist",history)
-                    // Filter and format active prescriptions
+                    const [historyRes, userRes] = await Promise.all([
+                        axios.get(`/prescription/patient/${pat.patient_id}/history`, authHeaders()),
+                        axios.get(`/user/${pat.patient_id}`, authHeaders())
+                    ]);
+
+                    const history = (historyRes.data || []).flat();
+                    const userData = userRes.data;
+
+                    const doctorName = userData?.doctor.first_name+" "+userData?.doctor.last_name || "Unknown";
+
                     return history
                         .filter(entry => isPrescriptionActive(entry.taken_date, entry.duration))
                         .map(entry => ({
                             medication: entry.medication_name,
                             dosage: entry.dosage,
                             patientName: pat.patient_name,
-                            doctorName: pat.doctor_name,
                             startDate: entry.taken_date,
                             duration: entry.duration,
-                            isActive: true
+                            status: entry.status,
+                            doctorName: doctorName,
                         }));
                 } catch (err) {
-                    console.error(`Error fetching history for patient ${pat.patient_id}:`, err);
-                    return []; // fallback: skip this patient
+                    console.error(`Error processing patient ${pat.patient_id}:`, err);
+                    return [];
                 }
             })
         );
-  
-        return allMeds.flat();
+
+        return allMeds.flat().sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
     } catch (err) {
         console.error("Error fetching full medication data:", err);
         throw err;
     }
 }
+
 
 async function fetchPatientOverview(patientId) {
     try {
@@ -158,12 +126,14 @@ async function fetchPatientOverview(patientId) {
         
         console.log("medsRes.data:", medsRes.data);
 
-        const medHistory = medsRes.data?.map(med => ({
-           medication: med.name,
-           dosage: med.dosage,
-           //duration: med.duration,
-           //takenDate: med.taken_date
-         })) || [];
+        const medHistory = (medsRes.data || [])
+        .flat() // flattens the outer array of arrays
+        .map(med => ({
+            medication: med.name,
+            dosage: med.dosage,
+            //duration: med.duration,
+            //takenDate: med.taken_date,
+        }));
 
         return {
             name: `${first_name} ${last_name}`,

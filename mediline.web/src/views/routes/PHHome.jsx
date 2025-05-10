@@ -11,19 +11,16 @@ import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel';
 function PHHome() {
     const { currentUser } = useContext(UserContext);
     const users = dashboardLayoutViewModel.getUsers();
-    console.log('user:', currentUser);
     const [medications, setMedications] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        console.log("Running useEffect with user ID:", currentUser?.user_id);
         const loadMeds = async () => {
             setLoading(true);
             try {
-            const result = await PharmaDashboardViewModel.fetchMedicationslist(currentUser.user_id);
-            console.log("Fetched medications:", result);
-            setMedications(result);
+                const result = await PharmaDashboardViewModel.fetchMedicationslist(currentUser.user_id);
+                setMedications(result);
             } catch (err) {
-            console.error("Failed to load medications", err);
+                console.error("Failed to load medications", err);
             }
             setLoading(false);
         };
@@ -36,10 +33,6 @@ function PHHome() {
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
     //const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
     const { data, status, isLoading, isError, error } = PharmaDashboardViewModel.usePharmaHome(currentUser.user_id);
-    console.log('data:', data);
-    console.log("meds: ", medications);
-
-
     if (isLoading) return <p>Loading…</p>;
     if (isError)   return <p>Error: {error.message}</p>;
 
@@ -49,10 +42,6 @@ function PHHome() {
             fitParent={true}
             content={[
                 <>
-                <button onClick={() => PharmaDashboardViewModel.fetchMedicationslist(currentUser.user_id)}>
-  Test Meds Fetch
-</button>
-
                     <ItemGroup
                         customClass="gap-5"
                         axis={false}
@@ -264,6 +253,7 @@ function PHHome() {
                                                                                         <>
                                                                                             <h5 className="font-3 text-neutral-600">MEDICATION</h5>
                                                                                             <h5 className="font-3 text-neutral-600">STOCK</h5>
+                                                                                            <h5 className="font-3 text-neutral-600">EXPIRATION</h5>
                                                                                         </>
                                                                                     ]}
                                                                                 />
@@ -300,6 +290,7 @@ function PHHome() {
                                                                                                 <>
                                                                                                     <h5 className="font-3 font-semibold text-neutral-600">{stock.medication_name}</h5>
                                                                                                     <h5 className="font-3 font-semibold text-neutral-600">{stock.quantity} units</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(stock.expiration_date)}</h5>
                                                                                                 </>
                                                                                             ]}
                                                                                         />
@@ -360,7 +351,7 @@ function PHHome() {
                                                                     <h5 className="font-3 text-neutral-600">PATIENT</h5>
                                                                     <h5 className="font-3 text-neutral-600">DOCTOR</h5>
                                                                     <h5 className="font-3 text-neutral-600">MEDICATION</h5>
-                                                                    <h5 className="font-3 text-neutral-600">ASSIGNED</h5>
+                                                                    <h5 className="font-3 text-neutral-600">DURATION</h5>
                                                                     <h5 className="font-3 text-neutral-600">DOSAGE</h5>
                                                                     <h5 className="font-3 text-neutral-600">STATUS</h5>
                                                                 </>
@@ -397,10 +388,10 @@ function PHHome() {
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">{med.patientName}</h5>
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">Dr. {med.doctorName}</h5>
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">{med.medication}</h5>
-                                                                                <h5 className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.splitDateTime(med.date).date}</h5>
-                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.dosage}</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.duration} days</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.dosage} units</h5>
                                                                                 <ItemGroup
-                                                                                    customClass={`br ${med.status === 'Filled' ? 'bg-success-500' : 'bg-warning-500'}`}
+                                                                                    customClass={`br ${med.status === 'PAID' ? 'bg-success-500' : 'bg-warning-500'}`}
                                                                                     items={[
                                                                                         <h3 className="text-white font-semibold font-3 py-1 px-3 br">{med.status}</h3>
                                                                                     ]}
