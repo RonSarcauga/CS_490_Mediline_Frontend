@@ -120,17 +120,7 @@ function PDDiscussionForum() {
         }
     }, [isCreating]);
 
-    if (loading) return (
-        <Container
-            customClass="align-items-center justify-content-center"
-            fitParent={true}
-            content={[
-                <>
-                    <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
-                </>
-            ]}
-        />
-    );
+    //if (loading) return (<Container fitParent={true} customClass="p-5" content={[<Spinner size={64} />]} />);
 
     //if (!data) return (
     //    <Container
@@ -278,7 +268,7 @@ function PDDiscussionForum() {
                                                                     <>
                                                                         <ItemGroup
                                                                             customClass="bg-dark-100 br-sm align-items-center justify-items-center pl-1 py-1"
-                                                                            isClickable={!isCreating}
+                                                                            isClickable={!isCreating && !loading}
                                                                             onClick={handleCreate}
                                                                             stretch={true}
                                                                             axis={false}
@@ -319,6 +309,9 @@ function PDDiscussionForum() {
                             contentClass="px-10"
                             content={[
                                 <>
+                                    {loading ? (
+                                        <Container customClass="p-5" content={[<Spinner size={64} />]} />
+                                    ) : (
                                     <ItemGroup
                                         customClass="gap-5"
                                         fitParent={true}
@@ -807,6 +800,7 @@ function PDDiscussionForum() {
                                             </>
                                         ]}
                                     />
+                                    )}
                                 </>
                             ]}
                         />

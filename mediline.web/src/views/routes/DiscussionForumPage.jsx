@@ -35,19 +35,9 @@ function DiscussionForumPage() {
         setLoading(false); 
     };
 
-    if (loading) return (
-        <Container
-            customClass="align-items-center justify-content-center"
-            fitParent={true}
-            content={[
-                <>
-                    <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
-                </>
-            ]}
-        />
-    );
+    //if (loading) return ( <Container customClass="p-5" content={[<Spinner size={64} />]} />);
 
-    if (!data) return (
+    if (!data && !loading) return (
         <Container
             customClass="align-items-center justify-content-center"
             fitParent={true}
@@ -217,7 +207,10 @@ function DiscussionForumPage() {
                                                             axis={true}
                                                             items={
                                                                 <>
-                                                                    {data.posts.map((post, index) => (
+                                                                    {loading ? (
+                                                                        <Container customClass="p-5" content={[<Spinner size={64} />]} />
+                                                                    ) : (
+                                                                    data.posts.map((post, index) => (
                                                                         <>
                                                                             <Container
                                                                                 key={index}
@@ -333,7 +326,8 @@ function DiscussionForumPage() {
                                                                                 ]}
                                                                             />
                                                                         </>
-                                                                    ))}
+                                                                    ))
+                                                                    )}
                                                                     <Container
                                                                         fitParent={true}
                                                                         customClass="align-items-center justify-content-center py-10"
