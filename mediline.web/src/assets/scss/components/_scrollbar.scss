@@ -1,0 +1,65 @@
+/* Custom Scrollbar 1 */
+.postList {
+    overflow-y: auto;
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+    /* Browser-Specific Styles */
+    .postList::-webkit-scrollbar {
+        width: 12px;
+    }
+
+    .postList::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .postList::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        border: 3px solid transparent;
+    }
+
+    .postList::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .postList::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    /* End of Browser-Specific Styles */
+
+/* End of CS 1 */
+
+/* Custom Scrollbar 2 */
+.hideScroll {
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+    /* Browser-Specific Styles */
+    .hideScroll::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    .hideScroll::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .hideScroll::-webkit-scrollbar-thumb {
+        background-color: rgba(255, 255, 255, 0.5);
+        border-radius: 10px;
+        border: 3px solid transparent;
+    }
+
+    .hideScroll::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .hideScroll::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+    /* End of Browser-Specific Styles */
+
+/* End of CS 1 */

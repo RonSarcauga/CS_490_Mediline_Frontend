@@ -31,3 +31,9 @@ $font-weight-black: 900;
 
 // Shadow variables
 $base-shadow: 5px;
+
+// Gradient list variables
+$gradient-white: rgba(255, 255, 255, 1) 0%, rgba(240, 240, 240, 0.5) 100%;
+$gradient-blue: rgba(170, 225, 255, 0.6) 0%, rgba(230, 245, 255, 1) 100%;
+$gradient-light: rgba(255, 255, 255, 0.35) 0%, rgba(220, 220, 220, 0.25) 60%;
+$gradient-dark: var(--clr-dark-100) 0%, var(--clr-dark-200) 50%, var(--clr-dark-100) 100%;

@@ -1,21 +1,95 @@
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useContext } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
 import InputBar from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
 import LoginViewModel from '../../viewModels/LoginViewModel';
+import { UserContext } from '../../context/UserProvider';
+import { useLogin } from '../../hooks/useLogin';
+import { useMutation } from '@tanstack/react-query';
+import axios from 'axios';
 
 export default function Login() {
-    const [formData, setFormData] = useState(LoginViewModel);
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
+
+    const loginMutation = useLogin();
+
+    const navigate = useNavigate();
+
+    const { setCurrentUser } = useContext(UserContext);
 
     const handleInput = (field, target) => {
+        console.log(`${field}: ${target.value}`);
         setFormData({
             ...formData,
             [field]: target.value,
         });
+        console.log(`Email: ${formData.email}`);
+        console.log(`Password: ${formData.password}`);
     };
 
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        console.log("Initiate login process!");
+        try {
+            LoginViewModel.email = formData.email;
+            LoginViewModel.password = formData.password;
+            const currentUser = await LoginViewModel.login();
+            setCurrentUser(currentUser);
+            console.log("Login successful!", currentUser);
+
+            let basePath = null;
+
+            if (currentUser.role === "pharmacy") {
+                basePath = `/dashboard/pharmacist`;
+            }
+            else {
+                basePath = `/dashboard/${currentUser.role}`;
+            }
+
+            // Redirect to the dashboard
+            navigate(`${basePath}`);
+        } catch (error) {
+            console.log("Login failed:", error.message);
+        }
+    };
+
+
+    //const handleLogin = (e) => {
+    //    e.preventDefault();
+    //    console.log("Initiate login process!");
+
+    //    LoginViewModel.email = formData.email;
+    //    LoginViewModel.password = formData.password;
+
+    //    loginMutation.mutate(
+    //        {
+    //            email: formData.email,
+    //            password: formData.password,
+    //        },
+    //        {
+    //            onSuccess: (data) => {
+    //                console.log("Full login response:", data);
+    //                console.log("Login successful!", data.user?.role);
+
+    //                //setCurrentUser(data);
+    //                //navigate(`/dashboard/${data.user?.role || 'patient'}`);
+    //                navigate(`/${data?.account_type || 'patient'}Home`)
+
+    //                LoginViewModel.clearFields();
+    //                setFormData({ email: "", password: "" });
+    //            },
+    //            onError: (error) => {
+    //                console.log("Login failed:", error.message);
+    //            },
+    //        }
+    //    );
+    //};
+    
     const isComplete = Object.values(formData).every((value) => value.trim() !== "");
 
     return (
@@ -96,14 +170,15 @@ export default function Login() {
                                                                 <Container
                                                                     customClass='bg-dark-100 justify-items-center align-items-center br-sm py-1'
                                                                     isClickable={isComplete}
+                                                                    onClick={handleLogin}
                                                                     fitParent={true}
                                                                     content={[
                                                                         <Button
                                                                             customClass="bg-0"
                                                                             content={[
-                                                                                <Link to="/patientDashboard" className=" text-decoration-none font-regular text-neutral-1100">
+                                                                                <p className=" text-decoration-none font-regular text-neutral-1100">
                                                                                     Sign In
-                                                                                </Link>
+                                                                                </p>
                                                                             ]}
                                                                         />
                                                                     ]}

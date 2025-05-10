@@ -1,0 +1,10 @@
+/* 
+    This CSS file is used to create mixins.
+    mixins are useful for setting up themes for an applicationcwhich can be applied to any CSS rule.
+*/
+@mixin linear-gradient($direction, $gradient) {
+    background: -webkit-linear-gradient($direction, $gradient);
+    background: -moz-linear-gradient($direction, $gradient);
+    background: -o-linear-gradient($direction, $gradient);
+    background: linear-gradient($direction, $gradient);
+}

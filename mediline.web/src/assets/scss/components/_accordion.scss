@@ -49,7 +49,44 @@
     height: auto;
     max-height: 9999px;
     padding: 1rem;
-    transition: all 0.5s cubic-bezier(1, 0, 1, 0);
+    transition: all 0.5s ease;
 }
 /* End of Accordion Menu Default Styles */
+
+/* Default Styles for Refactored Accordion Menu */
+.accordion-menu {
+    transition: all 0.3s ease-in-out;
+}
+
+.accordion-header {
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-auto-flow: column;
+    align-items: center;
+}
+
+.accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    text-align: left;
+}
+
+.accordion-menu.expanded .accordion-body {
+    max-height: 9999px;
+}
+
+.accordion-toggle {
+    transition: transform 0.3s ease-in-out;
+}
+
+.accordion-menu.expanded .accordion-toggle {
+    transform: rotate(-180deg);
+}
+
+.accordion-toggle {
+    transform: rotate(0deg);
+}
+/* End of Accordion Menu Default Styles*/
   
