@@ -12,7 +12,7 @@ function PHHome() {
     const { currentUser } = useContext(UserContext);
     const users = dashboardLayoutViewModel.getUsers();
     const [medications, setMedications] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [prescLoading, setLoading] = useState(true);
     useEffect(() => {
         const loadMeds = async () => {
             setLoading(true);
@@ -371,7 +371,7 @@ function PHHome() {
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {loading ? (
+                                                                    {prescLoading ? (
                                                                         <p className="font-3 text-neutral-700">Loading prescriptions...</p>
                                                                         ) : medications.length === 0 ? (
                                                                         <p className="font-3 text-neutral-700">No prescriptions found.</p>

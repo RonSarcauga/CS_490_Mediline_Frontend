@@ -11,18 +11,18 @@ import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel';
 
 const dummyPatient = {
     name: "John Doe",
-    dob: "1990-01-01",
+    dob: "2000-01-01",
     phone: "123-456-7890",
     email: "john.doe@example.com",
     address: "123 Main St",
-    city: "Sampletown",
-    state: "CA",
-    zipcode: "12345",
+    city: "Newark",
+    state: "New Jersey",
+    zipcode: "07102",
     medications: [
         {
-            medication: "DummyMed",
-            dosage: 50,
-            duration: 10,
+            medication: "Medicine",
+            dosage: 14,
+            duration: 7,
             takenDate: "2025-01-01T00:00:00Z"
         }
     ],
@@ -33,7 +33,6 @@ function PHPatient() {
     const users = dashboardLayoutViewModel.getUsers();
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
-
     const [selectedPatientId, setSelectedPatientId] = useState(null);
 
     const { data, isLoading, isError, error} = PharmaDashboardViewModel.usePharmacyPatients(currentUser.user_id);
@@ -64,7 +63,7 @@ function PHPatient() {
 
     console.log(`Accordion Height: ${accordionHeight}`);
 
-    if (isLoading || patLoading) return <p>Loading…</p>;
+    if (isLoading) return <p>Loading…</p>;
     if (isError)   return <p>Error: {error.message}</p>;
     return (
         <>
@@ -252,6 +251,9 @@ function PHPatient() {
                             }}
                             items={[
                                 <>
+                                    {patLoading ? (
+                                        <p className="text-center text-neutral-600 font-medium">Loading patient data...</p>
+                                    ) : (
                                     <ItemGroup
                                         customClass="gap-5 hideScroll"
                                         axis={true}
@@ -696,7 +698,7 @@ function PHPatient() {
                                                 />
                                             </>
                                         ]}
-                                    />
+                                    />)}
                                     <Container
                                         customClass="gradient-light br-sm b-3 outline-neutral-1100 px-3 pb-4 overflow-y-hidden"
                                         fitParent={true}

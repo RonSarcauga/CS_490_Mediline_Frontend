@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from '../assets/js/api.js';
+import { dashboardLayoutViewModel } from './DashboardLayoutViewModel';
 
 function authHeaders() {
   return {
@@ -31,17 +32,6 @@ async function fetchPharmacyPatients(pharmaId) {
     }
 }
 
-function isPrescriptionActive(takenDateStr, duration) {
-  if (!takenDateStr || typeof duration !== 'number') return false;
-
-  const start = new Date(takenDateStr);
-  const end = new Date(start);
-  end.setDate(start.getDate() + duration);
-
-  const now = new Date();
-  return now >= start && now <= end;
-}
-
 async function fetchMedicationslist(pharmaId) {
     try {
         const patientsRes = await fetchPharmacyPatients(pharmaId);
@@ -64,7 +54,7 @@ async function fetchMedicationslist(pharmaId) {
                     const doctorName = userData?.doctor.first_name+" "+userData?.doctor.last_name || "Unknown";
 
                     return history
-                        .filter(entry => isPrescriptionActive(entry.taken_date, entry.duration))
+                        .filter(entry => dashboardLayoutViewModel.isPrescriptionActive(entry.taken_date, entry.duration))
                         .map(entry => ({
                             medication: entry.medication_name,
                             dosage: entry.dosage,
