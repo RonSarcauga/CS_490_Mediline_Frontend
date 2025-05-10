@@ -52,7 +52,8 @@ const LoginViewModel = {
             const userId = decodedPayload.sub;
             const accountType = decodedPayload.acct_type;
 
-            localStorage.setItem("jwtToken", token);
+            localStorage.removeItem('jwtToken'); // optional safety
+            localStorage.setItem('jwtToken', token);
 
             // Stores the user object
             const user = await this.fetchUserData(userId);

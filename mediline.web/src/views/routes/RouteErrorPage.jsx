@@ -16,7 +16,7 @@ export default function RouteErrorPage() {
 
   const errorDisplay = errorMessage || error?.message || "An unexpected error occurred.";
 
-  console.error("Route error:", error);
+  console.error("Route error:", errorDisplay);
 
   return (
     <Container
@@ -34,7 +34,7 @@ export default function RouteErrorPage() {
                 <br/>
                 <h2 className="font-5 text-neutral-600">We couldn’t load this page.</h2>
                 <br/>
-                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {error?.message || "Unexpected error"} </p>
+                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {errorDisplay?.message || "Unexpected error"} </p>
                 <br/>
                 <ItemGroup
                   axis={false}

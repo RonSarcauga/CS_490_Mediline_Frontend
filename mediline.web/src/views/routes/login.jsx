@@ -1,5 +1,5 @@
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
 import InputBar from '../../components/General/InputBar';
@@ -42,9 +42,13 @@ export default function Login() {
         const messageParam = queryParams.get('message');
 
         if (messageParam === 'timeout') {
-            setError("User session timed out. Please sign in again.");
+            setError("You were logged out due to inactivity.");
+
+            queryParams.delete('message');
+            const newUrl = `${location.pathname}${queryParams.toString() ? `?${queryParams}` : ''}`;
+            window.history.replaceState(null, '', newUrl);
         }
-    }, [location.search]);
+    }, [location]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -63,7 +67,7 @@ export default function Login() {
                 let basePath = currentUser.role === "pharmacy"
                     ? "/dashboard/pharmacist"
                     : `/dashboard/${currentUser.role}`;
-                navigate(basePath);
+                navigate(basePath, { replace: true });
             }
         } catch (err) {
             setError("An unexpected error occurred.");

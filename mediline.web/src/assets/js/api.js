@@ -19,11 +19,11 @@ function isTokenExpired(token) {
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwtToken');
 
-  if (isTokenExpired(token)) {
-    localStorage.removeItem('jwtToken');
-    localStorage.removeItem('currentUser');
-    window.location.href = '/login?message=timeout';
-    return Promise.reject(new Error("Token expired"));
+  function isTokenExpired(token) {
+    if (!token) return true;
+    const [, payload] = token.split('.');
+    const { exp } = JSON.parse(atob(payload));
+    return Date.now() >= exp * 1000;
   }
 
   if (token) {
@@ -37,11 +37,14 @@ axiosInstance.interceptors.request.use((config) => {
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    const isAuthCall = error?.config?.url?.includes('/auth/login');
+
+    if (error.response?.status === 401 && !isAuthCall) {
       localStorage.removeItem('jwtToken');
       localStorage.removeItem('currentUser');
-      window.location.href = '/login?message=timeout';
+      window.location.href = '/unauthorized?code=401';
     }
+
     return Promise.reject(error);
   }
 );
