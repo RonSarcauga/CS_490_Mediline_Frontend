@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from '../assets/js/api.js';
+import { dashboardLayoutViewModel } from './DashboardLayoutViewModel';
 
 function authHeaders() {
   return {
@@ -13,71 +14,132 @@ function authHeaders() {
 async function fetchPharmaHomeData(pharmaId) {
     const [count, inventory] = await Promise.all([
         axios.get(`/prescription/pharmacy/${pharmaId}/count`, authHeaders()),
-        //axios.get(`/prescription/pharmacy/${pharmaId}/inventory`, authHeaders()),
+        axios.get(`/prescription/pharmacy/${pharmaId}/inventory`, authHeaders()),
     ]);
     return {
         countRx: count.data,
-        //inventoryStock: inventory.data,
+        inventoryStock: inventory.data,
     };
+}
+
+async function fetchPharmacyPatients(pharmaId) {
+    try {
+        const response = await axios.get(`/pharmacy/${pharmaId}/patients`, authHeaders());
+        return response.data;
+    } catch (err) {
+        console.error("Error fetching pharmacy patients:", err);
+        throw err;
+    }
 }
 
 async function fetchMedicationslist(pharmaId) {
     try {
-        const patientsRes = await axios.get(`/pharmacy/${pharmaId}/patients`, authHeaders());
-        const patients = patientsRes.data;
-    
-        const allPrescriptions = await Promise.all(
-            patients.map(async (pat) => {
-            const res = await axios.get(`/prescription/user/${pat.patient_id}`, authHeaders());
-            const prescriptions = res.data;
-            return prescriptions.map((presc) => ({
-                ...presc,
-            }));
-            })
-        );
-    
-        const flatPrescriptions = allPrescriptions.flat();
-    
+        const patientsRes = await fetchPharmacyPatients(pharmaId);
+        const patients = [
+            ...(patientsRes.new_patients || []),
+            ...(patientsRes.other_patients || [])
+        ];
+
         const allMeds = await Promise.all(
-            flatPrescriptions.map(async (presc) => {
-            const res = await axios.get(`/prescription/${presc.prescription_id}/medications`, authHeaders());
-            const meds = res.data;
-    
-            return meds.map((med) => ({
-                //...med,
-                medication: med.name,
-                dosage: med.dosage,
-                patientName: presc.patient_name,
-                doctorName: presc.doctor_name,
-                status: presc.status,
-                date: presc.created_at,
-            }));
+            patients.map(async (pat) => {
+                try {
+                    const [historyRes, userRes] = await Promise.all([
+                        axios.get(`/prescription/patient/${pat.patient_id}/history`, authHeaders()),
+                        axios.get(`/user/${pat.patient_id}`, authHeaders())
+                    ]);
+
+                    const history = (historyRes.data || []).flat();
+                    const userData = userRes.data;
+
+                    const doctorName = userData?.doctor.first_name+" "+userData?.doctor.last_name || "Unknown";
+
+                    return history
+                        .filter(entry => dashboardLayoutViewModel.isPrescriptionActive(entry.taken_date, entry.duration))
+                        .map(entry => ({
+                            medication: entry.medication_name,
+                            dosage: entry.dosage,
+                            patientName: pat.patient_name,
+                            startDate: entry.taken_date,
+                            duration: entry.duration,
+                            status: entry.status,
+                            doctorName: doctorName,
+                        }));
+                } catch (err) {
+                    console.error(`Error processing patient ${pat.patient_id}:`, err);
+                    return [];
+                }
             })
         );
-  
-        return allMeds.flat();
+
+        return allMeds.flat().sort((a, b) => new Date(b.startDate) - new Date(a.startDate));
     } catch (err) {
         console.error("Error fetching full medication data:", err);
         throw err;
     }
 }
 
-async function fetchDoctorPatientData(patientId) {
-    const [patInfo, nextApp] = await Promise.all([
-        axios.get(`/patient/${patientId}/info`, authHeaders()),
-        axios.get(`/appointment/upcoming/${patientId}`, authHeaders()),
-    ]);
-    
-    console.log('fetchDoctorPatientData results:', {
-        patientInfo: patInfo.data,
-        nextAppointment: nextApp.data,
-    });
-    
-    return {
-        patientInfo: patInfo.data,
-        nextAppointment: nextApp.data,
-    };
+
+async function fetchPatientOverview(patientId, pharmaId) {
+    try {
+        const [userRes, medsRes] = await Promise.all([
+            axios.get(`/user/${patientId}`, authHeaders()),
+            axios.get(`/prescription/patient/${patientId}/history`, authHeaders()),
+        ]);
+
+        const user = userRes.data;
+
+        let reportData = null;
+        if (user.pharmacy_id === pharmaId) {
+            try {
+                const reportRes = await axios.get(`/report/user/${patientId}/latest`, authHeaders());
+                reportData = reportRes.data;
+            } catch (err) {
+                console.warn("Failed to fetch latest report:", err);
+            }
+        }
+
+        const {
+            first_name,
+            last_name,
+            dob,
+            phone,
+            address1,
+            city,
+            state,
+            zipcode,
+            email
+        } = user;
+        
+        const medHistory = (medsRes.data || [])
+        .flat()
+        .map(med => ({
+            medication: med.name,
+            dosage: med.dosage,
+            duration: med.duration,
+            takenDate: med.taken_date,
+        }));
+
+                console.log("medHistory:", medHistory);
+        
+        return {
+            name: `${first_name} ${last_name}`,
+            dob,
+            phone,
+            address: address1,
+            city,
+            state,
+            zipcode,
+            email,
+            height: reportData?.height ?? null,
+            weight: reportData?.weight ?? null,
+            medications: medHistory
+        };
+    } catch (err) {
+        console.error("Error fetching patient overview:", err);
+        throw err;
+    }
 }
+
 
 export const PharmacyDashboardViewModel = {
     usePharmaHome(pharmaId) {
@@ -89,16 +151,25 @@ export const PharmacyDashboardViewModel = {
             enabled: !!pharmaId,
         });
     },
-    useDoctorPatient(patientId) {
+    fetchMedicationslist,
+    usePatientOverview(patientId, pharmaId) {
         return useQuery({
             queryKey: ['pharmaPatient', patientId],
-            queryFn:   () => fetchDoctorPatientData(patientId),
+            queryFn:   () => fetchPatientOverview(patientId, pharmaId),
             staleTime: 1000 * 60 * 5,
             retry:     1,
-            enabled: !!patientId,
+            enabled: !!patientId && !!pharmaId
         });
     },
-    fetchMedicationslist,
+    usePharmacyPatients(pharmaId) {
+        return useQuery({
+            queryKey: ['pharmacyPatients', pharmaId],
+            queryFn: () => fetchPharmacyPatients(pharmaId),
+            enabled: !!pharmaId,
+            staleTime: 1000 * 60 * 5,
+            retry: 1,
+        });
+    }
 };
 
 export default PharmacyDashboardViewModel;
