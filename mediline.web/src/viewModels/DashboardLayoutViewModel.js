@@ -87,7 +87,7 @@ class DashboardLayoutViewModel {
         if (!isNaN(date.getTime())) return date;
 
         // Try parsing other common formats
-        const delimiters = ["/", "-"];
+        const delimiters = ["-","/"];
         for (const delimiter of delimiters) {
             const parts = dateString.split(delimiter);
             if (parts.length === 3) {
