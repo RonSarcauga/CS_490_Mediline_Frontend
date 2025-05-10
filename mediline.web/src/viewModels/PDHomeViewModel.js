@@ -2,28 +2,91 @@ import axiosInstance from '../assets/js/api';
 
 class PDHomeViewModel {
     // Centralized data fetching function
-    async fetchData(userId) {
+    async fetchData(userId, doctor) {
         try {
             // Use Promise.all to fetch data concurrently
-            const [pastAppointments, upcomingAppointments] = await Promise.all([
+            const [pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
                 this.getPastAppointments(userId), // Fetch past appointments
                 this.getUpcomingAppointments(userId), // Fetch upcoming appointments
+                this.getPrescriptions(userId), // Fetch prescriptions
             ]);
+
+            let doctorInfo = null;
+
+            // Check if the doctor object is empty
+            if (doctor && Object.keys(doctor).length > 0) {
+                doctorInfo = await this.getUserInfo(doctor.doctor_id);
+            }
+
+            console.log(`Patient Dashboard Data:\n${JSON.stringify({
+                pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
+                upcomingAppointments: upcomingAppointments || [],
+                doctorData: doctor || {},
+                doctorInfo: doctorInfo || {},
+                prescriptions: prescriptions || [],
+            }, null, 2)}`);
 
             // Return the results as an object
             return {
                 pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-                upcomingAppointments: upcomingAppointments || [], // Default to an empty array if null/undefined
+                upcomingAppointments: upcomingAppointments || [],
+                doctorData: doctor || {},
+                doctorInfo: doctorInfo || {},
+                prescriptions: prescriptions || [],
             };
         } catch (error) {
             console.error("Error fetching data for Patient Dashboard:", error);
             return {
                 pastAppointments: [],
                 upcomingAppointments: [],
+                doctor: {},
+                doctorInfo: {},
+                prescriptions: [],
             };
         }
     }
 
+    // Asynchronous method to fetch user information
+    async getUserInfo(id) {
+        try {
+            const response = await axiosInstance.get(`/user/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            const user = response.data;
+
+            console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
+
+            return user;
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    };
+
+    // Helper method to fetch a patient's prescriptions
+    async getPrescriptions(id) {
+        try {
+            // Retrieving data from the medical record endpoint
+            const response = await axiosInstance.get(`/prescription/user/${id}?sort_by=created_at&order_by=desc`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            console.log(`Prescriptions fetched:\n${JSON.stringify(response.data, null, 2)}`);
+
+            // Stores the response in a constant
+            const prescriptions = response.data;
+
+            // Returns the constant
+            return prescriptions;
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
+        }
+    }
 
     // Helper method to fetch invoice data for each appointment
     async getAppointmentInvoice(user_id, create_date) {
@@ -70,6 +133,42 @@ class PDHomeViewModel {
     }
 
     // Helper method to fetch a patient's past appointments
+    //async getPastAppointments(id) {
+    //    try {
+    //        // Retrieving data from the medical record endpoint
+    //        const response = await axiosInstance.get(`/medical_record/${id}?sort_by=created_at&order_by=desc`, {
+    //            headers: {
+    //                "Content-Type": "application/json",
+    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    //            }
+    //        });
+
+    //        // Stores the response in a constant
+    //        const appointments = response.data;
+
+    //        // Fetch doctor info for each appointment concurrently
+    //        const appointmentsWithDoctorInfo = await Promise.all(
+    //            appointments.map(async (appt) => {
+    //                if (appt.doctor_id) {
+    //                    const doctorInfo = await this.getUserInfo(appt.doctor_id);
+    //                    return { ...appt, doctorInfo }; // Add doctorInfo to the appointment object
+    //                }
+    //                return appt; // If no doctor_id, return the appointment as is
+    //            })
+    //        );
+
+    //        console.log(`Past appointments fetched:\n${JSON.stringify(appointmentsWithDoctorInfo, null, 2)}`);
+
+    //        // Returns the modified appointments with doctor info included
+    //        return appointmentsWithDoctorInfo;
+    //    } catch (error) {
+    //        console.error("Error fetching past appointments:", error.response?.data || error.message);
+    //        return [];
+    //    }
+    //}
+
+
+
     async getPastAppointments(id) {
         try {
             // Retrieving data from the medical record endpoint
@@ -101,15 +200,46 @@ class PDHomeViewModel {
                 }
             });
 
-            console.log(`Past appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
-
             const appointments = response.data;
 
-            return appointments;
+            // Fetch doctor info for each appointment concurrently
+            const appointmentsWithDoctorInfo = await Promise.all(
+                appointments.map(async (appt) => {
+                    if (appt.doctor_id) {
+                        const doctorInfo = await this.getUserInfo(appt.doctor_id);
+                        return { ...appt, doctorInfo }; // Add doctorInfo to the appointment object
+                    }
+                    return appt; // If no doctor_id, return the appointment as is
+                })
+            );
+
+            console.log(`Upcoming appointments fetched:\n${JSON.stringify(appointmentsWithDoctorInfo, null, 2)}`);
+
+            // Returns the modified appointments with doctor info included
+            return appointmentsWithDoctorInfo;
         } catch (error) {
             console.error(`No appointments on record: ${error.response?.data || error.message}`);
         }
     }
+
+    //async getUpcomingAppointments(user_id) {
+    //    try {
+    //        const response = await axiosInstance.get(`/appointment/upcoming/${user_id}`, {
+    //            headers: {
+    //                "Content-Type": "application/json",
+    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    //            }
+    //        });
+
+    //        console.log(`Upcoming appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
+
+    //        const appointments = response.data;
+
+    //        return appointments;
+    //    } catch (error) {
+    //        console.error(`No appointments on record: ${error.response?.data || error.message}`);
+    //    }
+    //}
 
     // Splits the date from time in a Date object
     splitDateTime(dateTime) {
@@ -138,9 +268,17 @@ class PDHomeViewModel {
             throw new Error("Both date and time inputs are required.");
         }
 
+        console.log(`Date string: ${dateString}\nTime string: ${timeString}`);
+
+        // Normalize the date format to MM/DD/YYYY
+        const normalizedDateString = dateString.replace(
+            /^(\d)\/(\d{2})\/(\d{4})$/,
+            "0$1/$2/$3"
+        );
+
         // Validate the date format (MM/DD/YYYY)
         const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
-        if (!dateRegex.test(dateString)) {
+        if (!dateRegex.test(normalizedDateString)) {
             throw new Error("Invalid date format. Expected format: MM/DD/YYYY.");
         }
 
@@ -167,6 +305,8 @@ class PDHomeViewModel {
     // Updated bookAppointment method
     async bookAppointment(dateInput, timeInput, doctorId, patientId) {
         try {
+            const patient_id = parseInt(patientId);
+
             // Validate inputs
             if (!dateInput || !timeInput || !doctorId || !patientId) {
                 console.error("Invalid inputs. Ensure date, time, doctor ID, and patient ID are provided.");
@@ -187,6 +327,10 @@ class PDHomeViewModel {
             // Automatically set the end_date to 30 minutes after the start_date
             const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
 
+            // Format startDate and endDate to remove milliseconds
+            const formattedStartDate = startDate.toISOString().split(".")[0];
+            const formattedEndDate = endDate.toISOString().split(".")[0];
+
             // Fetch upcoming appointments for the user
             const upcomingAppointments = await this.getUpcomingAppointments(patientId);
 
@@ -199,6 +343,7 @@ class PDHomeViewModel {
                 return existingAppointmentDate === appointmentDate;
             });
 
+
             if (isDateConflict) {
                 console.error("Appointment conflict: You already have an appointment scheduled on this date.");
                 return;
@@ -207,9 +352,9 @@ class PDHomeViewModel {
             // Prepare the payload
             const payload = {
                 doctor_id: doctorId,
-                patient_id: patientId,
-                start_date: startDate.toISOString(),
-                end_date: endDate.toISOString(),
+                patient_id: patient_id,
+                start_date: formattedStartDate, // Use formatted date
+                end_date: formattedEndDate, // Use formatted date
                 treatment: "Consultation"
             };
 
@@ -227,6 +372,7 @@ class PDHomeViewModel {
             console.error("Error booking appointment:", error.response?.data || error.message);
         }
     }
+
 
 }
 
