@@ -1,11 +1,21 @@
-import { useRouteError } from "react-router-dom";
+import { useRouteError, useLocation, useNavigate } from 'react-router-dom';
 import Container, { ItemGroup } from '../../components/General/Container';
 import Button from '../../components/General/Button';
-import { useNavigate } from 'react-router-dom';
 
 export default function RouteErrorPage() {
   const error = useRouteError();
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const params = new URLSearchParams(location.search);
+  const code = params.get('code');
+
+  const errorMessage = code === '401'
+    ? "You are not authorized to do that"
+    : null;
+
+  const errorDisplay = errorMessage || error?.message || "An unexpected error occurred.";
+
   console.error("Route error:", error);
 
   return (

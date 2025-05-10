@@ -86,6 +86,8 @@ const router = createBrowserRouter([
       { path: 'patientAppointment', element: <PatientAppointment /> },
       { path: 'pharmacistHome', element: <PharmacistHome /> },
       { path: 'pharmacistPatient', element: <PharmacistPatientProfile /> },
+      { path: "/unauthorized",element: <RouteErrorPage message="Unauthorized: Please log in again." />},
+
     ],
   },
 ]);

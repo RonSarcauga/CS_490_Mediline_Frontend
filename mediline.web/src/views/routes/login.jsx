@@ -1,4 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
@@ -35,6 +35,16 @@ export default function Login() {
         console.log(`Email: ${formData.email}`);
         console.log(`Password: ${formData.password}`);
     };
+
+    const location = useLocation();
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const messageParam = queryParams.get('message');
+
+        if (messageParam === 'timeout') {
+            setError("User session timed out. Please sign in again.");
+        }
+    }, [location.search]);
 
     const handleLogin = async (e) => {
         e.preventDefault();

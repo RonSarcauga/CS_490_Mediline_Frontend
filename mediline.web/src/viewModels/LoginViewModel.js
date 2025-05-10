@@ -76,6 +76,7 @@ const LoginViewModel = {
                 state: user.state,
                 zipcode: user.zipcode
             }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
             // Confirm that the correct data is being passed
             console.log(`Current user: ${JSON.stringify(currentUser, null, 2)}`);
