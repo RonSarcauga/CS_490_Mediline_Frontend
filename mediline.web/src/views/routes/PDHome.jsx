@@ -5,7 +5,7 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import Accordion from '../../components/General/AccordionMenu';
 import Modal from '../../components/General/Modal';
 import DatePicker from '../../components/General/DatePicker';
-import InputBar from '../../components/General/InputBar';
+import InputBar, { InputBarSpecial } from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import { pdHomeVM } from '../../viewModels/PDHomeViewModel';
@@ -159,9 +159,12 @@ function PDHome() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         <p className="font-medium font-4">Time</p>
-                                                                                                        <InputBar
+                                                                                                        <InputBarSpecial
                                                                                                             customClass='bg-neutral-expanded-1100 py-2 px-0 b-bottom-6 outline-neutral-900 br-none input-placeholder-font-4 input-text-placeholder-neutral-600 input-text-neutral-100 input-font-4 input-p-0'
                                                                                                             placeholder="--:--"
+                                                                                                            inputType="number"
+                                                                                                            maxLength={4}
+                                                                                                            specialFormat="XX:XX"
                                                                                                         />
                                                                                                     </>
                                                                                                 ]}
