@@ -15,26 +15,30 @@ function PHHome() {
     const [medications, setMedications] = useState([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
+        console.log("Running useEffect with user ID:", currentUser?.user_id);
         const loadMeds = async () => {
             setLoading(true);
             try {
-                const result = await PharmaDashboardViewModel.fetchMedicationslist(currentUser.user_id);
-                setMedications(result);
+            const result = await PharmaDashboardViewModel.fetchMedicationslist(currentUser.user_id);
+            console.log("Fetched medications:", result);
+            setMedications(result);
             } catch (err) {
-                console.error("Failed to load medications", err);
+            console.error("Failed to load medications", err);
             }
             setLoading(false);
         };
-      
-        loadMeds();
-    }, [currentUser.user_id]);
+
+        if (currentUser?.user_id) {
+            loadMeds();
+        }
+    }, [currentUser?.user_id]);
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
     //const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
     const { data, status, isLoading, isError, error } = PharmaDashboardViewModel.usePharmaHome(currentUser.user_id);
     console.log('data:', data);
-    console.log(`isLoading: ${isLoading}`)
-    console.log(`error: ${error}`)
+    console.log("meds: ", medications);
+
 
     if (isLoading) return <p>Loading…</p>;
     if (isError)   return <p>Error: {error.message}</p>;
@@ -45,6 +49,10 @@ function PHHome() {
             fitParent={true}
             content={[
                 <>
+                <button onClick={() => PharmaDashboardViewModel.fetchMedicationslist(currentUser.user_id)}>
+  Test Meds Fetch
+</button>
+
                     <ItemGroup
                         customClass="gap-5"
                         axis={false}
@@ -134,14 +142,14 @@ function PHHome() {
                                                                                                                 <>
                                                                                                                     <CircleProgressBar
                                                                                                                         circleWidth="150"
-                                                                                                                        fraction={data.countRx.collected_prescription+13} // temp number
-                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription+20} // temp number 
+                                                                                                                        fraction={data.countRx.collected_prescription}
+                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription === 0 ? 1 : data.countRx.collected_prescription + data.countRx.processing_prescription}
                                                                                                                         strokeColor="hsl(210, 35%, 50%)"
                                                                                                                         progressColor="hsl(200, 70%, 70%)"
                                                                                                                     />
                                                                                                                     <CircleProgressBar
-                                                                                                                        fraction={data.countRx.processing_prescription+7} // temp number
-                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription+20} // temp number
+                                                                                                                        fraction={data.countRx.processing_prescription}
+                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription === 0 ? 1 : data.countRx.collected_prescription + data.countRx.processing_prescription}
                                                                                                                         circleWidth="150"
                                                                                                                         strokeColor="hsl(0, 0%, 40%)"
                                                                                                                         progressColor="hsl(45, 60%, 60%)"
@@ -282,7 +290,7 @@ function PHHome() {
                                                                         items={[
                                                                             <>
                                                                                 {
-                                                                                    users.map(() => ( //inventory goes here if it works
+                                                                                    data.inventoryStock.map((stock) => (
                                                                                         <ItemGroup
                                                                                             axis={false}
                                                                                             style={{
@@ -290,8 +298,8 @@ function PHHome() {
                                                                                             }}
                                                                                             items={[
                                                                                                 <>
-                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">data.inventoryStock.medication_name</h5>
-                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">data.inventoryStock.quantity</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">{stock.medication_name}</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">{stock.quantity} units</h5>
                                                                                                 </>
                                                                                             ]}
                                                                                         />

@@ -7,11 +7,46 @@ import Modal from '../../components/General/Modal';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel'; 
+
+function getFirstPatientFromGroups(groups) {
+    for (const group of Object.values(groups)) {
+        if (Array.isArray(group) && group.length > 0) {
+        return group[0]; 
+        }
+    }
+    return null;
+}
+
 function PHPatient() {
     const { currentUser } = useContext(UserContext);
     const users = dashboardLayoutViewModel.getUsers();
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
+
+    const { data, status, isLoading, isError, error } = PharmaDashboardViewModel.usePharmacyPatients(currentUser.user_id);
+    console.log('data:', data);
+
+    if (isLoading) return <p>Loading…</p>;
+    if (isError)   return <p>Error: {error.message}</p>;
+
+    const [selectedPatientId, setSelectedPatientId] = useState(null);
+
+    useEffect(() => {
+        if (data) {
+            const firstPatient = getFirstPatientFromGroups(data);
+            if (firstPatient) {
+                setSelectedPatientId(firstPatient.patient_id);
+            }
+        }
+    }, [data]);
+
+    const { data: patData, patLoading } = PharmaDashboardViewModel.usePatientOverview(selectedPatientId);
+    useEffect(() => {
+        if (patData) {
+            console.log("Fetched patient data:", patData);
+        }
+    }, [patData]);
 
     const [accordionHeight, setAccordionHeight] = useState(0);
     const onExpand = () => {
@@ -279,68 +314,62 @@ function PHPatient() {
                                                                             evenSplit={true}
                                                                             items={[
                                                                                 <>
-                                                                                    {
-                                                                                        users.length > 0 && (
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
                                                                                             <>
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <h5 className="font-3">NAME</h5>
-                                                                                                            <p className="font-3 font-medium text-justify">
-                                                                                                                {users[0].firstName} {users[0].lastName}
-                                                                                                            </p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <h5 className="font-3">DATE OF BIRTH</h5>
-                                                                                                            <p className="font-3 font-medium text-justify">
-                                                                                                                {users[0].dateOfBirth}
-                                                                                                            </p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <h5 className="font-3">HEIGHT</h5>
-                                                                                                            <p className="font-3 font-medium text-justify">
-                                                                                                                175 cm
-                                                                                                            </p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <h5 className="font-3">WEIGHT</h5>
-                                                                                                            <p className="font-3 font-medium text-justify">
-                                                                                                                140 lbs
-                                                                                                            </p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
+                                                                                                <h5 className="font-3">NAME</h5>
+                                                                                                <p className="font-3 font-medium text-justify">
+                                                                                                    {patData?.name}
+                                                                                                </p>
                                                                                             </>
-                                                                                        )
-                                                                                    }
+                                                                                        ]}
+                                                                                    />
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <h5 className="font-3">DATE OF BIRTH</h5>
+                                                                                                <p className="font-3 font-medium text-justify">
+                                                                                                    {patData?.dob}
+                                                                                                </p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                    {/*<ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <h5 className="font-3">HEIGHT</h5>
+                                                                                                <p className="font-3 font-medium text-justify">
+                                                                                                    175 cm
+                                                                                                </p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />*/}
+                                                                                    {/*<ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <h5 className="font-3">WEIGHT</h5>
+                                                                                                <p className="font-3 font-medium text-justify">
+                                                                                                    140 lbs
+                                                                                                </p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />*/}
                                                                                 </>
                                                                             ]}
                                                                         />
@@ -430,7 +459,7 @@ function PHPatient() {
                                                                                                                                 <>
                                                                                                                                     <h5 className="font-3">EMAIL</h5>
                                                                                                                                     <p className="font-3 font-medium text-justify">
-                                                                                                                                        {users[0].email}
+                                                                                                                                        {patData?.email}
                                                                                                                                     </p>
                                                                                                                                 </>
                                                                                                                             ]}
@@ -450,13 +479,13 @@ function PHPatient() {
                                                                                                                                         items={[
                                                                                                                                             <>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {users[0].address},
+                                                                                                                                                    {patData?.address},
                                                                                                                                                 </p>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {users[0].city}, {users[0].state}
+                                                                                                                                                    {patData?.city}, {patData?.state}
                                                                                                                                                 </p>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {users[0].postalCode}
+                                                                                                                                                    {patData?.zipcode}
                                                                                                                                                 </p>
                                                                                                                                             </>
                                                                                                                                         ]}
@@ -476,7 +505,7 @@ function PHPatient() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3">PHONE</h5>
                                                                                                                         <p className="font-3 font-medium text-justify">
-                                                                                                                            {users[0].phoneNumber}
+                                                                                                                            {patData?.phone}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -586,8 +615,8 @@ function PHPatient() {
                                                                             items={[
                                                                                 <>
                                                                                     {
-                                                                                        users.length > 0 && (
-                                                                                            users.map(() => (
+                                                                                        patData?.medications.length > 0 && (
+                                                                                            patData.medications.map((med) => (
                                                                                                 <>
                                                                                                     <ItemGroup
                                                                                                         customClass=" py-1"
@@ -606,7 +635,7 @@ function PHPatient() {
                                                                                                                     fitParent={true}
                                                                                                                     items={[
                                                                                                                         <>
-                                                                                                                            <p className="font-3 font-medium text-neutral-600">Ozempic</p>
+                                                                                                                            <p className="font-3 font-medium text-neutral-600">{med.medication}</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
@@ -617,9 +646,7 @@ function PHPatient() {
                                                                                                                     fitParent={true}
                                                                                                                     items={[
                                                                                                                         <>
-                                                                                                                            <p className="font-3 font-medium text-neutral-600">
-                                                                                                                                14 days
-                                                                                                                            </p>
+                                                                                                                            <p className="font-3 font-medium text-neutral-600">{med.duration} days</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
@@ -630,9 +657,7 @@ function PHPatient() {
                                                                                                                     fitParent={true}
                                                                                                                     items={[
                                                                                                                         <>
-                                                                                                                            <p className="font-3 font-medium text-neutral-600">
-                                                                                                                                4 mg
-                                                                                                                            </p>
+                                                                                                                            <p className="font-3 font-medium text-neutral-600">{med.dosage} units</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
@@ -879,8 +904,8 @@ function PHPatient() {
                                                                             items={[
                                                                                 <>
                                                                                     {
-                                                                                        users.length > 0 ? (
-                                                                                            users.map((user) => (
+                                                                                        data.other_patients.length > 0 ? (
+                                                                                            data.other_patients.map((pat) => (
                                                                                                 <ItemGroup
                                                                                                     customClass="gap-6 align-items-center"
                                                                                                     axis={false}
@@ -938,7 +963,7 @@ function PHPatient() {
                                                                                                                                                     items={[
                                                                                                                                                         <>
                                                                                                                                                             <p className="font-regular text-neutral-100 font-4">
-                                                                                                                                                                {user.firstName} {user.lastName}
+                                                                                                                                                                {pat.patient_name}
                                                                                                                                                             </p>
                                                                                                                                                         </>
                                                                                                                                                     ]}
@@ -964,7 +989,19 @@ function PHPatient() {
                                                                                                                                             />
                                                                                                                                         ]}
                                                                                                                                         menuItems={[
-                                                                                                                                            { label: "View Profile" },
+                                                                                                                                            <ItemGroup
+                                                                                                                                                axis={false}
+                                                                                                                                                stretch={true}
+                                                                                                                                                isClickable={true}
+                                                                                                                                                onClick={() => {
+                                                                                                                                                    setSelectedPatientId(pat.patient_id);
+                                                                                                                                                }}
+                                                                                                                                                items={[
+                                                                                                                                                    <>
+                                                                                                                                                        <p>View Profile</p>
+                                                                                                                                                    </>
+                                                                                                                                                ]}
+                                                                                                                                            />
                                                                                                                                         ]}
                                                                                                                                     />
                                                                                                                                 </>
