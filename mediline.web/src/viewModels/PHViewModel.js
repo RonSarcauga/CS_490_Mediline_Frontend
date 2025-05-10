@@ -124,17 +124,17 @@ async function fetchPatientOverview(patientId) {
             email
         } = user;
         
-        console.log("medsRes.data:", medsRes.data);
-
         const medHistory = (medsRes.data || [])
         .flat() // flattens the outer array of arrays
         .map(med => ({
             medication: med.name,
             dosage: med.dosage,
-            //duration: med.duration,
-            //takenDate: med.taken_date,
+            duration: med.duration,
+            takenDate: med.taken_date,
         }));
 
+                console.log("medHistory:", medHistory);
+        
         return {
             name: `${first_name} ${last_name}`,
             dob,

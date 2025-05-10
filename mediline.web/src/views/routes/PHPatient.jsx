@@ -193,7 +193,7 @@ function PHPatient() {
                                                         />
                                                     </>
                                                 ]}
-                                                footer={[
+                                                footer={[/*
                                                     <>
                                                         <ItemGroup
                                                             customClass="pt-6 gap-3"
@@ -227,7 +227,7 @@ function PHPatient() {
                                                             ]}
                                                         />
                                                     </>
-                                                ]}
+                                                */]}
                                             />
                                         </>
                                     ]}
@@ -337,7 +337,7 @@ function PHPatient() {
                                                                                             <>
                                                                                                 <h5 className="font-3">DATE OF BIRTH</h5>
                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                    {patData?.dob}
+                                                                                                    {dashboardLayoutViewModel.formatBirthDate(patData?.dob)}
                                                                                                 </p>
                                                                                             </>
                                                                                         ]}
@@ -505,7 +505,7 @@ function PHPatient() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3">PHONE</h5>
                                                                                                                         <p className="font-3 font-medium text-justify">
-                                                                                                                            {patData?.phone}
+                                                                                                                            {dashboardLayoutViewModel.formatPhoneNumber(patData?.phone)}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -590,6 +590,7 @@ function PHPatient() {
                                                                                         items={[
                                                                                             <>
                                                                                                 <h5 className="font-3 text-neutral-600">ITEM ORDERED</h5>
+                                                                                                <h5 className="font-3 text-neutral-600">DATE ORDERED</h5>
                                                                                                 <h5 className="font-3 text-neutral-600">DURATION</h5>
                                                                                                 <h5 className="font-3 text-neutral-600">DOSAGE</h5>
                                                                                             </>
@@ -646,7 +647,18 @@ function PHPatient() {
                                                                                                                     fitParent={true}
                                                                                                                     items={[
                                                                                                                         <>
-                                                                                                                            <p className="font-3 font-medium text-neutral-600">{/*{med.duration} days*/}</p>
+                                                                                                                            <p className="font-3 font-medium text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(med.takenDate)}</p>
+                                                                                                                        </>
+                                                                                                                    ]}
+                                                                                                                />
+                                                                                                                <ItemGroup
+                                                                                                                    customClass="gap-2"
+                                                                                                                    axis={true}
+                                                                                                                    stretch={true}
+                                                                                                                    fitParent={true}
+                                                                                                                    items={[
+                                                                                                                        <>
+                                                                                                                            <p className="font-3 font-medium text-neutral-600">{med.duration} days</p>
                                                                                                                         </>
                                                                                                                     ]}
                                                                                                                 />
