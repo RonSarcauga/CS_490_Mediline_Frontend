@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '../../assets/css/default-style.css';
 import '../../assets/scss/default-style.scss';
 import HomePage from './Home';
-import LoginPage from './Login';
+import LoginPage from './login';
 import RegisterPage from './Register';
 import FindADoctorPage from './FindADoctor';
 import DiscussionForumPage from './DiscussionForumPage';
