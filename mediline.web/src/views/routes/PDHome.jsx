@@ -9,6 +9,7 @@ import InputBar, { InputBarSpecial } from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import { pdHomeVM } from '../../viewModels/PDHomeViewModel';
+import Dashboard from '../../components/Dashboard/Dashboard';
 import Spinner from '../../components/General/Spinner';
 
 function PDHome() {

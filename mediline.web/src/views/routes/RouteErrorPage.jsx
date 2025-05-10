@@ -2,6 +2,15 @@ import { useRouteError, useLocation, useNavigate } from 'react-router-dom';
 import Container, { ItemGroup } from '../../components/General/Container';
 import Button from '../../components/General/Button';
 
+const getErrorMessage = (code, pathname, routeError) => {
+  if (pathname === '/unauthorized' || code === '401') return "You are not authorized to perform this action.";
+  if (code === '403') return "Forbidden: You do not have permission to access this resource.";
+  if (code === '404') return "Page not found.";
+  if (code === '500') return "Server error. Please try again later.";
+  if (routeError?.status === 404) return "The page you are looking for does not exist.";
+  return routeError?.message || "An unexpected error occurred.";
+};
+
 export default function RouteErrorPage() {
   const error = useRouteError();
   const location = useLocation();
@@ -9,14 +18,7 @@ export default function RouteErrorPage() {
 
   const params = new URLSearchParams(location.search);
   const code = params.get('code');
-
-  const errorMessage = code === '401'
-    ? "You are not authorized to do that"
-    : null;
-
-  const errorDisplay = errorMessage || error?.message || "An unexpected error occurred.";
-
-  console.error("Route error:", errorDisplay);
+  const errorDisplay = getErrorMessage(code, location.pathname, routeError);
 
   return (
     <Container
@@ -34,7 +36,7 @@ export default function RouteErrorPage() {
                 <br/>
                 <h2 className="font-5 text-neutral-600">We couldn’t load this page.</h2>
                 <br/>
-                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {errorDisplay?.message || "Unexpected error"} </p>
+                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {errorDisplay?.message} </p>
                 <br/>
                 <ItemGroup
                   axis={false}

@@ -391,7 +391,7 @@ function PHHome() {
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">{med.duration} days</h5>
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">{med.dosage} units</h5>
                                                                                 <ItemGroup
-                                                                                    customClass={`br ${med.status === 'PAID' ? 'bg-success-500' : 'bg-warning-500'}`}
+                                                                                    customClass={`br ${med.status === 'PAID' ? 'bg-success-300' : 'bg-warning-300'}`}
                                                                                     items={[
                                                                                         <h3 className="text-white font-semibold font-3 py-1 px-3 br">{med.status}</h3>
                                                                                     ]}

@@ -40,8 +40,6 @@ axiosInstance.interceptors.response.use(
     const isAuthCall = error?.config?.url?.includes('/auth/login');
 
     if (error.response?.status === 401 && !isAuthCall) {
-      localStorage.removeItem('jwtToken');
-      localStorage.removeItem('currentUser');
       window.location.href = '/unauthorized?code=401';
     }
 

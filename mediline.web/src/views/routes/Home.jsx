@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
@@ -6,8 +6,10 @@ import Image from '../../components/General/Image'
 import InputBar from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
+import { UserContext } from '../../context/UserProvider';
 
 export default function Home() {
+    const { currentUser } = useContext(UserContext);
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
     const serviceRef = useRef(null);
@@ -70,12 +72,25 @@ export default function Home() {
                                     to={"/discussionForumPage"}
                                     text={"Discussion"}>
                                 </TopbarItem>
+                                {currentUser ? (
+                                    <TopbarItem
+                                    to={
+                                        currentUser.role === "pharmacy"
+                                            ? "/dashboard/pharmacist"
+                                            : `/dashboard/${currentUser.role}`
+                                    }
+                                    text={"HOME"}
+                                    customClass="button"
+                                    textClass="text-neutral-1100 hover-box-shadow shadow-primary-400">
+                                </TopbarItem>
+                                ) : (
                                 <TopbarItem
                                     to={"/login"}
                                     text={"SIGN IN"}
                                     customClass="button"
                                     textClass="text-neutral-1100 hover-box-shadow shadow-primary-400">
                                 </TopbarItem>
+                                )}
                             </>
                         ]}
                     />
