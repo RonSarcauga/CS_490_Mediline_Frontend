@@ -52,7 +52,8 @@ const LoginViewModel = {
             const userId = decodedPayload.sub;
             const accountType = decodedPayload.acct_type;
 
-            localStorage.setItem("jwtToken", token);
+            localStorage.removeItem('jwtToken'); // optional safety
+            localStorage.setItem('jwtToken', token);
 
             // Stores the user object
             const user = await this.fetchUserData(userId);
@@ -76,6 +77,7 @@ const LoginViewModel = {
                 state: user.state,
                 zipcode: user.zipcode
             }
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
             // Confirm that the correct data is being passed
             console.log(`Current user: ${JSON.stringify(currentUser, null, 2)}`);

@@ -9,6 +9,7 @@ import Modal from '../../components/General/Modal';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import  DoctorDashboardViewModel  from '../../viewModels/DDViewModel'; 
+import Spinner from '../../components/General/Spinner';
 
 function DDProfile() {
     const { currentUser } = useContext(UserContext);
@@ -29,7 +30,7 @@ function DDProfile() {
 
     console.log('patient data:', data);
 
-    if (isLoading) return <p>Loading…</p>;
+    if (isLoading) return <Container fitParent={true} customClass="p-5" content={[<Spinner size={64} />]} />;
     if (isError)   return <p>Error: {error.message}</p>;
 
     const nextAppt = dashboardLayoutViewModel.getNextUpcomingAppointment(data.nextAppointment);

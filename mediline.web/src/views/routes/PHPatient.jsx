@@ -8,6 +8,7 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel'; 
+import Spinner from '../../components/General/Spinner';
 
 const dummyPatient = {
     name: "John Doe",
@@ -63,7 +64,7 @@ function PHPatient() {
 
     console.log(`Accordion Height: ${accordionHeight}`);
 
-    if (isLoading) return <p>Loading…</p>;
+    if (isLoading) return <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />;
     if (isError)   return <p>Error: {error.message}</p>;
     return (
         <>
@@ -252,7 +253,7 @@ function PHPatient() {
                             items={[
                                 <>
                                     {patLoading ? (
-                                        <p className="text-center text-neutral-600 font-medium">Loading patient data...</p>
+                                        <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
                                     ) : (
                                     <ItemGroup
                                         customClass="gap-5 hideScroll"

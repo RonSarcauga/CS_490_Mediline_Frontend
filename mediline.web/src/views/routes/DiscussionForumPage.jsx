@@ -4,6 +4,7 @@ import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
+import Spinner from '../../components/General/Spinner';
 
 function DiscussionForumPage() {
     //const posts = discussionForumViewModel.getPosts();
@@ -34,19 +35,9 @@ function DiscussionForumPage() {
         setLoading(false); 
     };
 
-    if (loading) return (
-        <Container
-            customClass="align-items-center justify-content-center"
-            fitParent={true}
-            content={[
-                <>
-                    <p>Loading data</p>
-                </>
-            ]}
-        />
-    );
+    //if (loading) return ( <Container customClass="p-5" content={[<Spinner size={64} />]} />);
 
-    if (!data) return (
+    if (!data && !loading) return (
         <Container
             customClass="align-items-center justify-content-center"
             fitParent={true}
@@ -216,7 +207,10 @@ function DiscussionForumPage() {
                                                             axis={true}
                                                             items={
                                                                 <>
-                                                                    {data.posts.map((post, index) => (
+                                                                    {loading ? (
+                                                                        <Container customClass="p-5" content={[<Spinner size={64} />]} />
+                                                                    ) : (
+                                                                    data.posts.map((post, index) => (
                                                                         <>
                                                                             <Container
                                                                                 key={index}
@@ -332,7 +326,8 @@ function DiscussionForumPage() {
                                                                                 ]}
                                                                             />
                                                                         </>
-                                                                    ))}
+                                                                    ))
+                                                                    )}
                                                                     <Container
                                                                         fitParent={true}
                                                                         customClass="align-items-center justify-content-center py-10"

@@ -32,135 +32,72 @@ import DoctorAppointment from './DoctorAppointment';
 import PatientAppointment from './PatientAppointment';
 import PharmacistHome from './PharmacistHome';
 import PharmacistPatientProfile from './PharmacistPatientProfile';
-import ErrorBoundary from './ErrorBoundary';
+import RouteErrorPage from './RouteErrorPage';
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
-    {
-        path: '/',
+  {
+    path: '/',
+    errorElement: <RouteErrorPage />,
+    children: [
+      {
+        index: true,
         element: <HomePage />,
-    },
-    {
-        path: '/login',
+      },
+      {
+        path: 'login',
         element: <LoginPage />,
-    },
-    {
-        path: '/register',
+      },
+      {
+        path: 'register',
         element: <RegisterPage />,
-    },
-    {
-        path: '/dashboard',
+      },
+      {
+        path: 'dashboard',
         element: <DashboardLayout />,
         children: [
-            {
-                path: 'patient',
-                element: <PDHome />,
-            },
-            {
-                path: 'patient/profile',
-                element: <PDProfile />,
-            },
-            {
-                path: 'patient/profile/find-a-doctor',
-                element: <PDFindDoctor />,
-            },
-            {
-                path: 'patient/appointment',
-                element: <PDAppointment />,
-            },
-            {
-                path: 'patient/discussion-forum',
-                element: <PDDiscussionForum />,
-            },
-            {
-                path: 'doctor',
-                element: <DDHome />,
-            },
-            {
-                path: 'doctor/profile',
-                element: <DDProfile />
-            },
-            {
-                path: 'doctor/profile/:patientId',
-                element: <DDProfile />
-            },
-            {
-                path: 'doctor/appointment',
-                element: <DDAppointment />
-            },
-            {
-                path: 'doctor/discussion-forum',
-                element: <PDDiscussionForum />,
-            },
-            {
-                path: 'pharmacist',
-                element: <PHHome />,
-            },
-            {
-                path: 'pharmacist/profile',
-                element: <PHPatient />,
-            },
-            {
-                path: 'pharmacist/discussion-forum',
-                element: <PDDiscussionForum />,
-            },
+          { path: 'patient', element: <PDHome /> },
+          { path: 'patient/profile', element: <PDProfile /> },
+          { path: 'patient/profile/find-a-doctor', element: <PDFindDoctor /> },
+          { path: 'patient/appointment', element: <PDAppointment /> },
+          { path: 'patient/discussion-forum', element: <PDDiscussionForum /> },
+
+          { path: 'doctor', element: <DDHome /> },
+          { path: 'doctor/profile', element: <DDProfile /> },
+          { path: 'doctor/profile/:patientId', element: <DDProfile /> },
+          { path: 'doctor/appointment', element: <DDAppointment /> },
+          { path: 'doctor/discussion-forum', element: <PDDiscussionForum /> },
+
+          { path: 'pharmacist', element: <PHHome /> },
+          { path: 'pharmacist/profile', element: <PHPatient /> },
+          { path: 'pharmacist/discussion-forum', element: <PDDiscussionForum /> },
         ],
-    },
-    {
-        path: '/patientExercise',
-        element: <Dashboard />,
-    },
-    {
-        path: '/patientDiscussion',
-        element: <PDDiscussionForum />,
-    },
-    {
-        path: '/patientHome',
-        element: <PatientDashboardHome />,
-    },
-    {
-        path: '/findADoctor',
-        element: <FindADoctorPage />,
-    },
-    {
-        path: '/discussionForumPage',
-        element: <DiscussionForumPage />,
-    },
-    {
-        path: '/doctorHome',
-        element: <DoctorDashboardHome />,
-    },
-    {
-        path: '/doctorPatient',
-        element: <DoctorPatientProfile />,
-    },
-    {
-        path: '/doctorAppointment',
-        element: <DoctorAppointment />,
-    },
-    {
-        path: '/patientAppointment',
-        element: <PatientAppointment />,
-    },
-    {
-        path: '/pharmacistHome',
-        element: <PharmacistHome />,
-    },
-    {
-        path: '/pharmacistPatient',
-        element: <PharmacistPatientProfile />,
-    },
+      },
+
+      { path: 'patientExercise', element: <Dashboard /> },
+      { path: 'patientDiscussion', element: <PDDiscussionForum /> },
+      { path: 'patientHome', element: <PatientDashboardHome /> },
+      { path: 'findADoctor', element: <FindADoctorPage /> },
+      { path: 'discussionForumPage', element: <DiscussionForumPage /> },
+      { path: 'doctorHome', element: <DoctorDashboardHome /> },
+      { path: 'doctorPatient', element: <DoctorPatientProfile /> },
+      { path: 'doctorAppointment', element: <DoctorAppointment /> },
+      { path: 'patientAppointment', element: <PatientAppointment /> },
+      { path: 'pharmacistHome', element: <PharmacistHome /> },
+      { path: 'pharmacistPatient', element: <PharmacistPatientProfile /> },
+      { path: "/unauthorized",element: <RouteErrorPage message="Unauthorized: Please log in again." />},
+
+    ],
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(
     <StrictMode>
         <QueryClientProvider client={queryClient}>
             <UserProvider>
-                <ErrorBoundary>
-                    <RouterProvider router={router} />
-                </ErrorBoundary>
+                <RouterProvider router={router} />
             </UserProvider>
         </QueryClientProvider>
     </StrictMode>
-  );
+);
