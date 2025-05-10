@@ -27,23 +27,25 @@ class DashboardLayoutViewModel {
             "July", "August", "September", "October", "November", "December"
         ];
 
-        // Ensure birthDate is in a standard format
         const date = this.parseDate(birthDate);
         if (!date) return "Invalid date format";
 
+        const day = String(date.getUTCDate()).padStart(2, "0");
+        const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+        const year = date.getUTCFullYear();
+
         switch (format) {
             case "MM/DD/YYYY":
-                return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}/${date.getFullYear()}`;
+                return `${month}/${day}/${year}`;
             case "DD/MM/YYYY":
-                return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+                return `${day}/${month}/${year}`;
             case "YYYY-MM-DD":
-                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+                return `${year}-${month}-${day}`;
             case "Month Day, Year":
-                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
             default:
-                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`; // Default format
+                return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${year}`;
         }
-    };
+    }
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
@@ -88,7 +90,7 @@ class DashboardLayoutViewModel {
         if (!isNaN(date.getTime())) return date;
 
         // Try parsing other common formats
-        const delimiters = ["/", "-"];
+        const delimiters = ["-","/"];
         for (const delimiter of delimiters) {
             const parts = dateString.split(delimiter);
             if (parts.length === 3) {
@@ -96,9 +98,9 @@ class DashboardLayoutViewModel {
 
                 // Determine format based on value constraints
                 if (part1 > 31) { // YYYY-MM-DD or YYYY/DD/MM
-                    date = new Date(part1, part2 - 1, part3);
+                    date = new Date(part1, part2, part3);
                 } else if (part3 > 31) { // MM/DD/YYYY or DD/MM/YYYY
-                    date = new Date(part3, part1 - 1, part2);
+                    date = new Date(part3, part1, part2);
                 }
 
                 if (!isNaN(date.getTime())) return date;
@@ -584,6 +586,17 @@ class DashboardLayoutViewModel {
             .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
       
         return upcoming.length > 0 ? upcoming[0] : null;
+    }
+
+    isPrescriptionActive(takenDateStr, duration) {
+        if (!takenDateStr || typeof duration !== 'number') return false;
+
+        const start = new Date(takenDateStr);
+        const end = new Date(start);
+        end.setDate(start.getDate() + duration);
+
+        const now = new Date();
+        return now >= start && now <= end;
     }
 
 };
