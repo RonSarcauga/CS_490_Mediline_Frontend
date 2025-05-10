@@ -4,6 +4,7 @@ import Container, { ItemGroup, PictureFrame } from '../../components/General/Con
 import BaseIcon from '../../components/General/BaseIcon';
 import InputBar from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
+import Spinner from '../../components/General/Spinner';
 import LoginViewModel from '../../viewModels/LoginViewModel';
 import { UserContext } from '../../context/UserProvider';
 import { useLogin } from '../../hooks/useLogin';
@@ -15,6 +16,9 @@ export default function Login() {
         email: "",
         password: "",
     });
+
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
 
     const loginMutation = useLogin();
 
@@ -34,30 +38,30 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        console.log("Initiate login process!");
+        setIsLoading(true);
+        setError("");
+
         try {
             LoginViewModel.email = formData.email;
             LoginViewModel.password = formData.password;
             const currentUser = await LoginViewModel.login();
-            setCurrentUser(currentUser);
-            console.log("Login successful!", currentUser);
 
-            let basePath = null;
-
-            if (currentUser.role === "pharmacy") {
-                basePath = `/dashboard/pharmacist`;
+            if (!currentUser) {
+                setError("Invalid email or password.");
+            } else {
+                setCurrentUser(currentUser);
+                let basePath = currentUser.role === "pharmacy"
+                    ? "/dashboard/pharmacist"
+                    : `/dashboard/${currentUser.role}`;
+                navigate(basePath);
             }
-            else {
-                basePath = `/dashboard/${currentUser.role}`;
-            }
-
-            // Redirect to the dashboard
-            navigate(`${basePath}`);
-        } catch (error) {
-            console.log("Login failed:", error.message);
+        } catch (err) {
+            setError("An unexpected error occurred.");
+            console.error(err);
+        } finally {
+            setIsLoading(false);
         }
     };
-
 
     //const handleLogin = (e) => {
     //    e.preventDefault();
@@ -167,17 +171,18 @@ export default function Login() {
                                                                     onChange={(e) => handleInput('password', e.target)}
                                                                     placeholder="Password"
                                                                 />
+                                                                {error && <p className="text-warning-200 font-regular">{error}</p>}
                                                                 <Container
                                                                     customClass='bg-dark-100 justify-items-center align-items-center br-sm py-1'
-                                                                    isClickable={isComplete}
+                                                                    isClickable={isComplete && !isLoading}
                                                                     onClick={handleLogin}
                                                                     fitParent={true}
                                                                     content={[
                                                                         <Button
                                                                             customClass="bg-0"
                                                                             content={[
-                                                                                <p className=" text-decoration-none font-regular text-neutral-1100">
-                                                                                    Sign In
+                                                                                <p className="text-decoration-none font-regular text-neutral-1100">
+                                                                                    {isLoading ? <> Signing In... </> : "Sign In"}
                                                                                 </p>
                                                                             ]}
                                                                         />

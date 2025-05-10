@@ -4,6 +4,7 @@ import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
+import Spinner from '../../components/General/Spinner';
 
 function DiscussionForumPage() {
     //const posts = discussionForumViewModel.getPosts();
@@ -40,7 +41,7 @@ function DiscussionForumPage() {
             fitParent={true}
             content={[
                 <>
-                    <p>Loading data</p>
+                    <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
                 </>
             ]}
         />

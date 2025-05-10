@@ -8,6 +8,7 @@ import Modal from '../../components/General/Modal';
 import { UserContext } from '../../context/UserProvider';
 import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import Spinner from '../../components/General/Spinner';
 
 function PDDiscussionForum() {
     // Used to manage data from API calls
@@ -125,7 +126,7 @@ function PDDiscussionForum() {
             fitParent={true}
             content={[
                 <>
-                    <p>Loading data</p>
+                    <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
                 </>
             ]}
         />

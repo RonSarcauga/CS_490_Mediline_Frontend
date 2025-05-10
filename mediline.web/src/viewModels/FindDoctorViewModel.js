@@ -295,7 +295,7 @@ const FindDoctorViewModel = {
             const doctorsWithRatings = await Promise.all(
                 doctors.map(async (doctor) => {
                     const rating = await this.getDoctorRating(doctor.user_id);
-                    const percentRating = Math.round(parseFloat(rating) * 10);
+                    const percentRating = Math.round(parseFloat(rating) * 20);
                     const user = await this.getUserInfo(doctor.user_id);
 
                     return {

@@ -9,6 +9,7 @@ import InputBar, { InputBarSpecial } from '../../components/General/InputBar';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import { pdHomeVM } from '../../viewModels/PDHomeViewModel';
+import Spinner from '../../components/General/Spinner';
 
 function PDHome() {
     const { currentUser } = useContext(UserContext);
@@ -60,7 +61,7 @@ function PDHome() {
             fitParent={true}
             content={[
                 <>
-                    <p>Loading data</p>
+                    <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
                 </>
             ]}
         />

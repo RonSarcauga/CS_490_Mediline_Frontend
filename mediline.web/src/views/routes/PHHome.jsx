@@ -6,7 +6,7 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel'; 
-
+import Spinner from '../../components/General/Spinner';
 
 function PHHome() {
     const { currentUser } = useContext(UserContext);
@@ -33,7 +33,7 @@ function PHHome() {
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
     //const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
     const { data, status, isLoading, isError, error } = PharmaDashboardViewModel.usePharmaHome(currentUser.user_id);
-    if (isLoading) return <p>Loading…</p>;
+    if (isLoading) return <Container fitParent={true} customClass="p-5" content={[<Spinner size={64} />]} />;
     if (isError)   return <p>Error: {error.message}</p>;
 
     return (
@@ -372,7 +372,7 @@ function PHHome() {
                                                             items={[
                                                                 <>
                                                                     {prescLoading ? (
-                                                                        <p className="font-3 text-neutral-700">Loading prescriptions...</p>
+                                                                        <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
                                                                         ) : medications.length === 0 ? (
                                                                         <p className="font-3 text-neutral-700">No prescriptions found.</p>
                                                                         ) : (

@@ -9,6 +9,7 @@ import Modal from '../../components/General/Modal';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import FindDoctorViewModel from '../../viewModels/FindDoctorViewModel';
+import Spinner from '../../components/General/Spinner';
 
 function PDFindDoctor() {
     const { currentUser } = useContext(UserContext);
@@ -97,7 +98,7 @@ function PDFindDoctor() {
             fitParent={true}
             content={[
                 <>
-                    <p>Loading data</p>
+                    <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
                 </>
             ]}
         />
