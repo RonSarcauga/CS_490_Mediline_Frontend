@@ -89,28 +89,24 @@ async function fetchMedicationslist(pharmaId) {
 }
 
 
-async function fetchPatientOverview(patientId) {
+async function fetchPatientOverview(patientId, pharmaId) {
     try {
-        const [/*reportRes,*/ userRes, medsRes] = await Promise.all([
-            /*axios.get(`/report/user/${patientId}`, {
-                ...authHeaders(),
-                params: {
-                sort_by: 'created_at',
-                order_by: 'desc',
-                    },
-            }),*/
+        const [userRes, medsRes] = await Promise.all([
             axios.get(`/user/${patientId}`, authHeaders()),
             axios.get(`/prescription/patient/${patientId}/history`, authHeaders()),
         ]);
 
-        //const reports = reportRes.data;
         const user = userRes.data;
 
-        /*const latestReport = Array.isArray(reports) && reports.length > 0 ? reports[0] : {};
-        const {
-            height = null,
-            weight = null
-        } = latestReport;*/
+        let reportData = null;
+        if (user.pharmacy_id === pharmaId) {
+            try {
+                const reportRes = await axios.get(`/report/user/${patientId}/latest`, authHeaders());
+                reportData = reportRes.data;
+            } catch (err) {
+                console.warn("Failed to fetch latest report:", err);
+            }
+        }
 
         const {
             first_name,
@@ -125,7 +121,7 @@ async function fetchPatientOverview(patientId) {
         } = user;
         
         const medHistory = (medsRes.data || [])
-        .flat() // flattens the outer array of arrays
+        .flat()
         .map(med => ({
             medication: med.name,
             dosage: med.dosage,
@@ -144,8 +140,8 @@ async function fetchPatientOverview(patientId) {
             state,
             zipcode,
             email,
-            //height,
-            //weight,
+            height: reportData?.height ?? null,
+            weight: reportData?.weight ?? null,
             medications: medHistory
         };
     } catch (err) {
@@ -166,13 +162,13 @@ export const PharmacyDashboardViewModel = {
         });
     },
     fetchMedicationslist,
-    usePatientOverview(patientId) {
+    usePatientOverview(patientId, pharmaId) {
         return useQuery({
             queryKey: ['pharmaPatient', patientId],
-            queryFn:   () => fetchPatientOverview(patientId),
+            queryFn:   () => fetchPatientOverview(patientId, pharmaId),
             staleTime: 1000 * 60 * 5,
             retry:     1,
-            enabled: !!patientId
+            enabled: !!patientId && !!pharmaId
         });
     },
     usePharmacyPatients(pharmaId) {

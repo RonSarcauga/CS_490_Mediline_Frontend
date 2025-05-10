@@ -9,14 +9,24 @@ import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel'; 
 
-function getFirstPatientFromGroups(groups) {
-    for (const group of Object.values(groups)) {
-        if (Array.isArray(group) && group.length > 0) {
-        return group[0]; 
+const dummyPatient = {
+    name: "John Doe",
+    dob: "1990-01-01",
+    phone: "123-456-7890",
+    email: "john.doe@example.com",
+    address: "123 Main St",
+    city: "Sampletown",
+    state: "CA",
+    zipcode: "12345",
+    medications: [
+        {
+            medication: "DummyMed",
+            dosage: 50,
+            duration: 10,
+            takenDate: "2025-01-01T00:00:00Z"
         }
-    }
-    return null;
-}
+    ],
+};
 
 function PHPatient() {
     const { currentUser } = useContext(UserContext);
@@ -24,29 +34,17 @@ function PHPatient() {
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
 
-    const { data, status, isLoading, isError, error } = PharmaDashboardViewModel.usePharmacyPatients(currentUser.user_id);
-    console.log('data:', data);
-
-    if (isLoading) return <p>Loading…</p>;
-    if (isError)   return <p>Error: {error.message}</p>;
-
     const [selectedPatientId, setSelectedPatientId] = useState(null);
 
+    const { data, isLoading, isError, error} = PharmaDashboardViewModel.usePharmacyPatients(currentUser.user_id);
+    console.log('data:', data);
+    
+    const { data: patData, isLoading: patLoading } = PharmaDashboardViewModel.usePatientOverview(selectedPatientId, currentUser.user_id);
+    const displayData = selectedPatientId ? patData : dummyPatient;
     useEffect(() => {
-        if (data) {
-            const firstPatient = getFirstPatientFromGroups(data);
-            if (firstPatient) {
-                setSelectedPatientId(firstPatient.patient_id);
-            }
-        }
-    }, [data]);
-
-    const { data: patData, patLoading } = PharmaDashboardViewModel.usePatientOverview(selectedPatientId);
-    useEffect(() => {
-        if (patData) {
-            console.log("Fetched patient data:", patData);
-        }
-    }, [patData]);
+        if (!selectedPatientId) return;
+        console.log("Patient switched to:", selectedPatientId);
+    }, [selectedPatientId]);
 
     const [accordionHeight, setAccordionHeight] = useState(0);
     const onExpand = () => {
@@ -66,6 +64,8 @@ function PHPatient() {
 
     console.log(`Accordion Height: ${accordionHeight}`);
 
+    if (isLoading || patLoading) return <p>Loading…</p>;
+    if (isError)   return <p>Error: {error.message}</p>;
     return (
         <>
             <Modal
@@ -323,7 +323,7 @@ function PHPatient() {
                                                                                             <>
                                                                                                 <h5 className="font-3">NAME</h5>
                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                    {patData?.name}
+                                                                                                    {displayData?.name}
                                                                                                 </p>
                                                                                             </>
                                                                                         ]}
@@ -337,39 +337,44 @@ function PHPatient() {
                                                                                             <>
                                                                                                 <h5 className="font-3">DATE OF BIRTH</h5>
                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                    {dashboardLayoutViewModel.formatBirthDate(patData?.dob)}
+                                                                                                    {dashboardLayoutViewModel.formatBirthDate(displayData?.dob)}
                                                                                                 </p>
                                                                                             </>
                                                                                         ]}
                                                                                     />
-                                                                                    {/*<ItemGroup
-                                                                                        customClass="gap-2"
-                                                                                        axis={true}
-                                                                                        stretch={true}
-                                                                                        fitParent={true}
-                                                                                        items={[
+                                                                                    {displayData.height != null && (
+                                                                                        <ItemGroup
+                                                                                            customClass="gap-2"
+                                                                                            axis={true}
+                                                                                            stretch={true}
+                                                                                            fitParent={true}
+                                                                                            items={[
                                                                                             <>
                                                                                                 <h5 className="font-3">HEIGHT</h5>
                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                    175 cm
+                                                                                                {displayData.height} cm
                                                                                                 </p>
                                                                                             </>
-                                                                                        ]}
-                                                                                    />*/}
-                                                                                    {/*<ItemGroup
-                                                                                        customClass="gap-2"
-                                                                                        axis={true}
-                                                                                        stretch={true}
-                                                                                        fitParent={true}
-                                                                                        items={[
+                                                                                            ]}
+                                                                                        />
+                                                                                        )}
+
+                                                                                        {displayData.weight != null && (
+                                                                                        <ItemGroup
+                                                                                            customClass="gap-2"
+                                                                                            axis={true}
+                                                                                            stretch={true}
+                                                                                            fitParent={true}
+                                                                                            items={[
                                                                                             <>
                                                                                                 <h5 className="font-3">WEIGHT</h5>
                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                    140 lbs
+                                                                                                {displayData.weight} lbs
                                                                                                 </p>
                                                                                             </>
-                                                                                        ]}
-                                                                                    />*/}
+                                                                                            ]}
+                                                                                        />
+                                                                                    )}
                                                                                 </>
                                                                             ]}
                                                                         />
@@ -459,7 +464,7 @@ function PHPatient() {
                                                                                                                                 <>
                                                                                                                                     <h5 className="font-3">EMAIL</h5>
                                                                                                                                     <p className="font-3 font-medium text-justify">
-                                                                                                                                        {patData?.email}
+                                                                                                                                        {displayData?.email}
                                                                                                                                     </p>
                                                                                                                                 </>
                                                                                                                             ]}
@@ -479,13 +484,13 @@ function PHPatient() {
                                                                                                                                         items={[
                                                                                                                                             <>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {patData?.address},
+                                                                                                                                                    {displayData?.address},
                                                                                                                                                 </p>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {patData?.city}, {patData?.state}
+                                                                                                                                                    {displayData?.city}, {displayData?.state}
                                                                                                                                                 </p>
                                                                                                                                                 <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {patData?.zipcode}
+                                                                                                                                                    {displayData?.zipcode}
                                                                                                                                                 </p>
                                                                                                                                             </>
                                                                                                                                         ]}
@@ -505,7 +510,7 @@ function PHPatient() {
                                                                                                                     <>
                                                                                                                         <h5 className="font-3">PHONE</h5>
                                                                                                                         <p className="font-3 font-medium text-justify">
-                                                                                                                            {dashboardLayoutViewModel.formatPhoneNumber(patData?.phone)}
+                                                                                                                            {dashboardLayoutViewModel.formatPhoneNumber(displayData?.phone)}
                                                                                                                         </p>
                                                                                                                     </>
                                                                                                                 ]}
@@ -616,8 +621,8 @@ function PHPatient() {
                                                                             items={[
                                                                                 <>
                                                                                     {
-                                                                                        patData?.medications.length > 0 && (
-                                                                                            patData.medications.map((med) => (
+                                                                                        displayData?.medications.length > 0 && (
+                                                                                            displayData.medications.map((med) => (
                                                                                                 <>
                                                                                                     <ItemGroup
                                                                                                         customClass=" py-1"
@@ -763,8 +768,8 @@ function PHPatient() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         {
-                                                                                                            users.length > 0 ? (
-                                                                                                                users.slice(0, 3).map((user) => (
+                                                                                                            data.new_patients.length > 0 ? (
+                                                                                                                data.new_patients.map((pat) => (
                                                                                                                     <ItemGroup
                                                                                                                         customClass="gap-6 align-items-center"
                                                                                                                         axis={false}
@@ -825,7 +830,7 @@ function PHPatient() {
                                                                                                                                                                         items={[
                                                                                                                                                                             <>
                                                                                                                                                                                 <p className="font-regular text-neutral-100 font-4">
-                                                                                                                                                                                    {user.firstName} {user.lastName}
+                                                                                                                                                                                    {pat.patient_name}
                                                                                                                                                                                 </p>
                                                                                                                                                                                 <p className="font-regular text-neutral-600 font-3">
                                                                                                                                                                                     Medication
@@ -879,7 +884,7 @@ function PHPatient() {
                                                                                                                     />
                                                                                                                 ))
                                                                                                             ) : (
-                                                                                                                <p>Hello world!</p>
+                                                                                                                <p>No requests to show</p>
                                                                                                             )
                                                                                                         }
                                                                                                     </>
@@ -1027,7 +1032,7 @@ function PHPatient() {
                                                                                                 />
                                                                                             ))
                                                                                         ) : (
-                                                                                            <p>Hello world!</p>
+                                                                                            <p>No patients to show</p>
                                                                                         )
                                                                                     }
                                                                                 </>
