@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Container, { ItemGroup } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
-import InputBar from '../../components/General/InputBar';
+import InputBar, {InputBarSpecial} from '../../components/General/InputBar';
 import ProgressBar from '../../components/LandingPage/ProgressBar';
 import RegistrationViewModel from '../../viewModels/RegisterViewModel';
 import { useRegister } from '../../hooks/useRegister';
@@ -174,6 +174,7 @@ export default function MultiStepRegistration()
                                                                     <InputBar
                                                                         type="text"
                                                                         value={formData.firstname}
+                                                                        validationRegex="^[A-Za-z0-9-]+$"
                                                                         onChange={(e) => handleInput('firstname', e.target)}
                                                                         customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                                         placeholder="First Name"
@@ -293,7 +294,7 @@ export default function MultiStepRegistration()
                                                             evenSplit={true}
                                                             items={[
                                                                 <>
-                                                                    <InputBar
+                                                                    <InputBarSpecial
                                                                         type="text"
                                                                         value={formData.city}
                                                                         onChange={(e) => handleInput('city', e.target)}
