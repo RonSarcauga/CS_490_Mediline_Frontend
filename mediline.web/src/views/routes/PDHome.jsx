@@ -469,26 +469,25 @@ function PDHome() {
                                                                                                                 items={[
                                                                                                                     <>
                                                                                                                         <h5 className="font-3 text-neutral-600">STATUS</h5>
-                                                                                                                        <p className="font-3 font-medium text-neutral-600">
-                                                                                                                            {currentUser.doctor !== null && (
-                                                                                                                                data.doctorInfo.accepting_patients ? (
-                                                                                                                                    <ItemGroup
-                                                                                                                                        items={[
-                                                                                                                                            <>
-                                                                                                                                                <h3 className="text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
-                                                                                                                                            </>
-                                                                                                                                        ]}
-                                                                                                                                    />
-                                                                                                                                ) : (
-                                                                                                                                    <ItemGroup
-                                                                                                                                        items={[
-                                                                                                                                            <>
-                                                                                                                                                <h3 className="text-warning-100 bg-warning-400 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
-                                                                                                                                            </>
-                                                                                                                                        ]}
-                                                                                                                                    />
-                                                                                                                                ))}
-                                                                                                                        </p>
+                                                                                                                        {currentUser.doctor !== null && (
+                                                                                                                            data.doctorInfo.accepting_patients ? (
+                                                                                                                                <ItemGroup
+                                                                                                                                    items={[
+                                                                                                                                        <>
+                                                                                                                                            <h3 className="text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
+                                                                                                                                        </>
+                                                                                                                                    ]}
+                                                                                                                                />
+                                                                                                                            ) : (
+                                                                                                                                <ItemGroup
+                                                                                                                                    items={[
+                                                                                                                                        <>
+                                                                                                                                            <h3 className="text-warning-100 bg-warning-400 font-semibold font-3 py-1 px-3 br">Serving Patients</h3>
+                                                                                                                                        </>
+                                                                                                                                    ]}
+                                                                                                                                />
+                                                                                                                            ))
+                                                                                                                        }
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
