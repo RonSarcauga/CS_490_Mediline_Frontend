@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 //Omar's custom input bar for registration
 export function InputBarReg({
@@ -13,108 +13,117 @@ export function InputBarReg({
     inputType = "text",
     specialFormat = null,
     onValidationFail = null,
+    onValidChange = null,
     value: externalValue,
     onChange,
     ...props
-    }) {
-
-    const normClass = "br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-    const errorClass = "br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600 b-err"
+}) {
+    const normClass = "br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600";
+    const errorClass = "br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600 b-err";
     const [display, setDisplay] = useState("");
     const [isValid, setIsValid] = useState(true);
     const inputRef = useRef(null);
     const [showTooltip, setShowTooltip] = useState(false);
+
+    useEffect(() => {
+        if (externalValue && externalValue !== display) {
+            setDisplay(externalValue);
+        }
+    }, [externalValue]);
+
+    useEffect(() => {
+        onValidChange?.(isValid);
+    }, [isValid]);
 
     // Masking logic: only show literals once user has typed into them
     const applySpecialFormat = (raw) => {
         if (!specialFormat) return raw;
         let out = "", ri = 0;
         for (let i = 0; i < specialFormat.length && ri < raw.length; i++) {
-        if (specialFormat[i] === "X") {
-            out += raw[ri++];
-        } else if (ri > 0) {
-            out += specialFormat[i];
-        }
+            if (specialFormat[i] === "X") {
+                out += raw[ri++];
+            } else if (ri > 0) {
+                out += specialFormat[i];
+            }
         }
         return out;
     };
 
     const handleChange = (e) => {
         let raw = e.target.value;
-        // if a mask or number-only, strip nondigits
         if (specialFormat || inputType === "number") {
-        raw = raw.replace(/\D/g, "");
+            raw = raw.replace(/\D/g, "");
         }
-        // enforce maxLength on raw
         if (maxLength != null && raw.length > maxLength) {
-        raw = raw.slice(0, maxLength);
+            raw = raw.slice(0, maxLength);
         }
 
         const formatted = applySpecialFormat(raw);
 
-        // validation (purely visual)
         if (validationRegex) {
-        const regex = new RegExp(validationRegex, "i");
-        const valid = regex.test(raw);
-        setIsValid(valid);
-        if (!valid && onValidationFail) onValidationFail(raw);
+            const compiledRegex =
+                validationRegex instanceof RegExp
+                    ? validationRegex
+                    : new RegExp(validationRegex, "i");
+
+            const valid = compiledRegex.test(formatted);
+            setIsValid(valid);
+            if (!valid && onValidationFail) onValidationFail(raw);
         } else {
-        setIsValid(true);
+            setIsValid(true);
         }
 
         setDisplay(formatted);
         onChange?.({ ...e, target: { ...e.target, value: formatted } });
     };
 
-    // only turn border red when there's some input but it's invalid
-    const showError = !isValid && (externalValue ?? display).length > 0;
+    const showError = !isValid && display.length > 0;
 
     return (
         <div className={`input-bar ${normClass} full-width`}>
             {searchIcon && <div className="search-icon">{searchIcon}</div>}
 
             <div style={{ position: "relative", width: "100%" }}>
-            <input
-                {...props}
-                ref={inputRef}
-                type="text"
-                inputMode={specialFormat || inputType === "number" ? "numeric" : "text"}
-                value={externalValue ?? display}
-                onChange={handleChange}
-                readOnly={readonly}
-                className={`${showError ? errorClass : normClass}`}
-                onFocus={() => setShowTooltip(true)}
-                onBlur={() => setShowTooltip(false)}
-                onMouseEnter={() => setShowTooltip(true)}
-                onMouseLeave={() => setShowTooltip(false)}
-            />
-
-            {showError && dataAnnotation && showTooltip && (
-                <div
-                style={{
-                    position: "absolute",
-                    top: "-2.2rem",
-                    left: "0",
-                    backgroundColor: "#333",
-                    color: "#fff",
-                    padding: "6px 8px",
-                    fontSize: "0.75rem",
-                    borderRadius: "4px",
-                    whiteSpace: "nowrap",
-                    zIndex: 10,
-                    boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
-                }}
-                >
-                {dataAnnotation}
-                </div>
-            )}
+                <input
+                    {...props}
+                    ref={inputRef}
+                    type="text"
+                    inputMode={specialFormat || inputType === "number" ? "numeric" : "text"}
+                    value={display}
+                    onChange={handleChange}
+                    readOnly={readonly}
+                    className={`${showError ? errorClass : normClass}`}
+                    onFocus={() => setShowTooltip(true)}
+                    onBlur={() => setShowTooltip(false)}
+                    onMouseEnter={() => setShowTooltip(true)}
+                    onMouseLeave={() => setShowTooltip(false)}
+                />
+                {showError && dataAnnotation && showTooltip && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: "-2.2rem",
+                            left: "0",
+                            backgroundColor: "#333",
+                            color: "#fff",
+                            padding: "6px 8px",
+                            fontSize: "0.75rem",
+                            borderRadius: "4px",
+                            whiteSpace: "nowrap",
+                            zIndex: 10,
+                            boxShadow: "0 2px 6px rgba(0,0,0,0.2)"
+                        }}
+                    >
+                        {dataAnnotation}
+                    </div>
+                )}
             </div>
 
             {sendIcon && <div className="send-icon">{sendIcon}</div>}
         </div>
-        );
-
+    );
 }
+
 
 {/* This is the base component for a search bar in our site */ }
 export function InputBarSpecial({

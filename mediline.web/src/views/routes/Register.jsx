@@ -11,6 +11,7 @@ export default function MultiStepRegistration()
 {
     const [currentStep, setCurrentStep] = useState(1);
     const [formData, setFormData] = useState(RegistrationViewModel);
+    const [fieldValidity, setFieldValidity] = useState({});
     const navigate = useNavigate();
 
     const registerMutation = useRegister();
@@ -44,7 +45,9 @@ export default function MultiStepRegistration()
     const currentStepInputs = stepInputs[currentStep] || [];
 
     const isCurrentStepComplete = currentStepInputs.every(
-        (field) => formData[field]?.trim() !== ""
+        (field) =>
+            formData[field]?.trim() !== "" &&
+            fieldValidity[field] === true
     );
 
     const validatePasswordMatch = formData.password === formData.confirmPassword && formData.password.trim() !== "" && formData.confirmPassword.trim() !== "";
@@ -72,6 +75,10 @@ export default function MultiStepRegistration()
             ...formData,
             [field]: target.value,
         });
+    };
+
+    const setFieldValid = (field) => (isValid) => {
+        setFieldValidity((prev) => ({ ...prev, [field]: isValid }));
     };
 
     const handleSubmit = () => {
@@ -176,21 +183,24 @@ export default function MultiStepRegistration()
                                                                         onChange={e => handleInput('firstname', e.target)}
                                                                         placeholder="First Name"
                                                                         validationRegex="^[A-Za-z]+$"
-                                                                        dataAnnotation="First Name can only contain letters"
+                                                                        dataAnnotation="Enter a valid first name: John"
+                                                                        onValidChange={setFieldValid("first_name")}
                                                                     />
                                                                     <InputBarReg
                                                                         value={formData.lastname}
                                                                         onChange={e => handleInput('lastname', e.target)}
                                                                         placeholder="Last Name"
                                                                         validationRegex="^[A-Za-z]+$"
-                                                                        dataAnnotation="Last Name can only contain letters"
+                                                                        dataAnnotation="Enter a valid first name: Doe"
+                                                                        onValidChange={setFieldValid("last_name")}
                                                                     />
                                                                     <InputBarReg
                                                                         value={formData.sex}
                                                                         onChange={e => handleInput('sex', e.target)}
                                                                         placeholder="Sex"
                                                                         validationRegex="^(male|female|other)$"
-                                                                        dataAnnotation="Sex must be Male, Female, or Other"
+                                                                        dataAnnotation="Enter a valid sex: male, female, other"
+                                                                        onValidChange={setFieldValid("sex")}
                                                                     />                                                      
                                                                 </>
                                                             ]}
@@ -201,7 +211,8 @@ export default function MultiStepRegistration()
                                                             placeholder="Date of Birth (YYYY-MM-DD)"
                                                             specialFormat="XXXX-XX-XX"
                                                             validationRegex="^\d{4}-\d{2}-\d{2}$"
-                                                            dataAnnotation="Date of Birth must be in the format YYYY-MM-DD"
+                                                            dataAnnotation="Enter a valid date of birth: YYYY-MM-DD"
+                                                            onValidChange={setFieldValid("dob")}
                                                         />                                                        
                                                         <Container
                                                             customClass="button bg-dark-100 justify-items-center align-items-center br-sm"
@@ -269,8 +280,9 @@ export default function MultiStepRegistration()
                                                             value={formData.email}
                                                             onChange={e => handleInput('email', e.target)}
                                                             placeholder="Email"
-                                                            validationRegex="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
-                                                            dataAnnotation="Enter a valid email address"
+                                                            validationRegex={/^[^\s@]+@[^\s@]+\.[^\s@]+$/}
+                                                            dataAnnotation="Enter a valid email address: name@email.com"
+                                                            onValidChange={setFieldValid("email")}
                                                         />
 
                                                         <InputBarReg
@@ -278,15 +290,17 @@ export default function MultiStepRegistration()
                                                             onChange={e => handleInput('phone', e.target)}
                                                             placeholder="Phone"
                                                             specialFormat="XXX-XXX-XXXX"
-                                                            validationRegex="^\d{10}$"
-                                                            dataAnnotation="10 digits only"
+                                                            validationRegex={/^\d{3}-\d{3}-\d{4}$/}
+                                                            dataAnnotation="Enter a valid phone number: 123-456-7890"
+                                                            onValidChange={setFieldValid("phone")}
                                                         />
                                                         <InputBarReg
                                                             value={formData.address}
                                                             onChange={e => handleInput('address', e.target)}
                                                             placeholder="Address"
                                                             maxLength={100}
-                                                            dataAnnotation="Street address, e.g. 123 Main St"
+                                                            dataAnnotation="Enter a valid street address: 123 Main St"
+                                                            onValidChange={setFieldValid("address")}
                                                         />
                                                         <ItemGroup
                                                             customClass="gap-4"
@@ -301,21 +315,25 @@ export default function MultiStepRegistration()
                                                                         onChange={e => handleInput('city', e.target)}
                                                                         placeholder="City"
                                                                         validationRegex="^[A-Za-z\s]+$"
-                                                                        dataAnnotation="Letters and spaces only"
+                                                                        dataAnnotation="Enter a valid city: Newark"
+                                                                        onValidChange={setFieldValid("city")}
                                                                     />
                                                                     <InputBarReg
                                                                         type="text"
                                                                         value={formData.state}
-                                                                        validationRegex="^[A-Za-z\\s]+$" maxLength={50}
+                                                                        validationRegex="^[A-Za-z]+(?: [A-Za-z]+)*$"
                                                                         onChange={(e) => handleInput('state', e.target)}
                                                                         placeholder="State"
+                                                                        dataAnnotation="Enter a valid state: New Jersey"
+                                                                        onValidChange={setFieldValid("state")}
                                                                     />
                                                                     <InputBarReg
                                                                         value={formData.postalCode}
                                                                         onChange={e => handleInput('postalCode', e.target)}
                                                                         placeholder="ZIP Code"
                                                                         validationRegex="^\d{5}$"
-                                                                        dataAnnotation="5 digits only"
+                                                                        dataAnnotation="Enter a valid zipcode: 07102"
+                                                                        onValidChange={setFieldValid("zipcode")}
                                                                     />
                                                                 </>
                                                             ]}
@@ -384,10 +402,11 @@ export default function MultiStepRegistration()
                                                         <InputBarReg
                                                             value={formData.password}
                                                             onChange={e => handleInput('password', e.target)}
-                                                            placeholder="Password"
+                                                            placeholder="Password (at least 8 characters)"
                                                             inputType="text"
                                                             validationRegex="^.{8,}$"
-                                                            dataAnnotation="At least 8 characters"
+                                                            dataAnnotation="Enter a valid password of length 8 or more: ********"
+                                                            onValidChange={setFieldValid("password")}
                                                         />
                                                         <InputBarReg
                                                             value={formData.confirmPassword}
@@ -395,7 +414,8 @@ export default function MultiStepRegistration()
                                                             placeholder="Confirm Password"
                                                             inputType="text"
                                                             validationRegex="^.{8,}$"
-                                                            dataAnnotation="Must match password"
+                                                            dataAnnotation="Enter the same password: ********"
+                                                            onValidChange={setFieldValid("confirmPassword")}
                                                         />
                                                         <Container
                                                             customClass={`button bg-dark-100 justify-items-center align-items-center br-sm`}
@@ -696,15 +716,18 @@ export default function MultiStepRegistration()
                                                                 value={formData.licenseNumber}
                                                                 onChange={e => handleInput('licenseNumber', e.target)}
                                                                 placeholder="License Number"
-                                                                validationRegex="^[A-Za-z0-9\-]+$"
-                                                                dataAnnotation="Letters, numbers, and dashes only"
+                                                                validationRegex={/^\d{10}$/}
+                                                                maxLength={10}
+                                                                dataAnnotation="Enter a valid license number: 1234567890"
+                                                                onValidChange={setFieldValid("license")}
                                                             />
                                                             <InputBarReg
                                                                 value={formData.specialty}
                                                                 onChange={e => handleInput('specialty', e.target)}
                                                                 placeholder="Specialty"
                                                                 validationRegex="^[A-Za-z\s]+$"
-                                                                dataAnnotation="Letters and spaces only"
+                                                                dataAnnotation="Enter a valid specialty: Cardiology"
+                                                                onValidChange={setFieldValid("specialty")}
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
@@ -784,14 +807,16 @@ export default function MultiStepRegistration()
                                                                 onChange={e => handleInput('pharmacyName', e.target)}
                                                                 placeholder="Pharmacy Name"
                                                                 maxLength={100}
-                                                                dataAnnotation="Your pharmacy’s official name"
+                                                                dataAnnotation="Enter a valid pharmacy name: CityPharmacy"
+                                                                onValidChange={setFieldValid("pharmacyName")}
                                                             />
                                                             <InputBarReg
                                                                 value={formData.pharmacyAddress}
                                                                 onChange={e => handleInput('pharmacyAddress', e.target)}
                                                                 placeholder="Pharmacy Address"
                                                                 maxLength={150}
-                                                                dataAnnotation="Street address, e.g. 456 Elm St"
+                                                                dataAnnotation="Enter a valid pharmacy address: 123 Main St"
+                                                                onValidChange={setFieldValid("pharmacyAddress")}
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
@@ -874,8 +899,9 @@ export default function MultiStepRegistration()
                                                                 onChange={e => handleInput('pharmacyAddress', e.target)}
                                                                 placeholder="Pharmacy Address"
                                                                 maxLength={150}
-                                                                dataAnnotation="Street address, e.g. 456 Elm St"
+                                                                dataAnnotation="Enter a valid pharmacy address: 123 Main St"
                                                                 customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                onValidChange={setFieldValid("pharmacyAddress")}
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
