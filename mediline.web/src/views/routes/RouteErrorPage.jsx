@@ -18,7 +18,7 @@ export default function RouteErrorPage() {
 
   const params = new URLSearchParams(location.search);
   const code = params.get('code');
-  const errorDisplay = getErrorMessage(code, location.pathname, routeError);
+  const errorDisplay = getErrorMessage(code, location.pathname, error);
 
   return (
     <Container
