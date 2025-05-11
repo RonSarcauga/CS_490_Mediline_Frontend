@@ -193,7 +193,7 @@ function PHPatient() {
                                                         />
                                                     </>
                                                 ]}
-                                                footer={[/*
+                                                footer={[
                                                     <>
                                                         <ItemGroup
                                                             customClass="pt-6 gap-3"
@@ -227,7 +227,7 @@ function PHPatient() {
                                                             ]}
                                                         />
                                                     </>
-                                                */]}
+                                                ]}
                                             />
                                         </>
                                     ]}
@@ -448,59 +448,24 @@ function PHPatient() {
                                                                                         }}
                                                                                         items={[
                                                                                             <>
-                                                                                                {
-                                                                                                    users.length > 0 && (
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-7"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
                                                                                                         <>
                                                                                                             <ItemGroup
-                                                                                                                customClass="gap-7"
+                                                                                                                customClass="gap-2"
                                                                                                                 axis={true}
                                                                                                                 stretch={true}
                                                                                                                 fitParent={true}
                                                                                                                 items={[
                                                                                                                     <>
-                                                                                                                        <ItemGroup
-                                                                                                                            customClass="gap-2"
-                                                                                                                            axis={true}
-                                                                                                                            stretch={true}
-                                                                                                                            fitParent={true}
-                                                                                                                            items={[
-                                                                                                                                <>
-                                                                                                                                    <h5 className="font-3">EMAIL</h5>
-                                                                                                                                    <p className="font-3 font-medium text-justify">
-                                                                                                                                        {displayData?.email}
-                                                                                                                                    </p>
-                                                                                                                                </>
-                                                                                                                            ]}
-                                                                                                                        />
-                                                                                                                        <ItemGroup
-                                                                                                                            customClass="gap-2"
-                                                                                                                            axis={true}
-                                                                                                                            stretch={true}
-                                                                                                                            fitParent={true}
-                                                                                                                            items={[
-                                                                                                                                <>
-                                                                                                                                    <h5 className="font-3">ADDRESS</h5>
-                                                                                                                                    <ItemGroup
-                                                                                                                                        axis={true}
-                                                                                                                                        stretch={true}
-                                                                                                                                        fitParent={true}
-                                                                                                                                        items={[
-                                                                                                                                            <>
-                                                                                                                                                <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {displayData?.address},
-                                                                                                                                                </p>
-                                                                                                                                                <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {displayData?.city}, {displayData?.state}
-                                                                                                                                                </p>
-                                                                                                                                                <p className="font-3 font-medium text-justify">
-                                                                                                                                                    {displayData?.zipcode}
-                                                                                                                                                </p>
-                                                                                                                                            </>
-                                                                                                                                        ]}
-                                                                                                                                    />
-                                                                                                                                </>
-                                                                                                                            ]}
-                                                                                                                        />
+                                                                                                                        <h5 className="font-3">EMAIL</h5>
+                                                                                                                        <p className="font-3 font-medium text-justify">
+                                                                                                                            {displayData?.email}
+                                                                                                                        </p>
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
@@ -511,16 +476,45 @@ function PHPatient() {
                                                                                                                 fitParent={true}
                                                                                                                 items={[
                                                                                                                     <>
-                                                                                                                        <h5 className="font-3">PHONE</h5>
-                                                                                                                        <p className="font-3 font-medium text-justify">
-                                                                                                                            {dashboardLayoutViewModel.formatPhoneNumber(displayData?.phone)}
-                                                                                                                        </p>
+                                                                                                                        <h5 className="font-3">ADDRESS</h5>
+                                                                                                                        <ItemGroup
+                                                                                                                            axis={true}
+                                                                                                                            stretch={true}
+                                                                                                                            fitParent={true}
+                                                                                                                            items={[
+                                                                                                                                <>
+                                                                                                                                    <p className="font-3 font-medium text-justify">
+                                                                                                                                        {displayData?.address},
+                                                                                                                                    </p>
+                                                                                                                                    <p className="font-3 font-medium text-justify">
+                                                                                                                                        {displayData?.city}, {displayData?.state}
+                                                                                                                                    </p>
+                                                                                                                                    <p className="font-3 font-medium text-justify">
+                                                                                                                                        {displayData?.zipcode}
+                                                                                                                                    </p>
+                                                                                                                                </>
+                                                                                                                            ]}
+                                                                                                                        />
                                                                                                                     </>
                                                                                                                 ]}
                                                                                                             />
                                                                                                         </>
-                                                                                                    )
-                                                                                                }
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3">PHONE</h5>
+                                                                                                            <p className="font-3 font-medium text-justify">
+                                                                                                                {dashboardLayoutViewModel.formatPhoneNumber(displayData?.phone)}
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
                                                                                             </>
                                                                                         ]}
                                                                                     />
@@ -771,8 +765,8 @@ function PHPatient() {
                                                                                                 items={[
                                                                                                     <>
                                                                                                         {
-                                                                                                            data.new_patients.length > 0 ? (
-                                                                                                                data.new_patients.map((pat) => (
+                                                                                                            data.requests.length > 0 ? (
+                                                                                                                data.requests.map((req) => (
                                                                                                                     <ItemGroup
                                                                                                                         customClass="gap-6 align-items-center"
                                                                                                                         axis={false}
@@ -833,7 +827,7 @@ function PHPatient() {
                                                                                                                                                                         items={[
                                                                                                                                                                             <>
                                                                                                                                                                                 <p className="font-regular text-neutral-100 font-4">
-                                                                                                                                                                                    {pat.patient_name}
+                                                                                                                                                                                    {req.patient_name}
                                                                                                                                                                                 </p>
                                                                                                                                                                                 <p className="font-regular text-neutral-600 font-3">
                                                                                                                                                                                     Medication
@@ -924,8 +918,8 @@ function PHPatient() {
                                                                             items={[
                                                                                 <>
                                                                                     {
-                                                                                        data.other_patients.length > 0 ? (
-                                                                                            data.other_patients.map((pat) => (
+                                                                                        data.patients.length > 0 ? (
+                                                                                            data.patients.map((pat) => (
                                                                                                 <ItemGroup
                                                                                                     customClass="gap-6 align-items-center"
                                                                                                     axis={false}

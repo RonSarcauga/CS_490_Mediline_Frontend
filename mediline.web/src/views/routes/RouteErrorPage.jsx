@@ -12,7 +12,7 @@ const getErrorMessage = (code, pathname, routeError) => {
 };
 
 export default function RouteErrorPage() {
-  const error = useRouteError();
+  const routeError = useRouteError();
   const location = useLocation();
   const navigate = useNavigate();
 
