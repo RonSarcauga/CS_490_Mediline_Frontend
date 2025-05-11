@@ -126,8 +126,6 @@ function PDProfile() {
         }, 1000); // 1000ms = 1 second
     };
 
-
-
     const handleCheckboxChange = (exercise) => {
         const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
         setSelectedExercises((prevSelected) => {
