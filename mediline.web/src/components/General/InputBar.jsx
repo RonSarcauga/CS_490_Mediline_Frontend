@@ -250,44 +250,126 @@ export function InputBarSpecial({
     );
 }
 
-export default function InputBar({
-    customClass = "",
-    readOnly,
-    readonly = false,
-    searchIcon = null,
-    sendIcon = null,
-    ...attributes
-})
-{
-    const baseClass = "input-bar";
+//export default function InputBar({
+//    customClass = "",
+//    readOnly,
+//    readonly = false,
+//    searchIcon = null,
+//    sendIcon = null,
+//    ...attributes
+//})
+//{
+//    const baseClass = "input-bar";
 
-    // Prioritize the camelCase version if provided, otherwise fallback to lowercase readonly
-    const isReadOnly = typeof readOnly !== "undefined" ? readOnly : readonly;
+//    // Prioritize the camelCase version if provided, otherwise fallback to lowercase readonly
+//    const isReadOnly = typeof readOnly !== "undefined" ? readOnly : readonly;
+
+//    return (
+//        <div className={`${baseClass} ${customClass}`}>
+//            {/* Search icon */}
+//            <div
+//                className="search-icon"
+//                style={{
+//                    visibility: searchIcon ? "visible" : "hidden",
+//                    width: searchIcon ? "auto" : "0",
+//                }}
+//            >
+//                {searchIcon}
+//            </div>
+//            {/* Input field */}
+//            <input {...attributes} readOnly={!!isReadOnly} />
+//            {/* Send icon */}
+//            <div
+//                className="send-icon"
+//                style={{
+//                    visibility: sendIcon ? "visible" : "hidden",
+//                    width: sendIcon ? "auto" : "0",
+//                }}
+//            >
+//                {sendIcon}
+//            </div>
+//        </div>
+//    );
+
+    export default function InputBar({
+        customClass = "",
+        readOnly = false, // Use proper React naming
+        readonly = false,
+        searchIcon = null,
+        sendIcon = null,
+        multiline = false, // New prop to toggle between input and textarea
+        rows = 5,          // Default rows for textarea
+        ...attributes
+    }) {
+        const baseClass = "input-bar";
+
+        // The field can either be an input or textarea based on the multiline flag.
+        const FieldElement = multiline ? "textarea" : "input";
+
+        // Prioritize the camelCase version if provided, otherwise fallback to lowercase readonly
+        const isReadOnly = typeof readOnly !== "undefined" ? readOnly : readonly;
+
+        return (
+            <div className={`${baseClass} ${customClass}`}>
+                {/* Search icon */}
+                <div
+                    className="search-icon"
+                    style={{
+                        visibility: searchIcon ? "visible" : "hidden",
+                        width: searchIcon ? "auto" : "0",
+                    }}
+                >
+                    {searchIcon}
+                </div>
+                {/* Render text field */}
+                {multiline ? (
+                    <textarea
+                        {...attributes}
+                        readOnly={!!isReadOnly}
+                        rows={rows} // allow customization of the height
+                    />
+                ) : (
+                    <input {...attributes} readOnly={!!isReadOnly} />
+                )}
+                {/* Send icon */}
+                <div
+                    className="send-icon"
+                    style={{
+                        visibility: sendIcon ? "visible" : "hidden",
+                        width: sendIcon ? "auto" : "0",
+                    }}
+                >
+                    {sendIcon}
+                </div>
+            </div>
+        );
+}
+export function CustomTextArea({
+    customClass = "",
+    style = {},
+    ...props
+}) {
+    // Default style reset: removes browser-specific appearance, outlines, borders, etc.
+    const defaultStyle = {
+        // Removes native styling on most browsers
+        appearance: "none",
+        WebkitAppearance: "none",
+        MozAppearance: "none",
+        // Remove borders and outlines
+        border: "none",
+        outline: "none",
+        // Remove any background styling
+        background: "transparent",
+        // Optionally reset padding/margin if desired
+        padding: 0,
+        margin: 0,
+    };
 
     return (
-        <div className={`${baseClass} ${customClass}`}>
-            {/* Search icon */}
-            <div
-                className="search-icon"
-                style={{
-                    visibility: searchIcon ? "visible" : "hidden",
-                    width: searchIcon ? "auto" : "0",
-                }}
-            >
-                {searchIcon}
-            </div>
-            {/* Input field */}
-            <input {...attributes} readOnly={!!isReadOnly} />
-            {/* Send icon */}
-            <div
-                className="send-icon"
-                style={{
-                    visibility: sendIcon ? "visible" : "hidden",
-                    width: sendIcon ? "auto" : "0",
-                }}
-            >
-                {sendIcon}
-            </div>
-        </div>
+        <textarea
+            {...props}
+            className={customClass}
+            style={{ ...defaultStyle, ...style }}
+        />
     );
 }
