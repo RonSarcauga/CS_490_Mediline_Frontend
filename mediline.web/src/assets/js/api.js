@@ -8,25 +8,24 @@ const axiosInstance = axios.create({
   withCredentials: false,
 });
 
-function isTokenExpired(token) {
-  if (!token) return true;
-  const [, payload] = token.split('.');
-  const { exp } = JSON.parse(atob(payload));
-  return Date.now() >= exp * 1000;
-}
-
 // Request interceptor
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwtToken');
 
   function isTokenExpired(token) {
-    if (!token) return true;
-    const [, payload] = token.split('.');
-    const { exp } = JSON.parse(atob(payload));
-    return Date.now() >= exp * 1000;
+    try {
+      if (!token) return true;
+      const [, payload] = token.split('.');
+      const { exp } = JSON.parse(atob(payload));
+      return Date.now() >= exp * 1000;
+    } catch (e) {
+      console.error("Invalid token format", e);
+      return true;
+    }
   }
 
-  if (token) {
+
+  if (token && !isTokenExpired(token)) {
     config.headers.Authorization = `Bearer ${token}`;
   }
 

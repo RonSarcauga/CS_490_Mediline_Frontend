@@ -638,6 +638,7 @@ $utilities: (
             "8": $base-border-thickness * 3.5 solid var(--clr-line-color, black),
             "9": $base-border-thickness * 4 solid var(--clr-line-color, black),
             "10": $base-border-thickness * 4.5 solid var(--clr-line-color, black),
+            "err": $base-border-thickness solid var(--clr-line-color, hsl(0, 70%, 50%),),
         )
     ),
     "border-top": (
