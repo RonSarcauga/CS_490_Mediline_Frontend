@@ -16,10 +16,11 @@ import { IoMdDownload } from "react-icons/io";
 import ECCheckbox from '../../components/General/ECCheckbox';
 import { overviewVM } from '../../viewModels/OverviewViewModel';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import Spinner from '../../components/General/Spinner';
 
 function PDProfile() {
     const [showNewElement, setShowNewElement] = useState(false);
-    const [graphState, setGraphState] = useState("exercise");
+    //const [graphState, setGraphState] = useState("exercise");
     const [exerciseData, setExerciseData] = useState([]);
     const [exerciseList, setExerciseList] = useState([]);
     const [chartData, setChartData] = useState([]);
@@ -40,15 +41,23 @@ function PDProfile() {
     const handleCloseModal = () => {
         setActiveModal(null);
     }
-    const setGraphStateEc = () => {
-        setGraphState("exercise");
-    }
-    const setGraphStateWa = () => {
-        setGraphState("water");
-    }
-    const setGraphStateSl = () => {
-        setGraphState("sleep");
-    }
+
+    const [selectedGraph, setSelectedGraph] = useState("graph1");
+    const graphs = [
+        { id: "graph1", label: "Exercise" },
+        { id: "graph2", label: "Weight" },
+        { id: "graph3", label: "Sleep" },
+    ]
+
+    //const setGraphStateEc = () => {
+    //    setGraphState("exercise");
+    //}
+    //const setGraphStateWa = () => {
+    //    setGraphState("water");
+    //}
+    //const setGraphStateSl = () => {
+    //    setGraphState("sleep");
+    //}
 
     useEffect(() => {
         const fetchData1 = async () => {
@@ -240,7 +249,7 @@ function PDProfile() {
             fitParent={true}
             content={[
                 <>
-                    <p>Loading data</p>
+                    <Spinner size={64} />
                 </>
             ]}
         />
@@ -287,33 +296,6 @@ function PDProfile() {
                                         fitParent={true}
                                         items={[
                                             <>
-                                                {/*<ItemGroup
-                                                    customClass="gap-6"
-                                                    axis={false}
-                                                    stretch={true}
-                                                    fitParent={true}
-                                                    evenSplit={true}
-                                                    items={[
-                                                        <>
-                                                            <ItemGroup
-                                                                customClass="gap-3"
-                                                                axis={true}
-                                                                fitParent={true}
-                                                                items={[
-                                                                    <>
-                                                                        <p className="font-4">MRN</p>
-                                                                        <InputBar
-                                                                            customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
-                                                                            placeholder=""
-                                                                            value={patientData.mrn}
-                                                                            readonly={true}
-                                                                        />
-                                                                    </>
-                                                                ]}
-                                                            />
-                                                        </>
-                                                    ]}
-                                                />*/}
                                                 <ItemGroup
                                                     customClass="gap-6"
                                                     axis={false}
@@ -1161,7 +1143,11 @@ function PDProfile() {
                                                                                         customClass="bg-primary-dark-800 px-5 py-2 br-sm"
                                                                                         isClickable={true}
                                                                                         onClick={() => {
-                                                                                            navigate(`/dashboard/${currentUser.role}/appointment`);
+                                                                                            if (new Date(appt.start_date) <= new Date()) {
+                                                                                                navigate(`/dashboard/${currentUser.role}/appointment`);
+                                                                                            } else {
+                                                                                                alert("You cannot join the meeting before the scheduled time.");
+                                                                                            }
                                                                                         }}
                                                                                         content={[
                                                                                             <>
@@ -1384,6 +1370,7 @@ function PDProfile() {
                                                 <ItemGroup
                                                     customClass="justify-content-space-between align-items-center"
                                                     axis={false}
+                                                    stretch={true}
                                                     fitParent={true}
                                                     items={[
                                                         <>
@@ -1426,70 +1413,78 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {medicationList
-                                                                .filter((medication) => dashboardLayoutViewModel.isPrescriptionActive(medication.taken_date, medication.duration) === true)
-                                                                .map((medication, index) => (
-                                                                <Medications key={index} name={medication.name} duration= {medication.duration} dosage={medication.dosage} />
-                                                            ))
-
-                                                            /*
-                                                                pastAppointments.length > 0 && (
-                                                                    pastAppointments.map(() => (
-                                                                        <>
-                                                                            <ItemGroup
-                                                                                customClass=" py-1"
-                                                                                axis={false}
-                                                                                fitParent={true}
-                                                                                stretch={true}
-                                                                                style={{
-                                                                                    gridAutoColumns: "250px"
-                                                                                }}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">Ozempic</p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        14 days
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        4 mg
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                        </>
-                                                                    ))
+                                                            {medicationList.length > 0 ?
+                                                                (medicationList.filter((medication) => dashboardLayoutViewModel.isPrescriptionActive(medication.taken_date, medication.duration) === true).map((medication, index) => (
+                                                                    <>
+                                                                        <ItemGroup
+                                                                            key={index}
+                                                                            customClass=" py-1"
+                                                                            axis={false}
+                                                                            fitParent={true}
+                                                                            stretch={true}
+                                                                            style={{
+                                                                                gridAutoColumns: "250px"
+                                                                            }}
+                                                                            items={[
+                                                                                <>
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <p className="font-3 font-medium text-neutral-600">{medication.name}</p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <p className="font-3 font-medium text-neutral-600">
+                                                                                                    {medication.duration} days
+                                                                                                </p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <p className="font-3 font-medium text-neutral-600">
+                                                                                                    {medication.dosage} mg
+                                                                                                </p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                    </>
+                                                                ))) : (
+                                                                    <>
+                                                                        <Container
+                                                                            customClass="br align-items-center justify-content-center bg-primary-dark-800"
+                                                                            style={{
+                                                                                width: "100%",
+                                                                                height: "128px"
+                                                                            }}
+                                                                            content={[
+                                                                                <>
+                                                                                    <p className="font-4 font-semibold text-primary-neutral-100">You have no medications on record</p>
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                    </>
                                                                 )
-                                                            */}
+                                                            }
                                                         </>
                                                     ]}
                                                 />
@@ -1538,70 +1533,78 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {medicationList
-                                                                .filter((medication) => dashboardLayoutViewModel.isPrescriptionActive(medication.taken_date, medication.duration) === true)
-                                                                .map((medication, index) => (
-                                                                <Medications key={index} name={medication.name} duration= {medication.duration} dosage={medication.dosage} />
-                                                            ))
-                                                            
-                                                            /*
-                                                                dashboardLayoutViewModel.getUsers().length > 0 && (
-                                                                    dashboardLayoutViewModel.getUsers().map(() => (
-                                                                        <>
-                                                                            <ItemGroup
-                                                                                customClass=" py-1"
-                                                                                axis={false}
-                                                                                fitParent={true}
-                                                                                stretch={true}
-                                                                                style={{
-                                                                                    gridAutoColumns: "250px"
-                                                                                }}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">Ozempic</p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        14 days
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        4 mg
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                        </>
-                                                                    ))
+                                                            {medicationList.length > 0 ? 
+                                                                (medicationList.filter((medication) => dashboardLayoutViewModel.isPrescriptionActive(medication.taken_date, medication.duration) === true).map((medication, index) => (
+                                                                    <>
+                                                                        <ItemGroup
+                                                                            key={index}
+                                                                            customClass=" py-1"
+                                                                            axis={false}
+                                                                            fitParent={true}
+                                                                            stretch={true}
+                                                                            style={{
+                                                                                gridAutoColumns: "250px"
+                                                                            }}
+                                                                            items={[
+                                                                                <>
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <p className="font-3 font-medium text-neutral-600">{medication.name}</p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <p className="font-3 font-medium text-neutral-600">
+                                                                                                    {medication.duration} days
+                                                                                                </p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                    <ItemGroup
+                                                                                        customClass="gap-2"
+                                                                                        axis={true}
+                                                                                        stretch={true}
+                                                                                        fitParent={true}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <p className="font-3 font-medium text-neutral-600">
+                                                                                                    {medication.dosage} mg
+                                                                                                </p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                    </>
+                                                                ))) : (
+                                                                    <>
+                                                                        <Container
+                                                                            customClass="br align-items-center justify-content-center bg-primary-dark-800"
+                                                                            style={{
+                                                                                width: "100%",
+                                                                                height: "128px"
+                                                                            }}
+                                                                            content={[
+                                                                                <>
+                                                                                    <p className="font-4 font-semibold text-primary-neutral-100">You have no active medications</p>
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                    </>
                                                                 )
-                                                            */}
+                                                            }
                                                         </>
                                                     ]}
                                                 />
@@ -1647,11 +1650,21 @@ function PDProfile() {
                                                     items={[
                                                         <>
                                                             <h5 className="font-5 text-dark-300 font-semibold">Active Programs</h5>
-                                                            <Container
-                                                                isClickable={true}
-                                                                onClick={() => handleOpenModal("exercise")}
-                                                                content={[
-                                                                    <p>Add Regimen</p>
+                                                            <ItemGroup
+                                                                customClass="br-sm align-items-center gap-1"
+                                                                axis={false}
+                                                                stretch={true}
+                                                                items={[
+                                                                    <>
+                                                                        <Container
+                                                                            customClass="px-2"
+                                                                            isClickable={true}
+                                                                            onClick={() => handleOpenModal("exercise")}
+                                                                            content={[
+                                                                                <p className="font-semibold text-primary-neutral-100">ADD</p>
+                                                                            ]}
+                                                                        />
+                                                                    </>
                                                                 ]}
                                                             />
                                                         </>
@@ -1681,7 +1694,7 @@ function PDProfile() {
                                                                 dashboardLayoutViewModel.getUsers().length > 0 && (
                                                                     exerciseData
                                                                         .filter((ecc1) => ecc1.status === "IN_PROGRESS")
-                                                                        .map((ecc1, index) => (
+                                                                        .map((ecc1) => (
                                                                             <>
                                                                                 <ItemGroup
                                                                                     key={ecc1.exercise_id}
@@ -1831,10 +1844,10 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {dashboardLayoutViewModel.getUsers().length > 0 && (
+                                                            {dashboardLayoutViewModel.getUsers().length > 0 ? (
                                                                 exerciseData
                                                                     .filter((ecc1) => ecc1.status === "COMPLETED")
-                                                                    .map((ecc1, index) => (
+                                                                    .map((ecc1) => (
                                                                         <>
                                                                             <ItemGroup
                                                                                 key={ecc1.exercise_id}
@@ -1955,11 +1968,22 @@ function PDProfile() {
                                                                             />
                                                                         </>
                                                                     ))
+                                                            ) : (
+                                                                <>
+                                                                    <Container
+                                                                        customClass="br align-items-center justify-content-center bg-primary-dark-800"
+                                                                        style={{
+                                                                            width: "100%",
+                                                                            height: "128px"
+                                                                        }}
+                                                                        content={[
+                                                                            <>
+                                                                                <p className="font-4 font-semibold text-primary-neutral-100">Complete your first program!</p>
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                </>
                                                             )
-
-
-
-
                                                             /*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map((appt) => (
@@ -2089,64 +2113,59 @@ function PDProfile() {
                                         contentClass="py-5"
                                         content={[
                                             <>
-                                                <Container
-                                                    customClass="bg-neutral-1100 br-sm align-items-center justify-content-center"
+                                                <ItemGroup
+                                                    axis={true}
                                                     fitParent={true}
                                                     style={{
-                                                        minHeight: "400px"
+                                                        gridAutoColumns: "1fr",
+                                                        gridAutoRows: "auto 1fr"
                                                     }}
-                                                    content={[
+                                                    items={[
                                                         <>
                                                             <ItemGroup
-                                                                customClass="bg-neutral-1100 br-sm pl-5 pt-5 ml-5 mt-5 fit-parent"
-                                                                axis={true}
-
+                                                                customClass="justify-content-center justify-items-center align-items-center text-align-center"
+                                                                fitParent={true}
+                                                                stretch={true}
+                                                                axis={false}
+                                                                style={{
+                                                                    gridAutoColumns: "1fr",
+                                                                }}
                                                                 items={[
                                                                     <>
-                                                                        {graphState === "exercise" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)" />}
-                                                                        {graphState === "water" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)" />}
-                                                                        {graphState === "sleep" && <ExerciseChart inputData={chartData.sleep} inputLabel="Sleep" />}
+                                                                        {graphs.map((graph) => (
+                                                                            <ItemGroup
+                                                                                customClass={`text-align-center justify-content-center py-5 br-top-sm ${selectedGraph === graph.id ? "bg-neutral-1100" : "bg-neutral-1000 text-dark-200 b-bottom-4 outline-primary-dark-600"}`}
+                                                                                key={graph.id}
+                                                                                axis={false}
+                                                                                stretch={true}
+                                                                                fitParent={true}
+                                                                                isClickable={true}
+                                                                                onClick={() => {
+                                                                                    setSelectedGraph(graph.id);
+                                                                                    console.log(`You selected graph ${JSON.stringify(selectedGraph, null, 2)}`);
+                                                                                }}
+                                                                                items={[
+                                                                                    <>
+                                                                                        <p className={`font-4 font-semibold ${selectedGraph === graph.id ? "text-dark-300" : "text-dark-200"}`}>{graph.label}</p>
+                                                                                    </>
+                                                                                ]}
+                                                                            />
+                                                                        ))}
                                                                     </>
                                                                 ]}
                                                             />
                                                             <ItemGroup
-                                                                customClass="p-5 mt-5 fit-parent gap-1"
-                                                                axis={true}
+                                                                customClass="br-bottom-sm bg-neutral-1100 pt-5 pb-8 align-content-center justify-items-center gap-5"
+                                                                fitParent={true}
+                                                                style={{
+                                                                    minHeight: "400px",
+                                                                    gridAutoColumns: "1fr"
+                                                                }}
                                                                 items={[
                                                                     <>
-                                                                        <ItemGroup
-                                                                            customClass="bg-neutral-1100 br-right-sm gap-1 p-5 fit-parent"
-                                                                            axis={true}
-                                                                            isClickable={true}
-                                                                            onClick={setGraphStateEc}
-                                                                            items={[
-                                                                                <>
-                                                                                    <h2>Exercise</h2>
-                                                                                </>
-                                                                            ]}
-                                                                        />
-                                                                        <ItemGroup
-                                                                            customClass="bg-neutral-1100 br-right-sm gap-10 p-5 fit-parent"
-                                                                            axis={true}
-                                                                            isClickable={true}
-                                                                            onClick={setGraphStateWa}
-                                                                            items={[
-                                                                                <>
-                                                                                    <h2>Hydration</h2>
-                                                                                </>
-                                                                            ]}
-                                                                        />
-                                                                        <ItemGroup
-                                                                            customClass="bg-neutral-1100 br-right-sm gap-10 p-5 fit-parent"
-                                                                            axis={true}
-                                                                            isClickable={true}
-                                                                            onClick={setGraphStateSl}
-                                                                            items={[
-                                                                                <>
-                                                                                    <h2>Sleep</h2>
-                                                                                </>
-                                                                            ]}
-                                                                        />
+                                                                        {selectedGraph === "graph1" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)" />}
+                                                                        {selectedGraph === "grahp2" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)" />}
+                                                                        {selectedGraph === "graph3" && <ExerciseChart inputData={chartData.sleep} inputLabel="Sleep" />}
                                                                     </>
                                                                 ]}
                                                             />
@@ -2439,7 +2458,7 @@ function PDProfile() {
                                                         />
                                                     </>
                                                 ]}
-                                                contentClass="hideScroll px-0 pt-5 pb-5 b-bottom-3 outline-neutral-800"
+                                                contentClass="hideScroll overflow-x-hidden px-0 pt-5 pb-5 b-bottom-3 outline-neutral-800"
                                                 content={[
                                                     <>
                                                         <ItemGroup
