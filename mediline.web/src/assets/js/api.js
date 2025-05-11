@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   withCredentials: false,
 });
 
-/*function isTokenExpired(token) {
+function isTokenExpired(token) {
   if (!token) return true;
   const [, payload] = token.split('.');
   const { exp } = JSON.parse(atob(payload));
@@ -46,5 +46,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-*/
+
 export default axiosInstance;
