@@ -36,7 +36,7 @@ export default function RouteErrorPage() {
                 <br/>
                 <h2 className="font-5 text-neutral-600">We couldn’t load this page.</h2>
                 <br/>
-                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {errorDisplay?.message} </p>
+                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {errorDisplay?.message || "Unexpected Error"} </p>
                 <br/>
                 <ItemGroup
                   axis={false}
