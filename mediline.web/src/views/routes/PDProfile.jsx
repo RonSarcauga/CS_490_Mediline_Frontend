@@ -9,7 +9,7 @@ import Modal from '../../components/General/Modal';
 import ExerciseChart from '../../components/Dashboard/ExerciseChart';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
-import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm, submitExercise } from '../../viewModels/ExercisePage.js';
+import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm, submitExercise, updateExerciseStatus } from '../../viewModels/ExercisePage.js';
 import { BsCircleHalf } from "react-icons/bs";
 import { BsClipboard2HeartFill } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
@@ -112,6 +112,30 @@ function PDProfile() {
         console.log("Form submitted with data:", formData);
         submitForm(formData)
     };
+
+    const handleExerciseStatusToggle = async (exerciseId, currentStatus, reps) => {
+    let newStatus;
+    if (currentStatus === "COMPLETED") {
+        newStatus = "IN_PROGRESS";
+    }else{
+        newStatus = "COMPLETED";
+    }
+    // Wait 1 second before updating to the real new status
+    setTimeout(async () => {
+        setExerciseData(prev =>
+            prev.map(ex =>
+                ex.exercise_id === exerciseId ? { ...ex, status: newStatus } : ex
+            )
+        );
+        try {
+            console.log("Exercise ID:", exerciseId);
+            console.log("New Status:", newStatus);
+            await updateExerciseStatus(exerciseId, newStatus, reps);
+        } catch (err) {
+            // Optionally: revert UI or show error
+        }
+    }, 1000); // 1000ms = 1 second
+};
 
 
     const [activeTab, setActiveTab] = useState("tab1");
@@ -670,18 +694,18 @@ function PDProfile() {
                                                     />
                                                 </>
                                             })) : (
-                                                <Container
-                                                    customClass="br align-items-center justify-content-center bg-primary-dark-800"
-                                                    style={{
-                                                        width: "100%",
-                                                        height: "128px"
-                                                    }}
-                                                    content={[
-                                                        <>
-                                                            <p className="font-4 font-semibold text-primary-neutral-100">No upcoming appointments</p>
-                                                        </>
-                                                    ]}
-                                                />
+                                            <Container
+                                                customClass="br align-items-center justify-content-center bg-primary-dark-800"
+                                                style={{
+                                                    width: "100%",
+                                                    height: "128px"
+                                                }}
+                                                content={[
+                                                    <>
+                                                        <p className="font-4 font-semibold text-primary-neutral-100">No upcoming appointments</p>
+                                                    </>
+                                                ]}
+                                            />
                                         )}
                                     />
                                     <Container
@@ -812,18 +836,18 @@ function PDProfile() {
                                                     />
                                                 </>
                                             })) : (
-                                                <Container
-                                                    customClass="br align-items-center justify-content-center bg-primary-dark-800"
-                                                    style={{
-                                                        width: "100%",
-                                                        height: "128px"
-                                                    }}
-                                                    content={[
-                                                        <>
-                                                            <p className="font-4 font-semibold text-primary-neutral-100">You have no appointments on record</p>
-                                                        </>
-                                                    ]}
-                                                />
+                                            <Container
+                                                customClass="br align-items-center justify-content-center bg-primary-dark-800"
+                                                style={{
+                                                    width: "100%",
+                                                    height: "128px"
+                                                }}
+                                                content={[
+                                                    <>
+                                                        <p className="font-4 font-semibold text-primary-neutral-100">You have no appointments on record</p>
+                                                    </>
+                                                ]}
+                                            />
                                         )}
                                     />
                                 </>
@@ -1106,15 +1130,19 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {
-                                                                exerciseData.map((ecc1, index) => (
+                                                            {exerciseData.map((ecc1, index) => (
+                                                                (ecc1.status === "IN_PROGRESS" || ecc1.status === "in_progress") && (
                                                                     <ECCheckbox
+                                                                        key={index}
                                                                         label={ecc1.type_of_exercise}
                                                                         reps={ecc1.reps}
                                                                         personal={true}
                                                                         id={ecc1.exercise_id}
+                                                                        checked={false}
+                                                                        onChange={() => handleExerciseStatusToggle(ecc1.exercise_id, ecc1.status, ecc1.reps)}
                                                                     />
-                                                                ))
+                                                                )
+                                                            ))
                                                             /*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map(() => (
@@ -1287,7 +1315,22 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {/*
+                                                            {exerciseData.map((ecc1, index) => (
+                                                                (ecc1.status === "COMPLETED" || ecc1.status === "completed") && (
+                                                                    <ECCheckbox
+                                                                        key={index}
+                                                                        label={ecc1.type_of_exercise}
+                                                                        reps={ecc1.reps}
+                                                                        personal={true}
+                                                                        id={ecc1.exercise_id}
+                                                                        checked={true}
+                                                                        onChange={() => handleExerciseStatusToggle(ecc1.exercise_id, ecc1.status, ecc1.reps)}
+                                                                    />
+                                                                )
+                                                            ))
+
+
+                                                            /*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map((appt) => (
                                                                         <>

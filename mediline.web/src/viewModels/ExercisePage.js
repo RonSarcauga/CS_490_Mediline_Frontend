@@ -152,5 +152,24 @@ export const submitExercise = async (exerciseData, patientId, doctorId) => {
     }
 };
 
+export const updateExerciseStatus = async (exerciseId, status, reps) => {
+    try {
+        const response = await axios.put(`/exercise/${exerciseId}`, {
+            status: status,
+            reps: reps
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+        });
+        console.log(`Exercise ${exerciseId} status updated to ${status}:`, response.data);
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating status for exercise ${exerciseId}:`, error);
+        throw error;
+    }
+};
+
 
 
