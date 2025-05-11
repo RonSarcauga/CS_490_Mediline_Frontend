@@ -1,13 +1,18 @@
 /* Search Bar: Default Styles */
 .input-bar {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
+    display: flex;
     align-items: center;
     height: fit-content;
     max-width: 100%;
     background: #F5F5F5;
     border-radius: 20px;
     padding: 0rem 0.8rem 0rem 0.8rem;
+}
+
+.input-bar.full-width input {
+    width: 100% !important;
+    min-width: 0;
+    box-sizing: border-box;
 }
 
 .input-bar .search-icon {

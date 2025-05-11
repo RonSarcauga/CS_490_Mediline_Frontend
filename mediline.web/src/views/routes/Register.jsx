@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Container, { ItemGroup } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
-import InputBar, {InputBarSpecial} from '../../components/General/InputBar';
+import InputBar, {InputBarReg} from '../../components/General/InputBar';
 import ProgressBar from '../../components/LandingPage/ProgressBar';
 import RegistrationViewModel from '../../viewModels/RegisterViewModel';
 import { useRegister } from '../../hooks/useRegister';
@@ -171,38 +171,38 @@ export default function MultiStepRegistration()
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    <InputBar
-                                                                        type="text"
+                                                                    <InputBarReg
                                                                         value={formData.firstname}
-                                                                        validationRegex="^[A-Za-z0-9-]+$"
-                                                                        onChange={(e) => handleInput('firstname', e.target)}
-                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                        onChange={e => handleInput('firstname', e.target)}
                                                                         placeholder="First Name"
+                                                                        validationRegex="^[A-Za-z]+$"
+                                                                        dataAnnotation="First Name can only contain letters"
                                                                     />
-                                                                    <InputBar
-                                                                        type="text"
+                                                                    <InputBarReg
                                                                         value={formData.lastname}
-                                                                        onChange={(e) => handleInput('lastname', e.target)}
-                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                        onChange={e => handleInput('lastname', e.target)}
                                                                         placeholder="Last Name"
+                                                                        validationRegex="^[A-Za-z]+$"
+                                                                        dataAnnotation="Last Name can only contain letters"
                                                                     />
-                                                                    <InputBar
-                                                                        type="text"
+                                                                    <InputBarReg
                                                                         value={formData.sex}
-                                                                        onChange={(e) => handleInput('sex', e.target)}
-                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                        onChange={e => handleInput('sex', e.target)}
                                                                         placeholder="Sex"
-                                                                    />
+                                                                        validationRegex="^(male|female|other)$"
+                                                                        dataAnnotation="Sex must be Male, Female, or Other"
+                                                                    />                                                      
                                                                 </>
                                                             ]}
                                                         />
-                                                        <InputBar
-                                                            type="text"
+                                                        <InputBarReg
                                                             value={formData.dateOfBirth}
-                                                            onChange={(e) => handleInput("dateOfBirth", e.target)}
-                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                            placeholder="Date of Birth (yyyy-mm-dd)"
-                                                        />
+                                                            onChange={e => handleInput('dateOfBirth', e.target)}
+                                                            placeholder="Date of Birth (YYYY-MM-DD)"
+                                                            specialFormat="XXXX-XX-XX"
+                                                            validationRegex="^\d{4}-\d{2}-\d{2}$"
+                                                            dataAnnotation="Date of Birth must be in the format YYYY-MM-DD"
+                                                        />                                                        
                                                         <Container
                                                             customClass="button bg-dark-100 justify-items-center align-items-center br-sm"
                                                             dataAttributes={
@@ -265,26 +265,28 @@ export default function MultiStepRegistration()
                                                 fitParent={true}
                                                 items={[
                                                     <>
-                                                        <InputBar
-                                                            type="text"
+                                                        <InputBarReg
                                                             value={formData.email}
-                                                            onChange={(e) => handleInput('email', e.target)}
-                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                            onChange={e => handleInput('email', e.target)}
                                                             placeholder="Email"
+                                                            validationRegex="^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$"
+                                                            dataAnnotation="Enter a valid email address"
                                                         />
-                                                        <InputBar
-                                                            type="text"
+
+                                                        <InputBarReg
                                                             value={formData.phone}
-                                                            onChange={(e) => handleInput('phone', e.target)}
-                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                            onChange={e => handleInput('phone', e.target)}
                                                             placeholder="Phone"
+                                                            specialFormat="XXX-XXX-XXXX"
+                                                            validationRegex="^\d{10}$"
+                                                            dataAnnotation="10 digits only"
                                                         />
-                                                        <InputBar
-                                                            type="text"
+                                                        <InputBarReg
                                                             value={formData.address}
-                                                            onChange={(e) => handleInput('address', e.target)}
-                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                            onChange={e => handleInput('address', e.target)}
                                                             placeholder="Address"
+                                                            maxLength={100}
+                                                            dataAnnotation="Street address, e.g. 123 Main St"
                                                         />
                                                         <ItemGroup
                                                             customClass="gap-4"
@@ -294,26 +296,26 @@ export default function MultiStepRegistration()
                                                             evenSplit={true}
                                                             items={[
                                                                 <>
-                                                                    <InputBarSpecial
-                                                                        type="text"
+                                                                    <InputBarReg
                                                                         value={formData.city}
-                                                                        onChange={(e) => handleInput('city', e.target)}
-                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                        onChange={e => handleInput('city', e.target)}
                                                                         placeholder="City"
+                                                                        validationRegex="^[A-Za-z\s]+$"
+                                                                        dataAnnotation="Letters and spaces only"
                                                                     />
-                                                                    <InputBar
+                                                                    <InputBarReg
                                                                         type="text"
                                                                         value={formData.state}
+                                                                        validationRegex="^[A-Za-z\\s]+$" maxLength={50}
                                                                         onChange={(e) => handleInput('state', e.target)}
-                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                                         placeholder="State"
                                                                     />
-                                                                    <InputBar
-                                                                        type="text"
+                                                                    <InputBarReg
                                                                         value={formData.postalCode}
-                                                                        onChange={(e) => handleInput('postalCode', e.target)}
-                                                                        customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                        placeholder="Postal Code"
+                                                                        onChange={e => handleInput('postalCode', e.target)}
+                                                                        placeholder="ZIP Code"
+                                                                        validationRegex="^\d{5}$"
+                                                                        dataAnnotation="5 digits only"
                                                                     />
                                                                 </>
                                                             ]}
@@ -379,19 +381,21 @@ export default function MultiStepRegistration()
                                                 fitParent={true}
                                                 items={[
                                                     <>
-                                                        <InputBar
-                                                            type="password"
+                                                        <InputBarReg
                                                             value={formData.password}
-                                                            onChange={(e) => handleInput('password', e.target)}
-                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                            onChange={e => handleInput('password', e.target)}
                                                             placeholder="Password"
+                                                            inputType="text"
+                                                            validationRegex="^.{8,}$"
+                                                            dataAnnotation="At least 8 characters"
                                                         />
-                                                        <InputBar
-                                                            type="password"
+                                                        <InputBarReg
                                                             value={formData.confirmPassword}
-                                                            onChange={(e) => handleInput('confirmPassword', e.target)}
-                                                            customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                            onChange={e => handleInput('confirmPassword', e.target)}
                                                             placeholder="Confirm Password"
+                                                            inputType="text"
+                                                            validationRegex="^.{8,}$"
+                                                            dataAnnotation="Must match password"
                                                         />
                                                         <Container
                                                             customClass={`button bg-dark-100 justify-items-center align-items-center br-sm`}
@@ -688,19 +692,19 @@ export default function MultiStepRegistration()
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            <InputBar
-                                                                type="text"
+                                                            <InputBarReg
                                                                 value={formData.licenseNumber}
-                                                                onChange={(e) => handleInput('licenseNumber', e.target)}
-                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                onChange={e => handleInput('licenseNumber', e.target)}
                                                                 placeholder="License Number"
+                                                                validationRegex="^[A-Za-z0-9\-]+$"
+                                                                dataAnnotation="Letters, numbers, and dashes only"
                                                             />
-                                                            <InputBar
-                                                                type="text"
+                                                            <InputBarReg
                                                                 value={formData.specialty}
-                                                                onChange={(e) => handleInput('specialty', e.target)}
-                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                onChange={e => handleInput('specialty', e.target)}
                                                                 placeholder="Specialty"
+                                                                validationRegex="^[A-Za-z\s]+$"
+                                                                dataAnnotation="Letters and spaces only"
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
@@ -775,19 +779,19 @@ export default function MultiStepRegistration()
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            <InputBar
-                                                                type="text"
+                                                            <InputBarReg
                                                                 value={formData.pharmacyName}
-                                                                onChange={(e) => handleInput('pharmacyName', e.target)}
-                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                placeholder="Pharmacy"
+                                                                onChange={e => handleInput('pharmacyName', e.target)}
+                                                                placeholder="Pharmacy Name"
+                                                                maxLength={100}
+                                                                dataAnnotation="Your pharmacy’s official name"
                                                             />
-                                                            <InputBar
-                                                                type="text"
+                                                            <InputBarReg
                                                                 value={formData.pharmacyAddress}
-                                                                onChange={(e) => handleInput('pharmacyAddress', e.target)}
-                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                onChange={e => handleInput('pharmacyAddress', e.target)}
                                                                 placeholder="Pharmacy Address"
+                                                                maxLength={150}
+                                                                dataAnnotation="Street address, e.g. 456 Elm St"
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
@@ -865,12 +869,13 @@ export default function MultiStepRegistration()
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            <InputBar
-                                                                type="text"
+                                                            <InputBarReg
                                                                 value={formData.pharmacyAddress}
-                                                                onChange={(e) => handleInput('pharmacyAddress', e.target)}
-                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
+                                                                onChange={e => handleInput('pharmacyAddress', e.target)}
                                                                 placeholder="Pharmacy Address"
+                                                                maxLength={150}
+                                                                dataAnnotation="Street address, e.g. 456 Elm St"
+                                                                customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                             />
                                                             <Container
                                                                 customClass="button bg-dark-100 justify-items-center align-items-center br-sm py-4"
