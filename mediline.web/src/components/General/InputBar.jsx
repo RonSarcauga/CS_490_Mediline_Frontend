@@ -252,27 +252,40 @@ export function InputBarSpecial({
 
 export default function InputBar({
     customClass = "",
+    readOnly,
     readonly = false,
     searchIcon = null,
     sendIcon = null,
     ...attributes
 })
 {
-    const baseClass = 'input-bar';
+    const baseClass = "input-bar";
+
+    // Prioritize the camelCase version if provided, otherwise fallback to lowercase readonly
+    const isReadOnly = typeof readOnly !== "undefined" ? readOnly : readonly;
 
     return (
         <div className={`${baseClass} ${customClass}`}>
             {/* Search icon */}
-            <div className="search-icon" style={{ visibility : searchIcon ? 'visible' : 'hidden', width: searchIcon ? 'auto' : '0'}}>
+            <div
+                className="search-icon"
+                style={{
+                    visibility: searchIcon ? "visible" : "hidden",
+                    width: searchIcon ? "auto" : "0",
+                }}
+            >
                 {searchIcon}
             </div>
-            {/* Input field for the search bar */ }
-            <input
-                {...attributes}
-                readOnly={readonly}
-            />
+            {/* Input field */}
+            <input {...attributes} readOnly={!!isReadOnly} />
             {/* Send icon */}
-            <div className="send-icon" style={{ visibility: sendIcon ? 'visible' : 'hidden', width: sendIcon ? 'auto' : '0' }}>
+            <div
+                className="send-icon"
+                style={{
+                    visibility: sendIcon ? "visible" : "hidden",
+                    width: sendIcon ? "auto" : "0",
+                }}
+            >
                 {sendIcon}
             </div>
         </div>

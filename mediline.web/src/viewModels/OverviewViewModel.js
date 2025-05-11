@@ -12,19 +12,27 @@ class OverviewViewModel {
             ]);
 
             let doctorInfo = null;
+            let pharmacyInfo = null;
 
-            // Check if the doctor object is empty
+            // Check if the doctor object is not empty
             if (doctor && Object.keys(doctor).length > 0) {
                 doctorInfo = await this.getUserInfo(doctor.doctor_id);
             }
 
-            console.log(`Patient Profile Data:\n${JSON.stringify({
-                pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-                upcomingAppointments: upcomingAppointments || [],
-                doctorData: doctor || {},
-                doctorInfo: doctorInfo || {},
-                prescriptions: prescriptions || [],
-            }, null, 2)}`);
+            // Fetch user info to get pharmacy details
+            const userInfo = await this.getUserInfo(userId);
+            if (userInfo && userInfo.pharmacy) {
+                pharmacyInfo = userInfo.pharmacy; // Extract pharmacy information
+            }
+
+            //console.log(`Patient Profile Data:\n${JSON.stringify({
+            //    pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
+            //    upcomingAppointments: upcomingAppointments || [],
+            //    doctorData: doctor || {},
+            //    doctorInfo: doctorInfo || {},
+            //    prescriptions: prescriptions || [],
+            //    pharmacyInfo: pharmacyInfo || {}, // Include pharmacy information
+            //}, null, 2)}`);
 
             // Return the results as an object
             return {
@@ -33,6 +41,7 @@ class OverviewViewModel {
                 doctorData: doctor || {},
                 doctorInfo: doctorInfo || {},
                 prescriptions: prescriptions || [],
+                pharmacyInfo: pharmacyInfo || {}, // Include pharmacy information
             };
         } catch (error) {
             console.error("Error fetching data for Patient Dashboard:", error);
@@ -42,9 +51,11 @@ class OverviewViewModel {
                 doctor: {},
                 doctorInfo: {},
                 prescriptions: [],
+                pharmacyInfo: {}, // Return an empty object if there's an error
             };
         }
     }
+
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
@@ -247,7 +258,7 @@ class OverviewViewModel {
         return dateObject;
     }
 
-    // Asynchronous method to fetch user information
+    // Asynchronous method to post survey data
     async submitSurvey(id, doctorId, data) {
         // Append ID and doctor ID to the form data
         const payload = {
@@ -269,6 +280,29 @@ class OverviewViewModel {
             console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
 
             return user;
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    };
+
+    // Asynchronous method to fetch user information
+    async updateInfo(id, data) {
+        // Append ID and doctor ID to the form data
+        const payload = {
+            ...data,
+            user_id: id,
+        };
+
+        console.log(`Payload: ${JSON.stringify(payload, null, 2)}`);
+        try {
+            const response = await axiosInstance.put(`/patient/${id}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            const user = response.data;
+            console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
         } catch (error) {
             console.error("Error fetching user:", error);
         }
