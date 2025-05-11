@@ -78,7 +78,7 @@ function PDHome() {
         setLoading(false);
     }
 
-    // Custom hook that is used to refresh tha page
+    // Custom hook that is used to refresh the page
     useEffect(() => {
         fetchData();
     }, [])
