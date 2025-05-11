@@ -1,15 +1,14 @@
 import axiosInstance from '../assets/js/api';
-
 class DPViewModel {
     // Centralized data fetching function
     async fetchData(patientId, userId) {
         try {
             // Use Promise.all to fetch data concurrently
-            const [patientData, pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
+            const [patientData, pastAppointments, upcomingAppointments, forms] = await Promise.all([
                 this.getUserInfo(patientId),
                 this.getPastAppointments(patientId), // Fetch past appointments
                 this.getUpcomingAppointments(patientId), // Fetch upcoming appointments
-                this.getPrescriptions(patientId), // Fetch prescriptions
+                this.getForms(patientId),
             ]);
 
             // Stores pharmacy details
@@ -19,6 +18,8 @@ class DPViewModel {
             if (patientData && patientData.pharmacy) {
                 pharmacyInfo = patientData.pharmacy;
             }
+
+            const { activeMedications, pastMedications } = await this.getPrescriptions(patientId);
 
             //console.log(`Patient Profile Data:\n${JSON.stringify({
             //    pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
@@ -32,19 +33,23 @@ class DPViewModel {
             // Return the results as an object
             return {
                 patientInfo: patientData || {},
-                pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
+                pastAppointments: pastAppointments || [],
                 upcomingAppointments: upcomingAppointments || [],
-                prescriptions: prescriptions || [],
-                pharmacyInfo: pharmacyInfo || {}, // Include pharmacy information
+                activeMedications: activeMedications || [],
+                pastMedications: pastMedications || [],
+                pharmacyInfo: pharmacyInfo || {},
+                forms: forms || [],
             };
         } catch (error) {
             console.error("Error fetching data for Patient Dashboard:", error);
             return {
-                patientData: {},
+                patientInfo: {},
                 pastAppointments: [],
                 upcomingAppointments: [],
-                prescriptions: [],
-                pharmacyInfo: {}, // Return an empty object if there's an error
+                activeMedications: [],
+                pastMedications: [],
+                pharmacyInfo: {},
+                forms: [], // Return an empty object if there's an error
             };
         }
     }
@@ -70,27 +75,102 @@ class DPViewModel {
         }
     };
 
-    // Helper method to fetch a patient's prescriptions
+    // Helper method to fetch a patient's prescriptions and their medications
     async getPrescriptions(id) {
         try {
-            // Retrieving data from the medical record endpoint
+            // Fetch all prescriptions for the user
             const response = await axiosInstance.get(`/prescription/user/${id}?sort_by=created_at&order_by=desc`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             });
-            console.log(`Prescriptions fetched:\n${JSON.stringify(response.data, null, 2)}`);
 
-            // Stores the response in a constant
             const prescriptions = response.data;
 
-            // Returns the constant
-            return prescriptions;
+            // Fetch medications for each prescription concurrently
+            const medicationsByPrescription = await Promise.all(
+                prescriptions.map(async (prescription) => {
+                    const medications = await this.getPrescriptionMedications(prescription.prescription_id);
+                    console.log(`Medications fetched for prescription ${prescription.prescription_id}:`, medications);
+
+                    return medications.map((medication) => {
+                        console.log(`Mapping medication:`, medication);
+                        return {
+                            ...medication,
+                            prescriptionId: prescription.prescription_id, // Add prescription ID for reference
+                        };
+                    });
+
+                })
+            );
+
+            // Flatten the array of medications
+            const allMedications = medicationsByPrescription.flat();
+
+            // Split medications into active and past medications
+            const currentDate = new Date();
+            const activeMedications = [];
+            const pastMedications = [];
+
+            allMedications.forEach((medication) => {
+                if (medication.status === "PAID") {
+                    // Normalize the taken_date to ensure it's a valid ISO 8601 string
+                    const takenDate = new Date(`${medication.taken_date}Z`); // Append 'Z' to indicate UTC
+                    if (isNaN(takenDate.getTime())) {
+                        console.warn(`Invalid taken_date for medication: ${JSON.stringify(medication)}`);
+                        return; // Skip this medication if the date is invalid
+                    }
+
+                    const endDate = new Date(takenDate);
+                    endDate.setDate(endDate.getDate() + medication.duration);
+
+                    if (endDate > currentDate) {
+                        activeMedications.push(medication);
+                    } else {
+                        pastMedications.push(medication);
+                    }
+                }
+            });
+
+            console.log(`Active Medications: ${JSON.stringify(activeMedications, null, 2)}`);
+            console.log(`Past Medications: ${JSON.stringify(pastMedications, null, 2)}`);
+
+            // Return the medications split into active and past
+            return {
+                activeMedications,
+                pastMedications,
+            };
         } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
+            console.error("Error fetching prescriptions and medications:", error.response?.data || error.message);
+            return {
+                activeMedications: [],
+                pastMedications: [],
+            };
         }
     }
+
+
+    // Asynchronous method to fetch medications from a prescription
+    async getPrescriptionMedications(prescriptionId) {
+        try {
+            const response = await axiosInstance.get(`/prescription/${prescriptionId}/medications`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            const medications = response.data;
+
+            // Return the medications or an empty array if the response is invalid
+            return Array.isArray(medications) ? medications : [];
+        } catch (error) {
+            console.error(`Error fetching medications for prescription ${prescriptionId}:`, error.response?.data || error.message);
+            return []; // Return an empty array if the API call fails
+        }
+    }
+
 
     // Helper method to fetch invoice data for each appointment
     async getAppointmentInvoice(user_id, create_date) {
@@ -136,8 +216,7 @@ class DPViewModel {
         }
     }
 
-
-
+    // Helper method to get past appointments
     async getPastAppointments(id) {
         try {
             // Retrieving data from the medical record endpoint
@@ -188,6 +267,104 @@ class DPViewModel {
             return appointmentsWithDoctorInfo;
         } catch (error) {
             console.error(`No appointments on record: ${error.response?.data || error.message}`);
+        }
+    }
+
+    // Asynchronous call to get a patient's forms
+    async getForms(userId) {
+        try {
+            const response = await axiosInstance.get(`/report/user/${userId}?sort_by=created_at&order_by=desc`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            const forms = response.data;
+            return forms;
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
+        }
+    }
+
+    // Asynchronous call to make a prescription request to the pharmacy
+    async submitOrder(data, userId, patientId) {
+        try {
+            // Fetch the necessary information needed for making the API call
+            const patientInfo = await this.getUserInfo(patientId);
+            const pharmacyInfo = patientInfo.pharmacy;
+
+            if (!pharmacyInfo) {
+                throw new Error("Pharmacy information is missing for the patient.");
+            }
+
+            // Fetch the pharmacy inventory
+            const inventory = await this.getPharmacyInventory(pharmacyInfo.pharmacy_id);
+
+            if (!Array.isArray(inventory)) {
+                throw new Error("Invalid inventory data received.");
+            }
+
+            // Find the matching inventory record based on the medication name
+            const matchingInventory = inventory.find(
+                (item) => item.medication_name.toLowerCase() === data.medication.toLowerCase()
+            );
+
+            if (!matchingInventory) {
+                throw new Error(`Medication "${data.medication}" not found in the pharmacy inventory.`);
+            }
+
+            // Create the payload
+            const payload = {
+                doctor_id: parseInt(userId),
+                medications: [
+                    {
+                        dosage: parseInt(data.dosage),
+                        instructions: data.instructions,
+                        medication_id: parseInt(matchingInventory.medication_id),
+                    },
+                ],
+                patient_id: parseInt(patientId),
+            };
+
+            console.log(`Submitting order with payload: ${JSON.stringify(payload, null, 2)}`);
+
+            // Make the API call to submit the order (uncomment when ready to use)
+             const response = await axiosInstance.post(`/pharmacy/${pharmacyInfo.pharmacy_id}`, payload, {
+                 headers: {
+                     "Content-Type": "application/json",
+                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                 }
+             });
+
+            // Return the payload for confirmation or further processing
+            return payload;
+        } catch (error) {
+            console.error("Error submitting order:", error.response?.data || error.message);
+            throw error;
+        }
+    }
+
+    formatDateToBackend(date) {
+        if (!(date instanceof Date) || isNaN(date.getTime())) {
+            throw new Error("Invalid Date object.");
+        }
+        return date.toISOString().replace('Z', ''); // Remove the 'Z' from the ISO string
+    }
+
+    async getPharmacyInventory(pharmacyId, medication) {
+        try {
+            const response = await axiosInstance.get(`/prescription/pharmacy/${pharmacyId}/inventory`, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                    }
+            });
+
+            const inventory = response.data;
+
+            return inventory;
+        } catch (error) {
+            console.error("Login failed:", error.response?.data || error.message);
         }
     }
 
@@ -249,6 +426,24 @@ class DPViewModel {
         }
 
         return dateObject;
+    }
+
+    // Asynchronous method to fetch a patient's past medications
+    async getPastMedications(id) {
+        try {
+            const response = await axiosInstance.get(`/prescription/patient/${id}/history`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            const medications = response.data;
+            console.log(`Past medications: ${JSON.stringify(medications, null, 2)}`);
+        } catch (error) {
+            console.error('Error fetching medication list:', error);
+            throw error;
+        }
     }
 
     // Asynchronous method to post survey data

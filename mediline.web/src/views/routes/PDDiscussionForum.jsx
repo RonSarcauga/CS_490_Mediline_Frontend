@@ -120,19 +120,19 @@ function PDDiscussionForum() {
         }
     }, [isCreating]);
 
-    //if (loading) return (<Container fitParent={true} customClass="p-5" content={[<Spinner size={64} />]} />);
+    if (loading) return (<Container fitParent={true} customClass="p-5" content={[<Spinner size={64} />]} />);
 
-    //if (!data) return (
-    //    <Container
-    //        customClass="align-items-center justify-content-center"
-    //        fitParent={true}
-    //        content={[
-    //            <>
-    //                <p>Error loading data</p>
-    //            </>
-    //        ]}
-    //    />
-    //);
+    if (!data) return (
+        <Container
+            customClass="align-items-center justify-content-center"
+            fitParent={true}
+            content={[
+                <>
+                    <p>Error loading data</p>
+                </>
+            ]}
+        />
+    );
 
     return (
         <>

@@ -53,7 +53,8 @@ function DDHome() {
     //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate), null, 2)}`);
     //console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
     //console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
-    if (isLoading) return <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />;
+    if (isLoading)
+        return <Container customClass="p-5 align-items-center justify-content-center" fitParent={true} content={[<Spinner size={64} />]} />;
     if (isError)   return <p>Error: {error.message}</p>;
     return (
         <Container
