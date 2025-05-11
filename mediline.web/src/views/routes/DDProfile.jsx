@@ -924,29 +924,23 @@ function DDProfile() {
                                                             <>
                                                                 <h5 className="font-5 text-dark-300 font-semibold">Active Medications</h5>
                                                                 <ItemGroup
-                                                                    customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hidden-element"
+                                                                    customClass="p-0 br-md align-items-center justify-content-space-between gap-0"
                                                                     axis={false}
                                                                     stretch={true}
                                                                     isClickable={true}
                                                                     onClick={() => handleOpenModal("medication")}
-                                                                    style={{
-                                                                        bottom: "0",
-                                                                        left: "45%",
-                                                                        transform: "translateY(50%)"
-                                                                    }}
                                                                     items={[
                                                                         <>
                                                                             <BaseIcon
                                                                                 fill="none"
-                                                                                height="28px"
-                                                                                width="28px">
+                                                                                height="40px"
+                                                                                width="40px">
                                                                                 <g id="SVGRepo_bgCarrier" stroke-width="0" />
                                                                                 <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
                                                                                 <g id="SVGRepo_iconCarrier">
-                                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="hsl(210, 20%, 55%)" />
+                                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="hsl(210, 20%, 45%)" />
                                                                                 </g>
                                                                             </BaseIcon>
-                                                                            <p className="font-3 font-semibold text-primary-neutral-200">ADD REGIMEN</p>
                                                                         </>
                                                                     ]}
                                                                 />
