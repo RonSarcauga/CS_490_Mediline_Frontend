@@ -10,8 +10,6 @@ import '../../assets/scss/default-style.scss';
 import HomePage from './Home';
 import LoginPage from './login';
 import RegisterPage from './Register';
-import FindADoctorPage from './FindADoctor';
-import DiscussionForumPage from './DiscussionForumPage';
 import PDHome from './PDHome';
 import PDAppointment from './PDAppointment';
 import PDProfile from './PDProfile';
@@ -24,22 +22,16 @@ import PHHome from './PHHome';
 import PHPatient from './PHPatient';
 import DashboardLayout from './DashboardLayout';
 import UserProvider from '../../context/UserProvider';
-import PatientDashboardHome from './PatientDashboardHome';
-import Dashboard from './PatientDashboard_Exercise_Page';
-import DoctorDashboardHome from './DoctorDashboardHome';
-import DoctorPatientProfile from './DoctorPatientProfile';
-import DoctorAppointment from './DoctorAppointment';
 import PatientAppointment from './PatientAppointment';
-import PharmacistHome from './PharmacistHome';
-import PharmacistPatientProfile from './PharmacistPatientProfile';
-import RouteErrorPage from './RouteErrorPage';
+
+//import RouteErrorPage from './RouteErrorPage';
 
 const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
     path: '/',
-    errorElement: <RouteErrorPage />,
+    //errorElement: <RouteErrorPage />,
     children: [
       {
         index: true,
@@ -75,18 +67,8 @@ const router = createBrowserRouter([
         ],
       },
 
-      { path: 'patientExercise', element: <Dashboard /> },
-      { path: 'patientDiscussion', element: <PDDiscussionForum /> },
-      { path: 'patientHome', element: <PatientDashboardHome /> },
-      { path: 'findADoctor', element: <FindADoctorPage /> },
-      { path: 'discussionForumPage', element: <DiscussionForumPage /> },
-      { path: 'doctorHome', element: <DoctorDashboardHome /> },
-      { path: 'doctorPatient', element: <DoctorPatientProfile /> },
-      { path: 'doctorAppointment', element: <DoctorAppointment /> },
       { path: 'patientAppointment', element: <PatientAppointment /> },
-      { path: 'pharmacistHome', element: <PharmacistHome /> },
-      { path: 'pharmacistPatient', element: <PharmacistPatientProfile /> },
-      { path: "/unauthorized",element: <RouteErrorPage message="Unauthorized: Please log in again." />},
+      {/* path: "/unauthorized",element: <RouteErrorPage message="Unauthorized: Please log in again." /> */},
 
     ],
   },
