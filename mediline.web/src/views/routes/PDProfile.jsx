@@ -1,5 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useForm } from 'react-hook-form';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import Accordion from '../../components/General/AccordionMenu';
@@ -8,12 +9,13 @@ import Checkbox from '../../components/General/CheckboxRefactored';
 import Modal from '../../components/General/Modal';
 import ExerciseChart from '../../components/Dashboard/ExerciseChart';
 import { UserContext } from '../../context/UserProvider';
-import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm, submitExercise } from '../../viewModels/ExercisePage.js';
 import { BsCircleHalf } from "react-icons/bs";
 import { BsClipboard2HeartFill } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
 import ECCheckbox from '../../components/General/ECCheckbox';
+import { overviewVM } from '../../viewModels/OverviewViewModel';
+import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 
 function PDProfile() {
     const [showNewElement, setShowNewElement] = useState(false);
@@ -24,19 +26,8 @@ function PDProfile() {
     const [medicationList, setMedicationList] = useState([]);
     const { currentUser } = useContext(UserContext);
 
-    const [formData, setFormData] = useState({
-        exercise: "",
-        sleep: "",
-        height: "",
-        calories: "",
-        weight: ""
-    });
-
-    const pastAppointments = dashboardLayoutViewModel.getPastAppointments(currentUser.user_id);
-    const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointments(currentUser.user_id);
-
-    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    //const patientData = dashboardLayoutViewModel.getPatientData(user.id);
+    //const pastAppointments = dashboardLayoutViewModel.getPastAppointments(currentUser.user_id);
+    //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointments(currentUser.user_id);
     const navigate = useNavigate();
 
     const [activeModal, setActiveModal] = useState(null);
@@ -99,20 +90,17 @@ function PDProfile() {
 
         fetchData4();
     }, []);
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value, // Update the specific field in the state
-        }));
-    };
 
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent the default form submission behavior
-        console.log("Form submitted with data:", formData);
-        submitForm(formData)
-    };
+    //useEffect(() => {
+    //    const fetchEncountersData = async () => {
+    //        const data = await this.fetchChartData(currentUser.user_id);
+    //        if (data) {
+    //            setChartData(data); // Store the data in state
+    //        }
+    //    };
 
+    //    fetchEncountersData();
+    //}, []);
 
     const [activeTab, setActiveTab] = useState("tab1");
 
@@ -124,6 +112,55 @@ function PDProfile() {
         { id: "tab5", label: "Graphs" },
         { id: "tab6", label: "Forms" },
     ]
+
+    useEffect(() => {
+        fetchData();
+    }, [])
+
+    // Used to manage data from API calls
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+
+    // Asynchronous fucntion to fetch all the data that is needed for the profile page
+    const fetchData = async () => {
+        const result = await overviewVM.fetchData(currentUser.user_id, currentUser.doctor);
+        setData(result);
+        setLoading(false);
+
+        //console.log(`Profile Data:\n${JSON.stringify(result, null, 2)}`);
+    }
+
+    const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+
+    const onSubmitSurvey = (data) => {
+        console.log("Survey Data Submitted!");
+        overviewVM.submitSurvey(currentUser.user_id, currentUser.doctor.doctor_id, data);
+    };
+
+    // Loading component
+    if (loading) return (
+        <Container
+            customClass="align-items-center justify-content-center"
+            fitParent={true}
+            content={[
+                <>
+                    <p>Loading data</p>
+                </>
+            ]}
+        />
+    );
+
+    if (!data) return (
+        <Container
+            customClass="align-items-center justify-content-center"
+            fitParent={true}
+            content={[
+                <>
+                    <p>Error loading data</p>
+                </>
+            ]}
+        />
+    );
 
     const tabContent = {
         tab1: (
@@ -523,7 +560,6 @@ function PDProfile() {
                             items={[
                                 <>
                                     <Container
-                                        customClass="p-0"
                                         fitParent={true}
                                         style={{
                                             maxHeight: "678px",
@@ -535,154 +571,160 @@ function PDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Upcoming Encounters</h5>
                                             </>
                                         ]}
-                                        contentClass={`scrollable postList ${upcomingAppointments.length > 0 ? "p-5" : "px-0 py-5"}`}
-                                        content={upcomingAppointments.length > 0 ? (
-                                            upcomingAppointments.map((appt) => {
-                                                <>
-                                                    <ItemGroup
-                                                        customClass="gap-5"
-                                                        axis={true}
-                                                        fitParent={true}
-                                                        items={[
-                                                            <>
-                                                                <ItemGroup
-                                                                    customClass=" pt-2 pb-6 b-bottom-3 outline-primary-dark-800 justify-content-space-between"
-                                                                    axis={false}
-                                                                    fitParent={true}
-                                                                    stretch={true}
-                                                                    items={[
-                                                                        <>
-                                                                            <ItemGroup
-                                                                                axis={false}
-                                                                                fitParent={true}
-                                                                                stretch={true}
-                                                                                style={{
-                                                                                    gridAutoColumns: "180px"
-                                                                                }}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <h5 className="font-3 text-neutral-600">DATE</h5>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        <ItemGroup
-                                                                                                            customClass="gap-6 align-items-center"
-                                                                                                            fitParent={true}
-                                                                                                            axis={false}
-                                                                                                            stretch={true}
-                                                                                                            items={[
-                                                                                                                <>
-                                                                                                                    <ItemGroup
-                                                                                                                        customClass="align-items-center gap-2"
-                                                                                                                        axis={false}
-                                                                                                                        stretch={true}
-                                                                                                                        items={[
-                                                                                                                            <>
-                                                                                                                                <BaseIcon
-                                                                                                                                    height="15px"
-                                                                                                                                    width="15px"
-                                                                                                                                    viewBox="0 1 24 24"
-                                                                                                                                    fillColor="none">
-                                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                    <g id="SVGRepo_iconCarrier">
-                                                                                                                                        <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                    </g>
-                                                                                                                                </BaseIcon>
-                                                                                                                                <p className="font-3 font-medium text-neutral-600">{/*new Date(new Date().setDate(new Date().getDate() + 1)).toLocaleDateString("en-US", { month: "2-digit", day: "2-digit", year: "numeric" })*/}</p>
-                                                                                                                            </>
-                                                                                                                        ]}
-                                                                                                                    />
-                                                                                                                </>
-                                                                                                            ]}
-                                                                                                        />
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <h5 className="font-3 text-neutral-600">DOCTOR</h5>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        {/*dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(patientData.doctor).userId).firstName*/} {/*dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getDoctorByLicense(patientData.doctor).userId).lastName*/}
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <h5 className="font-3 text-neutral-600">TREATMENT</h5>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        Consultation
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                        <ItemGroup
-                                                                                            customClass="gap-2"
-                                                                                            axis={true}
-                                                                                            stretch={true}
-                                                                                            fitParent={true}
-                                                                                            items={[
-                                                                                                <>
-                                                                                                    <h5 className="font-3 text-neutral-600">STARTS</h5>
-                                                                                                    <p className="font-3 font-medium text-neutral-600">
-                                                                                                        {dashboardLayoutViewModel.formatBirthDate(dashboardLayoutViewModel.splitDateTime(appt.appointment.start_date).time)}
-                                                                                                    </p>
-                                                                                                </>
-                                                                                            ]}
-                                                                                        />
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                            <Container
-                                                                                customClass="bg-primary-dark-800 px-5 py-2 br-sm"
-                                                                                isClickable={true}
-                                                                                onClick={() => {
-                                                                                    navigate(`/dashboard/${currentUser.role}/appointment`);
-                                                                                }}
-                                                                                content={[
-                                                                                    <>
-                                                                                        <p className="font-3 text-primary-neutral-200 font-semibold">JOIN MEETING</p>
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                        </>
-                                                                    ]}
-                                                                />
-                                                            </>
-                                                        ]}
-                                                    />
-                                                </>
-                                            })) : (
-                                                <Container
-                                                    customClass="br align-items-center justify-content-center bg-primary-dark-800"
-                                                    style={{
-                                                        width: "100%",
-                                                        height: "128px"
-                                                    }}
-                                                    content={[
-                                                        <>
-                                                            <p className="font-4 font-semibold text-primary-neutral-100">No upcoming appointments</p>
-                                                        </>
-                                                    ]}
-                                                />
-                                        )}
+                                        contentClass={`hideScroll ${data.upcomingAppointments.length > 0 ? "py-3 px-5" : "px-0 py-5"}`}
+                                        content={[
+                                            <>
+                                                {
+                                                    data.upcomingAppointments.length > 0 ? (
+                                                        data.upcomingAppointments.map((appt) => (
+                                                            <ItemGroup
+                                                                axis={true}
+                                                                style={{
+                                                                    gridAutoRows: "100px",
+                                                                    width: "100%"
+                                                                }}
+                                                                items={[
+                                                                    <>
+                                                                        <ItemGroup
+                                                                            customClass="b-bottom-3 outline-primary-dark-800 align-items-center justify-content-space-between"
+                                                                            axis={false}
+                                                                            stretch={true}
+                                                                            fitParent={true}
+                                                                            items={[
+                                                                                <>
+                                                                                    <ItemGroup
+                                                                                        customClass="align-content-center"
+                                                                                        axis={false}
+                                                                                        fitParent={true}
+                                                                                        stretch={true}
+                                                                                        style={{
+                                                                                            gridAutoColumns: "180px"
+                                                                                        }}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">DATE</h5>
+                                                                                                            <ItemGroup
+                                                                                                                customClass="gap-6 align-items-center"
+                                                                                                                fitParent={true}
+                                                                                                                axis={false}
+                                                                                                                stretch={true}
+                                                                                                                items={[
+                                                                                                                    <>
+                                                                                                                        <ItemGroup
+                                                                                                                            customClass="align-items-center gap-2"
+                                                                                                                            axis={false}
+                                                                                                                            stretch={true}
+                                                                                                                            items={[
+                                                                                                                                <>
+                                                                                                                                    <BaseIcon
+                                                                                                                                        height="15px"
+                                                                                                                                        width="15px"
+                                                                                                                                        viewBox="0 1 24 24"
+                                                                                                                                        fillColor="none">
+                                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                                            <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        </g>
+                                                                                                                                    </BaseIcon>
+                                                                                                                                    <p className="font-3 font-medium text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(appt.start_date, "MM/DD/YYYY")}</p>
+                                                                                                                                </>
+                                                                                                                            ]}
+                                                                                                                        />
+                                                                                                                    </>
+                                                                                                                ]}
+                                                                                                            />
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">DOCTOR</h5>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                {appt.doctor_name}
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">TREATMENT</h5>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                {appt.treatment}
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">STARTS</h5>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                {dashboardLayoutViewModel.splitDateTime(appt.start_date).time}
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                    <Container
+                                                                                        customClass="bg-primary-dark-800 px-5 py-2 br-sm"
+                                                                                        isClickable={true}
+                                                                                        onClick={() => {
+                                                                                            navigate(`/dashboard/${currentUser.role}/appointment`);
+                                                                                        }}
+                                                                                        content={[
+                                                                                            <>
+                                                                                                <p className="font-3 text-primary-neutral-200 font-semibold">JOIN MEETING</p>
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        ))
+                                                    ) : (
+                                                        <Container
+                                                            customClass="br align-items-center justify-content-center bg-primary-dark-800"
+                                                            style={{
+                                                                width: "100%",
+                                                                height: "128px"
+                                                            }}
+                                                            content={[
+                                                                <>
+                                                                    <p className="font-4 font-semibold text-primary-neutral-100">No upcoming appointments</p>
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    )
+                                                }
+                                            </>
+                                        ]}
                                     />
                                     <Container
                                         customClass="p-0"
@@ -697,134 +739,148 @@ function PDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Encounter History</h5>
                                             </>
                                         ]}
-                                        contentClass={`scrollable postList ${pastAppointments.length > 0 ? "p-5" : "px-0 py-5"}`}
-                                        content={pastAppointments.length > 0 ? (
-                                            pastAppointments.map((appt) => {
-                                                <>
-                                                    <ItemGroup
-                                                        customClass="gap-5"
-                                                        axis={true}
-                                                        fitParent={true}
-                                                        items={[
-                                                            <>
-                                                                <ItemGroup
-                                                                    customClass=" pt-2 pb-6 b-bottom-3 outline-primary-dark-800"
-                                                                    axis={false}
-                                                                    fitParent={true}
-                                                                    stretch={true}
-                                                                    isClickable={true}
-                                                                    style={{
-                                                                        gridAutoColumns: "250px 250px 250px 300px"
-                                                                    }}
-                                                                    items={[
-                                                                        <>
-                                                                            <ItemGroup
-                                                                                customClass="gap-2"
-                                                                                axis={true}
-                                                                                stretch={true}
-                                                                                fitParent={true}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <h5 className="font-3 text-neutral-600">DATE</h5>
-                                                                                        <p className="font-3 font-medium text-neutral-600">
-                                                                                            <ItemGroup
-                                                                                                customClass="gap-6 align-items-center"
-                                                                                                fitParent={true}
-                                                                                                axis={false}
-                                                                                                stretch={true}
-                                                                                                items={[
-                                                                                                    <>
-                                                                                                        <ItemGroup
-                                                                                                            customClass="align-items-center gap-2"
-                                                                                                            axis={false}
-                                                                                                            stretch={true}
-                                                                                                            items={[
-                                                                                                                <>
-                                                                                                                    <BaseIcon
-                                                                                                                        height="15px"
-                                                                                                                        width="15px"
-                                                                                                                        viewBox="0 1 24 24"
-                                                                                                                        fillColor="none">
-                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                        <g id="SVGRepo_iconCarrier">
-                                                                                                                            <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                        </g>
-                                                                                                                    </BaseIcon>
-                                                                                                                    <p className="font-3 font-medium text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(dashboardLayoutViewModel.splitDateTime(appt.created_at).date)}</p>
-                                                                                                                </>
-                                                                                                            ]}
-                                                                                                        />
-                                                                                                    </>
-                                                                                                ]}
-                                                                                            />
-                                                                                        </p>
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                            <ItemGroup
-                                                                                customClass="gap-2"
-                                                                                axis={true}
-                                                                                stretch={true}
-                                                                                fitParent={true}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <h5 className="font-3 text-neutral-600">DOCTOR</h5>
-                                                                                        <p className="font-3 font-medium text-neutral-600">
-                                                                                            {appt.appointment.doctor_name}
-                                                                                        </p>
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                            <ItemGroup
-                                                                                customClass="gap-2"
-                                                                                axis={true}
-                                                                                stretch={true}
-                                                                                fitParent={true}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <h5 className="font-3 text-neutral-600">TREATMENT</h5>
-                                                                                        <p className="font-3 font-medium text-neutral-600">
-                                                                                            {dashboardLayoutViewModel.getAppointmentData(appt.appointment.appointment_id).treatment}
-                                                                                        </p>
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                            <ItemGroup
-                                                                                customClass="gap-2"
-                                                                                axis={true}
-                                                                                stretch={true}
-                                                                                fitParent={true}
-                                                                                items={[
-                                                                                    <>
-                                                                                        <h5 className="font-3 text-neutral-600">NOTES</h5>
-                                                                                        <p className="font-3 font-medium text-neutral-600 text-justify">
-                                                                                            {appt.description}
-                                                                                        </p>
-                                                                                    </>
-                                                                                ]}
-                                                                            />
-                                                                        </>
-                                                                    ]}
-                                                                />
-                                                            </>
-                                                        ]}
-                                                    />
-                                                </>
-                                            })) : (
-                                                <Container
-                                                    customClass="br align-items-center justify-content-center bg-primary-dark-800"
-                                                    style={{
-                                                        width: "100%",
-                                                        height: "128px"
-                                                    }}
-                                                    content={[
-                                                        <>
-                                                            <p className="font-4 font-semibold text-primary-neutral-100">You have no appointments on record</p>
-                                                        </>
-                                                    ]}
-                                                />
-                                        )}
+                                        contentClass={`scrollable postList ${data.pastAppointments.length > 0 ? "p-5" : "px-0 py-5"}`}
+                                        content={[
+                                            <>
+                                                {
+                                                    data.pastAppointments.length > 0 ? (
+                                                        data.pastAppointments.map((appt) => (
+                                                            <ItemGroup
+                                                                axis={true}
+                                                                style={{
+                                                                    gridAutoRows: "100px",
+                                                                    width: "100%"
+                                                                }}
+                                                                items={[
+                                                                    <>
+                                                                        <ItemGroup
+                                                                            customClass="b-bottom-3 outline-primary-dark-800 align-items-center justify-content-space-between"
+                                                                            axis={false}
+                                                                            stretch={true}
+                                                                            fitParent={true}
+                                                                            items={[
+                                                                                <>
+                                                                                    <ItemGroup
+                                                                                        customClass="align-content-center"
+                                                                                        axis={false}
+                                                                                        fitParent={true}
+                                                                                        stretch={true}
+                                                                                        style={{
+                                                                                            gridAutoColumns: "180px"
+                                                                                        }}
+                                                                                        items={[
+                                                                                            <>
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">DATE</h5>
+                                                                                                            <ItemGroup
+                                                                                                                customClass="gap-6 align-items-center"
+                                                                                                                fitParent={true}
+                                                                                                                axis={false}
+                                                                                                                stretch={true}
+                                                                                                                items={[
+                                                                                                                    <>
+                                                                                                                        <ItemGroup
+                                                                                                                            customClass="align-items-center gap-2"
+                                                                                                                            axis={false}
+                                                                                                                            stretch={true}
+                                                                                                                            items={[
+                                                                                                                                <>
+                                                                                                                                    <BaseIcon
+                                                                                                                                        height="15px"
+                                                                                                                                        width="15px"
+                                                                                                                                        viewBox="0 1 24 24"
+                                                                                                                                        fillColor="none">
+                                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                                            <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                        </g>
+                                                                                                                                    </BaseIcon>
+                                                                                                                                    <p className="font-3 font-medium text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(appt.start_date, "MM/DD/YYYY")}</p>
+                                                                                                                                </>
+                                                                                                                            ]}
+                                                                                                                        />
+                                                                                                                    </>
+                                                                                                                ]}
+                                                                                                            />
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">DOCTOR</h5>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                {appt.doctor_name}
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">TREATMENT</h5>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                {appt.treatment}
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                                <ItemGroup
+                                                                                                    customClass="gap-2"
+                                                                                                    axis={true}
+                                                                                                    stretch={true}
+                                                                                                    fitParent={true}
+                                                                                                    items={[
+                                                                                                        <>
+                                                                                                            <h5 className="font-3 text-neutral-600">STARTS</h5>
+                                                                                                            <p className="font-3 font-medium text-neutral-600">
+                                                                                                                {dashboardLayoutViewModel.splitDateTime(appt.start_date).time}
+                                                                                                            </p>
+                                                                                                        </>
+                                                                                                    ]}
+                                                                                                />
+                                                                                            </>
+                                                                                        ]}
+                                                                                    />
+                                                                                </>
+                                                                            ]}
+                                                                        />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        ))
+                                                    ) : (
+                                                        <Container
+                                                            customClass="br align-items-center justify-content-center bg-primary-dark-800"
+                                                            style={{
+                                                                width: "100%",
+                                                                height: "128px"
+                                                            }}
+                                                            content={[
+                                                                <>
+                                                                    <p className="font-4 font-semibold text-primary-neutral-100">No appointments on record</p>
+                                                                </>
+                                                            ]}
+                                                        />
+                                                    )
+                                                }
+                                            </>
+                                        ]}
                                     />
                                 </>
                             ]}
@@ -857,7 +913,20 @@ function PDProfile() {
                                         headerClass="bg-primary-dark-600 br-sm p-5"
                                         header={[
                                             <>
-                                                <h5 className="font-5 text-dark-300 font-semibold">Active Medications</h5>
+                                                <ItemGroup
+                                                    customClass="justify-content-space-between align-items-center"
+                                                    axis={false}
+                                                    fitParent={true}
+                                                    items={[
+                                                        <>
+                                                            <h5 className="font-5 text-dark-300 font-semibold">Active Medications</h5>
+                                                            <Container
+                                                                isClickable={true}
+                                                                onClick={() => handleOpenModal("Exercise")}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
                                             </>
                                         ]}
                                         contentClass="px-5 pt-7 pb-5"
@@ -1094,7 +1163,24 @@ function PDProfile() {
                                         headerClass="bg-primary-dark-600 br-sm p-5"
                                         header={[
                                             <>
-                                                <h5 className="font-5 text-dark-300 font-semibold">Active Programs</h5>
+                                                <ItemGroup
+                                                    customClass="justify-content-space-between align-items-center"
+                                                    axis={false}
+                                                    fitParent={true}
+                                                    stretch={true}
+                                                    items={[
+                                                        <>
+                                                            <h5 className="font-5 text-dark-300 font-semibold">Active Programs</h5>
+                                                            <Container
+                                                                isClickable={true}
+                                                                onClick={() => handleOpenModal("exercise")}
+                                                                content={[
+                                                                    <p>Add Regimen</p>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                />
                                             </>
                                         ]}
                                         contentClass="p-5 hideScroll"
@@ -1107,19 +1193,18 @@ function PDProfile() {
                                                     items={[
                                                         <>
                                                             {
-                                                                exerciseData.map((ecc1, index) => (
-                                                                    <ECCheckbox
-                                                                        label={ecc1.type_of_exercise}
-                                                                        reps={ecc1.reps}
-                                                                        personal={true}
-                                                                        id={ecc1.exercise_id}
-                                                                    />
-                                                                ))
-                                                            /*
-                                                                pastAppointments.length > 0 && (
-                                                                    pastAppointments.map(() => (
+                                                                //exerciseData.map((ecc1, index) => (
+                                                                //    <ECCheckbox
+                                                                //        label={ecc1.type_of_exercise}
+                                                                //        reps={ecc1.reps}
+                                                                //        personal={true}
+                                                                //        id={ecc1.exercise_id}
+                                                                //    />
+                                                                //))
+
+                                                                dashboardLayoutViewModel.getUsers().length > 0 && (
+                                                                    dashboardLayoutViewModel.getUsers().map(() => (
                                                                         <>
-                                                                            {// This is the element that wraps the entire card. When this is hovered over, the below element should be visible}
                                                                             <ItemGroup
                                                                                 customClass=" pt-2 pb-6 justify-content-space-between position-relative hover-parent"
                                                                                 axis={false}
@@ -1137,7 +1222,6 @@ function PDProfile() {
                                                                                             }}
                                                                                             content={[
                                                                                                 <>
-                                                                                                    {// This is the element that needs to be invisible until the wrapper element is hovered over}
                                                                                                     <ItemGroup
                                                                                                         customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hidden-element"
                                                                                                         axis={false}
@@ -1258,7 +1342,7 @@ function PDProfile() {
                                                                         </>
                                                                     ))
                                                                 )
-                                                            */}
+                                                            }
                                                         </>
                                                     ]}
                                                 />
@@ -1542,7 +1626,7 @@ function PDProfile() {
                                                 fitParent={true}
                                                 items={[
                                                     <>
-                                                        <form onSubmit={handleSubmit}>
+                                                        <form>
                                                             <ItemGroup
                                                                 customClass="gap-8"
                                                                 axis={true}
@@ -1571,10 +1655,11 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">What is your height in centimeters?</p>
                                                                                                             <InputBar
-                                                                                                                name="height"
+                                                                                                                {...register('height', { required: 'Height is required' })}
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
+                                                                                                            {errors.height && <p className="text-danger">{errors.height.message}</p>}
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -1597,12 +1682,11 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">How much do you weigh in kilograms?</p>
                                                                                                             <InputBar
-                                                                                                                name="weight"
-                                                                                                                value={formData.weight} // Controlled input
-                                                                                                                onChange={handleInputChange} // Update state on input change
+                                                                                                                {...register('weight', { required: 'Weight is required' })}
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
+                                                                                                            {errors.weight && <p className="text-danger">{errors.weight.message}</p>}
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -1625,12 +1709,11 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">How much calories did you burn?</p>
                                                                                                             <InputBar
-                                                                                                                name="calories"
-                                                                                                                value={formData.calories} // Controlled input
-                                                                                                                onChange={handleInputChange} // Update state on input change
+                                                                                                                {...register('calories_intake', { required: 'Calories burned is required' })}
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
+                                                                                                            {errors.calories && <p className="text-danger">{errors.calories.message}</p>}
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -1653,12 +1736,11 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">How many hours of sleep did you get?</p>
                                                                                                             <InputBar
-                                                                                                                name="sleep"
-                                                                                                                value={formData.sleep} // Controlled input
-                                                                                                                onChange={handleInputChange} // Update state on input change
+                                                                                                                {...register('hours_of_sleep', { required: 'Sleep hours are required' })}
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
+                                                                                                            {errors.sleep && <p className="text-danger">{errors.sleep.message}</p>}
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -1681,12 +1763,11 @@ function PDProfile() {
                                                                                                         <>
                                                                                                             <p className="font-4">How many hours did you exercise for?</p>
                                                                                                             <InputBar
-                                                                                                                name="exercise"
-                                                                                                                value={formData.exercise} // Controlled input
-                                                                                                                onChange={handleInputChange}
+                                                                                                                {...register('hours_of_exercise', { required: 'Exercise hours are required' })}
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                                                 placeholder=""
                                                                                                             />
+                                                                                                            {errors.exercise && <p className="text-danger">{errors.exercise.message}</p>}
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -1700,6 +1781,7 @@ function PDProfile() {
                                                                             customClass="bg-primary-dark-400 py-3 br-sm text-center"
                                                                             fitParent={true}
                                                                             isClickable={true}
+                                                                            onClick={handleSubmit(onSubmitSurvey)}
                                                                             content={[
                                                                                 <>
                                                                                     <p className="font-semibold text-primary-neutral-100">SUBMIT</p>
@@ -2100,7 +2182,7 @@ function ExerciseList({
                                         items={[
                                             <InputBar
                                                 name={`${exercise.exercise_id}-reps`}
-                                                value={selectedExercises[exercise.exercise_id]} // Controlled input
+                                                value={selectedExercises[exercise.exercise_id]}
                                                 onChange={(e) =>
                                                     handleRepsChange(exercise, e.target.value)
                                                 }
@@ -2114,7 +2196,7 @@ function ExerciseList({
                         ]}
                     />
                 ))}
-                <button type="submit" className="submit-button">
+                <button type="submit" className="bg-0">
                     Submit
                 </button>
             </form>
@@ -2131,7 +2213,7 @@ function Medications({ name = "", dosage = "" }) {
             }}
             items={[
                 <>
-                    <BsCircleHalf />
+                    <BsCircleHalf />t
                     <ItemGroup
                         customClass="fit-parent"
                         axis={true}
