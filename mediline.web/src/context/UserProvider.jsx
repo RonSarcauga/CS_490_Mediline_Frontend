@@ -15,7 +15,7 @@ const UserProvider = ({ children }) => {
         window.history.replaceState(null, "", "/");
     };
 
-    console.log("UserProvider is rendering, currentUser:", currentUser);
+    //console.log("UserProvider is rendering, currentUser:", currentUser);
     return (
         <UserContext.Provider value={{ currentUser, setCurrentUser, logout }}>
             {children}

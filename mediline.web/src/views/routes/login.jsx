@@ -2,7 +2,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
-import InputBar from '../../components/General/InputBar';
+import InputBar, {InputBarReg} from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
 import Spinner from '../../components/General/Spinner';
 import LoginViewModel from '../../viewModels/LoginViewModel';
@@ -27,13 +27,13 @@ export default function Login() {
     const { setCurrentUser } = useContext(UserContext);
 
     const handleInput = (field, target) => {
-        console.log(`${field}: ${target.value}`);
+        //console.log(`${field}: ${target.value}`);
         setFormData({
             ...formData,
             [field]: target.value,
         });
-        console.log(`Email: ${formData.email}`);
-        console.log(`Password: ${formData.password}`);
+        //console.log(`Email: ${formData.email}`);
+        //console.log(`Password: ${formData.password}`);
     };
 
     const location = useLocation();
@@ -76,37 +76,6 @@ export default function Login() {
             setIsLoading(false);
         }
     };
-
-    //const handleLogin = (e) => {
-    //    e.preventDefault();
-    //    console.log("Initiate login process!");
-
-    //    LoginViewModel.email = formData.email;
-    //    LoginViewModel.password = formData.password;
-
-    //    loginMutation.mutate(
-    //        {
-    //            email: formData.email,
-    //            password: formData.password,
-    //        },
-    //        {
-    //            onSuccess: (data) => {
-    //                console.log("Full login response:", data);
-    //                console.log("Login successful!", data.user?.role);
-
-    //                //setCurrentUser(data);
-    //                //navigate(`/dashboard/${data.user?.role || 'patient'}`);
-    //                navigate(`/${data?.account_type || 'patient'}Home`)
-
-    //                LoginViewModel.clearFields();
-    //                setFormData({ email: "", password: "" });
-    //            },
-    //            onError: (error) => {
-    //                console.log("Login failed:", error.message);
-    //            },
-    //        }
-    //    );
-    //};
     
     const isComplete = Object.values(formData).every((value) => value.trim() !== "");
 
@@ -172,18 +141,18 @@ export default function Login() {
                                                         fitParent={true}
                                                         items={[
                                                             <>
-                                                                <InputBar
+                                                                <InputBarReg
                                                                     customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                                     value={formData.email}
                                                                     onChange={(e) => handleInput('email', e.target)}
                                                                     placeholder="Email"
                                                                 />
-                                                                <InputBar
+                                                                <InputBarReg
                                                                     customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                    type="password"
                                                                     value={formData.password}
-                                                                    onChange={(e) => handleInput('password', e.target)}
+                                                                    onChange={e => handleInput('password', e.target)}
                                                                     placeholder="Password"
+                                                                    inputType="password"
                                                                 />
                                                                 {error && <p className="text-warning-200 font-regular">{error}</p>}
                                                                 <Container
