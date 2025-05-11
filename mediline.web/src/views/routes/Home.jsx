@@ -8,6 +8,19 @@ import Button from '../../components/General/Button';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 
+function isLoggedIn() {
+  const token = localStorage.getItem('jwtToken');
+  if (!token) return false;
+
+  try {
+    const [, payload] = token.split('.');
+    const { exp } = JSON.parse(atob(payload));
+    return Date.now() < exp * 1000;
+  } catch {
+    return false;
+  }
+}
+
 export default function Home() {
     const { currentUser } = useContext(UserContext);
     const [searchQuery, setSearchQuery] = useState("");
@@ -72,7 +85,7 @@ export default function Home() {
                                     to={"/discussionForumPage"}
                                     text={"Discussion"}>
                                 </TopbarItem>
-                                {currentUser ? (
+                                {isLoggedIn() ? (
                                     <TopbarItem
                                     to={
                                         currentUser.role === "pharmacy"

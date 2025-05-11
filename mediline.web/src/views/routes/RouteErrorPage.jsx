@@ -12,13 +12,13 @@ const getErrorMessage = (code, pathname, routeError) => {
 };
 
 export default function RouteErrorPage() {
-  const error = useRouteError();
+  const routeError = useRouteError();
   const location = useLocation();
   const navigate = useNavigate();
 
   const params = new URLSearchParams(location.search);
   const code = params.get('code');
-  const errorDisplay = getErrorMessage(code, location.pathname, routeError);
+  const errorDisplay = getErrorMessage(code, location.pathname, error);
 
   return (
     <Container
@@ -36,7 +36,7 @@ export default function RouteErrorPage() {
                 <br/>
                 <h2 className="font-5 text-neutral-600">We couldn’t load this page.</h2>
                 <br/>
-                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {errorDisplay?.message} </p>
+                <p className="font-4 text-neutral-600 bg-neutral-1000 p-2 br-sm"> {errorDisplay?.message || "Unexpected Error"} </p>
                 <br/>
                 <ItemGroup
                   axis={false}

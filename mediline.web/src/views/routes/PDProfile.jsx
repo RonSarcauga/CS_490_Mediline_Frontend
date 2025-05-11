@@ -9,7 +9,7 @@ import Checkbox from '../../components/General/CheckboxRefactored';
 import Modal from '../../components/General/Modal';
 import ExerciseChart from '../../components/Dashboard/ExerciseChart';
 import { UserContext } from '../../context/UserProvider';
-import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm, submitExercise } from '../../viewModels/ExercisePage.js';
+import { fetchPatientExerciseList, fetchExerciseList, fetchChartData, fetchMedicationList, submitForm, submitExercise, updateExerciseStatus } from '../../viewModels/ExercisePage.js';
 import { BsCircleHalf } from "react-icons/bs";
 import { BsClipboard2HeartFill } from "react-icons/bs";
 import { IoMdDownload } from "react-icons/io";
@@ -25,6 +25,7 @@ function PDProfile() {
     const [chartData, setChartData] = useState([]);
     const [medicationList, setMedicationList] = useState([]);
     const { currentUser } = useContext(UserContext);
+    const [selectedExercises, setSelectedExercises] = useState({});
 
     //const pastAppointments = dashboardLayoutViewModel.getPastAppointments(currentUser.user_id);
     //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointments(currentUser.user_id);
@@ -90,6 +91,61 @@ function PDProfile() {
 
         fetchData4();
     }, []);
+
+
+    const handleExerciseStatusToggle = async (exerciseId, currentStatus, reps, pEID) => {
+        let newStatus;
+        if (currentStatus === "COMPLETED") {
+            newStatus = "IN_PROGRESS";
+        } else {
+            newStatus = "COMPLETED";
+        }
+        // Wait 1 second before updating to the real new status
+        setTimeout(async () => {
+            setExerciseData(prev =>
+                prev.map(ex =>
+                    ex.exercise_id === exerciseId ? { ...ex, status: newStatus } : ex
+                )
+            );
+            try {
+                console.log("Exercise ID:", exerciseId);
+                console.log("New Status:", newStatus);
+                await updateExerciseStatus(pEID, newStatus, reps);
+            } catch (err) {
+                // Optionally: revert UI or show error
+            }
+        }, 1000); // 1000ms = 1 second
+    };
+
+
+
+    const handleCheckboxChange = (exercise) => {
+        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
+        setSelectedExercises((prevSelected) => {
+            if (prevSelected[exerciseKey] !== undefined) {
+                // Remove exercise if already selected
+                const { [exerciseKey]: _, ...rest } = prevSelected;
+                return rest;
+            } else {
+                // Add exercise if not already selected
+                return { ...prevSelected, [exerciseKey]: "" }; // Default reps to an empty string
+            }
+        });
+    };
+
+    const handleRepsChange = (exercise, reps) => {
+        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
+        setSelectedExercises((prevSelected) => ({
+            ...prevSelected,
+            [exerciseKey]: reps, // Update reps for the selected exercise
+        }));
+    };
+
+    const handleSubmitExercises = () => {
+        console.log("Selected Exercises with Reps:", selectedExercises);
+        submitExercise(selectedExercises, currentUser.user_id, currentUser.doctor.doctor_id);
+        setSelectedExercises({}); // Optionally clear after submit
+    };
 
     //useEffect(() => {
     //    const fetchEncountersData = async () => {
@@ -1370,8 +1426,10 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {medicationList.map((medication, index) => (
-                                                                <Medications key={index} name={medication.name} dosage={medication.dosage} />
+                                                            {medicationList
+                                                                .filter((medication) => dashboardLayoutViewModel.isPrescriptionActive(medication.taken_date, medication.duration) === true)
+                                                                .map((medication, index) => (
+                                                                <Medications key={index} name={medication.name} duration= {medication.duration} dosage={medication.dosage} />
                                                             ))
 
                                                             /*
@@ -1480,7 +1538,13 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {/*
+                                                            {medicationList
+                                                                .filter((medication) => dashboardLayoutViewModel.isPrescriptionActive(medication.taken_date, medication.duration) === true)
+                                                                .map((medication, index) => (
+                                                                <Medications key={index} name={medication.name} duration= {medication.duration} dosage={medication.dosage} />
+                                                            ))
+                                                            
+                                                            /*
                                                                 dashboardLayoutViewModel.getUsers().length > 0 && (
                                                                     dashboardLayoutViewModel.getUsers().map(() => (
                                                                         <>
@@ -1615,9 +1679,165 @@ function PDProfile() {
                                                                 //))
 
                                                                 dashboardLayoutViewModel.getUsers().length > 0 && (
-                                                                    dashboardLayoutViewModel.getUsers().map(() => (
+                                                                    exerciseData
+                                                                        .filter((ecc1) => ecc1.status === "IN_PROGRESS")
+                                                                        .map((ecc1, index) => (
+                                                                            <>
+                                                                                <ItemGroup
+                                                                                    key={ecc1.exercise_id}
+                                                                                    customClass=" pt-2 pb-6 justify-content-space-between position-relative hover-parent"
+                                                                                    axis={false}
+                                                                                    fitParent={true}
+                                                                                    stretch={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <Container
+                                                                                                customClass="bg-primary-dark-500 position-absolute"
+                                                                                                style={{
+                                                                                                    height: "1.5px",
+                                                                                                    width: "100%",
+                                                                                                    bottom: "0",
+                                                                                                    left: "0"
+                                                                                                }}
+                                                                                                content={[
+                                                                                                    <>
+                                                                                                        <ItemGroup
+                                                                                                            customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hidden-element"
+                                                                                                            axis={false}
+                                                                                                            stretch={true}
+                                                                                                            isClickable={true}
+                                                                                                            onClick={() => handleOpenModal("exercise")}
+                                                                                                            style={{
+                                                                                                                bottom: "0",
+                                                                                                                left: "45%",
+                                                                                                                transform: "translateY(50%)"
+                                                                                                            }}
+                                                                                                            items={[
+                                                                                                                <>
+                                                                                                                    <BaseIcon
+                                                                                                                        fill="none"
+                                                                                                                        height="28px"
+                                                                                                                        width="28px">
+                                                                                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                        <g id="SVGRepo_iconCarrier">
+                                                                                                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="hsl(210, 20%, 55%)" />
+                                                                                                                        </g>
+                                                                                                                    </BaseIcon>
+                                                                                                                    <p className="font-3 font-semibold text-primary-neutral-200">ADD REGIMEN</p>
+                                                                                                                </>
+                                                                                                            ]}
+                                                                                                        />
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <ItemGroup
+                                                                                                axis={false}
+                                                                                                fitParent={true}
+                                                                                                stretch={true}
+                                                                                                style={{
+                                                                                                    gridAutoColumns: "250px"
+                                                                                                }}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <ItemGroup
+                                                                                                            customClass="gap-2"
+                                                                                                            axis={true}
+                                                                                                            stretch={true}
+                                                                                                            fitParent={true}
+                                                                                                            items={[
+                                                                                                                <>
+                                                                                                                    <h5 className="font-4 text-neutral-600 font-semibold">{ecc1.type_of_exercise}</h5>
+                                                                                                                    <ItemGroup
+                                                                                                                        customClass="gap-6 align-items-center"
+                                                                                                                        fitParent={true}
+                                                                                                                        axis={false}
+                                                                                                                        stretch={true}
+                                                                                                                        items={[
+                                                                                                                            <>
+
+                                                                                                                                <ItemGroup
+                                                                                                                                    customClass="align-items-center gap-1"
+                                                                                                                                    axis={false}
+                                                                                                                                    stretch={true}
+                                                                                                                                    items={[
+                                                                                                                                        <>
+                                                                                                                                            <BaseIcon
+                                                                                                                                                height="18px"
+                                                                                                                                                width="18px"
+                                                                                                                                                viewBox="0 -3.5 25 25"
+                                                                                                                                                fillColor="none">
+                                                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                                <g id="SVGRepo_iconCarrier">
+                                                                                                                                                    <path d="M5 0H11V3.58579L8 6.58579L5 3.58579V0Z" fill="hsl(0, 0%, 50%)" /> <path d="M3.58579 5H0V11H3.58579L6.58579 8L3.58579 5Z" fill="hsl(0, 0%, 50%)" />
+                                                                                                                                                    <path d="M5 12.4142V16H11V12.4142L8 9.41421L5 12.4142Z" fill="hsl(0, 0%, 50%)" />
+                                                                                                                                                    <path d="M12.4142 11H16V5H12.4142L9.41421 8L12.4142 11Z" fill="hsl(0, 0%, 50%)" />
+                                                                                                                                                </g>
+                                                                                                                                            </BaseIcon>
+                                                                                                                                            <p className="font-3 font-medium text-neutral-600">{ecc1.reps} reps</p>
+                                                                                                                                        </>
+                                                                                                                                    ]}
+                                                                                                                                />
+                                                                                                                            </>
+                                                                                                                        ]}
+                                                                                                                    />
+                                                                                                                </>
+                                                                                                            ]}
+                                                                                                        />
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <Checkbox
+                                                                                                checkboxClass="b-4 outline-primary-dark-600 fill-primary-dark-600 align-self-center"
+                                                                                                checkColor="hsl(210, 20%, 95%)"
+                                                                                                label={[
+                                                                                                    <p></p>
+                                                                                                ]}
+                                                                                                onChange={() => handleExerciseStatusToggle(ecc1.exercise_id, ecc1.status, ecc1.reps, ecc1.patient_exercise_id)}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ))
+                                                                )
+                                                            }
+                                                        </>
+                                                    ]}
+                                                />
+                                            </>
+                                        ]}
+                                    />
+                                    <Container
+                                        customClass="p-0"
+                                        fitParent={true}
+                                        style={{
+                                            maxHeight: "400px",
+                                            maxWidth: "1120px",
+                                        }}
+                                        headerClass="bg-primary-dark-600 br-sm p-5"
+                                        header={[
+                                            <>
+                                                <h5 className="font-5 text-dark-300 font-semibold">Completed Programs</h5>
+                                            </>
+                                        ]}
+                                        contentClass="p-5 hideScroll"
+                                        content={[
+                                            <>
+                                                <ItemGroup
+                                                    customClass="gap-5"
+                                                    axis={true}
+                                                    fitParent={true}
+                                                    items={[
+                                                        <>
+                                                            {dashboardLayoutViewModel.getUsers().length > 0 && (
+                                                                exerciseData
+                                                                    .filter((ecc1) => ecc1.status === "COMPLETED")
+                                                                    .map((ecc1, index) => (
                                                                         <>
                                                                             <ItemGroup
+                                                                                key={ecc1.exercise_id}
                                                                                 customClass=" pt-2 pb-6 justify-content-space-between position-relative hover-parent"
                                                                                 axis={false}
                                                                                 fitParent={true}
@@ -1680,7 +1900,7 @@ function PDProfile() {
                                                                                                         fitParent={true}
                                                                                                         items={[
                                                                                                             <>
-                                                                                                                <h5 className="font-4 text-neutral-600 font-semibold">Sit-Up</h5>
+                                                                                                                <h5 className="font-4 text-neutral-600 font-semibold">{ecc1.type_of_exercise}</h5>
                                                                                                                 <ItemGroup
                                                                                                                     customClass="gap-6 align-items-center"
                                                                                                                     fitParent={true}
@@ -1688,27 +1908,7 @@ function PDProfile() {
                                                                                                                     stretch={true}
                                                                                                                     items={[
                                                                                                                         <>
-                                                                                                                            <ItemGroup
-                                                                                                                                customClass="align-items-center gap-2"
-                                                                                                                                axis={false}
-                                                                                                                                stretch={true}
-                                                                                                                                items={[
-                                                                                                                                    <>
-                                                                                                                                        <BaseIcon
-                                                                                                                                            height="16px"
-                                                                                                                                            width="16px"
-                                                                                                                                            viewBox="0 1 24 24"
-                                                                                                                                            fillColor="none">
-                                                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                            <g id="SVGRepo_iconCarrier">
-                                                                                                                                                <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 50%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                            </g>
-                                                                                                                                        </BaseIcon>
-                                                                                                                                        <p className="font-3 font-medium text-neutral-600">1 min</p>
-                                                                                                                                    </>
-                                                                                                                                ]}
-                                                                                                                            />
+
                                                                                                                             <ItemGroup
                                                                                                                                 customClass="align-items-center gap-1"
                                                                                                                                 axis={false}
@@ -1728,7 +1928,7 @@ function PDProfile() {
                                                                                                                                                 <path d="M12.4142 11H16V5H12.4142L9.41421 8L12.4142 11Z" fill="hsl(0, 0%, 50%)" />
                                                                                                                                             </g>
                                                                                                                                         </BaseIcon>
-                                                                                                                                        <p className="font-3 font-medium text-neutral-600">10 reps</p>
+                                                                                                                                        <p className="font-3 font-medium text-neutral-600">{ecc1.reps} reps</p>
                                                                                                                                     </>
                                                                                                                                 ]}
                                                                                                                             />
@@ -1747,43 +1947,20 @@ function PDProfile() {
                                                                                             label={[
                                                                                                 <p></p>
                                                                                             ]}
+                                                                                            checked={true}
+                                                                                            onChange={() => handleExerciseStatusToggle(ecc1.exercise_id, ecc1.status, ecc1.reps, ecc1.patient_exercise_id)}
                                                                                         />
                                                                                     </>
                                                                                 ]}
                                                                             />
                                                                         </>
                                                                     ))
-                                                                )
-                                                            }
-                                                        </>
-                                                    ]}
-                                                />
-                                            </>
-                                        ]}
-                                    />
-                                    <Container
-                                        customClass="p-0"
-                                        fitParent={true}
-                                        style={{
-                                            maxHeight: "400px",
-                                            maxWidth: "1120px",
-                                        }}
-                                        headerClass="bg-primary-dark-600 br-sm p-5"
-                                        header={[
-                                            <>
-                                                <h5 className="font-5 text-dark-300 font-semibold">Completed Programs</h5>
-                                            </>
-                                        ]}
-                                        contentClass="p-5 hideScroll"
-                                        content={[
-                                            <>
-                                                <ItemGroup
-                                                    customClass="gap-5"
-                                                    axis={true}
-                                                    fitParent={true}
-                                                    items={[
-                                                        <>
-                                                            {/*
+                                                            )
+
+
+
+
+                                                            /*
                                                                 pastAppointments.length > 0 && (
                                                                     pastAppointments.map((appt) => (
                                                                         <>
@@ -2274,7 +2451,15 @@ function PDProfile() {
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {/*pastAppointments.length > 0 && (
+                                                                    {
+                                                                        <ExerciseList
+                                                                        exerciseBank1={exerciseList}
+                                                                        currentEcc={exerciseData}
+                                                                        selectedExercises={selectedExercises}
+                                                                        handleCheckboxChange={handleCheckboxChange}
+                                                                        handleRepsChange={handleRepsChange}
+                                                                    />
+                                                                    /*pastAppointments.length > 0 && (
                                                                         pastAppointments.map(() => (
                                                                             <>
                                                                                 <ItemGroup
@@ -2391,6 +2576,7 @@ function PDProfile() {
                                                                         customClass="bg-neutral-1000 py-3 b-3 outline-neutral-700 br-sm"
                                                                         fitParent={true}
                                                                         isClickable={true}
+                                                                        onClick={handleSubmitExercises}
                                                                         content={[
                                                                             <>
                                                                                 <p className="font-semibold text-neutral-600">CONFIRM</p>
@@ -2517,38 +2703,11 @@ function PDProfile() {
 
 function ExerciseList({
     exerciseBank1 = [],
-    currentEcc = []
+    currentEcc = [],
+    selectedExercises,
+    handleCheckboxChange,
+    handleRepsChange
 }) {
-    const [selectedExercises, setSelectedExercises] = useState({});
-
-    const handleCheckboxChange = (exercise) => {
-        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
-        setSelectedExercises((prevSelected) => {
-            if (prevSelected[exerciseKey] !== undefined) {
-                // Remove exercise if already selected
-                const { [exerciseKey]: _, ...rest } = prevSelected;
-                return rest;
-            } else {
-                // Add exercise if not already selected
-                return { ...prevSelected, [exerciseKey]: "" }; // Default reps to an empty string
-            }
-        });
-    };
-
-    const handleRepsChange = (exercise, reps) => {
-        const exerciseKey = exercise.exercise_id; // Use exercise_id as the unique identifier
-        setSelectedExercises((prevSelected) => ({
-            ...prevSelected,
-            [exerciseKey]: reps, // Update reps for the selected exercise
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault(); // Prevent default form submission behavior
-        console.log("Selected Exercises with Reps:", selectedExercises);
-        submitExercise(selectedExercises); // Call the submit function with selected exercises
-    };
-
     // Filter out exercises that already exist in currentEcc
     const filteredExercises = exerciseBank1.filter(
         (exercise) =>
@@ -2557,65 +2716,50 @@ function ExerciseList({
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
+            {filteredExercises.map((exercise) => (
                 <ItemGroup
-                    customClass="p-3 b-bottom-4 ml-2 mt-2 outline-primary-neutral-400"
-                    axis={true}
+                    key={exercise.exercise_id} // Use unique ID as key!
+                    customClass="gap-5 pl-5 pr-5"
+                    axis={false}
                     style={{
-                        width: "54vw",
+                        width: "30vw",
                     }}
                     items={[
                         <>
-                            <h1>Exercise List</h1>
+                            <ECCheckbox
+                                label={exercise.type_of_exercise}
+                                onChange={() => handleCheckboxChange(exercise)}
+                                width="10vw"
+                            />
+                            {selectedExercises[exercise.exercise_id] !== undefined && (
+                                <ItemGroup
+                                    customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
+                                    axis={true}
+                                    style={{
+                                        width: "10vw",
+                                    }}
+                                    items={[
+                                        <InputBar
+                                            name={`${exercise.exercise_id}-reps`}
+                                            value={selectedExercises[exercise.exercise_id]}
+                                            onChange={(e) =>
+                                                handleRepsChange(exercise, e.target.value)
+                                            }
+                                            placeholder="Enter reps"
+                                            customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
+                                        />
+                                    ]}
+                                />
+                            )}
                         </>
                     ]}
                 />
-                {filteredExercises.map((exercise, index) => (
-                    <ItemGroup
-                        key={index}
-                        customClass="gap-5 pl-5 pr-5"
-                        axis={false}
-                        style={{
-                            width: "30vw",
-                        }}
-                        items={[
-                            <>
-                                <ECCheckbox
-                                    label={exercise.type_of_exercise}
-                                    onChange={() => handleCheckboxChange(exercise)}
-                                />
-                                {selectedExercises[exercise.exercise_id] !== undefined && (
-                                    <ItemGroup
-                                        customClass="gap-5 bg-neutral-1100 ml-5 mt-2 mb-2 p-2 br-xs "
-                                        axis={true}
-                                        style={{
-                                            width: "10vw",
-                                        }}
-                                        items={[
-                                            <InputBar
-                                                name={`${exercise.exercise_id}-reps`}
-                                                value={selectedExercises[exercise.exercise_id]}
-                                                onChange={(e) =>
-                                                    handleRepsChange(exercise, e.target.value)
-                                                }
-                                                placeholder="Enter reps"
-                                                customClass="b-bottom-2 outline-dark-400 bg-0 py-2 pr-1 br-none input-text-neutral-100"
-                                            />
-                                        ]}
-                                    />
-                                )}
-                            </>
-                        ]}
-                    />
-                ))}
-                <button type="submit" className="bg-0">
-                    Submit
-                </button>
-            </form>
+            ))}
         </>
     );
 }
-function Medications({ name = "", dosage = "" }) {
+
+function Medications({ name = "",duration="",  dosage = "" }) {
     return (
         <ItemGroup
             customClass="p-3 align-items-center gap-3 fit-parent"
@@ -2625,7 +2769,7 @@ function Medications({ name = "", dosage = "" }) {
             }}
             items={[
                 <>
-                    <BsCircleHalf />t
+                    <BsCircleHalf />
                     <ItemGroup
                         customClass="fit-parent"
                         axis={true}
@@ -2635,6 +2779,18 @@ function Medications({ name = "", dosage = "" }) {
                         items={[
                             <div key="name">
                                 {name}
+                            </div>
+                        ]}
+                    />
+                    <ItemGroup
+                        customClass="justify-content-right pl-30"
+                        axis={false}
+                        style={{
+                            width: "10vw",
+                        }}
+                        items={[
+                            <div key="dosage">
+                                {duration} Days
                             </div>
                         ]}
                     />

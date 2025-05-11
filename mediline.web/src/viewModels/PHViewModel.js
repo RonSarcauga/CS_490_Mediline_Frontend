@@ -22,10 +22,75 @@ async function fetchPharmaHomeData(pharmaId) {
     };
 }
 
+async function fetchPharmacyPatientsRequests(pharmaId) {
+    try {
+        const response = await axios.get(`/pharmacy/${pharmaId}/patients`, authHeaders());
+        const data = response.data;
+        
+        const unifiedPatients = [
+        ...(data.new_patients || []),
+        ...(data.other_patients || [])
+        ];
+
+        const enrichedRequests = await fetchPharmacyRequests(pharmaId);
+
+        return {
+            patients: unifiedPatients,
+            requests: enrichedRequests
+        };
+
+    } catch (err) {
+        console.error("Error fetching pharmacy patients or requests:", err);
+        throw err;
+    }
+}
+
+async function fetchPharmacyRequests(pharmaId) {
+    try {
+        const res = await axios.get(`/pharmacy/${pharmaId}/requests`, authHeaders());
+        const requests = res.data;
+
+        const patIds = [...new Set(requests.map(r => r.user_id))];
+
+        const patPromises = patIds.map(async (patId) => {
+            const userRes = await axios.get(`/user/${patId}`, authHeaders());
+            return { patId, user: userRes.data };
+        });
+
+        const pats = await Promise.all(patPromises);
+
+        const patMap = new Map();
+        pats.forEach(({ patId, pat }) => {
+            patMap.set(patId, pat);
+        });
+
+        const enrichedRequests = requests.map(request => {
+            const pat = patMap.get(request.user_id);
+            return {
+                ...request,
+                patient_name: pat ? `${pat.first_name} ${pat.last_name}` : "Unknown"
+            };
+        });
+
+        return enrichedRequests;
+    } catch (err) {
+        console.error("Error fetching full request data:", err);
+        throw err;
+    }
+}
+
 async function fetchPharmacyPatients(pharmaId) {
     try {
         const response = await axios.get(`/pharmacy/${pharmaId}/patients`, authHeaders());
-        return response.data;
+
+        const data = response.data;
+
+        const unifiedPatients = [
+            ...(data.new_patients || []),
+            ...(data.other_patients || [])
+        ];
+
+        return unifiedPatients;
     } catch (err) {
         console.error("Error fetching pharmacy patients:", err);
         throw err;
@@ -34,11 +99,8 @@ async function fetchPharmacyPatients(pharmaId) {
 
 async function fetchMedicationslist(pharmaId) {
     try {
-        const patientsRes = await fetchPharmacyPatients(pharmaId);
-        const patients = [
-            ...(patientsRes.new_patients || []),
-            ...(patientsRes.other_patients || [])
-        ];
+        const patients = await fetchPharmacyPatients(pharmaId);
+
 
         const allMeds = await Promise.all(
             patients.map(async (pat) => {
@@ -164,12 +226,12 @@ export const PharmacyDashboardViewModel = {
     usePharmacyPatients(pharmaId) {
         return useQuery({
             queryKey: ['pharmacyPatients', pharmaId],
-            queryFn: () => fetchPharmacyPatients(pharmaId),
+            queryFn: () => fetchPharmacyPatientsRequests(pharmaId),
             enabled: !!pharmaId,
             staleTime: 1000 * 60 * 5,
             retry: 1,
         });
-    }
+    },
 };
 
 export default PharmacyDashboardViewModel;
