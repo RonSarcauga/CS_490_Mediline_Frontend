@@ -17,7 +17,7 @@ const LoginViewModel = {
             password: this.password
         };
 
-        console.log(JSON.stringify(payload, null, 2));
+        //console.log(JSON.stringify(payload, null, 2));
 
         return payload;
     },
@@ -31,12 +31,12 @@ const LoginViewModel = {
 
         // Fetch the payload from the form data
         const payload = this.getPayload();
-        console.log(payload);
+        //console.log(payload);
 
         try {
             // Retrieving data from the login endpoint
             const response = await axiosInstance.post('/auth/login', payload);
-            console.log(`Login successful:\n${JSON.stringify(response.data, null, 2)}`);
+            //console.log(`Login successful:\n${JSON.stringify(response.data, null, 2)}`);
 
             const token = response.data.token;
 
@@ -46,7 +46,7 @@ const LoginViewModel = {
             // Decode the Base64 string and parse the JSON
             const decodedPayload = JSON.parse(atob(payloadBase64));
 
-            console.log(`Decoded Token: ${decodedPayload}`);
+            //console.log("Decoded Token:", decodedPayload);
 
             // Extract the user ID
             const userId = decodedPayload.sub;
@@ -80,7 +80,7 @@ const LoginViewModel = {
             localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
             // Confirm that the correct data is being passed
-            console.log(`Current user: ${JSON.stringify(currentUser, null, 2)}`);
+            //console.log(`Current user: ${JSON.stringify(currentUser, null, 2)}`);
             return currentUser;
         } catch (error) {
             console.error("Login failed:", error.response?.data || error.message);
@@ -101,7 +101,7 @@ const LoginViewModel = {
             });
 
             // Logs the data returned by the backend to the console
-            console.log(`User information: ${JSON.stringify(response.data, null, 2)}`);
+            //console.log(`User information: ${JSON.stringify(response.data, null, 2)}`);
 
             // Returns a user data object to the 
             return response.data;

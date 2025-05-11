@@ -32,7 +32,7 @@ function DashboardLayout() {
         navigate(`/`);
     }
 
-   console.log(`User: ${currentUser.firstName} ${currentUser.lastName}, Role: ${currentUser.role}`);
+   //console.log(`User: ${currentUser.firstName} ${currentUser.lastName}, Role: ${currentUser.role}`);
 
     return (
         <Container
