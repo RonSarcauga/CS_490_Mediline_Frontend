@@ -124,7 +124,7 @@ class DashboardLayoutViewModel {
 
     // Splits the date from time in a Date object
     splitDateTime(dateTime) {
-        console.log(`Split Date Time: ${dateTime}`);
+        //console.log(`Split Date Time: ${dateTime}`);
 
         if (!dateTime || typeof dateTime !== "string") {
             //throw new Error("Invalid input. Expected a DateTime string.");
