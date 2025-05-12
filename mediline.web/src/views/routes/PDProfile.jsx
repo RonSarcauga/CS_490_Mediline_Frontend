@@ -20,7 +20,6 @@ import Spinner from '../../components/General/Spinner';
 
 function PDProfile() {
     const [showNewElement, setShowNewElement] = useState(false);
-    //const [graphState, setGraphState] = useState("exercise");
     const [exerciseData, setExerciseData] = useState([]);
     const [exerciseList, setExerciseList] = useState([]);
     const [chartData, setChartData] = useState([]);
@@ -28,8 +27,6 @@ function PDProfile() {
     const { currentUser } = useContext(UserContext);
     const [selectedExercises, setSelectedExercises] = useState({});
 
-    //const pastAppointments = dashboardLayoutViewModel.getPastAppointments(currentUser.user_id);
-    //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointments(currentUser.user_id);
     const navigate = useNavigate();
 
     const [activeModal, setActiveModal] = useState(null);
