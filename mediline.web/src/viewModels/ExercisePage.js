@@ -27,24 +27,39 @@ export const fetchChartData = async (patientId) => {
         }
     });
     console.log('Fetched data:', data);
-    let chartDataCalorie = new Array(data.length)
-    let chartDataHeight = new Array(data.length)
-    let chartDataExercise = new Array(data.length)
-    let chartDataSleep = new Array(data.length)
-    let chartDataWeight = new Array(data.length)
-    for(var i = 0; i < data.length; i++) {
-        chartDataCalorie[i] = data[i].calories_intake;
-        chartDataHeight[i] = data[i].height;
-        chartDataExercise[i] = data[i].hours_of_exercise;
-        chartDataSleep[i] = data[i].hours_of_sleep;
-        chartDataWeight[i] = data[i].weight;
+
+    let chartDataCalorie = [];
+    let chartDataHeight = [];
+    let chartDataExercise = [];
+    let chartDataSleep = [];
+    let chartDataWeight = [];
+    let chartDataDates = [];
+    let chartDataDays = [];
+
+    for (let i = 0; i < data.length; i++) {
+        chartDataCalorie.push(data[i].calories_intake);
+        chartDataHeight.push(data[i].height);
+        chartDataExercise.push(data[i].hours_of_exercise);
+        chartDataSleep.push(data[i].hours_of_sleep);
+        chartDataWeight.push(data[i].weight);
+
+        // Assuming data[i].created_at or data[i].date is the submission date
+        const dateStr = data[i].created_at;
+        chartDataDates.push(dateStr);
+
+        // Convert to day of week label
+        const dayLabel = dateStr ? new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short' }) : '';
+        chartDataDays.push(dayLabel);
     }
+
     return {
         calories: chartDataCalorie,
         height: chartDataHeight,
         exercise: chartDataExercise,
         sleep: chartDataSleep,
-        weight: chartDataWeight
+        weight: chartDataWeight,
+        days: chartDataDays, // <-- Pass this to your chart
+        dates: chartDataDates
     };
 };
 /*
@@ -94,7 +109,7 @@ const fetchPrescriptionList = async (medId = 0) => {
     };
 };
 */
-export const submitForm = async (formData, patientId) => {
+export const submitForm = async (formData, patientId, doctorId) => {
     try {
         const response = await axios.post(`/report/user/${patientId}`, {
             calories_intake: Number(formData.calories),
@@ -129,10 +144,10 @@ export const submitExercise = async (exerciseData, patientId, doctorId) => {
         const responses = await Promise.all(
             exercises.map(async ([exerciseId, reps]) => {
                 const response = await axios.post(`/exercise/${exerciseId}`, {
-                    reps: reps, 
+                    reps: reps.toString(), 
                     patient_id: Number(patientId),
                     doctor_id: Number(doctorId),
-                    status: "in_progress"
+                    status: "IN_PROGRESS"
                 } , {
                     headers: {
                         "Content-Type": "application/json",

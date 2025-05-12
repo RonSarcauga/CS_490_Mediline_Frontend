@@ -264,11 +264,20 @@ class OverviewViewModel {
         const payload = {
             ...data,
             doctor_id: doctorId,
+            report_id: 1,
         };
 
         console.log(`Payload: ${JSON.stringify(payload, null, 2)}`);
         try {
             const response = await axiosInstance.post(`/report/user/${id}`, {
+                calories_intake: Number(payload.calories_intake),
+                doctor_id: payload.doctor_id,
+                height: Number(payload.height),
+                hours_of_exercise: Number(payload.hours_of_exercise),
+                hours_of_sleep: Number(payload.hours_of_sleep),
+                report_id: payload.report_id,
+                weight: Number(payload.weight),
+            },{
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
