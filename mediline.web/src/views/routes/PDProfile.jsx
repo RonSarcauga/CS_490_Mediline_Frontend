@@ -172,9 +172,17 @@ function PDProfile() {
     };
 
     const handleSubmitExercises = async () => {
+        // Validate all reps are >= 1 and not empty
+        const invalid = Object.values(selectedExercises).some(
+            reps => !reps || isNaN(reps) || Number(reps) < 1
+        );
+        if (invalid) {
+            alert("Please enter at least 1 rep for each selected exercise.");
+            return;
+        }
         console.log("Selected Exercises with Reps:", selectedExercises);
         await submitExercise(selectedExercises, currentUser.user_id, currentUser.doctor.doctor_id);
-        setSelectedExercises({}); // Optionally clear after submit
+        setSelectedExercises({});
 
         // Re-fetch exercise data to update the UI
         const updatedExerciseData = await fetchPatientExerciseList(currentUser.user_id);
@@ -2895,6 +2903,7 @@ function ExerciseList({
                                             name={`${exercise.exercise_id}-reps`}
                                             value={selectedExercises[exercise.exercise_id]}
                                             type="number"
+                                            min={1}
                                             onChange={(e) =>
                                                 handleRepsChange(exercise, e.target.value)
                                             }
