@@ -213,6 +213,7 @@ function DashboardLayout() {
                                                                                     offsetX={-10}
                                                                                     triggerLabel={[
                                                                                         <BaseIcon
+                                                                                            id="user-icon"
                                                                                             height="50px"
                                                                                             width="50px"
                                                                                             fillColor='none'
@@ -243,7 +244,7 @@ function DashboardLayout() {
                                                                                             onClick={handleLogout}
                                                                                             items={[
                                                                                                 <>
-                                                                                                    <p>Logout</p>
+                                                                                                    <p id="logout">Logout</p>
                                                                                                 </>
                                                                                             ]}
                                                                                         />
