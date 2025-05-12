@@ -34,6 +34,10 @@ function PDProfile() {
 
     const [activeModal, setActiveModal] = useState(null);
 
+    const [windowStart, setWindowStart] = useState(0);
+    const windowSize = 7; // Show 7 data points at a time
+    const windowEnd = windowStart + windowSize;
+
     const handleOpenModal = (modalId) => {
         setActiveModal(modalId);
     }
@@ -47,6 +51,8 @@ function PDProfile() {
         { id: "graph1", label: "Exercise" },
         { id: "graph2", label: "Weight" },
         { id: "graph3", label: "Sleep" },
+        { id: "graph4", label: "Height" },
+        { id: "graph5", label: "Calories" },
     ]
 
     //const setGraphStateEc = () => {
@@ -100,6 +106,23 @@ function PDProfile() {
 
         fetchData4();
     }, []);
+    const formattedLabels = chartData.dates
+        ? chartData.dates.map(dateStr => {
+            const d = new Date(dateStr);
+            return `${d.getMonth() + 1}/${d.getDate()}`;
+        })
+        : [];
+    const slicedLabels = formattedLabels.slice(windowStart, windowEnd);
+    const slicedExercise = chartData.exercise?.slice(windowStart, windowEnd) || [];
+    const slicedWeight = chartData.weight?.slice(windowStart, windowEnd) || [];
+    const slicedSleep = chartData.sleep?.slice(windowStart, windowEnd) || [];
+    const slicedHeight = chartData.height?.slice(windowStart, windowEnd) || [];
+    const slicedCalories = chartData.calories?.slice(windowStart, windowEnd) || [];
+
+    const refreshChartData = async () => {
+        const updatedChartData = await fetchChartData(currentUser.user_id);
+        setChartData(updatedChartData);
+    };
 
 
     const handleExerciseStatusToggle = async (exerciseId, currentStatus, reps, pEID) => {
@@ -148,10 +171,18 @@ function PDProfile() {
         }));
     };
 
-    const handleSubmitExercises = () => {
+    const handleSubmitExercises = async () => {
         console.log("Selected Exercises with Reps:", selectedExercises);
-        submitExercise(selectedExercises, currentUser.user_id, currentUser.doctor.doctor_id);
+        await submitExercise(selectedExercises, currentUser.user_id, currentUser.doctor.doctor_id);
         setSelectedExercises({}); // Optionally clear after submit
+
+        // Re-fetch exercise data to update the UI
+        const updatedExerciseData = await fetchPatientExerciseList(currentUser.user_id);
+        if (updatedExerciseData) {
+            setExerciseData(updatedExerciseData);
+        }
+
+        handleCloseModal();
     };
 
     //useEffect(() => {
@@ -223,9 +254,29 @@ function PDProfile() {
 
     // Survey Form
     const survey = useForm();
-    const onSubmitSurvey = (data) => {
-        console.log("Survey Data Submitted!");
-        overviewVM.submitSurvey(currentUser.user_id, currentUser.doctor.doctor_id, data);
+    const onSubmitSurvey = async (data) => {
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date();
+        const todayStr = today.toISOString().split('T')[0];
+
+        // Check if a form was already submitted today
+        // Assuming chartData.dates is an array of ISO date strings (e.g., "2025-05-11T14:00:00Z")
+        const alreadySubmitted = chartData.dates && chartData.dates.some(dateStr => {
+            // Extract date part only
+            const dateOnly = new Date(dateStr).toISOString().split('T')[0];
+            return dateOnly === todayStr;
+        });
+
+        if (alreadySubmitted) {
+            alert("You have already submitted the form today.");
+            return;
+        }
+
+        // Proceed with submission
+        await overviewVM.submitSurvey(currentUser.user_id, currentUser.doctor.doctor_id, data);
+        // Re-fetch chart data and update state
+        const updatedChartData = await fetchChartData(currentUser.user_id);
+        setChartData(updatedChartData);
     };
 
     useEffect(() => {
@@ -447,9 +498,8 @@ function PDProfile() {
                                                                                 >
                                                                                     <g id="SVGRepo_bgCarrier" stroke-width="0" />
                                                                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                    <g id="SVGRepo_iconCarrier">
-                                                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1213 2.70705C19.9497 1.53548 18.0503 1.53547 16.8787 2.70705L15.1989 4.38685L7.29289 12.2928C7.16473 12.421 7.07382 12.5816 7.02986 12.7574L6.02986 16.7574C5.94466 17.0982 6.04451 17.4587 6.29289 17.707C6.54127 17.9554 6.90176 18.0553 7.24254 17.9701L11.2425 16.9701C11.4184 16.9261 11.5789 16.8352 11.7071 16.707L19.5556 8.85857L21.2929 7.12126C22.4645 5.94969 22.4645 4.05019 21.2929 2.87862L21.1213 2.70705ZM18.2929 4.12126C18.6834 3.73074 19.3166 3.73074 19.7071 4.12126L19.8787 4.29283C20.2692 4.68336 20.2692 5.31653 19.8787 5.70705L18.8622 6.72357L17.3068 5.10738L18.2929 4.12126ZM15.8923 6.52185L17.4477 8.13804L10.4888 15.097L8.37437 15.6256L8.90296 13.5112L15.8923 6.52185ZM4 7.99994C4 7.44766 4.44772 6.99994 5 6.99994H10C10.5523 6.99994 11 6.55223 11 5.99994C11 5.44766 10.5523 4.99994 10 4.99994H5C3.34315 4.99994 2 6.34309 2 7.99994V18.9999C2 20.6568 3.34315 21.9999 5 21.9999H16C17.6569 21.9999 19 20.6568 19 18.9999V13.9999C19 13.4477 18.5523 12.9999 18 12.9999C17.4477 12.9999 17 13.4477 17 13.9999V18.9999C17 19.5522 16.5523 19.9999 16 19.9999H5C4.44772 19.9999 4 19.5522 4 18.9999V7.99994Z" fill="hsl(200, 30%, 35%)" />
-                                                                                    </g>
+                                                                                    <g id="SVGRepo_iconCarrier" />
+                                                                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M21.1213 2.70705C19.9497 1.53548 18.0503 1.53547 16.8787 2.70705L15.1989 4.38685L7.29289 12.2928C7.16473 12.421 7.07382 12.5816 7.02986 12.7574L6.02986 16.7574C5.94466 17.0982 6.04451 17.4587 6.29289 17.707C6.54127 17.9554 6.90176 18.0553 7.24254 17.9701L11.2425 16.9701C11.4184 16.9261 11.5789 16.8352 11.7071 16.707L19.5556 8.85857L21.2929 7.12126C22.4645 5.94969 22.4645 4.05019 21.2929 2.87862L21.1213 2.70705ZM18.2929 4.12126C18.6834 3.73074 19.3166 3.73074 19.7071 4.12126L19.8787 4.29283C20.2692 4.68336 20.2692 5.31653 19.8787 5.70705L18.8622 6.72357L17.3068 5.10738L18.2929 4.12126ZM15.8923 6.52185L17.4477 8.13804L10.4888 15.097L8.37437 15.6256L8.90296 13.5112L15.8923 6.52185ZM4 7.99994C4 7.44766 4.44772 6.99994 5 6.99994H10C10.5523 6.99994 11 6.55223 11 5.99994C11 5.44766 10.5523 4.99994 10 4.99994H5C3.34315 4.99994 2 6.34309 2 7.99994V18.9999C2 20.6568 3.34315 21.9999 5 21.9999H16C17.6569 21.9999 19 20.6568 19 18.9999V13.9999C19 13.4477 18.5523 12.9999 18 12.9999C17.4477 12.9999 17 13.4477 17 13.9999V18.9999C17 19.5522 16.5523 19.9999 16 19.9999H5C4.44772 19.9999 4 19.5522 4 18.9999V7.99994Z" fill="hsl(200, 30%, 35%)" />
                                                                                 </svg>
                                                                             </BaseIcon>
                                                                         )}
@@ -1368,8 +1418,8 @@ function PDProfile() {
                                                 <ItemGroup
                                                     customClass="justify-content-space-between align-items-center"
                                                     axis={false}
-                                                    stretch={true}
                                                     fitParent={true}
+                                                    stretch={true}
                                                     items={[
                                                         <>
                                                             <h5 className="font-5 text-dark-300 font-semibold">Active Medications</h5>
@@ -1531,7 +1581,7 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {medicationList.length > 0 ? 
+                                                            {medicationList.length > 0 ?
                                                                 (medicationList.filter((medication) => dashboardLayoutViewModel.isPrescriptionActive(medication.taken_date, medication.duration) === true).map((medication, index) => (
                                                                     <>
                                                                         <ItemGroup
@@ -2121,6 +2171,44 @@ function PDProfile() {
                                                     items={[
                                                         <>
                                                             <ItemGroup
+                                                                customClass="justify-content-center gap-3 pb-3"
+                                                                axis={false}
+                                                                items={[
+                                                                    <>
+                                                                        <button
+                                                                            onClick={async () => {
+                                                                                setWindowStart(prev => {
+                                                                                    const newStart = Math.max(0, prev - windowSize);
+                                                                                    setTimeout(refreshChartData, 0); // Re-fetch after state update
+                                                                                    return newStart;
+                                                                                });
+                                                                            }}
+                                                                            disabled={windowStart === 0}
+                                                                        >
+                                                                            Previous
+                                                                        </button>
+                                                                        <span>
+                                                                            {slicedLabels.length > 0
+                                                                                ? `${slicedLabels[0]} - ${slicedLabels[slicedLabels.length - 1]}`
+                                                                                : ""}
+                                                                        </span>
+                                                                        <button
+                                                                            onClick={async () => {
+                                                                                setWindowStart(prev => {
+                                                                                    const maxStart = (chartData.dates?.length || 0) - windowSize;
+                                                                                    const newStart = Math.min(maxStart, prev + windowSize);
+                                                                                    setTimeout(refreshChartData, 0); // Re-fetch after state update
+                                                                                    return newStart;
+                                                                                });
+                                                                            }}
+                                                                            disabled={windowEnd >= (chartData.dates?.length || 0)}
+                                                                        >
+                                                                            Next
+                                                                        </button>
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                            <ItemGroup
                                                                 customClass="justify-content-center justify-items-center align-items-center text-align-center"
                                                                 fitParent={true}
                                                                 stretch={true}
@@ -2161,9 +2249,54 @@ function PDProfile() {
                                                                 }}
                                                                 items={[
                                                                     <>
-                                                                        {selectedGraph === "graph1" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)" />}
-                                                                        {selectedGraph === "grahp2" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)" />}
-                                                                        {selectedGraph === "graph3" && <ExerciseChart inputData={chartData.sleep} inputLabel="Sleep" />}
+                                                                        {selectedGraph === "graph1" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph1-${slicedExercise.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedExercise}
+                                                                                inputLabel="Exercise"
+                                                                                pointFillColor="hsl(120, 45%, 85%)"
+                                                                                lineColor="hsl(120, 45%, 35%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph2" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph2-${slicedWeight.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedWeight}
+                                                                                inputLabel="Weight"
+                                                                                pointFillColor="hsl(250, 60%, 80%)"
+                                                                                lineColor="hsl(250, 60%, 40%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph3" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph3-${slicedSleep.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedSleep}
+                                                                                inputLabel="Sleep"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph4" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph4-${slicedHeight.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedHeight}
+                                                                                inputLabel="Height"
+                                                                                pointFillColor="hsl(0, 44.70%, 85.10%)"
+                                                                                lineColor="hsl(0, 44.90%, 34.90%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph5" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph5-${slicedCalories.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedCalories}
+                                                                                inputLabel="Calories"
+                                                                                pointFillColor="hsl(293, 44.70%, 85.10%)"
+                                                                                lineColor="hsl(298, 44.90%, 34.90%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
                                                                     </>
                                                                 ]}
                                                             />
@@ -2212,7 +2345,7 @@ function PDProfile() {
                                                                 stretch={true}
                                                                 items={[
                                                                     <>
-                                                                        <h1 className="font-5 font-semibold text-primary-neutral-100">Weekly Survey</h1>
+                                                                        <h1 className="font-5 font-semibold text-primary-neutral-100">Daily Survey</h1>
                                                                     </>
                                                                 ]}
                                                             />
@@ -2470,12 +2603,12 @@ function PDProfile() {
                                                                 <>
                                                                     {
                                                                         <ExerciseList
-                                                                        exerciseBank1={exerciseList}
-                                                                        currentEcc={exerciseData}
-                                                                        selectedExercises={selectedExercises}
-                                                                        handleCheckboxChange={handleCheckboxChange}
-                                                                        handleRepsChange={handleRepsChange}
-                                                                    />
+                                                                            exerciseBank1={exerciseList}
+                                                                            currentEcc={exerciseData}
+                                                                            selectedExercises={selectedExercises}
+                                                                            handleCheckboxChange={handleCheckboxChange}
+                                                                            handleRepsChange={handleRepsChange}
+                                                                        />
                                                                     /*pastAppointments.length > 0 && (
                                                                         pastAppointments.map(() => (
                                                                             <>
@@ -2759,6 +2892,7 @@ function ExerciseList({
                                         <InputBar
                                             name={`${exercise.exercise_id}-reps`}
                                             value={selectedExercises[exercise.exercise_id]}
+                                            type="number"
                                             onChange={(e) =>
                                                 handleRepsChange(exercise, e.target.value)
                                             }
@@ -2776,7 +2910,7 @@ function ExerciseList({
     );
 }
 
-function Medications({ name = "",duration="",  dosage = "" }) {
+function Medications({ name = "", duration = "", dosage = "" }) {
     return (
         <ItemGroup
             customClass="p-3 align-items-center gap-3 fit-parent"
