@@ -596,7 +596,7 @@ class DashboardLayoutViewModel {
         end.setDate(start.getDate() + duration);
 
         const now = new Date();
-        return now >= start && now <= end;
+        return now <= end;
     }
 
 };

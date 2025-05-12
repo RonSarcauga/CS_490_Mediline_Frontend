@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   },
   withCredentials: false,
 });
-
+/*
 // Request interceptor
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwtToken');
@@ -45,5 +45,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
+*/
 export default axiosInstance;
