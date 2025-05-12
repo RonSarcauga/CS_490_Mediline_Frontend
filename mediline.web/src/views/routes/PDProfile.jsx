@@ -255,13 +255,15 @@ function PDProfile() {
     function checkSubmission() {
         // Get today's date in YYYY-MM-DD format
         const today = new Date();
-        const todayStr = today.toISOString().split('T')[0];
+        const todayStr = today.getFullYear() + '-' +
+            String(today.getMonth() + 1).padStart(2, '0') + '-' +
+            String(today.getDate()).padStart(2, '0');
 
-        // Check if a form was already submitted today
-        // Assuming chartData.dates is an array of ISO date strings (e.g., "2025-05-11T14:00:00Z")
         const alreadySubmitted = chartData.dates && chartData.dates.some(dateStr => {
-            // Extract date part only
-            const dateOnly = new Date(dateStr).toISOString().split('T')[0];
+            const dateObj = new Date(dateStr);
+            const dateOnly = dateObj.getFullYear() + '-' +
+                String(dateObj.getMonth() + 1).padStart(2, '0') + '-' +
+                String(dateObj.getDate()).padStart(2, '0');
             return dateOnly === todayStr;
         });
 
