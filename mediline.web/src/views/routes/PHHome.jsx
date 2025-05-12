@@ -137,7 +137,7 @@ function PHHome() {
                                                                                                                         progressColor="hsl(200, 70%, 70%)"
                                                                                                                     />
                                                                                                                     <CircleProgressBar
-                                                                                                                        fraction={data.countRx.processing_prescription}
+                                                                                                                        fraction={data.countRx.collected_prescription + data.countRx.processing_prescription - data.requestCount}
                                                                                                                         total={data.countRx.collected_prescription + data.countRx.processing_prescription === 0 ? 1 : data.countRx.collected_prescription + data.countRx.processing_prescription}
                                                                                                                         circleWidth="150"
                                                                                                                         strokeColor="hsl(0, 0%, 40%)"
@@ -170,7 +170,7 @@ function PHHome() {
                                                                                                             items={[
                                                                                                                 <>
                                                                                                                     <div className="br-lg" style={{ height: "17px", width: "17px", background: "hsl(200, 70%, 70%)" }}></div>
-                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Fulfilled</p>
+                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Paid</p>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
@@ -181,7 +181,7 @@ function PHHome() {
                                                                                                             items={[
                                                                                                                 <>
                                                                                                                     <div className="br-lg" style={{ height: "17px", width: "17px", background: "hsl(45, 60%, 60%)" }}></div>
-                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Pending</p>
+                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Fulfilled</p>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
