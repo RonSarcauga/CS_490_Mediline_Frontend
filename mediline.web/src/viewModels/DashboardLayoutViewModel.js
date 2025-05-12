@@ -22,11 +22,17 @@ class DashboardLayoutViewModel {
 
     // Helper method to format a birth date into "Month Day, Year"
     formatBirthDate(birthDate, format = "default") {
+        // Used to prevent any null property errors
+        if (!birthDate || typeof birthDate !== "string") {
+            console.warn("Invalid birthDate input:", birthDate);
+            return "Invalid date";
+        }
+
         const months = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
-
+        console.log(`Tranform this birthdate: ${birthDate}`);
         const date = this.parseDate(birthDate);
         if (!date) return "Invalid date format";
 
@@ -85,6 +91,12 @@ class DashboardLayoutViewModel {
 
     // Utility function to parse various common date formats
     parseDate(dateString) {
+        // Used to prevent 'split' errors
+        if (!dateString || typeof dateString !== "string") {
+            console.warn("Invalid dateString input:", dateString);
+            return null; // Return null for invalid input
+        }
+
         // Try parsing ISO format first (YYYY-MM-DD)
         let date = new Date(dateString);
         if (!isNaN(date.getTime())) return date;
@@ -112,8 +124,12 @@ class DashboardLayoutViewModel {
 
     // Splits the date from time in a Date object
     splitDateTime(dateTime) {
+        console.log(`Split Date Time: ${dateTime}`);
+
         if (!dateTime || typeof dateTime !== "string") {
-            throw new Error("Invalid input. Expected a DateTime string.");
+            //throw new Error("Invalid input. Expected a DateTime string.");
+            console.error("Invalid input. Expected a DateTime string.");
+            return "";
         }
 
         const dateObj = new Date(dateTime);
@@ -267,7 +283,7 @@ class DashboardLayoutViewModel {
         }
 
         const capitalized = string.slice(0,1).toUpperCase() + string.slice(1);
-        console.log(`Formatted string: ${capitalized}`);
+        //console.log(`Formatted string: ${capitalized}`);
 
         return capitalized;
     };

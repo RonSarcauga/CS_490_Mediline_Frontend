@@ -108,6 +108,10 @@ class DPViewModel {
             // Flatten the array of medications
             const allMedications = medicationsByPrescription.flat();
 
+            // Sort active and past medications in descending order
+            activeMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+            pastMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+
             // Split medications into active and past medications
             const currentDate = new Date();
             const activeMedications = [];
