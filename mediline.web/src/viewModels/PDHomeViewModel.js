@@ -2,49 +2,49 @@ import axiosInstance from '../assets/js/api';
 
 class PDHomeViewModel {
     // Centralized data fetching function
-    async fetchData(userId, doctor) {
-        try {
-            // Use Promise.all to fetch data concurrently
-            const [pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
-                this.getPastAppointments(userId), // Fetch past appointments
-                this.getUpcomingAppointments(userId), // Fetch upcoming appointments
-                this.getPrescriptions(userId), // Fetch prescriptions
-            ]);
+    //async fetchData(userId, doctor) {
+    //    try {
+    //        // Use Promise.all to fetch data concurrently
+    //        const [pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
+    //            this.getPastAppointments(userId), // Fetch past appointments
+    //            this.getUpcomingAppointments(userId), // Fetch upcoming appointments
+    //            this.getPrescriptions(userId), // Fetch prescriptions
+    //        ]);
 
-            let doctorInfo = null;
+    //        let doctorInfo = null;
 
-            // Check if the doctor object is empty
-            if (doctor && Object.keys(doctor).length > 0) {
-                doctorInfo = await this.getUserInfo(doctor.doctor_id);
-            }
+    //        // Check if the doctor object is empty
+    //        if (doctor && Object.keys(doctor).length > 0) {
+    //            doctorInfo = await this.getUserInfo(doctor.doctor_id);
+    //        }
 
-            console.log(`Patient Dashboard Data:\n${JSON.stringify({
-                pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-                upcomingAppointments: upcomingAppointments || [],
-                doctorData: doctor || {},
-                doctorInfo: doctorInfo || {},
-                prescriptions: prescriptions || [],
-            }, null, 2)}`);
+    //        console.log(`Patient Dashboard Data:\n${JSON.stringify({
+    //            pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
+    //            upcomingAppointments: upcomingAppointments || [],
+    //            doctorData: doctor || {},
+    //            doctorInfo: doctorInfo || {},
+    //            prescriptions: prescriptions || [],
+    //        }, null, 2)}`);
 
-            // Return the results as an object
-            return {
-                pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-                upcomingAppointments: upcomingAppointments || [],
-                doctorData: doctor || {},
-                doctorInfo: doctorInfo || {},
-                prescriptions: prescriptions || [],
-            };
-        } catch (error) {
-            console.error("Error fetching data for Patient Dashboard:", error);
-            return {
-                pastAppointments: [],
-                upcomingAppointments: [],
-                doctor: {},
-                doctorInfo: {},
-                prescriptions: [],
-            };
-        }
-    }
+    //        // Return the results as an object
+    //        return {
+    //            pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
+    //            upcomingAppointments: upcomingAppointments || [],
+    //            doctorData: doctor || {},
+    //            doctorInfo: doctorInfo || {},
+    //            prescriptions: prescriptions || [],
+    //        };
+    //    } catch (error) {
+    //        console.error("Error fetching data for Patient Dashboard:", error);
+    //        return {
+    //            pastAppointments: [],
+    //            upcomingAppointments: [],
+    //            doctor: {},
+    //            doctorInfo: {},
+    //            prescriptions: [],
+    //        };
+    //    }
+    //}
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
@@ -66,25 +66,202 @@ class PDHomeViewModel {
         }
     };
 
+    async fetchData(userId, doctor) {
+        try {
+            // Use Promise.all to fetch data concurrently
+            const [pastAppointments, upcomingAppointments] = await Promise.all([
+                this.getPastAppointments(userId), // Fetch past appointments
+                this.getUpcomingAppointments(userId), // Fetch upcoming appointments
+                // this.getPrescriptions(userId), // Fetch prescriptions
+            ]);
+
+            let doctorInfo = null;
+
+            // Check if the doctor object is empty
+            if (doctor && Object.keys(doctor).length > 0) {
+                doctorInfo = await this.getUserInfo(doctor.doctor_id);
+            }
+
+            const { activeMedications, pastMedications } = await this.getPrescriptions(userId);
+
+            // Fetch additional data for past appointments
+            const enrichedPastAppointments = await Promise.all(
+                pastAppointments.map(async (appointment) => {
+                    console.log(`Appointment ID: ${appointment.appointment.appointment_id}`);
+                    const appointmentData = await this.getAppointmentData(appointment.appointment.appointment_id);
+                    const invoiceData = await this.getAppointmentInvoice(userId, appointment.created_at);
+                    return {
+                        ...appointment,
+                        ...appointmentData,
+                        invoice: invoiceData || null, // Add invoice data if available
+                    };
+                })
+            );
+
+            // Fetch additional data for upcoming appointments
+            const enrichedUpcomingAppointments = await Promise.all(
+                upcomingAppointments.map(async (appointment) => {
+                    const appointmentData = await this.getAppointmentData(appointment.appointment_id);
+                    const invoiceData = await this.getAppointmentInvoice(userId, appointment.created_at);
+                    return {
+                        ...appointment,
+                        appointmentDetails: appointmentData,
+                        invoice: invoiceData || null, // Add invoice data if available
+                    };
+                })
+            );
+
+            console.log(`Patient Dashboard Data:\n${JSON.stringify({
+                pastAppointments: enrichedPastAppointments || [], // Default to an empty array if null/undefined
+                upcomingAppointments: enrichedUpcomingAppointments || [],
+                doctorData: doctor || {},
+                doctorInfo: doctorInfo || {},
+                activeMedications: activeMedications || [],
+                pastMedications: pastMedications || [],
+            }, null, 2)}`);
+
+            // Return the results as an object
+            return {
+                pastAppointments: enrichedPastAppointments || [], // Default to an empty array if null/undefined
+                upcomingAppointments: enrichedUpcomingAppointments || [],
+                doctorData: doctor || {},
+                doctorInfo: doctorInfo || {},
+                activeMedications: activeMedications || [],
+                pastMedications: pastMedications || [],
+            };
+        } catch (error) {
+            console.error("Error fetching data for Patient Dashboard:", error);
+            return {
+                pastAppointments: [],
+                upcomingAppointments: [],
+                doctor: {},
+                doctorInfo: {},
+                activeMedications: [],
+                pastMedications: [],
+            };
+        }
+    }
+
+
     // Helper method to fetch a patient's prescriptions
+    //async getPrescriptions(id) {
+    //    try {
+    //        // Retrieving data from the medical record endpoint
+    //        const response = await axiosInstance.get(`/prescription/user/${id}?sort_by=created_at&order_by=desc`, {
+    //            headers: {
+    //                "Content-Type": "application/json",
+    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    //            }
+    //        });
+    //        console.log(`Prescriptions fetched:\n${JSON.stringify(response.data, null, 2)}`);
+
+    //        // Stores the response in a constant
+    //        const prescriptions = response.data;
+
+    //        // Returns the constant
+    //        return prescriptions;
+    //    } catch (error) {
+    //        console.error("Login failed:", error.response?.data || error.message);
+    //    }
+    //}
+
+    // Helper method to fetch a patient's prescriptions and their medications
     async getPrescriptions(id) {
         try {
-            // Retrieving data from the medical record endpoint
+            // Fetch all prescriptions for the user
             const response = await axiosInstance.get(`/prescription/user/${id}?sort_by=created_at&order_by=desc`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             });
-            console.log(`Prescriptions fetched:\n${JSON.stringify(response.data, null, 2)}`);
 
-            // Stores the response in a constant
             const prescriptions = response.data;
 
-            // Returns the constant
-            return prescriptions;
+            // Fetch medications for each prescription concurrently
+            const medicationsByPrescription = await Promise.all(
+                prescriptions.map(async (prescription) => {
+                    const medications = await this.getPrescriptionMedications(prescription.prescription_id);
+                    console.log(`Medications fetched for prescription ${prescription.prescription_id}:`, medications);
+
+                    return medications.map((medication) => {
+                        console.log(`Mapping medication:`, medication);
+                        return {
+                            ...medication,
+                            prescriptionId: prescription.prescription_id, // Add prescription ID for reference
+                        };
+                    });
+
+                })
+            );
+
+            // Flatten the array of medications
+            const allMedications = medicationsByPrescription.flat();
+
+            // Split medications into active and past medications
+            const currentDate = new Date();
+            const activeMedications = [];
+            const pastMedications = [];
+
+            allMedications.forEach((medication) => {
+                if (medication.status === "PAID") {
+                    // Normalize the taken_date to ensure it's a valid ISO 8601 string
+                    const takenDate = new Date(`${medication.taken_date}Z`); // Append 'Z' to indicate UTC
+                    if (isNaN(takenDate.getTime())) {
+                        console.warn(`Invalid taken_date for medication: ${JSON.stringify(medication)}`);
+                        return; // Skip this medication if the date is invalid
+                    }
+
+                    const endDate = new Date(takenDate);
+                    endDate.setDate(endDate.getDate() + medication.duration);
+
+                    if (endDate > currentDate) {
+                        activeMedications.push(medication);
+                    } else {
+                        pastMedications.push(medication);
+                    }
+                }
+            });
+
+            // Sort active and past medications in descending order
+            activeMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+            pastMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+
+            console.log(`Active Medications: ${JSON.stringify(activeMedications, null, 2)}`);
+            console.log(`Past Medications: ${JSON.stringify(pastMedications, null, 2)}`);
+
+            // Return the medications split into active and past
+            return {
+                activeMedications,
+                pastMedications,
+            };
         } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
+            console.error("Error fetching prescriptions and medications:", error.response?.data || error.message);
+            return {
+                activeMedications: [],
+                pastMedications: [],
+            };
+        }
+    }
+
+
+    // Asynchronous method to fetch medications from a prescription
+    async getPrescriptionMedications(prescriptionId) {
+        try {
+            const response = await axiosInstance.get(`/prescription/${prescriptionId}/medications`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            const medications = response.data;
+
+            // Return the medications or an empty array if the response is invalid
+            return Array.isArray(medications) ? medications : [];
+        } catch (error) {
+            console.error(`Error fetching medications for prescription ${prescriptionId}:`, error.response?.data || error.message);
+            return []; // Return an empty array if the API call fails
         }
     }
 
@@ -300,6 +477,27 @@ class PDHomeViewModel {
         }
 
         return dateObject;
+    }
+
+    abbreviateName(fullName) {
+        if (fullName === null) {
+            return "";
+        }
+
+        // Split the fullName string by spaces.
+        const nameParts = fullName.trim().split(" ");
+
+        // Check we have at least two parts.
+        if (nameParts.length < 2) {
+            return fullName; // or handle differently if there's only one name
+        }
+
+        // Get the first character of the first name and the full last name.
+        const firstInitial = nameParts[0].charAt(0);
+        const lastName = nameParts[nameParts.length - 1];
+
+        // Construct the abbreviated name.
+        return `${firstInitial}. ${lastName}`;
     }
 
     // Updated bookAppointment method
