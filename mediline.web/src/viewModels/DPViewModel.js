@@ -133,6 +133,10 @@ class DPViewModel {
                 }
             });
 
+            // Sort active and past medications in descending order
+            activeMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+            pastMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+
             console.log(`Active Medications: ${JSON.stringify(activeMedications, null, 2)}`);
             console.log(`Past Medications: ${JSON.stringify(pastMedications, null, 2)}`);
 

@@ -25,6 +25,8 @@ class OverviewViewModel {
                 pharmacyInfo = userInfo.pharmacy; // Extract pharmacy information
             }
 
+            const { activeMedications, pastMedications } = await this.getPrescriptions(userId);
+
             //console.log(`Patient Profile Data:\n${JSON.stringify({
             //    pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
             //    upcomingAppointments: upcomingAppointments || [],
@@ -40,7 +42,8 @@ class OverviewViewModel {
                 upcomingAppointments: upcomingAppointments || [],
                 doctorData: doctor || {},
                 doctorInfo: doctorInfo || {},
-                prescriptions: prescriptions || [],
+                activeMedications: activeMedications || [],
+                pastMedications: pastMedications || [],
                 pharmacyInfo: pharmacyInfo || {}, // Include pharmacy information
             };
         } catch (error) {
@@ -50,7 +53,8 @@ class OverviewViewModel {
                 upcomingAppointments: [],
                 doctor: {},
                 doctorInfo: {},
-                prescriptions: [],
+                activeMedications: [],
+                pastMedications: [],
                 pharmacyInfo: {}, // Return an empty object if there's an error
             };
         }
@@ -78,24 +82,124 @@ class OverviewViewModel {
     };
 
     // Helper method to fetch a patient's prescriptions
+    //async getPrescriptions(id) {
+    //    try {
+    //        // Retrieving data from the medical record endpoint
+    //        const response = await axiosInstance.get(`/prescription/user/${id}?sort_by=created_at&order_by=desc`, {
+    //            headers: {
+    //                "Content-Type": "application/json",
+    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    //            }
+    //        });
+    //        console.log(`Prescriptions fetched:\n${JSON.stringify(response.data, null, 2)}`);
+
+    //        // Stores the response in a constant
+    //        const prescriptions = response.data;
+
+    //        // Returns the constant
+    //        return prescriptions;
+    //    } catch (error) {
+    //        console.error("Login failed:", error.response?.data || error.message);
+    //    }
+    //}
+
+    // Helper method to fetch a patient's prescriptions and their medications
     async getPrescriptions(id) {
         try {
-            // Retrieving data from the medical record endpoint
+            // Fetch all prescriptions for the user
             const response = await axiosInstance.get(`/prescription/user/${id}?sort_by=created_at&order_by=desc`, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             });
-            console.log(`Prescriptions fetched:\n${JSON.stringify(response.data, null, 2)}`);
 
-            // Stores the response in a constant
             const prescriptions = response.data;
 
-            // Returns the constant
-            return prescriptions;
+            // Fetch medications for each prescription concurrently
+            const medicationsByPrescription = await Promise.all(
+                prescriptions.map(async (prescription) => {
+                    const medications = await this.getPrescriptionMedications(prescription.prescription_id);
+                    console.log(`Medications fetched for prescription ${prescription.prescription_id}:`, medications);
+
+                    return medications.map((medication) => {
+                        console.log(`Mapping medication:`, medication);
+                        return {
+                            ...medication,
+                            prescriptionId: prescription.prescription_id, // Add prescription ID for reference
+                        };
+                    });
+
+                })
+            );
+
+            // Flatten the array of medications
+            const allMedications = medicationsByPrescription.flat();
+
+            // Split medications into active and past medications
+            const currentDate = new Date();
+            const activeMedications = [];
+            const pastMedications = [];
+
+            allMedications.forEach((medication) => {
+                if (medication.status === "PAID") {
+                    // Normalize the taken_date to ensure it's a valid ISO 8601 string
+                    const takenDate = new Date(`${medication.taken_date}Z`); // Append 'Z' to indicate UTC
+                    if (isNaN(takenDate.getTime())) {
+                        console.warn(`Invalid taken_date for medication: ${JSON.stringify(medication)}`);
+                        return; // Skip this medication if the date is invalid
+                    }
+
+                    const endDate = new Date(takenDate);
+                    endDate.setDate(endDate.getDate() + medication.duration);
+
+                    if (endDate > currentDate) {
+                        activeMedications.push(medication);
+                    } else {
+                        pastMedications.push(medication);
+                    }
+                }
+            });
+
+            // Sort active and past medications in descending order
+            activeMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+            pastMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
+
+            console.log(`Active Medications: ${JSON.stringify(activeMedications, null, 2)}`);
+            console.log(`Past Medications: ${JSON.stringify(pastMedications, null, 2)}`);
+
+            // Return the medications split into active and past
+            return {
+                activeMedications,
+                pastMedications,
+            };
         } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
+            console.error("Error fetching prescriptions and medications:", error.response?.data || error.message);
+            return {
+                activeMedications: [],
+                pastMedications: [],
+            };
+        }
+    }
+
+
+    // Asynchronous method to fetch medications from a prescription
+    async getPrescriptionMedications(prescriptionId) {
+        try {
+            const response = await axiosInstance.get(`/prescription/${prescriptionId}/medications`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            const medications = response.data;
+
+            // Return the medications or an empty array if the response is invalid
+            return Array.isArray(medications) ? medications : [];
+        } catch (error) {
+            console.error(`Error fetching medications for prescription ${prescriptionId}:`, error.response?.data || error.message);
+            return []; // Return an empty array if the API call fails
         }
     }
 
