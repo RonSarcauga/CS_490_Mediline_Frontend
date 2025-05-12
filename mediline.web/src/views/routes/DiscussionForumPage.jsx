@@ -1,12 +1,29 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
 import { discussionForumViewModel } from '../../viewModels/DiscussionForumViewModel';
 import Spinner from '../../components/General/Spinner';
+import { UserContext } from '../../context/UserProvider';
+
+function isLoggedIn() {
+  const token = localStorage.getItem('jwtToken');
+  if (!token) return false;
+
+  try {
+    console.log()
+    const [, payload] = token.split('.');
+    const { exp } = JSON.parse(atob(payload));
+    console.log(payload," ",exp)
+    return Date.now() < exp * 1000;
+  } catch {
+    return false;
+  }
+}
 
 function DiscussionForumPage() {
+    const { currentUser } = useContext(UserContext);
     //const posts = discussionForumViewModel.getPosts();
     //const users = discussionForumViewModel.getUsers();
     const navigate = useNavigate();
@@ -26,7 +43,7 @@ function DiscussionForumPage() {
 
         // Call to the centralized data fetching function
         const result = await discussionForumViewModel.fetchDiscussionData();
-        console.log(`Data to be displayed: ${JSON.stringify(result.posts, null, 2)}`);
+        //console.log(`Data to be displayed: ${JSON.stringify(result.posts, null, 2)}`);
 
         // Update the state with fetched data
         setData(result); 
@@ -100,7 +117,7 @@ function DiscussionForumPage() {
                                 <TopbarItem
                                     to="/"
                                     textClass="text-neutral-1100"
-                                    text={"Services"}>
+                                    text={"Frontpage"}>
                                 </TopbarItem>
                                 <TopbarItem
                                     to={"/findADoctor"}
@@ -112,12 +129,25 @@ function DiscussionForumPage() {
                                     textClass="text-neutral-1100"
                                     text={"Discussion"}>
                                 </TopbarItem>
+                                {(currentUser && isLoggedIn()) ? (
+                                    <TopbarItem
+                                    to={
+                                        currentUser?.role === "pharmacy"
+                                            ? "/dashboard/pharmacist"
+                                            : `/dashboard/${currentUser.role}`
+                                    }
+                                    text={"HOME"}
+                                    customClass="button b-2 hover-box-shadow-sm shadow-neutral-1100"
+                                    textClass="text-neutral-1100 hover-box-shadow shadow-primary-400">
+                                </TopbarItem>
+                                ) : (
                                 <TopbarItem
                                     to={"/login"}
                                     text={"SIGN IN"}
                                     customClass="button b-2 hover-box-shadow-sm shadow-neutral-1100"
-                                    textClass="text-neutral-1100">
+                                    textClass="text-neutral-1100 hover-box-shadow shadow-primary-400">
                                 </TopbarItem>
+                                )}
                             </>
                         ]}
                     />
@@ -126,7 +156,6 @@ function DiscussionForumPage() {
                     <>
                         <ItemGroup
                             fitParent={true}
-                            customClass="gap-10"
                             items={[
                                 <>
                                     <div></div>
@@ -139,7 +168,7 @@ function DiscussionForumPage() {
                                                 <div></div>
                                                 <ItemGroup
                                                     axis={true}
-                                                    customClass="bg-neutral-1100 b-2 br-top-lg p-10 outline-neutral-700"
+                                                    customClass="bg-neutral-1100 b-bottom-2 br-top-lg p-10 outline-neutral-700 box-shadow-sm"
                                                     fitParent={true}
                                                     items={[
                                                         <>
@@ -158,7 +187,7 @@ function DiscussionForumPage() {
                                                                             items={[
                                                                                 <>
                                                                                     <ItemGroup
-                                                                                        customClass="button bg-primary-500 br-sm align-items-center justify-items-center px-2 py-2 gap-1"
+                                                                                        customClass="button bg-primary-500 br-sm align-items-center justify-items-center px-2 py-2 gap-1 hover-box-shadow-sm shadow-primary-400"
                                                                                         isClickable={true}
                                                                                         onClick={() => {
                                                                                             navigate(`/login`);
@@ -195,7 +224,7 @@ function DiscussionForumPage() {
                                                 <ItemGroup
                                                     axis={true}
                                                     fitParent={true}
-                                                    customClass="bg-neutral-1100 b-left-2 b-right-2 b-bottom-2 outline-neutral-700 p-3 scrollable"
+                                                    customClass="bg-neutral-1100 box-shadow-sm outline-neutral-700 p-3 scrollable br-bottom-lg"
                                                     style={{
                                                         minHeight: "65vh",
                                                         maxHeight: "65vh"
@@ -215,7 +244,7 @@ function DiscussionForumPage() {
                                                                             <Container
                                                                                 key={index}
                                                                                 fitParent={true}
-                                                                                customClass="b-2 outline-neutral-700 pt-9 pb-4 px-10"
+                                                                                customClass="br-md pt-9 pb-4 px-10 box-shadow-sm"
                                                                                 content={[
                                                                                     <>
                                                                                         <ItemGroup

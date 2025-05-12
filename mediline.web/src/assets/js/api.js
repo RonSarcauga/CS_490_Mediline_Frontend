@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use((config) => {
 
   return config;
 });
-
+/*
 // Response interceptor for 401s
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -45,5 +45,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
+*/
 export default axiosInstance;

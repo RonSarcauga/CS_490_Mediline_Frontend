@@ -12,15 +12,19 @@ function authHeaders() {
 }
 
 async function fetchPharmaHomeData(pharmaId) {
-    const [count, inventory] = await Promise.all([
+    const [count, inventory, requests] = await Promise.all([
         axios.get(`/prescription/pharmacy/${pharmaId}/count`, authHeaders()),
         axios.get(`/prescription/pharmacy/${pharmaId}/inventory`, authHeaders()),
+        axios.get(`/pharmacy/${pharmaId}/requests`, authHeaders()),
     ]);
+
     return {
         countRx: count.data,
         inventoryStock: inventory.data,
+        requestCount: Array.isArray(requests.data) ? requests.data.length : 0,
     };
 }
+
 
 async function fetchPharmacyPatientsRequests(pharmaId) {
     try {
@@ -50,7 +54,7 @@ async function fetchPharmacyRequests(pharmaId) {
         const res = await axios.get(`/pharmacy/${pharmaId}/requests`, authHeaders());
         const requests = res.data;
 
-        const patIds = [...new Set(requests.map(r => r.user_id))];
+        const patIds = [...new Set(requests.map(r => r.notification_content.patient_id))];
 
         const patPromises = patIds.map(async (patId) => {
             const userRes = await axios.get(`/user/${patId}`, authHeaders());
@@ -60,24 +64,26 @@ async function fetchPharmacyRequests(pharmaId) {
         const pats = await Promise.all(patPromises);
 
         const patMap = new Map();
-        pats.forEach(({ patId, pat }) => {
-            patMap.set(patId, pat);
+        pats.forEach(({ patId, user }) => {
+            patMap.set(patId, user);
         });
 
         const enrichedRequests = requests.map(request => {
-            const pat = patMap.get(request.user_id);
+            const patId = request.notification_content.patient_id;
+            const pat = patMap.get(patId);
             return {
                 ...request,
                 patient_name: pat ? `${pat.first_name} ${pat.last_name}` : "Unknown"
             };
         });
 
-        return enrichedRequests;
+        return enrichedRequests.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));;
     } catch (err) {
         console.error("Error fetching full request data:", err);
         throw err;
     }
 }
+
 
 async function fetchPharmacyPatients(pharmaId) {
     try {
@@ -179,9 +185,7 @@ async function fetchPatientOverview(patientId, pharmaId) {
             dosage: med.dosage,
             duration: med.duration,
             takenDate: med.taken_date,
-        }));
-
-                console.log("medHistory:", medHistory);
+        })) .sort((a, b) => new Date(b.takenDate) - new Date(a.takenDate));
         
         return {
             name: `${first_name} ${last_name}`,
@@ -198,6 +202,26 @@ async function fetchPatientOverview(patientId, pharmaId) {
         };
     } catch (err) {
         console.error("Error fetching patient overview:", err);
+        throw err;
+    }
+}
+
+async function handleRequest(pharmaId, reqID, stat) {
+    try {
+        const response = await axios.delete(
+            `/pharmacy/${pharmaId}/requests`,
+            {
+                headers: authHeaders().headers,
+                data: {
+                    notification_id: reqID,
+                    status: stat
+                }
+            }
+        );
+        console.log(response)
+        return response.data;
+    } catch (err) {
+        console.error("Error handling request:", err);
         throw err;
     }
 }
@@ -232,6 +256,7 @@ export const PharmacyDashboardViewModel = {
             retry: 1,
         });
     },
+    handleRequest,
 };
 
 export default PharmacyDashboardViewModel;

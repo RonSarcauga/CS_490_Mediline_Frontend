@@ -61,6 +61,7 @@ function PHPatient() {
     const handleCloseModal = () => {
         setIsModalOpen(false);
     }
+    const [patientRequest, setReq] = useState(null);
 
     console.log(`Accordion Height: ${accordionHeight}`);
 
@@ -96,7 +97,7 @@ function PHPatient() {
                                                 ]}
                                             />
                                             <Container
-                                                customClass="bg-neutral-1000 p-6"
+                                                customClass="bg-neutral-1000 p-6 br-sm"
                                                 fitParent={true}
                                                 headerClass="b-bottom-3 b-top-3 outline-neutral-800 py-3"
                                                 header={[
@@ -130,63 +131,59 @@ function PHPatient() {
                                                             }}
                                                             items={[
                                                                 <>
+                                                                    {console.log(patientRequest)}
                                                                     {
-                                                                        users.length > 0 && (
-                                                                            users.slice(0, 1).map(() => (
-                                                                                <>
-                                                                                    <ItemGroup
-                                                                                        customClass=" py-1"
-                                                                                        axis={false}
-                                                                                        fitParent={true}
-                                                                                        stretch={true}
-                                                                                        style={{
-                                                                                            gridAutoColumns: "150px"
-                                                                                        }}
-                                                                                        items={[
-                                                                                            <>
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <p className="font-3 font-medium text-neutral-600">Ozempic</p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <p className="font-3 font-medium text-neutral-600">
-                                                                                                                14 days
-                                                                                                            </p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                                <ItemGroup
-                                                                                                    customClass="gap-2"
-                                                                                                    axis={true}
-                                                                                                    stretch={true}
-                                                                                                    fitParent={true}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <p className="font-3 font-medium text-neutral-600">
-                                                                                                                4 mg
-                                                                                                            </p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                            </>
-                                                                                        ]}
-                                                                                    />
-                                                                                </>
-                                                                            ))
-                                                                        )
+                                                                        patientRequest?.notification_content.medications.map((med) => (
+                                                                            <>
+                                                                                {console.log(med)}
+                                                                                <ItemGroup
+                                                                                    customClass=" py-1"
+                                                                                    axis={false}
+                                                                                    fitParent={true}
+                                                                                    stretch={true}
+                                                                                    style={{
+                                                                                        gridAutoColumns: "150px"
+                                                                                    }}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-2"
+                                                                                                axis={true}
+                                                                                                stretch={true}
+                                                                                                fitParent={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <p className="font-3 font-medium text-neutral-600">{med.medication_id}</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-2"
+                                                                                                axis={true}
+                                                                                                stretch={true}
+                                                                                                fitParent={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <p className="font-3 font-medium text-neutral-600">{med.duration} days</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-2"
+                                                                                                axis={true}
+                                                                                                stretch={true}
+                                                                                                fitParent={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        <p className="font-3 font-medium text-neutral-600">{med.dosage} units</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                            </>
+                                                                        ))
                                                                     }
                                                                 </>
                                                             ]}
@@ -205,7 +202,10 @@ function PHPatient() {
                                                                         customClass="bg-neutral-1000 py-3 b-3 outline-neutral-700 br-sm"
                                                                         fitParent={true}
                                                                         isClickable={true}
-                                                                        onClick={handleCloseModal}
+                                                                        onClick={() => {
+                                                                            handleCloseModal();
+                                                                            PharmaDashboardViewModel.handleRequest(currentUser.user_id, patientRequest.notification_id, "accepted")
+                                                                        }}
                                                                         content={[
                                                                             <>
                                                                                 <p className="font-semibold text-neutral-600">APPROVE</p>
@@ -216,7 +216,10 @@ function PHPatient() {
                                                                         customClass="bg-neutral-700 py-3 br-sm"
                                                                         fitParent={true}
                                                                         isClickable={true}
-                                                                        onClick={handleCloseModal}
+                                                                        onClick={() => {
+                                                                            handleCloseModal();
+                                                                            PharmaDashboardViewModel.handleRequest(currentUser.user_id, patientRequest.notification_id, "rejected")
+                                                                        }}
                                                                         content={[
                                                                             <>
                                                                                 <p className="font-semibold text-neutral-1000">REJECT</p>
@@ -856,12 +859,27 @@ function PHPatient() {
                                                                                                                                                                 />
                                                                                                                                                             ]}
                                                                                                                                                             menuItems={[
-                                                                                                                                                                { label: "View Profile" },
                                                                                                                                                                 <ItemGroup
                                                                                                                                                                     axis={false}
                                                                                                                                                                     stretch={true}
                                                                                                                                                                     isClickable={true}
-                                                                                                                                                                    onClick={handleOpenModal}
+                                                                                                                                                                    onClick={() => {
+                                                                                                                                                                        setSelectedPatientId(req.notification_content.patient_id);
+                                                                                                                                                                    }}
+                                                                                                                                                                    items={[
+                                                                                                                                                                        <>
+                                                                                                                                                                            <p>View Profile</p>
+                                                                                                                                                                        </>
+                                                                                                                                                                    ]}
+                                                                                                                                                                />,
+                                                                                                                                                                <ItemGroup
+                                                                                                                                                                    axis={false}
+                                                                                                                                                                    stretch={true}
+                                                                                                                                                                    isClickable={true}
+                                                                                                                                                                    onClick={() => {
+                                                                                                                                                                        setReq(req);
+                                                                                                                                                                        handleOpenModal();
+                                                                                                                                                                    }}
                                                                                                                                                                     items={[
                                                                                                                                                                         <>
                                                                                                                                                                             <p>Review Request</p>

@@ -13,8 +13,10 @@ function isLoggedIn() {
   if (!token) return false;
 
   try {
+    console.log()
     const [, payload] = token.split('.');
     const { exp } = JSON.parse(atob(payload));
+    console.log(payload," ",exp)
     return Date.now() < exp * 1000;
   } catch {
     return false;
@@ -85,10 +87,10 @@ export default function Home() {
                                     to={"/discussionForumPage"}
                                     text={"Discussion"}>
                                 </TopbarItem>
-                                {isLoggedIn() ? (
+                                {(currentUser && isLoggedIn()) ? (
                                     <TopbarItem
                                     to={
-                                        currentUser.role === "pharmacy"
+                                        currentUser?.role === "pharmacy"
                                             ? "/dashboard/pharmacist"
                                             : `/dashboard/${currentUser.role}`
                                     }
