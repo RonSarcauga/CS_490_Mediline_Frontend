@@ -77,8 +77,8 @@ class DiscussionForumViewModel {
 
             // Step 3: Fetch comments
             const postIds = posts.map((post) => post.post_id);
-            //const comments = await this.fetchComments(postIds);
-            const comments = posts.flatMap(post => post.comments || []);
+            const comments = await this.fetchComments(postIds);
+            //const comments = posts.flatMap(post => post.comments || []);
 
             // Step 4: Combine all data
             const combinedPosts = await this.combinePosts(posts, users, comments);
