@@ -252,9 +252,7 @@ function PDProfile() {
         setLoading(false);
     };
 
-    // Survey Form
-    const survey = useForm();
-    const onSubmitSurvey = async (data) => {
+    function checkSubmission() {
         // Get today's date in YYYY-MM-DD format
         const today = new Date();
         const todayStr = today.toISOString().split('T')[0];
@@ -267,7 +265,13 @@ function PDProfile() {
             return dateOnly === todayStr;
         });
 
-        if (alreadySubmitted) {
+        return alreadySubmitted
+    }
+
+    // Survey Form
+    const survey = useForm();
+    const onSubmitSurvey = async (data) => {
+        if (checkSubmission()) {
             alert("You have already submitted the form today.");
             return;
         }
@@ -2171,11 +2175,16 @@ function PDProfile() {
                                                     items={[
                                                         <>
                                                             <ItemGroup
-                                                                customClass="justify-content-center gap-3 pb-3"
+                                                                customClass="justify-content-center gap-3 pb-3 align-items-center"
+                                                                fitParent={true}
+                                                                stretch={true}
                                                                 axis={false}
                                                                 items={[
                                                                     <>
-                                                                        <button
+                                                                        <Container
+                                                                            customClass={`${(windowStart === 0) ? "bg-primary-neutral-500" : "bg-primary-dark-400"} py-3 br-sm text-center`}
+                                                                            fitParent={true}
+                                                                            isClickable={!(windowStart === 0)}
                                                                             onClick={async () => {
                                                                                 setWindowStart(prev => {
                                                                                     const newStart = Math.max(0, prev - windowSize);
@@ -2183,16 +2192,17 @@ function PDProfile() {
                                                                                     return newStart;
                                                                                 });
                                                                             }}
-                                                                            disabled={windowStart === 0}
-                                                                        >
-                                                                            Previous
-                                                                        </button>
-                                                                        <span>
+                                                                            content={[<p className="font-semibold text-primary-neutral-100">◀  Previous</p>]}
+                                                                        />
+                                                                        <h5 className="font-4 text-neutral-600 font-semibold">
                                                                             {slicedLabels.length > 0
                                                                                 ? `${slicedLabels[0]} - ${slicedLabels[slicedLabels.length - 1]}`
                                                                                 : ""}
-                                                                        </span>
-                                                                        <button
+                                                                        </h5>
+                                                                        <Container
+                                                                            customClass={`${(windowEnd >= (chartData.dates?.length || 0)) ? "bg-primary-neutral-500" : "bg-primary-dark-400"} py-3 br-sm text-center`}
+                                                                            fitParent={true}
+                                                                            isClickable={!(windowEnd >= (chartData.dates?.length || 0))}
                                                                             onClick={async () => {
                                                                                 setWindowStart(prev => {
                                                                                     const maxStart = (chartData.dates?.length || 0) - windowSize;
@@ -2201,10 +2211,8 @@ function PDProfile() {
                                                                                     return newStart;
                                                                                 });
                                                                             }}
-                                                                            disabled={windowEnd >= (chartData.dates?.length || 0)}
-                                                                        >
-                                                                            Next
-                                                                        </button>
+                                                                            content={[<p className="font-semibold text-primary-neutral-100">Next  ▶</p>]}
+                                                                        />
                                                                     </>
                                                                 ]}
                                                             />
@@ -2446,7 +2454,7 @@ function PDProfile() {
                                                                                                     fitParent={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p className="font-4">How much calories did you burn?</p>
+                                                                                                            <p className="font-4">How many calories did you burn?</p>
                                                                                                             <InputBar
                                                                                                                 {...survey.register('calories_intake', { required: 'Calories burned is required' })}
                                                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
@@ -2517,13 +2525,17 @@ function PDProfile() {
                                                                             ]}
                                                                         />
                                                                         <Container
-                                                                            customClass="bg-primary-dark-400 py-3 br-sm text-center"
+                                                                            customClass={`${checkSubmission() ? "bg-primary-neutral-500" : "bg-primary-dark-400"} py-3 br-sm text-center`}
                                                                             fitParent={true}
-                                                                            isClickable={true}
+                                                                            isClickable={true && !(checkSubmission())}
                                                                             onClick={survey.handleSubmit(onSubmitSurvey)}
                                                                             content={[
                                                                                 <>
-                                                                                    <p className="font-semibold text-primary-neutral-100">SUBMIT</p>
+                                                                                    {!checkSubmission() ? (
+                                                                                        <p className="font-semibold text-primary-neutral-100">SUBMIT</p>
+                                                                                    ) : (
+                                                                                        <p className="font-semibold text-primary-neutral-100">ALREADY SUBMITTED TODAY</p>
+                                                                                    )}
                                                                                 </>
                                                                             ]}
                                                                         />

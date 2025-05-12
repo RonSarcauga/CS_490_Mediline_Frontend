@@ -61,7 +61,7 @@ export default function ExerciseChart({
     }, []);
 
     return (
-        <div style={{ width: "100%", height: graphHeight }}>
+        <div style={{ width: "100%", height: graphHeight, justifyItems: "center"}}>
             <canvas ref={chartRef}></canvas>
         </div>
     );
