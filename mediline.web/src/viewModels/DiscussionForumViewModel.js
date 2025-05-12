@@ -31,7 +31,7 @@ class DiscussionForumViewModel {
 
             // Decode the Base64 string and parse the JSON
             const decodedPayload = JSON.parse(atob(payloadBase64));
-            console.log("Decoded Token: discussion ", decodedPayload);
+            //console.log("Decoded Token: discussion ", decodedPayload);
 
             // Stores the super user's token in local storage
             localStorage.setItem("jwtToken", token);

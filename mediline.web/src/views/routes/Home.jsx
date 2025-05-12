@@ -25,7 +25,6 @@ function isLoggedIn() {
 
 export default function Home() {
     const { currentUser } = useContext(UserContext);
-    if (currentUser) console.log(currentUser.user_id)
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
     const serviceRef = useRef(null);
@@ -88,7 +87,7 @@ export default function Home() {
                                     to={"/discussionForumPage"}
                                     text={"Discussion"}>
                                 </TopbarItem>
-                                {isLoggedIn() ? (
+                                {(currentUser && isLoggedIn()) ? (
                                     <TopbarItem
                                     to={
                                         currentUser?.role === "pharmacy"

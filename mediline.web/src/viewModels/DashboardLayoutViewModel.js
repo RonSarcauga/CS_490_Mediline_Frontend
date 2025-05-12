@@ -341,7 +341,7 @@ class DashboardLayoutViewModel {
                 }
             });
 
-            console.log(`Appointment ID: ${appointment_id}\n${response.data}`);
+            console.log("Appointment ID:", appointment_id,"\n",response.data);
 
             return response.data;
         } catch (error) {
