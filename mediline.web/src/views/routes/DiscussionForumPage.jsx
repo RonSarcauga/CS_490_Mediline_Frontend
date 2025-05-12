@@ -26,7 +26,7 @@ function DiscussionForumPage() {
 
         // Call to the centralized data fetching function
         const result = await discussionForumViewModel.fetchDiscussionData();
-        console.log(`Data to be displayed: ${JSON.stringify(result.posts, null, 2)}`);
+        //console.log(`Data to be displayed: ${JSON.stringify(result.posts, null, 2)}`);
 
         // Update the state with fetched data
         setData(result); 

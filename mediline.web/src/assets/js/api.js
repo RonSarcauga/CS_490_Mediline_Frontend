@@ -7,7 +7,7 @@ const axiosInstance = axios.create({
   },
   withCredentials: false,
 });
-/*
+
 // Request interceptor
 axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('jwtToken');
@@ -31,7 +31,7 @@ axiosInstance.interceptors.request.use((config) => {
 
   return config;
 });
-
+/*
 // Response interceptor for 401s
 axiosInstance.interceptors.response.use(
   (response) => response,

@@ -33,7 +33,7 @@ export default function FindADoctorPage() {
     // The click event for the reset filters button
     const clearFilters = () => {
         FindDoctorViewModel.clearFilters();
-        console.log("servicesRef:", specialtyDropdownRef.current);
+        //console.log("servicesRef:", specialtyDropdownRef.current);
 
         // Checks that the select lists are not null before invoking the reset method
         if (specialtyDropdownRef.current) {
@@ -54,7 +54,7 @@ export default function FindADoctorPage() {
             FindDoctorViewModel.updateSearch(searchQuery);
             FindDoctorViewModel.filterByURL = true;
             FindDoctorViewModel.applyFilters();
-            console.log("Applied filters: ", FindDoctorViewModel.filters);
+            //console.log("Applied filters: ", FindDoctorViewModel.filters);
 
             // Updates the form data that is displayed on the page
             setFormData({ ...FindDoctorViewModel });
@@ -63,7 +63,7 @@ export default function FindADoctorPage() {
         return () => {
             clearFilters();
             FindDoctorViewModel.filterByURL = false;
-            console.log("Did the filters get reset?\n", FindDoctorViewModel.filters);
+            //console.log("Did the filters get reset?\n", FindDoctorViewModel.filters);
         }
     }, [searchQuery]);
 
@@ -250,7 +250,7 @@ export default function FindADoctorPage() {
                                                                                                     doctors: filteredDoctors,
                                                                                                 }));
 
-                                                                                                console.log("Filters applied: ", FindDoctorViewModel.filters);
+                                                                                                //console.log("Filters applied: ", FindDoctorViewModel.filters);
                                                                                             } catch (error) {
                                                                                                 console.error("Error applying filters: ", error);
                                                                                             } finally {
@@ -316,7 +316,7 @@ export default function FindADoctorPage() {
                                                                                                     doctors: unfilteredDoctors,
                                                                                                 }));
 
-                                                                                                console.log("Filters applied: ", FindDoctorViewModel.filters);
+                                                                                                //console.log("Filters applied: ", FindDoctorViewModel.filters);
                                                                                             } catch (error) {
                                                                                                 console.error("Error applying filters: ", error);
                                                                                             } finally {
@@ -391,7 +391,7 @@ export default function FindADoctorPage() {
                                                                                 FindDoctorViewModel.doctorId = doctor.user_id;
                                                                             }
                                                                             setFormData({ ...FindDoctorViewModel });
-                                                                            console.log("You selected ", FindDoctorViewModel.doctorId);
+                                                                            //console.log("You selected ", FindDoctorViewModel.doctorId);
                                                                         }}
                                                                         fitParent={true}
                                                                         content={[

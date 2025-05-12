@@ -13,8 +13,10 @@ function isLoggedIn() {
   if (!token) return false;
 
   try {
+    console.log()
     const [, payload] = token.split('.');
     const { exp } = JSON.parse(atob(payload));
+    console.log(payload," ",exp)
     return Date.now() < exp * 1000;
   } catch {
     return false;
@@ -23,6 +25,7 @@ function isLoggedIn() {
 
 export default function Home() {
     const { currentUser } = useContext(UserContext);
+    if (currentUser) console.log(currentUser.user_id)
     const [searchQuery, setSearchQuery] = useState("");
     const navigate = useNavigate();
     const serviceRef = useRef(null);
@@ -88,7 +91,7 @@ export default function Home() {
                                 {isLoggedIn() ? (
                                     <TopbarItem
                                     to={
-                                        currentUser.role === "pharmacy"
+                                        currentUser?.role === "pharmacy"
                                             ? "/dashboard/pharmacist"
                                             : `/dashboard/${currentUser.role}`
                                     }

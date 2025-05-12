@@ -23,6 +23,8 @@ import PHPatient from './PHPatient';
 import DashboardLayout from './DashboardLayout';
 import UserProvider from '../../context/UserProvider';
 import PatientAppointment from './PatientAppointment';
+import FindADoctorPage from './FindADoctor';
+import DiscussionForumPage from './DiscussionForumPage';
 
 //import RouteErrorPage from './RouteErrorPage';
 
@@ -67,7 +69,8 @@ const router = createBrowserRouter([
         ],
       },
 
-      { path: 'patientAppointment', element: <PatientAppointment /> },
+      { path: 'discussionForumPage', element: <DiscussionForumPage /> },
+      { path: 'findADoctor', element: <FindADoctorPage /> },
       {/* path: "/unauthorized",element: <RouteErrorPage message="Unauthorized: Please log in again." /> */},
 
     ],

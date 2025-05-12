@@ -31,7 +31,7 @@ class DiscussionForumViewModel {
 
             // Decode the Base64 string and parse the JSON
             const decodedPayload = JSON.parse(atob(payloadBase64));
-            console.log(`Decoded Token: ${decodedPayload}`);
+            console.log("Decoded Token: discussion ", decodedPayload);
 
             // Stores the super user's token in local storage
             localStorage.setItem("jwtToken", token);
@@ -77,8 +77,8 @@ class DiscussionForumViewModel {
 
             // Step 3: Fetch comments
             const postIds = posts.map((post) => post.post_id);
-            //const comments = await this.fetchComments(postIds);
-            const comments = posts.flatMap(post => post.comments || []);
+            const comments = await this.fetchComments(postIds);
+            //const comments = posts.flatMap(post => post.comments || []);
 
             // Step 4: Combine all data
             const combinedPosts = await this.combinePosts(posts, users, comments);
@@ -105,7 +105,7 @@ class DiscussionForumViewModel {
             });
 
             const posts = response.data || [];
-            console.log(`Fetched Posts:\n${JSON.stringify(posts, null, 2)}`);
+            //console.log(`Fetched Posts:\n${JSON.stringify(posts, null, 2)}`);
             return posts;
         } catch (error) {
             console.error("Error fetching posts:", error);
@@ -119,7 +119,7 @@ class DiscussionForumViewModel {
 
         for (const userId of uniqueUserIds) {
             try {
-                console.log(userId);
+                //console.log(userId);
                 const response = await axiosInstance.get(`/user/${userId}`, {
                     headers: {
                         Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
@@ -130,7 +130,7 @@ class DiscussionForumViewModel {
                 console.error(`Error fetching user info for User ID ${userId}:`, error);
             }
         }
-        console.log(`Fetched Users:\n${JSON.stringify(users, null, 2)}`);
+        //console.log(`Fetched Users:\n${JSON.stringify(users, null, 2)}`);
         return users;
     }
 
@@ -151,7 +151,7 @@ class DiscussionForumViewModel {
             }
         }
 
-        console.log(`Fetched Comments:\n${JSON.stringify(comments, null, 2)}`);
+        //console.log(`Fetched Comments:\n${JSON.stringify(comments, null, 2)}`);
         return comments;
     }
 
@@ -194,7 +194,7 @@ class DiscussionForumViewModel {
             };
         });
 
-        console.log(`Enriched Posts:\n${JSON.stringify(enrichedPosts, null, 2)}`);
+        //console.log(`Enriched Posts:\n${JSON.stringify(enrichedPosts, null, 2)}`);
         return enrichedPosts;
     }
 
@@ -207,7 +207,7 @@ class DiscussionForumViewModel {
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             });
-            console.log(`User fetched!\n${JSON.stringify(response.data, null, 2)}`);
+            //console.log(`User fetched!\n${JSON.stringify(response.data, null, 2)}`);
             return response.data;
         } catch (error) {
             console.error("Error fetching a user:", error);
