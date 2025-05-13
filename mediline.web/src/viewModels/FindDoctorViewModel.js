@@ -40,7 +40,7 @@ const FindDoctorViewModel = {
 
             // Decode the Base64 string and parse the JSON
             const decodedPayload = JSON.parse(atob(payloadBase64));
-            console.log("Decoded Token:",decodedPayload);
+            //console.log("Decoded Token:",decodedPayload);
 
             // Stores the super user's token in local storage
             localStorage.setItem("jwtToken", token);
@@ -74,7 +74,7 @@ const FindDoctorViewModel = {
     filterDoctors: function (doctors) {
         const { name, specialty, rating, acceptingNewPatients, search } = this.filters;
 
-        //console.log(`Active Filters: ${JSON.stringify(this.filters, null, 2)}`);
+        console.log(`Active Filters: ${JSON.stringify(this.filters, null, 2)}`);
 
         // Convert the rating range to numerical values
         const [minRating, maxRating] = rating
@@ -106,7 +106,7 @@ const FindDoctorViewModel = {
 
     // Call to the update filter method in the service layer
     updateFilter: function (field, value) {
-        //console.log(`${field}: ${value}`);
+        console.log(`${field}: ${value}`);
         this.activeFilters[field] = value;
     },
 
@@ -132,7 +132,7 @@ const FindDoctorViewModel = {
     // Call to the update search filter method in the service layer
     updateSearch: function (query) {
         this.activeFilters.search = query;
-        //console.log("Search String: ", query);
+        console.log("Search String: ", query);
 
         // Determines if the filter has already been applied in a dropdown
         if (!query.trim()) {
@@ -193,9 +193,9 @@ const FindDoctorViewModel = {
                 this.fetchDoctors()
             ]);
 
-            //console.log(`Is doctors populated?\n${JSON.stringify(doctors, null, 2)}`);
+            console.log(`Is doctors populated?\n${JSON.stringify(doctors, null, 2)}`);
 
-            //console.log("Doctors Before Extracting:", JSON.stringify(doctors, null, 2));
+            console.log("Doctors Before Extracting:", JSON.stringify(doctors, null, 2));
 
             if (!Array.isArray(doctors) || doctors.length === 0) {
                 console.error("Doctors data is invalid:", doctors);
@@ -204,7 +204,7 @@ const FindDoctorViewModel = {
 
             const specialties = this.getSpecialties(doctors);
 
-            //console.log(`Specialties:\n${JSON.stringify(specialties, null, 2)}`);
+            console.log(`Specialties:\n${JSON.stringify(specialties, null, 2)}`);
 
             return {
                 doctors: doctors,
@@ -249,7 +249,7 @@ const FindDoctorViewModel = {
                 })
             );
 
-            //console.log("Doctors with ratings:", doctorsWithRatings);
+            console.log("Doctors with ratings:", doctorsWithRatings);
 
             return doctorsWithRatings;
         } catch (error) {
@@ -298,7 +298,7 @@ const FindDoctorViewModel = {
             doctor_id: this.doctorId
         }
 
-        //console.log(`Patient ${userId} is adding doctor ${this.doctorId}\n${JSON.stringify(payload, null, 2)}`);
+        console.log(`Patient ${userId} is adding doctor ${this.doctorId}\n${JSON.stringify(payload, null, 2)}`);
 
         try {
             const response = await axiosInstance.post(`/request/patient/${userId}/doctor/${this.doctorId}`, payload, {

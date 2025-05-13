@@ -30,7 +30,7 @@ export default function FindADoctorPage() {
     const { currentUser } = useContext(UserContext);
     // Used to manage the form data
     const [formData, setFormData] = useState(FindDoctorViewModel);
-
+    const [page, setPage] = useState(1)
     // Used for fetching and loading the data
     const [data, setData] = useState(null);
     const [initialLoading, setInitialLoading] = useState(true); // first load only
@@ -84,6 +84,15 @@ export default function FindADoctorPage() {
             //console.log("Did the filters get reset?\n", FindDoctorViewModel.filters);
         }
     }, [searchQuery]);
+
+    const [specialtiesList, setSpecialties] = useState([]);
+
+    useEffect(() => {
+        if (data?.doctors && specialtiesList.length === 0) {
+            const specials = FindDoctorViewModel.getSpecialties(data.doctors);
+            setSpecialties(specials);
+        }
+    }, [data?.doctors]);
 
     useEffect(() => {
         fetchData();
@@ -229,14 +238,15 @@ export default function FindADoctorPage() {
                                                     ]}
                                                 />
                                                 <ItemGroup
-                                                    customClass="gap-5 bg-neutral-1100 pt-5 box-shadow-sm pb-5 br-bottom-lg overflow-hidden justify-content-center"
+                                                    customClass={`gap-5 bg-neutral-1100 pt-5 box-shadow-sm pb-5 br-bottom-lg ${initialLoading? "justify-content-center" : "justify-content-space-between"}`}
                                                     fitParent={true}
                                                     axis={false}
                                                     stretch={true}
                                                     items={[
                                                         <>  {initialLoading ? (
-                                                                            <Container customClass="p-5" content={[<Spinner size={64} />]} />
-                                                                        ) : (<>
+                                                                <Container customClass="p-5" content={[<Spinner size={64} />]} />
+                                                            ) : (
+                                                            <>
                                                             <div/>
                                                             <ItemGroup
                                                                 customClass="bg-neutral-1100 br-md p-10 gap-7 box-shadow-sm align-content-center"
@@ -335,7 +345,7 @@ export default function FindADoctorPage() {
                                                                                             <>
                                                                                                 <SelectList
                                                                                                     ref={specialtyDropdownRef}
-                                                                                                    items={FindDoctorViewModel.getSpecialties(data.doctors)}
+                                                                                                    items={specialtiesList}
                                                                                                     onSelect={(item) => {
                                                                                                         FindDoctorViewModel.updateFilter("specialty", item.label);
                                                                                                         setFormData({ ...FindDoctorViewModel });
@@ -492,7 +502,7 @@ export default function FindADoctorPage() {
                                                                             ]}
                                                                         />
                                                                         {searchLoading ? (
-                                                                            <Container customClass="p-5" content={[<Spinner size={64} />]} />
+                                                                            <Container customClass="p-5 align-self-center" content={[<Spinner size={64} />]} />
                                                                         ) : (
                                                                         <ItemGroup
                                                                             customClass="gap-5 scrollable p-5"
@@ -671,7 +681,7 @@ export default function FindADoctorPage() {
                                                             />
                                                             <div/>
                                                             </>
-                                                                        )}
+                                                            )/* end of condtional */} 
                                                         </>
                                                     ]}
                                                 />
