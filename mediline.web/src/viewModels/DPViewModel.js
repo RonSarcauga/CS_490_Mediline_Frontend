@@ -459,16 +459,31 @@ class DPViewModel {
         const doctor = await this.getUserInfo(doctorId);
 
         // Remove the auditing fields from the doctor
-        const { updated_at, created_at, bio, ...filteredDoctor } = doctor;
-
+        const { updated_at, created_at, bio, city_id, user_id, address_id, zipcode, ...filteredDoctor } = doctor;
+        const { address, ...filteredData } = data;
+        
         // Update the payload
         const payload = {
-            ...data,
-            ...filteredDoctor
+            ...filteredData,
+            ...filteredDoctor,
+            country: "United States"
         }
 
         // Print and return the filtered doctor data
         console.log("Filtered Doctor Data: ", JSON.stringify(payload, null, 2));
+
+        try {
+            const response = await axiosInstance.put(`/doctor/${doctorId}`, payload, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            console.log(`Doctor information successfully updated:\n${JSON.stringify(response.data, null, 2)}`);
+        } catch (error) {
+            console.error("Error for updating exercises: ", error.response?.data || error.message);
+        }
+
         return filteredDoctor;
     }
 
