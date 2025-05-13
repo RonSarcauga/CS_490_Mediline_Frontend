@@ -32,7 +32,7 @@ class DashboardLayoutViewModel {
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
-        console.log(`Tranform this birthdate: ${birthDate}`);
+        //console.log(`Tranform this birthdate: ${birthDate}`);
         const date = this.parseDate(birthDate);
         if (!date) return "Invalid date format";
 
