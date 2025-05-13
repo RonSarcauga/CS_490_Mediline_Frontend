@@ -459,7 +459,7 @@ class DPViewModel {
         const doctor = await this.getUserInfo(doctorId);
 
         // Remove the auditing fields from the doctor
-        const { updated_at, created_at, bio, city_id, user_id, address_id, zipcode, ...filteredDoctor } = doctor;
+        const { updated_at, created_at, bio, city_id, user_id, address_id, zipcode, accepting_patients, ...filteredDoctor } = doctor;
         const { address, ...filteredData } = data;
         
         // Update the payload
