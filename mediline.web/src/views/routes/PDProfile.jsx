@@ -33,7 +33,8 @@ function PDProfile() {
 
     const [windowStart, setWindowStart] = useState(0);
     const windowSize = 7; // Show 7 data points at a time
-    const windowEnd = windowStart + windowSize;
+    const [initialWindowSet, setInitialWindowSet] = useState(false);
+
 
     const handleOpenModal = (modalId) => {
         setActiveModal(modalId);
@@ -103,6 +104,20 @@ function PDProfile() {
 
         fetchData4();
     }, []);
+    useEffect(() => {
+        if (
+            chartData.dates &&
+            chartData.dates.length > 0 &&
+            !initialWindowSet
+        ) {
+            const total = chartData.dates.length;
+            setWindowStart(Math.max(0, total - windowSize));
+            setInitialWindowSet(true);
+        }
+    }, [chartData.dates, initialWindowSet, windowSize]);
+
+    const windowEnd = windowStart + windowSize;
+
     const formattedLabels = chartData.dates
         ? chartData.dates.map(dateStr => {
             const d = new Date(dateStr);
@@ -297,6 +312,7 @@ function PDProfile() {
         // Re-fetch chart data and update state
         const updatedChartData = await fetchChartData(currentUser.user_id);
         setChartData(updatedChartData);
+        setInitialWindowSet(false);
     };
 
     useEffect(() => {
@@ -1101,7 +1117,7 @@ function PDProfile() {
                                         content={[
                                             <>
                                                 {
-                                                    Array.isArray(data.upcomingAppointments)  && data.upcomingAppointments.length > 0 ? (
+                                                    Array.isArray(data.upcomingAppointments) && data.upcomingAppointments.length > 0 ? (
                                                         data.upcomingAppointments.map((appt) => (
                                                             <ItemGroup
                                                                 axis={true}

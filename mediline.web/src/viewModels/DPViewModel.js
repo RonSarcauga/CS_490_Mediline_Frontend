@@ -4,8 +4,9 @@ class DPViewModel {
     async fetchData(patientId, userId) {
         try {
             // Use Promise.all to fetch data concurrently
-            const [patientData, pastAppointments, upcomingAppointments, forms] = await Promise.all([
+            const [patientData, appointmentRequests, pastAppointments, upcomingAppointments, forms] = await Promise.all([
                 this.getUserInfo(patientId),
+                this.handleAppointmentRequests(userId),
                 this.getPastAppointments(patientId), // Fetch past appointments
                 this.getUpcomingAppointments(patientId), // Fetch upcoming appointments
                 this.getForms(patientId),
@@ -61,6 +62,79 @@ class DPViewModel {
         console.log("Doctor data: ", JSON.stringify(userInfo, null, 2));
         return userInfo;
     }
+
+    // Asynchronous method for automatically accepting/rejecting appointments as soon as a doctor logs in
+    async handleAppointmentRequests(id) {
+        const doctor = await this.getDoctorData(id);
+        const acceptingPatients = doctor?.accepting_patients;
+
+        try {
+            const response = await axiosInstance.get(`/doctor/${id}/appointment_requests`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            const requests = response.data;
+
+            console.log(`Appointment requests have been handled successfully:\n${JSON.stringify(requests, null, 2)}`);
+
+            // Extract appointment IDs and process them concurrently
+            const appointmentPromises = requests.map((appointment) =>
+                this.handleAppointmentRequest(appointment, acceptingPatients)
+            );
+
+            // Wait for all appointment requests to be processed
+            await Promise.all(appointmentPromises);
+        } catch (error) {
+            console.error("Error handling appointment requests:", error);
+        }
+    };
+
+    async handleAppointmentRequest(appointment, acceptingPatients) {
+        try {
+            const status = acceptingPatients ? "CONFIRMED" : "REJECTED";
+            const startDate = new Date(appointment.visit_time);
+            const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
+
+            const start_date = this.convertToLocalISOString(startDate);
+            const end_date = this.convertToLocalISOString(endDate);
+            
+            console.log(`Processing appointment ${appointment.appointment_id} with status: ${status}`);
+            console.log(`Start Date: ${start_date}\nEnd Date: ${end_date}`);
+
+            const payload = {
+                start_date: start_date.slice(0,-1),
+                end_date: end_date.slice(0,-1),
+                status: status,
+                treatment: "Consultation",
+            }
+
+            console.log(`Request payload:\n${JSON.stringify(payload, null, 2)}`);
+
+            // Make the API call to update the appointment status
+            const response = await axiosInstance.put(
+                `/appointment/update/${appointment.appointment_id}`, payload, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                    },
+                }
+            );
+
+            console.log(`Appointment ${appointment.appointment_id} updated successfully:\n${JSON.stringify(response.data, null, 2)}`);
+        } catch (error) {
+            console.error(`Error updating appointment ${appointment.appointment_id}:`, error.response?.data || error.message);
+        }
+    }
+
+    convertToLocalISOString(date) {
+        const offset = date.getTimezoneOffset() * 60000; // Offset in milliseconds
+        const localDate = new Date(date.getTime() - offset); // Adjust to local time
+        return localDate.toISOString().slice(0, -1); // Remove 'Z' to indicate local time
+    }
+
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
