@@ -279,7 +279,9 @@ class DashboardLayoutViewModel {
     // Captialize the first letter of a string
     capitalize(string) {
         if (!string || typeof string !== "string") {
-            throw new Error(`Expected a string. Got ${typeof string} instead.`);
+            //throw new Error(`Expected a string. Got ${typeof string} instead.`);
+            console.log("instead of string, capitalize got ",string)
+            return "failed capitalize"
         }
 
         const capitalized = string.slice(0,1).toUpperCase() + string.slice(1);

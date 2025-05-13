@@ -71,6 +71,7 @@ const router = createBrowserRouter([
 
       { path: 'discussionForumPage', element: <DiscussionForumPage /> },
       { path: 'findADoctor', element: <FindADoctorPage /> },
+      { path: 'chat', element: <PatientAppointment /> },
       {/* path: "/unauthorized",element: <RouteErrorPage message="Unauthorized: Please log in again." /> */},
 
     ],
