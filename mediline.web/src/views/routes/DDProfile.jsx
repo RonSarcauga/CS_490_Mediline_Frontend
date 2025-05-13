@@ -156,7 +156,7 @@ function DDProfile() {
         setData(result);
         setLoading(false);
 
-        console.log(`Profile Data:\n${JSON.stringify(result, null, 2)}`);
+        //console.log(`Profile Data:\n${JSON.stringify(result, null, 2)}`);
     }
 
     // Used to manage data from API calls
@@ -197,10 +197,6 @@ function DDProfile() {
                         setExerciseList(filteredExercises);
                     }
                     break;
-                case "tab3":
-                    {
-
-                    }
                 case "tab4":
                     {
                         const regimens = await dpVM.getPatientRegimens(currentPatientId);
