@@ -45,6 +45,7 @@ function DDAccount()
         toggleEditingState('contactInfo');
         setLoading(true);
         await dpVM.updateDoctorInfo(data, currentUser.user_id);
+        fetchData();
         setLoading(false);
     }
 
@@ -114,7 +115,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentUser.firstName}
+                                                                            defaultValue={data.first_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -130,7 +131,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentUser.lastName}
+                                                                            defaultValue={data.last_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -146,7 +147,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={dashboardLayoutViewModel.capitalize(currentUser.sex)}
+                                                                            defaultValue={dashboardLayoutViewModel.capitalize(data.gender)}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -173,7 +174,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={dashboardLayoutViewModel.formatBirthDate(currentUser.dob, "MM/DD/YYYY")}
+                                                                            defaultValue={dashboardLayoutViewModel.formatBirthDate(data.dob, "MM/DD/YYYY")}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -288,7 +289,7 @@ function DDAccount()
                                                                                 customClass="bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0"
                                                                                 placeholder="Enter your email"
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.email}
+                                                                                defaultValue={data.email}
                                                                             />
                                                                             {contactInfo.formState.errors.email && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.email.message}</p>
@@ -320,7 +321,7 @@ function DDAccount()
                                                                                 placeholder="Enter your phone number"
                                                                                 onChange={(e) => contactInfo.setValue('phone', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={dashboardLayoutViewModel.formatPhoneNumber(currentUser.phone, "dashes")}
+                                                                                defaultValue={dashboardLayoutViewModel.formatPhoneNumber(data.phone, "dashes")}
                                                                             />
                                                                             {contactInfo.formState.errors.phone && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.phone.message}</p>
@@ -352,7 +353,7 @@ function DDAccount()
                                                                                 placeholder="Enter your address"
                                                                                 onChange={(e) => contactInfo.setValue('address', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.address1}
+                                                                                defaultValue={data.address1}
                                                                             />
                                                                             {contactInfo.formState.errors.address && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.address.message}</p>
@@ -405,7 +406,7 @@ function DDAccount()
                                                                                 placeholder="Enter your state"
                                                                                 onChange={(e) => contactInfo.setValue('state', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.state}
+                                                                                defaultValue={data.state}
                                                                             />
                                                                             {contactInfo.formState.errors.state && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.state.message}</p>
@@ -426,7 +427,7 @@ function DDAccount()
                                                                                 placeholder="Enter your postal code"
                                                                                 onChange={(e) => contactInfo.setValue('zipcode', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.zipcode}
+                                                                                defaultValue={data.zipcode}
                                                                             />
                                                                             {contactInfo.formState.errors.zipcode && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.zipcode.message}</p>
