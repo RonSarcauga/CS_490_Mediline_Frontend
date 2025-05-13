@@ -1,9 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { useState, useContext } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useState, useContext, useEffect } from 'react';
 import Container, { ItemGroup, PictureFrame } from '../../components/General/Container';
 import BaseIcon from '../../components/General/BaseIcon';
-import InputBar from '../../components/General/InputBar';
+import InputBar, {InputBarReg} from '../../components/General/InputBar';
 import Button from '../../components/General/Button';
+import Spinner from '../../components/General/Spinner';
 import LoginViewModel from '../../viewModels/LoginViewModel';
 import { UserContext } from '../../context/UserProvider';
 import { useLogin } from '../../hooks/useLogin';
@@ -16,6 +17,9 @@ export default function Login() {
         password: "",
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
+
     const loginMutation = useLogin();
 
     const navigate = useNavigate();
@@ -23,72 +27,55 @@ export default function Login() {
     const { setCurrentUser } = useContext(UserContext);
 
     const handleInput = (field, target) => {
-        console.log(`${field}: ${target.value}`);
+        //console.log(`${field}: ${target.value}`);
         setFormData({
             ...formData,
             [field]: target.value,
         });
-        console.log(`Email: ${formData.email}`);
-        console.log(`Password: ${formData.password}`);
+        //console.log(`Email: ${formData.email}`);
+        //console.log(`Password: ${formData.password}`);
     };
+
+    const location = useLocation();
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const messageParam = queryParams.get('message');
+
+        if (messageParam === 'timeout') {
+            setError("You were logged out due to inactivity.");
+
+            queryParams.delete('message');
+            const newUrl = `${location.pathname}${queryParams.toString() ? `?${queryParams}` : ''}`;
+            window.history.replaceState(null, '', newUrl);
+        }
+    }, [location]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        console.log("Initiate login process!");
+        setIsLoading(true);
+        setError("");
+
         try {
             LoginViewModel.email = formData.email;
             LoginViewModel.password = formData.password;
             const currentUser = await LoginViewModel.login();
-            setCurrentUser(currentUser);
-            console.log("Login successful!", currentUser);
 
-            let basePath = null;
-
-            if (currentUser.role === "pharmacy") {
-                basePath = `/dashboard/pharmacist`;
+            if (!currentUser) {
+                setError("Invalid email or password.");
+            } else {
+                setCurrentUser(currentUser);
+                let basePath = currentUser.role === "pharmacy"
+                    ? "/dashboard/pharmacist"
+                    : `/dashboard/${currentUser.role}`;
+                navigate(basePath, { replace: true });
             }
-            else {
-                basePath = `/dashboard/${currentUser.role}`;
-            }
-
-            // Redirect to the dashboard
-            navigate(`${basePath}`);
-        } catch (error) {
-            console.log("Login failed:", error.message);
+        } catch (err) {
+            setError("An unexpected error occurred.");
+            console.error(err);
+        } finally {
+            setIsLoading(false);
         }
     };
-
-
-    //const handleLogin = (e) => {
-    //    e.preventDefault();
-    //    console.log("Initiate login process!");
-
-    //    LoginViewModel.email = formData.email;
-    //    LoginViewModel.password = formData.password;
-
-    //    loginMutation.mutate(
-    //        {
-    //            email: formData.email,
-    //            password: formData.password,
-    //        },
-    //        {
-    //            onSuccess: (data) => {
-    //                console.log("Full login response:", data);
-    //                console.log("Login successful!", data.user?.role);
-
-    //                //setCurrentUser(data);
-    //                //navigate(`/dashboard/${data.user?.role || 'patient'}`);
-    //                navigate(`/${data?.account_type || 'patient'}Home`)
-
-    //                LoginViewModel.clearFields();
-    //                setFormData({ email: "", password: "" });
-    //            },
-    //            onError: (error) => {
-    //                console.log("Login failed:", error.message);
-    //            },
-    //        }
-    //    );
-    //};
     
     const isComplete = Object.values(formData).every((value) => value.trim() !== "");
 
@@ -154,30 +141,31 @@ export default function Login() {
                                                         fitParent={true}
                                                         items={[
                                                             <>
-                                                                <InputBar
+                                                                <InputBarReg
                                                                     customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
                                                                     value={formData.email}
                                                                     onChange={(e) => handleInput('email', e.target)}
                                                                     placeholder="Email"
                                                                 />
-                                                                <InputBar
+                                                                <InputBarReg
                                                                     customClass="br-sm py-4 input-font-4 input-placeholder-font-4 input-text-neutral-600"
-                                                                    type="password"
                                                                     value={formData.password}
-                                                                    onChange={(e) => handleInput('password', e.target)}
+                                                                    onChange={e => handleInput('password', e.target)}
                                                                     placeholder="Password"
+                                                                    inputType="password"
                                                                 />
+                                                                {error && <p className="text-warning-200 font-regular">{error}</p>}
                                                                 <Container
                                                                     customClass='bg-dark-100 justify-items-center align-items-center br-sm py-1'
-                                                                    isClickable={isComplete}
+                                                                    isClickable={isComplete && !isLoading}
                                                                     onClick={handleLogin}
                                                                     fitParent={true}
                                                                     content={[
                                                                         <Button
                                                                             customClass="bg-0"
                                                                             content={[
-                                                                                <p className=" text-decoration-none font-regular text-neutral-1100">
-                                                                                    Sign In
+                                                                                <p className="text-decoration-none font-regular text-neutral-1100">
+                                                                                    {isLoading ? <> Signing In... </> : "Sign In"}
                                                                                 </p>
                                                                             ]}
                                                                         />

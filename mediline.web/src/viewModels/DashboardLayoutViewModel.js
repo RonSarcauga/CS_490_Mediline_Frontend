@@ -22,28 +22,36 @@ class DashboardLayoutViewModel {
 
     // Helper method to format a birth date into "Month Day, Year"
     formatBirthDate(birthDate, format = "default") {
+        // Used to prevent any null property errors
+        if (!birthDate || typeof birthDate !== "string") {
+            console.warn("Invalid birthDate input:", birthDate);
+            return "Invalid date";
+        }
+
         const months = [
             "January", "February", "March", "April", "May", "June",
             "July", "August", "September", "October", "November", "December"
         ];
-
-        // Ensure birthDate is in a standard format
+        //console.log(`Tranform this birthdate: ${birthDate}`);
         const date = this.parseDate(birthDate);
         if (!date) return "Invalid date format";
 
+        const day = String(date.getUTCDate()).padStart(2, "0");
+        const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+        const year = date.getUTCFullYear();
+
         switch (format) {
             case "MM/DD/YYYY":
-                return `${String(date.getMonth() + 1).padStart(2, "0")}/${String(date.getDate()).padStart(2, "0")}/${date.getFullYear()}`;
+                return `${month}/${day}/${year}`;
             case "DD/MM/YYYY":
-                return `${String(date.getDate()).padStart(2, "0")}/${String(date.getMonth() + 1).padStart(2, "0")}/${date.getFullYear()}`;
+                return `${day}/${month}/${year}`;
             case "YYYY-MM-DD":
-                return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
+                return `${year}-${month}-${day}`;
             case "Month Day, Year":
-                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
             default:
-                return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`; // Default format
+                return `${months[date.getUTCMonth()]} ${date.getUTCDate()}, ${year}`;
         }
-    };
+    }
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
@@ -83,12 +91,18 @@ class DashboardLayoutViewModel {
 
     // Utility function to parse various common date formats
     parseDate(dateString) {
+        // Used to prevent 'split' errors
+        if (!dateString || typeof dateString !== "string") {
+            console.warn("Invalid dateString input:", dateString);
+            return null; // Return null for invalid input
+        }
+
         // Try parsing ISO format first (YYYY-MM-DD)
         let date = new Date(dateString);
         if (!isNaN(date.getTime())) return date;
 
         // Try parsing other common formats
-        const delimiters = ["/", "-"];
+        const delimiters = ["-","/"];
         for (const delimiter of delimiters) {
             const parts = dateString.split(delimiter);
             if (parts.length === 3) {
@@ -96,9 +110,9 @@ class DashboardLayoutViewModel {
 
                 // Determine format based on value constraints
                 if (part1 > 31) { // YYYY-MM-DD or YYYY/DD/MM
-                    date = new Date(part1, part2 - 1, part3);
+                    date = new Date(part1, part2, part3);
                 } else if (part3 > 31) { // MM/DD/YYYY or DD/MM/YYYY
-                    date = new Date(part3, part1 - 1, part2);
+                    date = new Date(part3, part1, part2);
                 }
 
                 if (!isNaN(date.getTime())) return date;
@@ -110,8 +124,12 @@ class DashboardLayoutViewModel {
 
     // Splits the date from time in a Date object
     splitDateTime(dateTime) {
+        //console.log(`Split Date Time: ${dateTime}`);
+
         if (!dateTime || typeof dateTime !== "string") {
-            throw new Error("Invalid input. Expected a DateTime string.");
+            //throw new Error("Invalid input. Expected a DateTime string.");
+            console.error("Invalid input. Expected a DateTime string.");
+            return "";
         }
 
         const dateObj = new Date(dateTime);
@@ -261,11 +279,13 @@ class DashboardLayoutViewModel {
     // Captialize the first letter of a string
     capitalize(string) {
         if (!string || typeof string !== "string") {
-            throw new Error(`Expected a string. Got ${typeof string} instead.`);
+            //throw new Error(`Expected a string. Got ${typeof string} instead.`);
+            console.log("instead of string, capitalize got ",string)
+            return "failed capitalize"
         }
 
         const capitalized = string.slice(0,1).toUpperCase() + string.slice(1);
-        console.log(`Formatted string: ${capitalized}`);
+        //console.log(`Formatted string: ${capitalized}`);
 
         return capitalized;
     };
@@ -339,7 +359,7 @@ class DashboardLayoutViewModel {
                 }
             });
 
-            console.log(`Appointment ID: ${appointment_id}\n${response.data}`);
+            console.log("Appointment ID:", appointment_id,"\n",response.data);
 
             return response.data;
         } catch (error) {
@@ -584,6 +604,17 @@ class DashboardLayoutViewModel {
             .sort((a, b) => new Date(a.start_date) - new Date(b.start_date));
       
         return upcoming.length > 0 ? upcoming[0] : null;
+    }
+
+    isPrescriptionActive(takenDateStr, duration) {
+        if (!takenDateStr || typeof duration !== 'number') return false;
+
+        const start = new Date(takenDateStr);
+        const end = new Date(start);
+        end.setDate(start.getDate() + duration);
+
+        const now = new Date();
+        return now <= end;
     }
 
 };

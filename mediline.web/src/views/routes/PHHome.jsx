@@ -6,14 +6,13 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import  PharmaDashboardViewModel  from '../../viewModels/PHViewModel'; 
-
+import Spinner from '../../components/General/Spinner';
 
 function PHHome() {
     const { currentUser } = useContext(UserContext);
     const users = dashboardLayoutViewModel.getUsers();
-    console.log('user:', currentUser);
     const [medications, setMedications] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [prescLoading, setLoading] = useState(true);
     useEffect(() => {
         const loadMeds = async () => {
             setLoading(true);
@@ -25,18 +24,16 @@ function PHHome() {
             }
             setLoading(false);
         };
-      
-        loadMeds();
-    }, [currentUser.user_id]);
+
+        if (currentUser?.user_id) {
+            loadMeds();
+        }
+    }, [currentUser?.user_id]);
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
     //const pharmacistData = dashboardLayoutViewModel.getPharmacistData(user.id);
     //const patients = dashboardLayoutViewModel.getCustomers(pharmacistData.pharmacyAddress);
     const { data, status, isLoading, isError, error } = PharmaDashboardViewModel.usePharmaHome(currentUser.user_id);
-    console.log('data:', data);
-    console.log(`isLoading: ${isLoading}`)
-    console.log(`error: ${error}`)
-
-    if (isLoading) return <p>Loading…</p>;
+    if (isLoading) return <Container fitParent={true} customClass="p-5" content={[<Spinner size={64} />]} />;
     if (isError)   return <p>Error: {error.message}</p>;
 
     return (
@@ -134,14 +131,14 @@ function PHHome() {
                                                                                                                 <>
                                                                                                                     <CircleProgressBar
                                                                                                                         circleWidth="150"
-                                                                                                                        fraction={data.countRx.collected_prescription+13} // temp number
-                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription+20} // temp number 
+                                                                                                                        fraction={data.countRx.collected_prescription}
+                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription === 0 ? 1 : data.countRx.collected_prescription + data.countRx.processing_prescription}
                                                                                                                         strokeColor="hsl(210, 35%, 50%)"
                                                                                                                         progressColor="hsl(200, 70%, 70%)"
                                                                                                                     />
                                                                                                                     <CircleProgressBar
-                                                                                                                        fraction={data.countRx.processing_prescription+7} // temp number
-                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription+20} // temp number
+                                                                                                                        fraction={data.countRx.collected_prescription + data.countRx.processing_prescription - data.requestCount}
+                                                                                                                        total={data.countRx.collected_prescription + data.countRx.processing_prescription === 0 ? 1 : data.countRx.collected_prescription + data.countRx.processing_prescription}
                                                                                                                         circleWidth="150"
                                                                                                                         strokeColor="hsl(0, 0%, 40%)"
                                                                                                                         progressColor="hsl(45, 60%, 60%)"
@@ -173,7 +170,7 @@ function PHHome() {
                                                                                                             items={[
                                                                                                                 <>
                                                                                                                     <div className="br-lg" style={{ height: "17px", width: "17px", background: "hsl(200, 70%, 70%)" }}></div>
-                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Fulfilled</p>
+                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Paid</p>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
@@ -184,7 +181,7 @@ function PHHome() {
                                                                                                             items={[
                                                                                                                 <>
                                                                                                                     <div className="br-lg" style={{ height: "17px", width: "17px", background: "hsl(45, 60%, 60%)" }}></div>
-                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Pending</p>
+                                                                                                                    <p className="font-4 font-semibold text-neutral-600">Fulfilled</p>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
@@ -256,6 +253,7 @@ function PHHome() {
                                                                                         <>
                                                                                             <h5 className="font-3 text-neutral-600">MEDICATION</h5>
                                                                                             <h5 className="font-3 text-neutral-600">STOCK</h5>
+                                                                                            <h5 className="font-3 text-neutral-600">EXPIRATION</h5>
                                                                                         </>
                                                                                     ]}
                                                                                 />
@@ -282,7 +280,7 @@ function PHHome() {
                                                                         items={[
                                                                             <>
                                                                                 {
-                                                                                    users.map(() => ( //inventory goes here if it works
+                                                                                    data.inventoryStock.map((stock) => (
                                                                                         <ItemGroup
                                                                                             axis={false}
                                                                                             style={{
@@ -290,8 +288,9 @@ function PHHome() {
                                                                                             }}
                                                                                             items={[
                                                                                                 <>
-                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">data.inventoryStock.medication_name</h5>
-                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">data.inventoryStock.quantity</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">{stock.medication_name}</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">{stock.quantity} units</h5>
+                                                                                                    <h5 className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(stock.expiration_date)}</h5>
                                                                                                 </>
                                                                                             ]}
                                                                                         />
@@ -352,7 +351,7 @@ function PHHome() {
                                                                     <h5 className="font-3 text-neutral-600">PATIENT</h5>
                                                                     <h5 className="font-3 text-neutral-600">DOCTOR</h5>
                                                                     <h5 className="font-3 text-neutral-600">MEDICATION</h5>
-                                                                    <h5 className="font-3 text-neutral-600">ASSIGNED</h5>
+                                                                    <h5 className="font-3 text-neutral-600">DURATION</h5>
                                                                     <h5 className="font-3 text-neutral-600">DOSAGE</h5>
                                                                     <h5 className="font-3 text-neutral-600">STATUS</h5>
                                                                 </>
@@ -372,8 +371,8 @@ function PHHome() {
                                                             }}
                                                             items={[
                                                                 <>
-                                                                    {loading ? (
-                                                                        <p className="font-3 text-neutral-700">Loading prescriptions...</p>
+                                                                    {prescLoading ? (
+                                                                        <Container fitParent customClass="p-5" content={[<Spinner size={64} />]} />
                                                                         ) : medications.length === 0 ? (
                                                                         <p className="font-3 text-neutral-700">No prescriptions found.</p>
                                                                         ) : (
@@ -389,10 +388,10 @@ function PHHome() {
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">{med.patientName}</h5>
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">Dr. {med.doctorName}</h5>
                                                                                 <h5 className="font-3 font-semibold text-neutral-600">{med.medication}</h5>
-                                                                                <h5 className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.splitDateTime(med.date).date}</h5>
-                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.dosage}</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.duration} days</h5>
+                                                                                <h5 className="font-3 font-semibold text-neutral-600">{med.dosage} units</h5>
                                                                                 <ItemGroup
-                                                                                    customClass={`br ${med.status === 'Filled' ? 'bg-success-500' : 'bg-warning-500'}`}
+                                                                                    customClass={`br ${med.status === 'PAID' ? 'bg-success-300' : 'bg-warning-300'}`}
                                                                                     items={[
                                                                                         <h3 className="text-white font-semibold font-3 py-1 px-3 br">{med.status}</h3>
                                                                                     ]}

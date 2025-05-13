@@ -16,7 +16,8 @@ export default function ECCheckbox({
     id = "0",
     personal = false,
     checked,
-    onChange
+    onChange,
+    width = "27vw",
 })
 {
     const defaultChecked = checked ? checked : false;
@@ -37,7 +38,7 @@ export default function ECCheckbox({
             axis={false}
             stretch={true}
             style={{
-                width:"27vw"
+                width: width
             }}
             items={[
                 <>

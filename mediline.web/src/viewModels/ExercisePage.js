@@ -27,27 +27,42 @@ export const fetchChartData = async (patientId) => {
         }
     });
     console.log('Fetched data:', data);
-    let chartDataCalorie = new Array(data.length)
-    let chartDataHeight = new Array(data.length)
-    let chartDataExercise = new Array(data.length)
-    let chartDataSleep = new Array(data.length)
-    let chartDataWeight = new Array(data.length)
-    for(var i = 0; i < data.length; i++) {
-        chartDataCalorie[i] = data[i].calories_intake;
-        chartDataHeight[i] = data[i].height;
-        chartDataExercise[i] = data[i].hours_of_exercise;
-        chartDataSleep[i] = data[i].hours_of_sleep;
-        chartDataWeight[i] = data[i].weight;
+
+    let chartDataCalorie = [];
+    let chartDataHeight = [];
+    let chartDataExercise = [];
+    let chartDataSleep = [];
+    let chartDataWeight = [];
+    let chartDataDates = [];
+    let chartDataDays = [];
+
+    for (let i = 0; i < data.length; i++) {
+        chartDataCalorie.push(data[i].calories_intake);
+        chartDataHeight.push(data[i].height);
+        chartDataExercise.push(data[i].hours_of_exercise);
+        chartDataSleep.push(data[i].hours_of_sleep);
+        chartDataWeight.push(data[i].weight);
+
+        // Assuming data[i].created_at or data[i].date is the submission date
+        const dateStr = data[i].created_at;
+        chartDataDates.push(dateStr);
+
+        // Convert to day of week label
+        const dayLabel = dateStr ? new Date(dateStr).toLocaleDateString('en-US', { weekday: 'short' }) : '';
+        chartDataDays.push(dayLabel);
     }
+
     return {
         calories: chartDataCalorie,
         height: chartDataHeight,
         exercise: chartDataExercise,
         sleep: chartDataSleep,
-        weight: chartDataWeight
+        weight: chartDataWeight,
+        days: chartDataDays, // <-- Pass this to your chart
+        dates: chartDataDates
     };
 };
-
+/*
 export const fetchMedicationList = async (patientId) => {
     const { data } = await axios.get(`/prescription/user/${patientId}`, {
         headers: {
@@ -93,8 +108,8 @@ const fetchPrescriptionList = async (medId = 0) => {
         dosage:doseList
     };
 };
-
-export const submitForm = async (formData, patientId) => {
+*/
+export const submitForm = async (formData, patientId, doctorId) => {
     try {
         const response = await axios.post(`/report/user/${patientId}`, {
             calories_intake: Number(formData.calories),
@@ -129,10 +144,10 @@ export const submitExercise = async (exerciseData, patientId, doctorId) => {
         const responses = await Promise.all(
             exercises.map(async ([exerciseId, reps]) => {
                 const response = await axios.post(`/exercise/${exerciseId}`, {
-                    reps: reps, 
-                    patient_id: patientId,
-                    doctor_id: doctorId,
-                    status: "in_progress"
+                    reps: reps.toString(), 
+                    patient_id: Number(patientId),
+                    doctor_id: Number(doctorId),
+                    status: "IN_PROGRESS"
                 } , {
                     headers: {
                         "Content-Type": "application/json",
@@ -152,5 +167,45 @@ export const submitExercise = async (exerciseData, patientId, doctorId) => {
     }
 };
 
+export const updateExerciseStatus = async (exerciseId, status, reps) => {
+    try {
+        const response = await axios.put(`/exercise/${exerciseId}`, {
+            status: status,
+            reps: reps
+        }, {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+            }
+        });
+        console.log(`Exercise ${exerciseId} status updated to ${status}:`, response.data);
+        return response.data;
+    } catch (error) {
+        console.error(`Error updating status for exercise ${exerciseId}:`, error);
+        throw error;
+    }
+};
 
-
+export const fetchMedicationList = async (patientId) => {
+    try{
+        const { data } = await axios.get(`/prescription/patient/${patientId}/history`, {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+        }
+    });
+    let medList = [];
+    for (let i = 0; i < data.length; i++) {
+        for (let j = 0; j < data[i].length; j++) {
+            medList.push({
+                ...data[i][j],
+            });
+        }
+    }
+    console.log('Fetched medications:', medList);
+    return medList;
+    }catch (error) {
+        console.error('Error fetching new medication list:', error);
+        throw error;
+    }
+}

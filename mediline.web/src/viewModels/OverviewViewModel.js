@@ -1,50 +1,68 @@
 import axiosInstance from '../assets/js/api';
 
-class PDHomeViewModel {
+class OverviewViewModel {
     // Centralized data fetching function
-    //async fetchData(userId, doctor) {
-    //    try {
-    //        // Use Promise.all to fetch data concurrently
-    //        const [pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
-    //            this.getPastAppointments(userId), // Fetch past appointments
-    //            this.getUpcomingAppointments(userId), // Fetch upcoming appointments
-    //            this.getPrescriptions(userId), // Fetch prescriptions
-    //        ]);
+    async fetchData(userId, doctor) {
+        try {
+            // Use Promise.all to fetch data concurrently
+            const [user, pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
+                this.getUserInfo(userId),
+                this.getPastAppointments(userId), // Fetch past appointments
+                this.getUpcomingAppointments(userId), // Fetch upcoming appointments
+                this.getPrescriptions(userId), // Fetch prescriptions
+            ]);
 
-    //        let doctorInfo = null;
+            let doctorInfo = null;
+            let pharmacyInfo = null;
 
-    //        // Check if the doctor object is empty
-    //        if (doctor && Object.keys(doctor).length > 0) {
-    //            doctorInfo = await this.getUserInfo(doctor.doctor_id);
-    //        }
+            // Check if the doctor object is not empty
+            if (doctor && Object.keys(doctor).length > 0) {
+                doctorInfo = await this.getUserInfo(doctor.doctor_id);
+            }
 
-    //        console.log(`Patient Dashboard Data:\n${JSON.stringify({
-    //            pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-    //            upcomingAppointments: upcomingAppointments || [],
-    //            doctorData: doctor || {},
-    //            doctorInfo: doctorInfo || {},
-    //            prescriptions: prescriptions || [],
-    //        }, null, 2)}`);
+            // Fetch user info to get pharmacy details
+            const userInfo = await this.getUserInfo(userId);
+            if (userInfo && userInfo.pharmacy) {
+                pharmacyInfo = userInfo.pharmacy; // Extract pharmacy information
+            }
 
-    //        // Return the results as an object
-    //        return {
-    //            pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-    //            upcomingAppointments: upcomingAppointments || [],
-    //            doctorData: doctor || {},
-    //            doctorInfo: doctorInfo || {},
-    //            prescriptions: prescriptions || [],
-    //        };
-    //    } catch (error) {
-    //        console.error("Error fetching data for Patient Dashboard:", error);
-    //        return {
-    //            pastAppointments: [],
-    //            upcomingAppointments: [],
-    //            doctor: {},
-    //            doctorInfo: {},
-    //            prescriptions: [],
-    //        };
-    //    }
-    //}
+            const { activeMedications, pastMedications } = await this.getPrescriptions(userId);
+
+            //console.log(`Patient Profile Data:\n${JSON.stringify({
+            //    pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
+            //    upcomingAppointments: upcomingAppointments || [],
+            //    doctorData: doctor || {},
+            //    doctorInfo: doctorInfo || {},
+            //    prescriptions: prescriptions || [],
+            //    pharmacyInfo: pharmacyInfo || {}, // Include pharmacy information
+            //}, null, 2)}`);
+
+            // Return the results as an object
+            return {
+                user: user || [],
+                pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
+                upcomingAppointments: upcomingAppointments || [],
+                doctorData: doctor || {},
+                doctorInfo: doctorInfo || {},
+                activeMedications: activeMedications || [],
+                pastMedications: pastMedications || [],
+                pharmacyInfo: pharmacyInfo || {}, // Include pharmacy information
+            };
+        } catch (error) {
+            console.error("Error fetching data for Patient Dashboard:", error);
+            return {
+                user: [],
+                pastAppointments: [],
+                upcomingAppointments: [],
+                doctor: {},
+                doctorInfo: {},
+                activeMedications: [],
+                pastMedications: [],
+                pharmacyInfo: {}, // Return an empty object if there's an error
+            };
+        }
+    }
+
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
@@ -58,94 +76,13 @@ class PDHomeViewModel {
 
             const user = response.data;
 
-            console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
+            //console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
 
             return user;
         } catch (error) {
             console.error("Error fetching user:", error);
         }
     };
-
-    async fetchData(userId, doctor) {
-        try {
-            // Use Promise.all to fetch data concurrently
-            const [user, pastAppointments, upcomingAppointments] = await Promise.all([
-                this.getUserInfo(userId),
-                this.getPastAppointments(userId), // Fetch past appointments
-                this.getUpcomingAppointments(userId), // Fetch upcoming appointments
-                // this.getPrescriptions(userId), // Fetch prescriptions
-            ]);
-
-            let doctorInfo = null;
-
-            // Check if the doctor object is empty
-            if (doctor && Object.keys(doctor).length > 0) {
-                doctorInfo = await this.getUserInfo(doctor.doctor_id);
-            }
-
-            const { activeMedications, pastMedications } = await this.getPrescriptions(userId);
-
-            // Fetch additional data for past appointments
-            const enrichedPastAppointments = await Promise.all(
-                pastAppointments.map(async (appointment) => {
-                    console.log(`Appointment ID: ${appointment.appointment.appointment_id}`);
-                    const appointmentData = await this.getAppointmentData(appointment.appointment.appointment_id);
-                    const invoiceData = await this.getAppointmentInvoice(userId, appointment.created_at);
-                    return {
-                        ...appointment,
-                        ...appointmentData,
-                        invoice: invoiceData || null, // Add invoice data if available
-                    };
-                })
-            );
-
-            // Fetch additional data for upcoming appointments
-            const enrichedUpcomingAppointments = await Promise.all(
-                upcomingAppointments.map(async (appointment) => {
-                    const appointmentData = await this.getAppointmentData(appointment.appointment_id);
-                    const invoiceData = await this.getAppointmentInvoice(userId, appointment.created_at);
-                    return {
-                        ...appointment,
-                        appointmentDetails: appointmentData,
-                        invoice: invoiceData || null, // Add invoice data if available
-                    };
-                })
-            );
-
-            console.log(`Patient Dashboard Data:\n${JSON.stringify({
-                user: user || [],
-                pastAppointments: enrichedPastAppointments || [], // Default to an empty array if null/undefined
-                upcomingAppointments: enrichedUpcomingAppointments || [],
-                doctorData: doctor || {},
-                doctorInfo: doctorInfo || {},
-                activeMedications: activeMedications || [],
-                pastMedications: pastMedications || [],
-            }, null, 2)}`);
-
-            // Return the results as an object
-            return {
-                user: user || [],
-                pastAppointments: enrichedPastAppointments || [], // Default to an empty array if null/undefined
-                upcomingAppointments: enrichedUpcomingAppointments || [],
-                doctorData: doctor || {},
-                doctorInfo: doctorInfo || {},
-                activeMedications: activeMedications || [],
-                pastMedications: pastMedications || [],
-            };
-        } catch (error) {
-            console.error("Error fetching data for Patient Dashboard:", error);
-            return {
-                user: [],
-                pastAppointments: [],
-                upcomingAppointments: [],
-                doctor: {},
-                doctorInfo: {},
-                activeMedications: [],
-                pastMedications: [],
-            };
-        }
-    }
-
 
     // Helper method to fetch a patient's prescriptions
     //async getPrescriptions(id) {
@@ -313,42 +250,7 @@ class PDHomeViewModel {
         }
     }
 
-    // Helper method to fetch a patient's past appointments
-    //async getPastAppointments(id) {
-    //    try {
-    //        // Retrieving data from the medical record endpoint
-    //        const response = await axiosInstance.get(`/medical_record/${id}?sort_by=created_at&order_by=desc`, {
-    //            headers: {
-    //                "Content-Type": "application/json",
-    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-    //            }
-    //        });
-
-    //        // Stores the response in a constant
-    //        const appointments = response.data;
-
-    //        // Fetch doctor info for each appointment concurrently
-    //        const appointmentsWithDoctorInfo = await Promise.all(
-    //            appointments.map(async (appt) => {
-    //                if (appt.doctor_id) {
-    //                    const doctorInfo = await this.getUserInfo(appt.doctor_id);
-    //                    return { ...appt, doctorInfo }; // Add doctorInfo to the appointment object
-    //                }
-    //                return appt; // If no doctor_id, return the appointment as is
-    //            })
-    //        );
-
-    //        console.log(`Past appointments fetched:\n${JSON.stringify(appointmentsWithDoctorInfo, null, 2)}`);
-
-    //        // Returns the modified appointments with doctor info included
-    //        return appointmentsWithDoctorInfo;
-    //    } catch (error) {
-    //        console.error("Error fetching past appointments:", error.response?.data || error.message);
-    //        return [];
-    //    }
-    //}
-
-
+    
 
     async getPastAppointments(id) {
         try {
@@ -403,25 +305,6 @@ class PDHomeViewModel {
         }
     }
 
-    //async getUpcomingAppointments(user_id) {
-    //    try {
-    //        const response = await axiosInstance.get(`/appointment/upcoming/${user_id}`, {
-    //            headers: {
-    //                "Content-Type": "application/json",
-    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-    //            }
-    //        });
-
-    //        console.log(`Upcoming appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
-
-    //        const appointments = response.data;
-
-    //        return appointments;
-    //    } catch (error) {
-    //        console.error(`No appointments on record: ${error.response?.data || error.message}`);
-    //    }
-    //}
-
     // Splits the date from time in a Date object
     splitDateTime(dateTime) {
         if (!dateTime || typeof dateTime !== "string") {
@@ -442,7 +325,6 @@ class PDHomeViewModel {
         return { date: formattedDate, time: formattedTime };
     };
 
-    // Asynchronous method to book an appointment
     // Method to combine date and time strings into a Date object
     combineDateAndTime(dateString, timeString) {
         if (!dateString || !timeString) {
@@ -483,99 +365,66 @@ class PDHomeViewModel {
         return dateObject;
     }
 
-    abbreviateName(fullName) {
-        if (fullName === null) {
-            return "";
-        }
+    // Asynchronous method to post survey data
+    async submitSurvey(id, doctorId, data) {
+        // Append ID and doctor ID to the form data
+        const payload = {
+            ...data,
+            doctor_id: doctorId,
+            report_id: 1,
+        };
 
-        // Split the fullName string by spaces.
-        const nameParts = fullName.trim().split(" ");
-
-        // Check we have at least two parts.
-        if (nameParts.length < 2) {
-            return fullName; // or handle differently if there's only one name
-        }
-
-        // Get the first character of the first name and the full last name.
-        const firstInitial = nameParts[0].charAt(0);
-        const lastName = nameParts[nameParts.length - 1];
-
-        // Construct the abbreviated name.
-        return `${firstInitial}. ${lastName}`;
-    }
-
-    // Updated bookAppointment method
-    async bookAppointment(dateInput, timeInput, doctorId, patientId) {
+        console.log(`Payload: ${JSON.stringify(payload, null, 2)}`);
         try {
-            const patient_id = parseInt(patientId);
-
-            // Validate inputs
-            if (!dateInput || !timeInput || !doctorId || !patientId) {
-                console.error("Invalid inputs. Ensure date, time, doctor ID, and patient ID are provided.");
-                return;
-            }
-
-            // Combine date and time into a start_date
-            const startDate = this.combineDateAndTime(dateInput, timeInput);
-
-            // Validate that the appointment time falls within the doctor's working hours (09:00 - 21:00)
-            const { time: appointmentTime } = this.splitDateTime(startDate.toISOString());
-            const [hours, minutes] = appointmentTime.split(":").map(Number);
-            if (hours < 9 || hours > 21 || (hours === 21 && minutes > 0)) {
-                console.error("Invalid appointment time: Appointments can only be scheduled between 09:00 and 21:00.");
-                return;
-            }
-
-            // Automatically set the end_date to 30 minutes after the start_date
-            const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
-
-            // Format startDate and endDate to remove milliseconds
-            const formattedStartDate = startDate.toISOString().split(".")[0];
-            const formattedEndDate = endDate.toISOString().split(".")[0];
-
-            // Fetch upcoming appointments for the user
-            const upcomingAppointments = await this.getUpcomingAppointments(patientId);
-
-            // Extract the date from the start_date
-            const { date: appointmentDate } = this.splitDateTime(startDate.toISOString());
-
-            // Check if the new appointment date conflicts with any existing upcoming appointments
-            const isDateConflict = upcomingAppointments.some((appt) => {
-                const existingAppointmentDate = this.splitDateTime(appt.start_date).date;
-                return existingAppointmentDate === appointmentDate;
-            });
-
-
-            if (isDateConflict) {
-                console.error("Appointment conflict: You already have an appointment scheduled on this date.");
-                return;
-            }
-
-            // Prepare the payload
-            const payload = {
-                doctor_id: doctorId,
-                patient_id: patient_id,
-                start_date: formattedStartDate, // Use formatted date
-                end_date: formattedEndDate, // Use formatted date
-                treatment: "Consultation"
-            };
-
-            // Proceed to book the appointment
-            const response = await axiosInstance.post(`/appointment/add`, payload, {
+            const response = await axiosInstance.post(`/report/user/${id}`, {
+                calories_intake: Number(payload.calories_intake),
+                doctor_id: payload.doctor_id,
+                height: Number(payload.height),
+                hours_of_exercise: Number(payload.hours_of_exercise),
+                hours_of_sleep: Number(payload.hours_of_sleep),
+                report_id: payload.report_id,
+                weight: Number(payload.weight),
+            },{
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
                 }
             });
 
-            console.log("Appointment successfully booked:", response.data);
-            return response.data;
+            const user = response.data;
+
+            console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
+
+            return user;
         } catch (error) {
-            console.error("Error booking appointment:", error.response?.data || error.message);
+            console.error("Error fetching user:", error);
         }
-    }
+    };
 
+    // Asynchronous method to fetch user information
+    async updateInfo(id, data) {
+        let response = data;
+        const { zipcode, user_id, address, ...filteredData } = response;
 
+        // Append ID and doctor ID to the form data
+        const payload = {
+            ...filteredData
+        };
+
+        console.log(`Payload: ${JSON.stringify(payload, null, 2)}`);
+        try {
+            const response = await axiosInstance.put(`/patient/${id}`, payload, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            const user = response.data;
+            console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    };
 }
 
-export const pdHomeVM = new PDHomeViewModel();
+export const overviewVM = new OverviewViewModel();

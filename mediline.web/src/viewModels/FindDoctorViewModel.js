@@ -40,7 +40,7 @@ const FindDoctorViewModel = {
 
             // Decode the Base64 string and parse the JSON
             const decodedPayload = JSON.parse(atob(payloadBase64));
-            console.log(`Decoded Token: ${decodedPayload}`);
+            //console.log("Decoded Token:",decodedPayload);
 
             // Stores the super user's token in local storage
             localStorage.setItem("jwtToken", token);
@@ -71,32 +71,10 @@ const FindDoctorViewModel = {
 
     filterByURL: false,
 
-    // Helper functions which would be used to make calls to the appropriate methods in the service layer
-    //filterDoctors: function (doctors) {
-    //    const { name, specialty, rating, acceptingNewPatients } = this.filters;
-
-    //    // Convert the rating range to numerical values
-    //    const [minRating, maxRating] = rating
-    //        ? rating.split("-").map((r) => parseFloat(r.replace("%", "")))
-    //        : [null, null];
-
-    //    return doctors.filter((doctor) => {
-    //        const doctorRating = parseFloat(doctor.rating);
-
-    //        // Check if the doctor matches the filters
-    //        const matchesName = !name || doctor.name.toLowerCase().includes(name.toLowerCase());
-    //        const matchesSpecialty = !specialty || doctor.specialization.toLowerCase() === specialty.toLowerCase();
-    //        const matchesRating = !rating || (doctorRating >= minRating && doctorRating <= maxRating);
-    //        const matchesAcceptance = !acceptingNewPatients || doctor.acceptingNewPatients;
-
-    //        return matchesName && matchesSpecialty && matchesRating && matchesAcceptance;
-    //    });
-    //},
-
     filterDoctors: function (doctors) {
         const { name, specialty, rating, acceptingNewPatients, search } = this.filters;
 
-        console.log(`Active Filters: ${JSON.stringify(this.filters, null, 2)}`);
+        //console.log(`Active Filters: ${JSON.stringify(this.filters, null, 2)}`);
 
         // Convert the rating range to numerical values
         const [minRating, maxRating] = rating
@@ -128,7 +106,7 @@ const FindDoctorViewModel = {
 
     // Call to the update filter method in the service layer
     updateFilter: function (field, value) {
-        console.log(`${field}: ${value}`);
+        //console.log(`${field}: ${value}`);
         this.activeFilters[field] = value;
     },
 
@@ -154,7 +132,7 @@ const FindDoctorViewModel = {
     // Call to the update search filter method in the service layer
     updateSearch: function (query) {
         this.activeFilters.search = query;
-        console.log("Search String: ", query);
+        //console.log("Search String: ", query);
 
         // Determines if the filter has already been applied in a dropdown
         if (!query.trim()) {
@@ -226,7 +204,7 @@ const FindDoctorViewModel = {
 
             const specialties = this.getSpecialties(doctors);
 
-            console.log(`Specialties:\n${JSON.stringify(specialties, null, 2)}`);
+            //console.log(`Specialties:\n${JSON.stringify(specialties, null, 2)}`);
 
             return {
                 doctors: doctors,
@@ -238,42 +216,6 @@ const FindDoctorViewModel = {
         }
     },
 
-    // Fetch doctors and their ratings in one function call
-    //async fetchDoctors() {
-    //    try {
-    //        const response = await axiosInstance.get("/doctor/", {
-    //            headers: {
-    //                "Content-Type": "application/json",
-    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-    //            }
-    //        });
-
-    //        const doctors = response.data;
-
-    //        // Fetch ratings for all doctors concurrently using Promise.all
-    //        const doctorsWithRatings = await Promise.all(
-    //            doctors.map(async (doctor) => {
-    //                const rating = await this.getDoctorRating(doctor.user_id);
-    //                const percentRating = Math.round(parseFloat(rating) * 10);
-    //                const user = await this.getUserInfo(doctor.user_id);
-
-    //                return {
-    //                    ...doctor,
-    //                    user: user,
-    //                    rating: percentRating,
-    //                    acceptingPatients: user.accepting_patients
-    //                };
-    //            })
-    //        );
-
-    //        //console.log(`Is it an array: ${Array.isArray(doctorsWithRatings)}\nDoctors With Ratings: ${doctorsWithRatings}`);
-
-    //        return doctorsWithRatings;
-    //    } catch (error) {
-    //        console.error("Error fetching doctors or ratings:", error);
-    //        return [];
-    //    }
-    //},
 
     async fetchDoctors() {
         try {
@@ -295,19 +237,19 @@ const FindDoctorViewModel = {
             const doctorsWithRatings = await Promise.all(
                 doctors.map(async (doctor) => {
                     const rating = await this.getDoctorRating(doctor.user_id);
-                    const percentRating = Math.round(parseFloat(rating) * 10);
+                    const percentRating = Math.round(parseFloat(rating) * 20);
                     const user = await this.getUserInfo(doctor.user_id);
-
+                    
                     return {
                         ...doctor,
                         user: user,
-                        rating: percentRating,
+                        rating: percentRating == 0 ? 100 : percentRating,
                         acceptingPatients: user.accepting_patients,
                     };
                 })
             );
 
-            console.log("Doctors with ratings:", doctorsWithRatings);
+            //console.log("Doctors with ratings:", doctorsWithRatings);
 
             return doctorsWithRatings;
         } catch (error) {
@@ -356,42 +298,34 @@ const FindDoctorViewModel = {
             doctor_id: this.doctorId
         }
 
-        console.log(`Patient ${userId} is adding doctor ${this.doctorId}\n${JSON.stringify(payload, null, 2)}`);
+        //console.log(`Patient ${userId} is adding doctor ${this.doctorId}\n${JSON.stringify(payload, null, 2)}`);
 
-        try {
-            const response = await axiosInstance.post(`/request/patient/${userId}/doctor/${this.doctorId}`, payload, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
-            });
-            const user = response.data
-            console.log("Doctor successfully added!\n ", JSON.stringify(user, null, 2));
-        } catch (error) {
-            console.error("Error adding a doctor:", error);
+        const doctor = await this.getUserInfo(this.doctorId);
+
+        console.log(`Doctor Information: ${JSON.stringify(doctor, null, 2)}`);
+
+        // Validates that a doctor is accepting patients
+        if (!doctor.accepting_patients) {
+            alert(`Dr. ${doctor.last_name} is not accepting patients currently. Please check again later!`);
+            return "";
+        }
+        else {
+            alert(`Dr. ${doctor.last_name} is accepting patients!`);
+
+            try {
+                const response = await axiosInstance.post(`/request/patient/${userId}/doctor/${this.doctorId}`, payload, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                    }
+                });
+                const user = response.data
+                console.log("Doctor successfully added!\n ", JSON.stringify(user, null, 2));
+            } catch (error) {
+                console.error("Error adding a doctor:", error);
+            }
         }
     },
-
-    // Call to the get specialties method in the service layer
-    //getSpecialties(doctors) {
-    //    console.log("Doctors Inside The Passed Parameter:", JSON.stringify(doctors, null, 2));
-    //    console.log("Is Doctors An Array?", Array.isArray(doctors));
-
-    //    if (!Array.isArray(doctors)) {
-    //        console.error("Doctors is not an array:", doctors);
-    //        return [];
-    //    }
-
-    //    const specialties = doctors.map((doctor) => doctor.specialization);
-
-    //    //console.log(`Specialties:\n${JSON.stringify(specialties, null, 2)}`);
-
-    //    // Convert specialties into objects that can be inputted into the Select List component
-    //    return specialties.map((specialty) => ({
-    //        label: specialty,
-    //        value: specialty.replace(/\s+/g, "").toLowerCase() // Formats value for consistency
-    //    }));
-    //},
 
     getSpecialties(doctors) {
         if (!Array.isArray(doctors) || doctors.length === 0) {
@@ -420,65 +354,6 @@ const FindDoctorViewModel = {
         return ratings;
     },
 
-    // Call to the get specialties method in the service layer
-    //getSpecialties: function () {
-    //    return specialties;
-    //},
-
-    // Fetch doctors from the backend
-    //async fetchDoctors() {
-    //    try {
-    //        const response = await axiosInstance.get("/doctor/", {
-    //            headers: {
-    //                "Content-Type": "application/json",
-    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-    //            }
-    //        });
-
-    //        console.log(`Doctors fetched: ${response.data}`);
-
-    //        const rating = await this.getDoctorRating(response.data.user_id);
-
-    //        const percentRating = Math.round(parseFloat(rating) * 10);
-
-    //        const payload = {
-    //            id: response.data.user_id,
-    //            name: response.data.name,
-    //            specialization: response.data.specialization,
-    //            rating: percentRating
-    //        }
-
-    //        return payload;
-
-    //        //return response.data.map((doctor, i) => ({
-    //        //    ...doctor,
-    //        //    rating: `${80 + (i % 5) * 5}%`,
-    //        //    acceptingNewPatients: i % 2 === 0
-    //        //}));
-    //    }
-    //    catch (error) {
-    //        console.error("Error fetching doctors: ", error);
-    //        return [];
-    //    }
-    //},
-
-    //async getDoctorRating(id) {
-    //    try {
-    //        const response = await axiosInstance.get(`/doctor/${id}/ratings`, {
-    //            headers: {
-    //                "Content-Type": "application/json",
-    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-    //            }
-    //        });
-
-    //        const rating = response.data.average_rating;
-
-    //        console.log(`Rating fetched: ${rating}`);
-    //        return
-    //    } catch (error) {
-    //        console.error("Error fetching doctor rating: ", error);
-    //    }
-    //},
 };
 
 export default FindDoctorViewModel;

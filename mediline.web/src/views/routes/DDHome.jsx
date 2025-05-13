@@ -6,6 +6,7 @@ import DropdownMenu from '../../components/General/DropdownMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import  DoctorDashboardViewModel  from '../../viewModels/DDViewModel'; 
+import Spinner from '../../components/General/Spinner';
 
 
 function DDHome() {
@@ -52,7 +53,8 @@ function DDHome() {
     //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate), null, 2)}`);
     //console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
     //console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
-    if (isLoading) return <p>Loading…</p>;
+    if (isLoading)
+        return <Container customClass="p-5 align-items-center justify-content-center" fitParent={true} content={[<Spinner size={64} />]} />;
     if (isError)   return <p>Error: {error.message}</p>;
     return (
         <Container
