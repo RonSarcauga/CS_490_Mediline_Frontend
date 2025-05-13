@@ -1809,7 +1809,9 @@ function PDProfile() {
                                                                                                             axis={false}
                                                                                                             stretch={true}
                                                                                                             isClickable={true}
-                                                                                                            onClick={() => handleOpenModal("exercise")}
+                                                                                                            onClick={() => {
+                                                                                                                handleOpenModal("exercise")
+                                                                                                            }}
                                                                                                             style={{
                                                                                                                 bottom: "0",
                                                                                                                 left: "45%",
@@ -1947,6 +1949,49 @@ function PDProfile() {
                                                                                 stretch={true}
                                                                                 items={[
                                                                                     <>
+                                                                                        <Container
+                                                                                            customClass="bg-primary-dark-500 position-absolute"
+                                                                                            style={{
+                                                                                                height: "1.5px",
+                                                                                                width: "100%",
+                                                                                                bottom: "0",
+                                                                                                left: "0"
+                                                                                            }}
+                                                                                            content={[
+                                                                                                <>
+                                                                                                    <ItemGroup
+                                                                                                        customClass="pr-3 pl-1 py-1 br-md bg-primary-dark-500 position-absolute align-items-center hidden-element"
+                                                                                                        axis={false}
+                                                                                                        stretch={true}
+                                                                                                        isClickable={true}
+                                                                                                        onClick={() => {
+                                                                                                            handleOpenModal("exercise");
+
+                                                                                                        }}
+                                                                                                        style={{
+                                                                                                            bottom: "0",
+                                                                                                            left: "45%",
+                                                                                                            transform: "translateY(50%)"
+                                                                                                        }}
+                                                                                                        items={[
+                                                                                                            <>
+                                                                                                                <BaseIcon
+                                                                                                                    fill="none"
+                                                                                                                    height="28px"
+                                                                                                                    width="28px">
+                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                    <g id="SVGRepo_iconCarrier">
+                                                                                                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M11.25 12.75V18H12.75V12.75H18V11.25H12.75V6H11.25V11.25H6V12.75H11.25Z" fill="hsl(210, 20%, 55%)" />
+                                                                                                                    </g>
+                                                                                                                </BaseIcon>
+                                                                                                                <p className="font-3 font-semibold text-primary-neutral-200">ADD REGIMEN</p>
+                                                                                                            </>
+                                                                                                        ]}
+                                                                                                    />
+                                                                                                </>
+                                                                                            ]}
+                                                                                        />
                                                                                         <ItemGroup
                                                                                             axis={false}
                                                                                             fitParent={true}
@@ -2255,9 +2300,54 @@ function PDProfile() {
                                                                 }}
                                                                 items={[
                                                                     <>
-                                                                        {selectedGraph === "graph1" && <ExerciseChart inputData={chartData.exercise} inputLabel="Exercise" pointFillColor="hsl(120, 45%, 85%)" lineColor="hsl(120, 45%, 35%)" />}
-                                                                        {selectedGraph === "graph2" && <ExerciseChart inputData={chartData.weight} inputLabel="Weight" pointFillColor="hsl(250, 60%, 80%)" lineColor="hsl(250, 60%, 40%)" />}
-                                                                        {selectedGraph === "graph3" && <ExerciseChart inputData={chartData.sleep} inputLabel="Sleep" />}
+                                                                        {selectedGraph === "graph1" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph1-${slicedExercise.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedExercise}
+                                                                                inputLabel="Exercise"
+                                                                                pointFillColor="hsl(120, 45%, 85%)"
+                                                                                lineColor="hsl(120, 45%, 35%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph2" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph2-${slicedWeight.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedWeight}
+                                                                                inputLabel="Weight"
+                                                                                pointFillColor="hsl(250, 60%, 80%)"
+                                                                                lineColor="hsl(250, 60%, 40%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph3" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph3-${slicedSleep.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedSleep}
+                                                                                inputLabel="Sleep"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph4" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph4-${slicedHeight.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedHeight}
+                                                                                inputLabel="Height"
+                                                                                pointFillColor="hsl(0, 44.70%, 85.10%)"
+                                                                                lineColor="hsl(0, 44.90%, 34.90%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
+                                                                        {selectedGraph === "graph5" && (
+                                                                            <ExerciseChart
+                                                                                key={`graph5-${slicedCalories.join('-')}-${slicedLabels.join('-')}`}
+                                                                                inputData={slicedCalories}
+                                                                                inputLabel="Calories"
+                                                                                pointFillColor="hsl(293, 44.70%, 85.10%)"
+                                                                                lineColor="hsl(298, 44.90%, 34.90%)"
+                                                                                inputLabels={slicedLabels}
+                                                                            />
+                                                                        )}
                                                                     </>
                                                                 ]}
                                                             />
@@ -2480,11 +2570,13 @@ function PDProfile() {
                                                                         <Container
                                                                             customClass={`${checkSubmission() ? "bg-primary-neutral-500" : "bg-primary-dark-400"} py-3 br-sm text-center`}
                                                                             fitParent={true}
-                                                                            isClickable={true && !(checkSubmission())}
+                                                                            isClickable={!!currentUser.doctor && !(checkSubmission())}
                                                                             onClick={survey.handleSubmit(onSubmitSurvey)}
                                                                             content={[
                                                                                 <>
-                                                                                    {!checkSubmission() ? (
+                                                                                    {!currentUser.doctor ? (
+                                                                                        <p className="font-semibold text-primary-neutral-100">You must have a doctor assigned to submit the daily form.</p>
+                                                                                    ) : !checkSubmission() ? (
                                                                                         <p className="font-semibold text-primary-neutral-100">SUBMIT</p>
                                                                                     ) : (
                                                                                         <p className="font-semibold text-primary-neutral-100">ALREADY SUBMITTED TODAY</p>
@@ -2515,7 +2607,7 @@ function PDProfile() {
         <>
             <Modal
                 id="exercise"
-                isOpen={activeModal === "exercise"}
+                isOpen={activeModal === "exercise" && !!currentUser.doctor}
                 onClose={handleCloseModal}
             >
                 <>
