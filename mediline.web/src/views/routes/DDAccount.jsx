@@ -1,18 +1,13 @@
-import { useState, useContext, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
-import Accordion from '../../components/General/AccordionMenu';
 import InputBar, { CustomTextArea } from '../../components/General/InputBar';
-import Checkbox from '../../components/General/CheckboxRefactored';
-import Modal from '../../components/General/Modal';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
-import DoctorDashboardViewModel from '../../viewModels/DDViewModel';
-import ExerciseChart from '../../components/Dashboard/ExerciseChart';
 import { dpVM } from '../../viewModels/DPViewModel';
 import Spinner from '../../components/General/Spinner';
+import SelectList from '../../components/General/SelectList';
 
 function DDAccount()
 {
@@ -22,6 +17,9 @@ function DDAccount()
     // Used to manage data from API calls
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // References for the select lists which can be used to invoke internal methods
+    const acceptingPatientsRef = useRef();
 
     // Used to initially load the data for the doctor profile
     useEffect(() => {
@@ -40,13 +38,19 @@ function DDAccount()
     // Initializes the doctor information form
     const contactInfo = useForm();
     const onSubmitContactInfo = async (data) => {
-        //console.log("Form to be submitted to backend: ", JSON.stringify(data, null, 2));
-
-        toggleEditingState('contactInfo');
+        toggleEditingState("contactInfo");
         setLoading(true);
-        await dpVM.updateDoctorInfo(data, currentUser.user_id);
+
+        const payload = {
+            ...data,
+            accepting_patients: data.accepting_patients === "True",
+        };
+
+        await dpVM.updateDoctorInfo(payload, currentUser.user_id);
+        fetchData();
         setLoading(false);
-    }
+    };
+
 
     // State to track whether the form is in edit mode
     const [editingStates, setEditingStates] = useState({});
@@ -114,7 +118,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentUser.firstName}
+                                                                            defaultValue={data.first_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -130,7 +134,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentUser.lastName}
+                                                                            defaultValue={data.last_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -146,7 +150,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={dashboardLayoutViewModel.capitalize(currentUser.sex)}
+                                                                            defaultValue={dashboardLayoutViewModel.capitalize(data.gender)}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -173,7 +177,7 @@ function DDAccount()
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={dashboardLayoutViewModel.formatBirthDate(currentUser.dob, "MM/DD/YYYY")}
+                                                                            defaultValue={dashboardLayoutViewModel.formatBirthDate(data.dob, "MM/DD/YYYY")}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -288,7 +292,7 @@ function DDAccount()
                                                                                 customClass="bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0"
                                                                                 placeholder="Enter your email"
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.email}
+                                                                                defaultValue={data.email}
                                                                             />
                                                                             {contactInfo.formState.errors.email && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.email.message}</p>
@@ -320,7 +324,7 @@ function DDAccount()
                                                                                 placeholder="Enter your phone number"
                                                                                 onChange={(e) => contactInfo.setValue('phone', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={dashboardLayoutViewModel.formatPhoneNumber(currentUser.phone, "dashes")}
+                                                                                defaultValue={dashboardLayoutViewModel.formatPhoneNumber(data.phone, "dashes")}
                                                                             />
                                                                             {contactInfo.formState.errors.phone && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.phone.message}</p>
@@ -352,7 +356,7 @@ function DDAccount()
                                                                                 placeholder="Enter your address"
                                                                                 onChange={(e) => contactInfo.setValue('address', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.address1}
+                                                                                defaultValue={data.address1}
                                                                             />
                                                                             {contactInfo.formState.errors.address && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.address.message}</p>
@@ -405,7 +409,7 @@ function DDAccount()
                                                                                 placeholder="Enter your state"
                                                                                 onChange={(e) => contactInfo.setValue('state', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.state}
+                                                                                defaultValue={data.state}
                                                                             />
                                                                             {contactInfo.formState.errors.state && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.state.message}</p>
@@ -426,7 +430,7 @@ function DDAccount()
                                                                                 placeholder="Enter your postal code"
                                                                                 onChange={(e) => contactInfo.setValue('zipcode', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
-                                                                                defaultValue={currentUser.zipcode}
+                                                                                defaultValue={data.zipcode}
                                                                             />
                                                                             {contactInfo.formState.errors.zipcode && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.zipcode.message}</p>
@@ -439,30 +443,53 @@ function DDAccount()
                                                     />
                                                     {editingStates.contactInfo && (
                                                         <ItemGroup
-                                                            customClass="pt-6 gap-3 text-center"
+                                                            customClass="pt-6 gap-6 text-center"
                                                             axis={true}
                                                             fitParent={true}
                                                             items={[
                                                                 <>
-                                                                    <Container
-                                                                        customClass="bg-primary-dark-700 py-3 b-3 outline-primary-neutral-200 br-sm"
-                                                                        fitParent={true}
-                                                                        isClickable={true}
-                                                                        onClick={contactInfo.handleSubmit(onSubmitContactInfo)}
-                                                                        content={[
-                                                                            <>
-                                                                                <p className="font-semibold text-primary-neutral-200">CONFIRM</p>
-                                                                            </>
+                                                                    <SelectList
+                                                                        ref={acceptingPatientsRef}
+                                                                        triggerClass="b-4 bg-primary-dark-800 outline-primary-neutral-300 text-start"
+                                                                        contentClass="b-4 bg-primary-dark-800 outline-primary-neutral-300 text-start"
+                                                                        items={[
+                                                                            { label: "True", value: true },
+                                                                            { label: "False", value: true },
                                                                         ]}
+                                                                        onSelect={(selectedItem) => {
+                                                                            contactInfo.setValue("accepting_patients", selectedItem.label);
+                                                                            console.log(`Selected: ${selectedItem}`);
+                                                                        }}
+                                                                        placeholder="Accepting Patients?"
                                                                     />
-                                                                    <Container
-                                                                        customClass="bg-primary-neutral-300 py-3 br-sm"
+                                                                    <ItemGroup
+                                                                        customClass="gap-3 text-center"
+                                                                        axis={true}
                                                                         fitParent={true}
-                                                                        isClickable={true}
-                                                                        onClick={() => toggleEditingState('contactInfo')}
-                                                                        content={[
+                                                                        items={[
                                                                             <>
-                                                                                <p className="font-semibold text-neutral-1000">CANCEL</p>
+                                                                                <Container
+                                                                                    customClass="bg-primary-dark-700 py-3 b-3 outline-primary-neutral-200 br-sm"
+                                                                                    fitParent={true}
+                                                                                    isClickable={true}
+                                                                                    onClick={contactInfo.handleSubmit(onSubmitContactInfo)}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <p className="font-semibold text-primary-neutral-200">CONFIRM</p>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <Container
+                                                                                    customClass="bg-primary-neutral-300 py-3 br-sm"
+                                                                                    fitParent={true}
+                                                                                    isClickable={true}
+                                                                                    onClick={() => toggleEditingState('contactInfo')}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <p className="font-semibold text-neutral-1000">CANCEL</p>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
                                                                             </>
                                                                         ]}
                                                                     />

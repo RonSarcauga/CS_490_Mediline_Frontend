@@ -79,8 +79,8 @@ class PDHomeViewModel {
             let doctorInfo = null;
 
             // Check if the doctor object is empty
-            if (doctor && Object.keys(doctor).length > 0) {
-                doctorInfo = await this.getUserInfo(doctor.doctor_id);
+            if (user.doctor && Object.keys(user.doctor).length > 0) {
+                doctorInfo = await this.getUserInfo(user.doctor.doctor_id);
             }
 
             const { activeMedications, pastMedications } = await this.getPrescriptions(userId);
