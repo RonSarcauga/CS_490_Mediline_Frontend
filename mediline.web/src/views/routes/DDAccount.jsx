@@ -40,8 +40,12 @@ function DDAccount()
     // Initializes the doctor information form
     const contactInfo = useForm();
     const onSubmitContactInfo = async (data) => {
+        //console.log("Form to be submitted to backend: ", JSON.stringify(data, null, 2));
+
         toggleEditingState('contactInfo');
-        console.log("Form to be submitted to backend: ", JSON.stringify(data, null, 2));
+        setLoading(true);
+        await dpVM.updateDoctorInfo(data, currentUser.user_id);
+        setLoading(false);
     }
 
     // State to track whether the form is in edit mode

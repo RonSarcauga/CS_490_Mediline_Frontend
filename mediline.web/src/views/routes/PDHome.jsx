@@ -329,7 +329,7 @@ function PDHome() {
                                                                                         items={[
                                                                                             <>
                                                                                                 {
-                                                                                                    currentUser.doctor !== null ? (
+                                                                                                    data.user.doctor !== null ? (
                                                                                                         <ItemGroup
                                                                                                             customClass="button bg-dark-100 br-sm align-items-center justify-items-center px-4 py-3"
                                                                                                             dataAttributes={
@@ -395,7 +395,7 @@ function PDHome() {
                                                     content={[
                                                         <>
                                                             {
-                                                                currentUser.doctor !== null ? (
+                                                                data.user.doctor !== null ? (
                                                                     <>
                                                                         <ItemGroup
                                                                             customClass="px-4 align-items-center gap-10"
@@ -469,7 +469,7 @@ function PDHome() {
                                                                                                                 items={[
                                                                                                                     <>
                                                                                                                         <h5 className="font-3 text-neutral-600">STATUS</h5>
-                                                                                                                        {currentUser.doctor !== null && (
+                                                                                                                        {data.user.doctor !== null && (
                                                                                                                             data.doctorInfo.accepting_patients ? (
                                                                                                                                 <ItemGroup
                                                                                                                                     items={[
@@ -611,17 +611,6 @@ function PDHome() {
                                                                                 </>
                                                                             ]}
                                                                         />
-                                                                    </>
-                                                                ]}
-                                                            />
-                                                        </>
-                                                    ]}
-                                                    contentClass="pt-5"
-                                                    content={[
-                                                        <>
-                                                            {
-                                                                data.pastAppointments.length > 0 ? (
-                                                                    data.pastAppointments.map((appt) => (
                                                                         <ItemGroup
                                                                             customClass="gap-4"
                                                                             axis={true}
@@ -648,6 +637,19 @@ function PDHome() {
                                                                                 </>
                                                                             ]}
                                                                         />
+                                                                    </>
+                                                                ]}
+                                                            />
+                                                        </>
+                                                    ]}
+                                                    contentClass={data.pastAppointments.length > 0 ? "pt-0" : "pt-5"}
+                                                    content={[
+                                                        <>
+                                                            {
+                                                                data.pastAppointments.length > 0 ? (
+                                                                    data.pastAppointments.map(() => (
+                                                                        <>
+                                                                        </>
                                                                     ))
                                                                 ) : (
                                                                     <ItemGroup
@@ -1016,7 +1018,7 @@ function PDHome() {
                                                                                                     axis={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <h3 className="font-semibold font-6">{currentUser.firstName} {currentUser.lastName}</h3>
+                                                                                                            <h3 className="font-semibold font-6">{data.user.first_name} {data.user.last_name}</h3>
                                                                                                             {/*<h3 className="font-regular font-4 text-neutral-600">MRN: {patientData.mrn}</h3>*/}
                                                                                                         </>
                                                                                                     ]}
@@ -1027,9 +1029,9 @@ function PDHome() {
                                                                                                     stretch={true}
                                                                                                     items={[
                                                                                                         <>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.capitalize(currentUser.sex)}</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.capitalize(data.user.gender)}</p>
                                                                                                             <div className="bg-neutral-600 br-lg" style={{ height: "9px", width: "9px" }}></div>
-                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(currentUser.dob)} ({dashboardLayoutViewModel.calculateAge(currentUser.dob)} yrs)</p>
+                                                                                                            <p className="font-semibold text-neutral-600" style={{ fontSize: "0.9rem" }}>{dashboardLayoutViewModel.formatBirthDate(data.user.dob)} ({dashboardLayoutViewModel.calculateAge(data.user.dob)} yrs)</p>
                                                                                                         </>
                                                                                                     ]}
                                                                                                 />
@@ -1213,7 +1215,7 @@ function PDHome() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">ADDRESS</h5>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{currentUser.address1}, {currentUser.city}, {currentUser.state}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{data.user.address1}, {data.user.city}, {data.user.state}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
@@ -1225,7 +1227,7 @@ function PDHome() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <h5 className="font-3 text-neutral-600">PHONE</h5>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(currentUser.phone)}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">+1 {dashboardLayoutViewModel.formatPhoneNumber(data.user.phone)}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />

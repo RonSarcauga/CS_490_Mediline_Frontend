@@ -121,7 +121,6 @@ function PDProfile() {
         setChartData(updatedChartData);
     };
 
-
     const handleExerciseStatusToggle = async (exerciseId, currentStatus, reps, pEID) => {
         let newStatus;
         if (currentStatus === "COMPLETED") {
@@ -140,7 +139,7 @@ function PDProfile() {
                 console.log("Exercise ID:", exerciseId);
                 console.log("New Status:", newStatus);
                 await updateExerciseStatus(pEID, newStatus, reps);
-            } catch (err) {
+            } catch (error) {
                 // Optionally: revert UI or show error
             }
         }, 1000); // 1000ms = 1 second
@@ -243,8 +242,18 @@ function PDProfile() {
     const contactInfo = useForm();
     const onSubmitContactInfo = (data) => {
         setLoading(true);
-        console.log('Contact Info:', data);
-        overviewVM.updateInfo(currentUser.user_id, data);
+        toggleEditingState('contactInfo');
+        const payload = {
+            ...data,
+            address1: data.address,
+            address2: currentUser.address2,
+            first_name: currentUser.firstName,
+            last_name: currentUser.lastName,
+            country: "United States"
+        }
+        console.log('Contact Info:', payload);
+        overviewVM.updateInfo(currentUser.user_id, payload);
+        fetchData();
         setLoading(false);
     };
 
@@ -291,16 +300,18 @@ function PDProfile() {
     };
 
     useEffect(() => {
-        if (!editingStates.contactInfo) {
-            // Reset form values to currentUser data when exiting edit mode
-            contactInfo.setValue('email', currentUser.email);
-            contactInfo.setValue('phone', currentUser.phone);
-            contactInfo.setValue('address', currentUser.address1);
-            contactInfo.setValue('city', currentUser.city);
-            contactInfo.setValue('state', currentUser.state);
-            contactInfo.setValue('zipcode', currentUser.zipcode);
+        if (!editingStates.contactInfo || !data || !data.user) {
+            return;
         }
-    }, [editingStates.contactInfo, contactInfo, currentUser]);
+
+        // Reset form values to currentUser data when exiting edit mode
+        contactInfo.setValue('email', data.user.email);
+        contactInfo.setValue('phone', data.user.phone);
+        contactInfo.setValue('address', data.user.address1);
+        contactInfo.setValue('city', data.user.city);
+        contactInfo.setValue('state', data.user.state);
+        contactInfo.setValue('zipcode', data.user.zipcode);
+    }, [editingStates.contactInfo, contactInfo, data]);
 
     // Loading component
     if (loading) return (
@@ -315,7 +326,7 @@ function PDProfile() {
         />
     );
 
-    if (!data) return (
+    if (!data || !data.user) return (
         <Container
             customClass="align-items-center justify-content-center"
             fitParent={true}
@@ -376,7 +387,7 @@ function PDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentUser.firstName}
+                                                                            value={data.user.first_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -392,7 +403,7 @@ function PDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={currentUser.lastName}
+                                                                            value={data.user.last_name}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -408,7 +419,7 @@ function PDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={dashboardLayoutViewModel.capitalize(currentUser.sex)}
+                                                                            value={dashboardLayoutViewModel.capitalize(data.user.gender)}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -435,7 +446,7 @@ function PDProfile() {
                                                                         <InputBar
                                                                             customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                             placeholder=""
-                                                                            value={dashboardLayoutViewModel.formatBirthDate(currentUser.dob, "MM-DD-YYYY")}
+                                                                            value={dashboardLayoutViewModel.formatBirthDate(data.user.dob, "MM-DD-YYYY")}
                                                                             readonly={true}
                                                                         />
                                                                     </>
@@ -549,6 +560,7 @@ function PDProfile() {
                                                                                 {...contactInfo.register('email', { required: 'Email is required' })}
                                                                                 customClass="bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0"
                                                                                 placeholder="Enter your email"
+                                                                                defaultValue={data.user.email}
                                                                                 readOnly={!editingStates.contactInfo}
                                                                             />
                                                                             {contactInfo.formState.errors.email && (
@@ -581,6 +593,7 @@ function PDProfile() {
                                                                                 placeholder="Enter your phone number"
                                                                                 onChange={(e) => contactInfo.setValue('phone', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
+                                                                                defaultValue={data.user.phone}
                                                                             />
                                                                             {contactInfo.formState.errors.phone && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.phone.message}</p>
@@ -612,6 +625,7 @@ function PDProfile() {
                                                                                 placeholder="Enter your address"
                                                                                 onChange={(e) => contactInfo.setValue('address', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
+                                                                                defaultValue={data.user.address1}
                                                                             />
                                                                             {contactInfo.formState.errors.address && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.address.message}</p>
@@ -642,6 +656,7 @@ function PDProfile() {
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder="Enter your city"
                                                                                 onChange={(e) => contactInfo.setValue('city', e.target.value)}
+                                                                                defaultValue={data.user.city}
                                                                                 readOnly={!editingStates.contactInfo}
                                                                             />
                                                                             {contactInfo.formState.errors.city && (
@@ -662,6 +677,7 @@ function PDProfile() {
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
                                                                                 placeholder="Enter your state"
                                                                                 onChange={(e) => contactInfo.setValue('state', e.target.value)}
+                                                                                defaultValue={data.user.state}
                                                                                 readOnly={!editingStates.contactInfo}
                                                                             />
                                                                             {contactInfo.formState.errors.state && (
@@ -683,6 +699,7 @@ function PDProfile() {
                                                                                 placeholder="Enter your postal code"
                                                                                 onChange={(e) => contactInfo.setValue('zipcode', e.target.value)}
                                                                                 readOnly={!editingStates.contactInfo}
+                                                                                defaultValue={data.user.zipcode}
                                                                             />
                                                                             {contactInfo.formState.errors.zipcode && (
                                                                                 <p className="text-danger">{contactInfo.formState.errors.zipcode.message}</p>
