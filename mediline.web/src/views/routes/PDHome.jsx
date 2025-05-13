@@ -333,9 +333,9 @@ function PDHome() {
                                                                                                         <ItemGroup
                                                                                                             customClass="button bg-dark-100 br-sm align-items-center justify-items-center px-4 py-3"
                                                                                                             dataAttributes={
-                                                                                                                { disabled: currentUser.doctor === null }
+                                                                                                                { disabled: data.user.doctor === null }
                                                                                                             }
-                                                                                                            isClickable={currentUser.doctor !== null}
+                                                                                                            isClickable={data.user.doctor !== null}
                                                                                                             onClick={handleOpenModal}
                                                                                                             stretch={true}
                                                                                                             axis={false}
@@ -350,7 +350,7 @@ function PDHome() {
                                                                                                     ) : (
                                                                                                         <ItemGroup
                                                                                                             customClass="button bg-dark-100 br-sm align-items-center justify-items-center pr-4 pl-2 gap-1"
-                                                                                                            isClickable={currentUser.doctor === null}
+                                                                                                            isClickable={data.user.doctor === null}
                                                                                                             onClick={() => navigate(`/dashboard/${currentUser.role}/profile/find-a-doctor`)}
                                                                                                             stretch={true}
                                                                                                             axis={false}

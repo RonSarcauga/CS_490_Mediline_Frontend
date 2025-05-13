@@ -79,7 +79,10 @@ function PDFindDoctor() {
     }
 
     const addDoctor = async (userId) => {
+        setLoading(true);
         const request = await FindDoctorViewModel.addDoctor(userId);
+        fetchData();
+        setLoading(false);
     }
 
     console.log(`Specialties: ${JSON.stringify(data, null, 2)}`);
@@ -387,7 +390,7 @@ function PDFindDoctor() {
                                                                             }
                                                                             onClick={(e) => {
                                                                                 e.preventDefault();
-                                                                                addDoctor(currentUser.user_id, );
+                                                                                addDoctor(currentUser.user_id,);
                                                                                 navigate(`/dashboard/${currentUser.role}`);
                                                                             }}
                                                                             stretch={true}
