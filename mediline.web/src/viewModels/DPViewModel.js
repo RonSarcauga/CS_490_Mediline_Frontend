@@ -452,6 +452,27 @@ class DPViewModel {
         }
     }
 
+    async updateDoctorInfo(data, doctorId) {
+        console.log(`Data to be submitted: ${JSON.stringify(data, null, 2)}`);
+
+        // Fetch the doctor's information
+        const doctor = await this.getUserInfo(doctorId);
+
+        // Remove the auditing fields from the doctor
+        const { updated_at, created_at, bio, ...filteredDoctor } = doctor;
+
+        // Update the payload
+        const payload = {
+            ...data,
+            ...filteredDoctor
+        }
+
+        // Print and return the filtered doctor data
+        console.log("Filtered Doctor Data: ", JSON.stringify(payload, null, 2));
+        return filteredDoctor;
+    }
+
+
     formatDateToBackend(date) {
         if (!(date instanceof Date) || isNaN(date.getTime())) {
             throw new Error("Invalid Date object.");
