@@ -1,6 +1,5 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
 import Topbar, { TopbarItem } from '../../components/Dashboard/Topbar';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
@@ -27,14 +26,6 @@ function DashboardLayout() {
         profile: `${basePath}/profile`,
         discussion: `${basePath}/discussion-forum`,
     };
-
-    const [activeModal, setActiveModal] = useState(null);
-    const handleOpenModal = async (modalId) => {
-        setActiveModal("account");
-    }
-    const handleCloseModal = () => {
-        setActiveModal(null);
-    }
 
     const handleLogout = () => {
         logout();
@@ -256,24 +247,7 @@ function DashboardLayout() {
                                                                                                         <p>Logout</p>
                                                                                                     </>
                                                                                                 ]}
-                                                                                            />,
-                                                                                            currentUser.role === "doctor" ? (
-                                                                                                <ItemGroup
-                                                                                                    axis={false}
-                                                                                                    stretch={true}
-                                                                                                    isClickable={true}
-                                                                                                    onClick={handleOpenModal}
-                                                                                                    items={[
-                                                                                                        <>
-                                                                                                            <p>Account</p>
-                                                                                                        </>
-                                                                                                    ]}
-                                                                                                />
-                                                                                            ) : (
-                                                                                                <>
-                                                                                                </>
-                                                                                            )
-                                                                                            
+                                                                                            />
                                                                                         ]}
                                                                                     />
                                                                                 </>
