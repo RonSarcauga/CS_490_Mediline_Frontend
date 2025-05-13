@@ -310,7 +310,7 @@ const FindDoctorViewModel = {
             return "";
         }
         else {
-            alert(`Dr. ${doctor.last_name} is accepting patients!`);
+            // alert(`Dr. ${doctor.last_name} is accepting patients!`);
 
             try {
                 const response = await axiosInstance.post(`/request/patient/${userId}/doctor/${this.doctorId}`, payload, {
