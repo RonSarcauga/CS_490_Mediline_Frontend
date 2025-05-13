@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import Container, { ItemGroup } from '../General/Container';
 import io from 'socket.io-client';
 import { chatLogFetch } from '../../viewModels/Chatbox-axios';
+import BaseIcon from '../General/BaseIcon';
 
 const Chatbox = ({ user, data, appointmentId }) => {
     const { patient, doctor } = data;
@@ -18,7 +19,7 @@ const Chatbox = ({ user, data, appointmentId }) => {
     const socketRef = useRef(null);
 
     const isPatient = user === patientId;
-    const recipientName = isPatient ? doctorName : doctorName; // optionally just use doctor
+    const recipientName = isPatient ? doctorName : doctorName;
 
     const onSendMessage = () => {
         if (messageText.trim() === '') return;
@@ -41,6 +42,12 @@ const Chatbox = ({ user, data, appointmentId }) => {
                 token: localStorage.getItem("jwtToken")
             }
         });
+
+        //catch all debug
+        socket.onAny((event, data) => {
+            console.log("Received event:", event, data);
+        });
+
 
         socketRef.current = socket;
 
@@ -100,50 +107,40 @@ const Chatbox = ({ user, data, appointmentId }) => {
 
     const formatTime = (timestamp) => {
         if (!timestamp) return '';
-        const date = new Date(timestamp);
-        return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        const cleanedTimestamp = timestamp.split('.')[0] + 'Z';
+
+        const date = new Date(cleanedTimestamp);
+
+        return date.toLocaleTimeString([], {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true
+        });
     };
+
+
 
     return (
         <>
             <ItemGroup
-                customClass="gap-5"
+                customClass="align-content-space-between"
                 fitParent={true}
                 stretch={true}
                 axis={true}
                 items={
                     <>
-                        <ItemGroup
-                            customClass="bg-secondary-400 p-4 br-md justify-content-space-between align-items-center"
-                            fitParent={true}
-                            axis={false}
-                            items={[
-                                <ItemGroup
-                                    axis={false}
-                                    stretch={true}
-                                    fitParent={true}
-                                    items={[
-                                        <div className="overlay-container">
-                                            <img src="public/img/person-icon.svg" width="40" height="40" alt="Profile" />
-                                        </div>,
-                                        <div className="pl-2 pt-2 font-medium">{recipientName}</div>
-                                    ]}
-                                />
-                            ]}
-                        />
                         <Container
-                            customClass="chat-container"
+                            customClass="chat-container bg-neutral-1100 br-md box-shadow-sm shadow-primary-dark-800"
+                            fitParent={true}
                             content={[
                                 <div
                                     ref={chatContainerRef}
-                                    className="overflow-y-visible p-1"
+                                    className="overflow-y p-1 scrollable gap-3 p-5"
                                     style={{
-                                        maxHeight: "400px",
-                                        overflowY: "auto",
+                                        maxHeight: "210px",
                                         display: "flex",
                                         flexDirection: "column",
-                                        gap: "0.75rem",
-                                        borderRadius: "10px",
                                     }}
                                 >
                                     {!isConnected ? (
@@ -162,30 +159,31 @@ const Chatbox = ({ user, data, appointmentId }) => {
                                         <div className="text-center py-3">No messages yet.</div>
                                     ) : (
                                         messages.map((msg, index) => (
-                                            <div
+                                            <ItemGroup
                                                 key={msg.messageId || index}
-                                                style={{
-                                                    alignSelf: msg.sender === user ? "flex-end" : "flex-start",
-                                                    backgroundColor: msg.sender === user ? "#5695DD" : "#C5D8E3",
-                                                    padding: "0.75rem 1rem",
-                                                    borderRadius: "20px",
-                                                    maxWidth: "70%",
-                                                    position: "relative"
-                                                }}
-                                            >
-                                                <strong style={{ display: "block", fontSize: "0.85rem", marginBottom: "0.3rem" }}>
-                                                    {msg.sender === patientId ? patientName : doctorName}
-                                                </strong>
-                                                <div>{msg.message}</div>
-                                                <div style={{
-                                                    fontSize: "0.7rem",
-                                                    opacity: 0.8,
-                                                    textAlign: "right",
-                                                    marginTop: "0.3rem"
-                                                }}>
-                                                    {formatTime(msg.timestamp)}
-                                                </div>
-                                            </div>
+                                                customClass={`pl-5 pr-5 pt-2 pb-2 br-md ${msg.sender != user ? "bg-neutral-900" : "bg-primary-800"}`}
+                                                fitParent={true}
+                                                axis={true}
+                                                style={{ alignSelf: msg.sender == user ? "flex-end" : "flex-start", maxWidth: "70%", }}
+                                                items={[
+                                                    <>
+                                                        <strong style={{ display: "block", fontSize: "0.85rem", marginBottom: "0.3rem" }}>
+                                                            {msg.sender == patientId ? patientName : doctorName}
+                                                        </strong>
+                                                        <div>{msg.message}</div>
+                                                        <div style={{
+                                                            fontSize: "0.7rem",
+                                                            opacity: 0.8,
+                                                            textAlign: "right",
+                                                            marginTop: "0.3rem"
+                                                            }}>
+                                                            {formatTime(msg.timestamp)}
+                                                        </div>
+                                                    </>
+
+                                                ]}
+                                            />
+                                            
                                         ))
                                     )}
                                 </div>
@@ -207,13 +205,16 @@ const Chatbox = ({ user, data, appointmentId }) => {
                                         onKeyPress={(e) => { if (e.key === 'Enter') onSendMessage(); }}
                                         disabled={isLoading}
                                     />
-                                    <button
+                                    {<button
                                         className="bg-transparent border-0 br-sm d-flex justify-content-end"
                                         onClick={onSendMessage}
                                         disabled={isLoading || !messageText.trim()}
                                     >
-                                        <img src="public/img/send-icon.svg" width="40" height="30" alt="Send" />
-                                    </button>
+                                        <BaseIcon width={30} height={30} fillColor="none">
+                                            <path d="M18.8951 3.61502C19.7248 3.37794 20.492 4.1451 20.2549 4.97489L16.2553 18.9736C15.8267 20.4736 13.823 20.7554 12.9973 19.4317L10.1999 14.947C9.87715 14.4296 9.44039 13.9928 8.92298 13.6701L4.43823 10.8726C3.11455 10.047 3.39632 8.04323 4.89636 7.61465L18.8951 3.61502Z" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                            <path d="M10.1924 13.6777L13.7279 10.1422" stroke="#5E78A9" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" />
+                                        </BaseIcon>
+                                    </button>}
                                 </div>
                             ]}
                         />

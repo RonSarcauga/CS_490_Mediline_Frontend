@@ -1,0 +1,32 @@
+import { useQuery } from '@tanstack/react-query';
+import axios from '../assets/js/api';
+
+function authHeaders() {
+  return {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+    }
+  };
+}
+
+async function fetchApptData(patientId) {
+  const res = await axios.get(`/appointment/upcoming/${patientId}`, authHeaders());
+  return res.data;
+}
+
+function usePatientAppointments(userId) {
+  return useQuery({
+    queryKey: ['appointments', userId],
+    queryFn: () => fetchApptData(userId),
+    enabled: !!userId,
+    staleTime: 0,
+    refetchOnMount: true,
+  });
+}
+
+export const PatApptViewModel = {
+  usePatientAppointments,
+};
+
+export default PatApptViewModel;
