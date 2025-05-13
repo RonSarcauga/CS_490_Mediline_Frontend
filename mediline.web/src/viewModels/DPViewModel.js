@@ -19,7 +19,7 @@ class DPViewModel {
                 pharmacyInfo = patientData.pharmacy;
             }
 
-            const { activeMedications, pastMedications } = await this.getPrescriptions(patientId);
+            const { activeMedications, pastMedications } = await this.getPrescriptions(userId, patientId);
 
             //console.log(`Patient Profile Data:\n${JSON.stringify({
             //    pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
@@ -76,8 +76,11 @@ class DPViewModel {
     };
 
     // Helper method to fetch a patient's prescriptions and their medications
-    async getPrescriptions(id) {
+    async getPrescriptions(id, patientId) {
         try {
+            // Debug Statement
+            console.log("Did I make it here?");
+
             // Fetch all prescriptions for the user
             const response = await axiosInstance.get(`/prescription/user/${id}?sort_by=created_at&order_by=desc`, {
                 headers: {
@@ -88,9 +91,11 @@ class DPViewModel {
 
             const prescriptions = response.data;
 
+            const patientPrescriptions = prescriptions.filter(prescription => prescription.patient_id === patientId);
+
             // Fetch medications for each prescription concurrently
             const medicationsByPrescription = await Promise.all(
-                prescriptions.map(async (prescription) => {
+                patientPrescriptions.map(async (prescription) => {
                     const medications = await this.getPrescriptionMedications(prescription.prescription_id);
                     console.log(`Medications fetched for prescription ${prescription.prescription_id}:`, medications);
 
@@ -287,6 +292,98 @@ class DPViewModel {
             return forms;
         } catch (error) {
             console.error("Login failed:", error.response?.data || error.message);
+        }
+    }
+
+    // Asynchronous call to get the exercise list
+    async getExerciseList() {
+        try {
+            const response = await axiosInstance.get(`/exercise/`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            // Store the response data
+            const exercises = response.data;
+            return exercises || [];
+        } catch (error) {
+            console.error("Error for fetching exercises:", error.response?.data || error.message);
+        }
+    }
+
+    // Asynchronous call to get the exercise list for a specific patient
+    async getPatientRegimens(patientId) {
+        try {
+            const response = await axiosInstance.get(`/exercise/user/${patientId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            console.log('Patient Exercises:', response.data);
+
+            // Store the exercises
+            const exercises = response.data;
+
+            return exercises;
+        } catch (error) {
+            console.error("Error for fetching exercises: ", error.response?.data || error.message);
+
+        }
+    };
+
+    async updatePatientRegimens(exerciseId, status, reps) {
+        try {
+            const response = await axiosInstance.put(`/exercise/${exerciseId}`, {
+                status: status,
+                reps: reps
+            }, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+            console.log(`Exercise ${exerciseId} status updated to ${status}:`, response.data);
+        } catch (error) {
+            console.error("Error for updating exercises: ", error.response?.data || error.message);
+        }
+    }
+
+    async submitExercise(patientId, userId, exercise) {
+        try {
+            // Extract the exercise ID
+            const exerciseId = exercise.exercise_id;
+
+            // Set a default number of reps
+            if (exercise.reps === null) {
+                exercise.reps = 0;
+            }
+
+            const payload = {
+                patient_id: patientId,
+                doctor_id: userId,
+                reps: exercise.reps,
+                exercise_id: exerciseId,
+            }
+
+            console.log(`Exercise: ${JSON.stringify(payload, null, 2)}`);
+
+            //const response = await fetch(`/api/exercises`, {
+            //    method: "POST",
+            //    headers: {
+            //        "Content-Type": "application/json",
+            //    },
+            //    body: JSON.stringify({
+            //        patient_id: patientId,
+            //        user_id: userId,
+            //        status: "in_progress",
+            //        ...exercise,
+            //    }),
+            //});
+        } catch (error) {
+            console.error("Error submitting exercises:", error.response?.data || error.message);
         }
     }
 

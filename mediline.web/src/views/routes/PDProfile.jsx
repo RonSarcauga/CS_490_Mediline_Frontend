@@ -169,9 +169,17 @@ function PDProfile() {
     };
 
     const handleSubmitExercises = async () => {
+        // Validate all reps are >= 1 and not empty
+        const invalid = Object.values(selectedExercises).some(
+            reps => !reps || isNaN(reps) || Number(reps) < 1
+        );
+        if (invalid) {
+            alert("Please enter at least 1 rep for each selected exercise.");
+            return;
+        }
         console.log("Selected Exercises with Reps:", selectedExercises);
         await submitExercise(selectedExercises, currentUser.user_id, currentUser.doctor.doctor_id);
-        setSelectedExercises({}); // Optionally clear after submit
+        setSelectedExercises({});
 
         // Re-fetch exercise data to update the UI
         const updatedExerciseData = await fetchPatientExerciseList(currentUser.user_id);
@@ -1072,11 +1080,11 @@ function PDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Upcoming Encounters</h5>
                                             </>
                                         ]}
-                                        contentClass={`hideScroll ${data.upcomingAppointments.length > 0 ? "py-3 px-5" : "px-0 py-5"}`}
+                                        contentClass={`hideScroll ${Array.isArray(data.upcomingAppointments) && data.upcomingAppointments.length > 0 ? "py-3 px-5" : "px-0 py-5"}`}
                                         content={[
                                             <>
                                                 {
-                                                    data.upcomingAppointments.length > 0 ? (
+                                                    Array.isArray(data.upcomingAppointments)  && data.upcomingAppointments.length > 0 ? (
                                                         data.upcomingAppointments.map((appt) => (
                                                             <ItemGroup
                                                                 axis={true}
@@ -1244,11 +1252,11 @@ function PDProfile() {
                                                 <h5 className="font-5 text-dark-300 font-semibold">Encounter History</h5>
                                             </>
                                         ]}
-                                        contentClass={`hideScroll ${data.pastAppointments.length > 0 ? "p-5" : "px-0 py-5"}`}
+                                        contentClass={`hideScroll ${Array.isArray(data.pastAppointments) && data.pastAppointments.length > 0 ? "p-5" : "px-0 py-5"}`}
                                         content={[
                                             <>
                                                 {
-                                                    data.pastAppointments.length > 0 ? (
+                                                    Array.isArray(data.pastAppointments) && data.pastAppointments.length > 0 ? (
                                                         data.pastAppointments.map((appt) => (
                                                             <ItemGroup
                                                                 axis={true}
@@ -1439,7 +1447,7 @@ function PDProfile() {
                                                     fitParent={true}
                                                     items={[
                                                         <>
-                                                            {data.activeMedications.length > 0 ? (
+                                                            {Array.isArray(data.activeMedications) && data.activeMedications.length > 0 ? (
                                                                 <>
                                                                     <ItemGroup
                                                                         customClass="py-2"
@@ -1580,7 +1588,7 @@ function PDProfile() {
                                                     }}
                                                     items={[
                                                         <>
-                                                            {data.pastMedications.length > 0 ? (
+                                                            {Array.isArray(data.pastMedications) && data.pastMedications.length > 0 ? (
                                                                 <>
                                                                     <ItemGroup
                                                                         customClass="py-0"
@@ -1935,7 +1943,7 @@ function PDProfile() {
                                                                         <>
                                                                             <ItemGroup
                                                                                 key={ecc1.exercise_id}
-                                                                                customClass=" pt-2 pb-6 justify-content-space-between position-relative hover-parent"
+                                                                                customClass=" pt-2 pb-6 justify-content-space-between b-bottom-3 outline-primary-dark-500"
                                                                                 axis={false}
                                                                                 fitParent={true}
                                                                                 stretch={true}
@@ -2065,7 +2073,7 @@ function PDProfile() {
                                                                         }}
                                                                         content={[
                                                                             <>
-                                                                                <p className="font-4 font-semibold text-primary-neutral-100">Complete your first program!</p>
+                                                                                <p className="font-4 font-semibold text-primary-neutral-100">You have no completed program.</p>
                                                                             </>
                                                                         ]}
                                                                     />
@@ -2658,106 +2666,7 @@ function PDProfile() {
                                                                             handleCheckboxChange={handleCheckboxChange}
                                                                             handleRepsChange={handleRepsChange}
                                                                         />
-                                                                    /*pastAppointments.length > 0 && (
-                                                                        pastAppointments.map(() => (
-                                                                            <>
-                                                                                <ItemGroup
-                                                                                    customClass=" pt-2 pb-6 justify-content-space-between position-relative"
-                                                                                    axis={false}
-                                                                                    fitParent={true}
-                                                                                    stretch={true}
-                                                                                    items={[
-                                                                                        <>
-                                                                                            <ItemGroup
-                                                                                                axis={false}
-                                                                                                fitParent={true}
-                                                                                                stretch={true}
-                                                                                                style={{
-                                                                                                    gridAutoColumns: "250px"
-                                                                                                }}
-                                                                                                items={[
-                                                                                                    <>
-                                                                                                        <ItemGroup
-                                                                                                            customClass="gap-2"
-                                                                                                            axis={true}
-                                                                                                            stretch={true}
-                                                                                                            fitParent={true}
-                                                                                                            items={[
-                                                                                                                <>
-                                                                                                                    <h5 className="font-4 text-neutral-600 font-semibold">Sit-Up</h5>
-                                                                                                                    <ItemGroup
-                                                                                                                        customClass="gap-6 align-items-center"
-                                                                                                                        fitParent={true}
-                                                                                                                        axis={false}
-                                                                                                                        stretch={true}
-                                                                                                                        items={[
-                                                                                                                            <>
-                                                                                                                                <ItemGroup
-                                                                                                                                    customClass="align-items-center gap-2"
-                                                                                                                                    axis={false}
-                                                                                                                                    stretch={true}
-                                                                                                                                    items={[
-                                                                                                                                        <>
-                                                                                                                                            <BaseIcon
-                                                                                                                                                height="16px"
-                                                                                                                                                width="16px"
-                                                                                                                                                viewBox="0 1 24 24"
-                                                                                                                                                fillColor="none">
-                                                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                                                                    <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 50%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                                </g>
-                                                                                                                                            </BaseIcon>
-                                                                                                                                            <p className="font-3 font-medium text-neutral-600">1 min</p>
-                                                                                                                                        </>
-                                                                                                                                    ]}
-                                                                                                                                />
-                                                                                                                                <ItemGroup
-                                                                                                                                    customClass="align-items-center gap-1"
-                                                                                                                                    axis={false}
-                                                                                                                                    stretch={true}
-                                                                                                                                    items={[
-                                                                                                                                        <>
-                                                                                                                                            <BaseIcon
-                                                                                                                                                height="18px"
-                                                                                                                                                width="18px"
-                                                                                                                                                viewBox="0 -3.5 25 25"
-                                                                                                                                                fillColor="none">
-                                                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                                                                    <path d="M5 0H11V3.58579L8 6.58579L5 3.58579V0Z" fill="hsl(0, 0%, 50%)" /> <path d="M3.58579 5H0V11H3.58579L6.58579 8L3.58579 5Z" fill="hsl(0, 0%, 50%)" />
-                                                                                                                                                    <path d="M5 12.4142V16H11V12.4142L8 9.41421L5 12.4142Z" fill="hsl(0, 0%, 50%)" />
-                                                                                                                                                    <path d="M12.4142 11H16V5H12.4142L9.41421 8L12.4142 11Z" fill="hsl(0, 0%, 50%)" />
-                                                                                                                                                </g>
-                                                                                                                                            </BaseIcon>
-                                                                                                                                            <p className="font-3 font-medium text-neutral-600">10 reps</p>
-                                                                                                                                        </>
-                                                                                                                                    ]}
-                                                                                                                                />
-                                                                                                                            </>
-                                                                                                                        ]}
-                                                                                                                    />
-                                                                                                                </>
-                                                                                                            ]}
-                                                                                                        />
-                                                                                                    </>
-                                                                                                ]}
-                                                                                            />
-                                                                                            <Checkbox
-                                                                                                checkboxClass="b-4 outline-neutral-800 fill-neutral-1100 align-self-center"
-                                                                                                checkColor="hsl(0, 0%, 40%)"
-                                                                                                label={[
-                                                                                                    <p></p>
-                                                                                                ]}
-                                                                                            />
-                                                                                        </>
-                                                                                    ]}
-                                                                                />
-                                                                            </>
-                                                                        ))
-                                                                    )*/}
+                                                                    }
                                                                 </>
                                                             ]}
                                                         />
@@ -2942,6 +2851,7 @@ function ExerciseList({
                                             name={`${exercise.exercise_id}-reps`}
                                             value={selectedExercises[exercise.exercise_id]}
                                             type="number"
+                                            min={1}
                                             onChange={(e) =>
                                                 handleRepsChange(exercise, e.target.value)
                                             }
