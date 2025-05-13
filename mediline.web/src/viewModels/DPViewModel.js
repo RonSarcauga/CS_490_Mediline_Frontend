@@ -54,6 +54,13 @@ class DPViewModel {
         }
     }
 
+    // Centralized function for fetching the doctor's data
+    async getDoctorData(userId) {
+        const userInfo = await this.getUserInfo(userId);
+
+        console.log("Doctor data: ", JSON.stringify(userInfo, null, 2));
+        return userInfo;
+    }
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
@@ -67,7 +74,7 @@ class DPViewModel {
 
             const user = response.data;
 
-            console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
+            //console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
 
             return user;
         } catch (error) {
@@ -97,7 +104,7 @@ class DPViewModel {
             const medicationsByPrescription = await Promise.all(
                 patientPrescriptions.map(async (prescription) => {
                     const medications = await this.getPrescriptionMedications(prescription.prescription_id);
-                    console.log(`Medications fetched for prescription ${prescription.prescription_id}:`, medications);
+                    //console.log(`Medications fetched for prescription ${prescription.prescription_id}:`, medications);
 
                     return medications.map((medication) => {
                         console.log(`Mapping medication:`, medication);
@@ -142,8 +149,8 @@ class DPViewModel {
             activeMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
             pastMedications.sort((a, b) => new Date(b.taken_date) - new Date(a.taken_date));
 
-            console.log(`Active Medications: ${JSON.stringify(activeMedications, null, 2)}`);
-            console.log(`Past Medications: ${JSON.stringify(pastMedications, null, 2)}`);
+            //console.log(`Active Medications: ${JSON.stringify(activeMedications, null, 2)}`);
+            //console.log(`Past Medications: ${JSON.stringify(pastMedications, null, 2)}`);
 
             // Return the medications split into active and past
             return {
