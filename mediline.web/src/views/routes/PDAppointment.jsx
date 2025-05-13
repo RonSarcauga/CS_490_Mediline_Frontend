@@ -382,7 +382,7 @@ function PDAppointment() {
                                                                                         </>
                                                                                     ]}
                                                                                 />
-                                                                                <h5 className="font-semibold font-5 text-primary-neutral-100">Dr. {appointments[0].doctor_name}</h5>
+                                                                                <h5 className="font-semibold font-5 text-primary-neutral-100">{currentUser.doctor ? ("Dr. "+appointments[0].doctor_name) : (appointments[0].patient_name)}</h5>
                                                                             </>
                                                                         ]}
                                                                     />
@@ -398,7 +398,7 @@ function PDAppointment() {
                                                             user={currentUser.user_id}
                                                             appointmentId={appointments[0].appointment_id}
                                                             data={{
-                                                                patient: { name: appointments[0].patient_name, id: currentUser.user_id },
+                                                                patient: { name: appointments[0].patient_name, id: appointments[0].patient_id },
                                                                 doctor: { name: appointments[0].doctor_name, id: appointments[0].doctor_id }
                                                             }}
                                                         />

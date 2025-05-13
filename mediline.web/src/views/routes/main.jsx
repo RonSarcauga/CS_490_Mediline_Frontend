@@ -60,7 +60,7 @@ const router = createBrowserRouter([
           { path: 'doctor', element: <DDHome /> },
           { path: 'doctor/profile', element: <DDProfile /> },
           { path: 'doctor/profile/:patientId', element: <DDProfile /> },
-          { path: 'doctor/appointment', element: <DDAppointment /> },
+          { path: 'doctor/appointment', element: <PDAppointment /> },
           { path: 'doctor/discussion-forum', element: <PDDiscussionForum /> },
 
           { path: 'pharmacist', element: <PHHome /> },
