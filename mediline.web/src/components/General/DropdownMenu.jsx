@@ -61,6 +61,13 @@ function DropdownMenu({
         return () => document.removeEventListener("click", handleOutsideClick);
     }, []);
 
+    // Helper function to determine if a menu item is valid
+    const isValidMenuItem = (item) => {
+        if (!item) return false; // Falsy values (null, undefined, false)
+        if (React.isValidElement(item) && item.type === React.Fragment) return false; // Exclude React fragments
+        return true; // Valid item
+    };
+
     return (
         <div ref={menuRef}>
             <div ref={triggerRef}>
@@ -91,23 +98,19 @@ function DropdownMenu({
                             customBody
                         ) : (
                             <ul className="default-dropdown-body">
-                                {menuItems.map((item, index) => (
-                                    React.isValidElement(item) ? (
-                                        <li
-                                            key={index}
-                                            className="custom-dropdown-item"
-                                        >
-                                            {item}
-                                        </li>
-                                    ) : (
-                                        <li
-                                            key={index}
-                                            className="custom-dropdown-item"
-                                        >
-                                            {item.label}
-                                        </li>
-                                    )
-                                ))}
+                                    {menuItems
+                                        .filter(isValidMenuItem)
+                                        .map((item, index) => {
+                                            return React.isValidElement(item) ? (
+                                                <li key={index} className="custom-dropdown-item">
+                                                    {item}
+                                                </li>
+                                            ) : (
+                                                <li key={index} className="custom-dropdown-item">
+                                                    {item.label}
+                                                </li>
+                                            );
+                                        })}
                             </ul>
                         )}
                     </div>,

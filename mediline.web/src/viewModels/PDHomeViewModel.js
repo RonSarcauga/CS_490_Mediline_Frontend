@@ -69,7 +69,8 @@ class PDHomeViewModel {
     async fetchData(userId, doctor) {
         try {
             // Use Promise.all to fetch data concurrently
-            const [pastAppointments, upcomingAppointments] = await Promise.all([
+            const [user, pastAppointments, upcomingAppointments] = await Promise.all([
+                this.getUserInfo(userId),
                 this.getPastAppointments(userId), // Fetch past appointments
                 this.getUpcomingAppointments(userId), // Fetch upcoming appointments
                 // this.getPrescriptions(userId), // Fetch prescriptions
@@ -112,6 +113,7 @@ class PDHomeViewModel {
             );
 
             console.log(`Patient Dashboard Data:\n${JSON.stringify({
+                user: user || [],
                 pastAppointments: enrichedPastAppointments || [], // Default to an empty array if null/undefined
                 upcomingAppointments: enrichedUpcomingAppointments || [],
                 doctorData: doctor || {},
@@ -122,6 +124,7 @@ class PDHomeViewModel {
 
             // Return the results as an object
             return {
+                user: user || [],
                 pastAppointments: enrichedPastAppointments || [], // Default to an empty array if null/undefined
                 upcomingAppointments: enrichedUpcomingAppointments || [],
                 doctorData: doctor || {},
@@ -132,6 +135,7 @@ class PDHomeViewModel {
         } catch (error) {
             console.error("Error fetching data for Patient Dashboard:", error);
             return {
+                user: [],
                 pastAppointments: [],
                 upcomingAppointments: [],
                 doctor: {},

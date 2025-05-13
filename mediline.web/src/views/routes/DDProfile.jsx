@@ -197,10 +197,6 @@ function DDProfile() {
                         setExerciseList(filteredExercises);
                     }
                     break;
-                case "tab3":
-                    {
-
-                    }
                 case "tab4":
                     {
                         const regimens = await dpVM.getPatientRegimens(currentPatientId);

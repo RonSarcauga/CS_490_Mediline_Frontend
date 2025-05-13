@@ -5,7 +5,8 @@ class OverviewViewModel {
     async fetchData(userId, doctor) {
         try {
             // Use Promise.all to fetch data concurrently
-            const [pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
+            const [user, pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
+                this.getUserInfo(userId),
                 this.getPastAppointments(userId), // Fetch past appointments
                 this.getUpcomingAppointments(userId), // Fetch upcoming appointments
                 this.getPrescriptions(userId), // Fetch prescriptions
@@ -38,6 +39,7 @@ class OverviewViewModel {
 
             // Return the results as an object
             return {
+                user: user || [],
                 pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
                 upcomingAppointments: upcomingAppointments || [],
                 doctorData: doctor || {},
@@ -49,6 +51,7 @@ class OverviewViewModel {
         } catch (error) {
             console.error("Error fetching data for Patient Dashboard:", error);
             return {
+                user: [],
                 pastAppointments: [],
                 upcomingAppointments: [],
                 doctor: {},
@@ -73,7 +76,7 @@ class OverviewViewModel {
 
             const user = response.data;
 
-            console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
+            //console.log(`User fetched successfully:\n${JSON.stringify(user, null, 2)}`);
 
             return user;
         } catch (error) {
@@ -400,15 +403,17 @@ class OverviewViewModel {
 
     // Asynchronous method to fetch user information
     async updateInfo(id, data) {
+        let response = data;
+        const { zipcode, user_id, address, ...filteredData } = response;
+
         // Append ID and doctor ID to the form data
         const payload = {
-            ...data,
-            user_id: id,
+            ...filteredData
         };
 
         console.log(`Payload: ${JSON.stringify(payload, null, 2)}`);
         try {
-            const response = await axiosInstance.put(`/patient/${id}`, {
+            const response = await axiosInstance.put(`/patient/${id}`, payload, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
