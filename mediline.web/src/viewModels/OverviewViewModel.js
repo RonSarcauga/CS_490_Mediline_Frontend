@@ -250,8 +250,6 @@ class OverviewViewModel {
         }
     }
 
-    
-
     async getPastAppointments(id) {
         try {
             // Retrieving data from the medical record endpoint
@@ -269,7 +267,7 @@ class OverviewViewModel {
             // Returns the constant
             return appointments;
         } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
+            console.error("Error fetching past appointments:", error.response?.data || error.message);
         }
     }
 
