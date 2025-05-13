@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useContext, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
@@ -7,6 +7,7 @@ import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
 import { dpVM } from '../../viewModels/DPViewModel';
 import Spinner from '../../components/General/Spinner';
+import SelectList from '../../components/General/SelectList';
 
 function DDAccount()
 {
@@ -16,6 +17,9 @@ function DDAccount()
     // Used to manage data from API calls
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
+
+    // References for the select lists which can be used to invoke internal methods
+    const acceptingPatientsRef = useRef();
 
     // Used to initially load the data for the doctor profile
     useEffect(() => {
@@ -34,14 +38,19 @@ function DDAccount()
     // Initializes the doctor information form
     const contactInfo = useForm();
     const onSubmitContactInfo = async (data) => {
-        //console.log("Form to be submitted to backend: ", JSON.stringify(data, null, 2));
-
-        toggleEditingState('contactInfo');
+        toggleEditingState("contactInfo");
         setLoading(true);
-        await dpVM.updateDoctorInfo(data, currentUser.user_id);
+
+        const payload = {
+            ...data,
+            accepting_patients: data.accepting_patients === "True",
+        };
+
+        await dpVM.updateDoctorInfo(payload, currentUser.user_id);
         fetchData();
         setLoading(false);
-    }
+    };
+
 
     // State to track whether the form is in edit mode
     const [editingStates, setEditingStates] = useState({});
@@ -434,30 +443,53 @@ function DDAccount()
                                                     />
                                                     {editingStates.contactInfo && (
                                                         <ItemGroup
-                                                            customClass="pt-6 gap-3 text-center"
+                                                            customClass="pt-6 gap-6 text-center"
                                                             axis={true}
                                                             fitParent={true}
                                                             items={[
                                                                 <>
-                                                                    <Container
-                                                                        customClass="bg-primary-dark-700 py-3 b-3 outline-primary-neutral-200 br-sm"
-                                                                        fitParent={true}
-                                                                        isClickable={true}
-                                                                        onClick={contactInfo.handleSubmit(onSubmitContactInfo)}
-                                                                        content={[
-                                                                            <>
-                                                                                <p className="font-semibold text-primary-neutral-200">CONFIRM</p>
-                                                                            </>
+                                                                    <SelectList
+                                                                        ref={acceptingPatientsRef}
+                                                                        triggerClass="b-4 bg-primary-dark-800 outline-primary-neutral-300 text-start"
+                                                                        contentClass="b-4 bg-primary-dark-800 outline-primary-neutral-300 text-start"
+                                                                        items={[
+                                                                            { label: "True", value: true },
+                                                                            { label: "False", value: true },
                                                                         ]}
+                                                                        onSelect={(selectedItem) => {
+                                                                            contactInfo.setValue("accepting_patients", selectedItem.label);
+                                                                            console.log(`Selected: ${selectedItem}`);
+                                                                        }}
+                                                                        placeholder="Accepting Patients?"
                                                                     />
-                                                                    <Container
-                                                                        customClass="bg-primary-neutral-300 py-3 br-sm"
+                                                                    <ItemGroup
+                                                                        customClass="gap-3 text-center"
+                                                                        axis={true}
                                                                         fitParent={true}
-                                                                        isClickable={true}
-                                                                        onClick={() => toggleEditingState('contactInfo')}
-                                                                        content={[
+                                                                        items={[
                                                                             <>
-                                                                                <p className="font-semibold text-neutral-1000">CANCEL</p>
+                                                                                <Container
+                                                                                    customClass="bg-primary-dark-700 py-3 b-3 outline-primary-neutral-200 br-sm"
+                                                                                    fitParent={true}
+                                                                                    isClickable={true}
+                                                                                    onClick={contactInfo.handleSubmit(onSubmitContactInfo)}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <p className="font-semibold text-primary-neutral-200">CONFIRM</p>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <Container
+                                                                                    customClass="bg-primary-neutral-300 py-3 br-sm"
+                                                                                    fitParent={true}
+                                                                                    isClickable={true}
+                                                                                    onClick={() => toggleEditingState('contactInfo')}
+                                                                                    content={[
+                                                                                        <>
+                                                                                            <p className="font-semibold text-neutral-1000">CANCEL</p>
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
                                                                             </>
                                                                         ]}
                                                                     />
