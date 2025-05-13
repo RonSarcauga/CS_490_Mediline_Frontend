@@ -848,7 +848,7 @@ function PDProfile() {
                                                                             <InputBar
                                                                                 {...pharmacyInfo.register('pharmacy_name', { required: 'Pharmacy name is required' })}
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
-                                                                                placeholder="Enter your address"
+                                                                                placeholder="Enter your pharmacy's name"
                                                                                 onChange={(e) => pharmacyInfo.setValue('pharmacy_name', e.target.value)}
                                                                                 value={data.pharmacyInfo.pharmacy_name}
                                                                                 readOnly={true}
@@ -880,7 +880,7 @@ function PDProfile() {
                                                                             <InputBar
                                                                                 {...pharmacyInfo.register('address', { required: 'Address is required' })}
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
-                                                                                placeholder="Enter your address"
+                                                                                placeholder="Enter your pharmacy's address"
                                                                                 onChange={(e) => pharmacyInfo.setValue('address', e.target.value)}
                                                                                 value={data.pharmacyInfo.address1}
                                                                                 readOnly={true}
@@ -912,7 +912,7 @@ function PDProfile() {
                                                                             <InputBar
                                                                                 {...pharmacyInfo.register('city', { required: 'City is required' })}
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
-                                                                                placeholder="Enter your city"
+                                                                                placeholder="Enter your pharmacy's city"
                                                                                 onChange={(e) => pharmacyInfo.setValue('city', e.target.value)}
                                                                                 value={data.pharmacyInfo.city}
                                                                                 readOnly={true}
@@ -933,7 +933,7 @@ function PDProfile() {
                                                                             <InputBar
                                                                                 {...pharmacyInfo.register('state', { required: 'State is required' })}
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
-                                                                                placeholder="Enter your state"
+                                                                                placeholder="Enter your pharmacy's state"
                                                                                 onChange={(e) => pharmacyInfo.setValue('state', e.target.value)}
                                                                                 value={data.pharmacyInfo.state}
                                                                                 readOnly={true}
@@ -954,7 +954,7 @@ function PDProfile() {
                                                                             <InputBar
                                                                                 {...pharmacyInfo.register('zipcode', { required: 'Postal code is required' })}
                                                                                 customClass='bg-primary-dark-800 py-2 pl-4 b-bottom-6 outline-primary-dark-100 br-none input-placeholder-font-4 input-text-placeholder-dark-200 input-text-dark-200 input-font-4 input-p-0'
-                                                                                placeholder="Enter your postal code"
+                                                                                placeholder="Enter your pharmacy's postal code"
                                                                                 onChange={(e) => pharmacyInfo.setValue('zipcode', e.target.value)}
                                                                                 value={data.pharmacyInfo.zipcode}
                                                                                 readOnly={true}
