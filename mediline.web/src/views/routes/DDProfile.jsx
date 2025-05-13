@@ -97,6 +97,8 @@ function DDProfile() {
         dpVM.submitOrder(data, currentUser.user_id, patientId);
         fetchData();
         setLoading(false);
+
+        handleCloseModal();
     }
 
     // Used for submitting exercises
