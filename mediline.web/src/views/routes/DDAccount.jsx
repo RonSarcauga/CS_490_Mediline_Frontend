@@ -1,16 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import BaseIcon from '../../components/General/BaseIcon';
 import Container, { ItemGroup } from '../../components/General/Container';
-import Accordion from '../../components/General/AccordionMenu';
 import InputBar, { CustomTextArea } from '../../components/General/InputBar';
-import Checkbox from '../../components/General/CheckboxRefactored';
-import Modal from '../../components/General/Modal';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
-import DoctorDashboardViewModel from '../../viewModels/DDViewModel';
-import ExerciseChart from '../../components/Dashboard/ExerciseChart';
 import { dpVM } from '../../viewModels/DPViewModel';
 import Spinner from '../../components/General/Spinner';
 
