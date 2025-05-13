@@ -300,17 +300,30 @@ const FindDoctorViewModel = {
 
         //console.log(`Patient ${userId} is adding doctor ${this.doctorId}\n${JSON.stringify(payload, null, 2)}`);
 
-        try {
-            const response = await axiosInstance.post(`/request/patient/${userId}/doctor/${this.doctorId}`, payload, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
-            });
-            const user = response.data
-            console.log("Doctor successfully added!\n ", JSON.stringify(user, null, 2));
-        } catch (error) {
-            console.error("Error adding a doctor:", error);
+        const doctor = await this.getUserInfo(this.doctorId);
+
+        console.log(`Doctor Information: ${JSON.stringify(doctor, null, 2)}`);
+
+        // Validates that a doctor is accepting patients
+        if (!doctor.accepting_patients) {
+            alert(`Dr. ${doctor.last_name} is not accepting patients currently. Please check again later!`);
+            return "";
+        }
+        else {
+            alert(`Dr. ${doctor.last_name} is accepting patients!`);
+
+            try {
+                const response = await axiosInstance.post(`/request/patient/${userId}/doctor/${this.doctorId}`, payload, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                    }
+                });
+                const user = response.data
+                console.log("Doctor successfully added!\n ", JSON.stringify(user, null, 2));
+            } catch (error) {
+                console.error("Error adding a doctor:", error);
+            }
         }
     },
 
