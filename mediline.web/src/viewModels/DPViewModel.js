@@ -6,7 +6,6 @@ class DPViewModel {
             // Use Promise.all to fetch data concurrently
             const [patientData, pastAppointments, upcomingAppointments, forms] = await Promise.all([
                 this.getUserInfo(patientId),
-                //this.handleAppointmentRequests(userId),
                 this.getPastAppointments(patientId), // Fetch past appointments
                 this.getUpcomingAppointments(patientId), // Fetch upcoming appointments
                 this.getForms(patientId),
@@ -19,6 +18,9 @@ class DPViewModel {
             if (patientData && patientData.pharmacy) {
                 pharmacyInfo = patientData.pharmacy;
             }
+
+            // Handle appointment requests immediately
+            this.handleAppointmentRequests(userId);
 
             const { activeMedications, pastMedications } = await this.getPrescriptions(userId, patientId);
 
@@ -155,14 +157,14 @@ class DPViewModel {
             console.log(`Request payload:\n${JSON.stringify(payload, null, 2)}`);
 
             // Make the API call to update the appointment status
-            //const response = await axiosInstance.put(
-            //    `/appointment/update/${appointment.appointment_id}`, payload, {
-            //        headers: {
-            //            "Content-Type": "application/json",
-            //            Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
-            //        },
-            //    }
-            //);
+            const response = await axiosInstance.put(
+                `/appointment/update/${appointment.appointment_id}`, payload, {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                    },
+                }
+            );
 
             console.log(`Appointment ${appointment.appointment_id} updated successfully:\n${JSON.stringify(response.data, null, 2)}`);
         } catch (error) {
