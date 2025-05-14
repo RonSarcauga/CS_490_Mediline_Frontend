@@ -25,6 +25,48 @@ function usePatientAppointments(userId) {
   });
 }
 
+export async function submitMedicalRecord(patientId, appointmentId, description) {
+    const token = localStorage.getItem("jwtToken");
+    try {
+        const response = await axios.post(
+            `/medical_record/${patientId}/medical_history`,
+            {
+                appointment_id: appointmentId,
+                description
+            },
+            authHeaders()
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error submitting medical record:", error);
+        throw error;
+    }
+}
+
+export async function submitDoctorSurvey(doctorId, patientId, comment, stars=5) {
+    const token = localStorage.getItem("jwtToken");
+    try {
+        const response = await axios.post(
+            `/doctor/survey/${doctorId}`,
+            {
+                comment,
+                patient_id: patientId,
+                stars,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error submitting doctor survey:", error);
+        throw error;
+    }
+}
+
 export const PatApptViewModel = {
   usePatientAppointments,
 };
