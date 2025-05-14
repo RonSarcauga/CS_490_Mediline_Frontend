@@ -538,14 +538,33 @@ class DPViewModel {
                 throw new Error(`Medication "${data.medication}" not found in the pharmacy inventory.`);
             }
 
+            // Helper function to extract numeric value from a string
+            const extractNumber = (input) => {
+                const match = input.match(/\d+/); // Match the first numeric value
+                return match ? parseInt(match[0], 10) : null; // Return the number or null if not found
+            };
+
+            // Extract numeric values from dosage and duration
+            const dosage = extractNumber(data.dosage);
+            const duration = extractNumber(data.duration);
+
+            if (!dosage || !duration) {
+                throw new Error("Invalid dosage or duration format. Please provide numeric values (e.g., '20 mg', '10 days').");
+            }
+
+            // Generate the taken_date in local time without the 'Z'
+            const takenDate = this.convertToLocalISOString(new Date());
+
             // Create the payload
             const payload = {
                 doctor_id: parseInt(userId),
                 medications: [
                     {
-                        dosage: parseInt(data.dosage),
+                        dosage: dosage,
                         instructions: data.instructions,
+                        duration: duration,
                         medication_id: parseInt(matchingInventory.medication_id),
+                        taken_date: takenDate,
                     },
                 ],
                 patient_id: parseInt(patientId),

@@ -1236,7 +1236,7 @@ function PDProfile() {
                                                                                         isClickable={true}
                                                                                         onClick={() => {
                                                                                             if (new Date(appt.start_date) <= new Date()) {
-                                                                                                navigate(`/dashboard/${currentUser.role}/appointment`);
+                                                                                                navigate(`/dashboard/${currentUser.role}/appointment?appointment_id=${appt.appointment_id}`);
                                                                                             } else {
                                                                                                 alert("You cannot join the meeting before the scheduled time.");
                                                                                             }
