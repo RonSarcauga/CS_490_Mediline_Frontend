@@ -22,6 +22,9 @@ class DPViewModel {
             // Handle appointment requests immediately
             this.handleAppointmentRequests(userId);
 
+            // Look for invalid upcoming appointments
+            this.handleInvalidAppointments(userId);
+
             const { activeMedications, pastMedications } = await this.getPrescriptions(userId, patientId);
 
             //console.log(`Patient Profile Data:\n${JSON.stringify({
@@ -130,8 +133,6 @@ class DPViewModel {
             const startDate = new Date(appointment.visit_time);
             const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
 
-            const localTime = new Date(appointment.visit_time).toLocaleString();
-
             // Determine the status based on the visit_time
             let status;
             if (startDate < currentDate) {
@@ -178,6 +179,97 @@ class DPViewModel {
         return localDate.toISOString().slice(0, -1); // Remove 'Z' to indicate local time
     }
 
+    // Asynchronous function to find and get rid of appointments that have patients that are no longer with the doctor
+    async handleInvalidAppointments(doctorId) {
+        try {
+            // Fetch the doctor's patients
+            const patients = await this.getPatients(doctorId);
+            if (!patients || patients.length === 0) {
+                console.warn("No patients found for the doctor.");
+                return;
+            }
+
+            // Fetch the doctor's upcoming appointments
+            const response = await axiosInstance.get(`/appointment/upcoming/${doctorId}`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                },
+            });
+
+            const appointments = response.data;
+            console.log(`Doctor's upcoming appointments:\n${JSON.stringify(appointments, null, 2)}`);
+
+            // Create a Set of valid patient IDs for quick lookup
+            const validPatientIds = new Set(patients.patients.map((patient) => patient.patient_id));
+
+            // Find appointments with invalid patients
+            const invalidAppointments = appointments.filter(
+                (appointment) => !validPatientIds.has(appointment.patient_id)
+            );
+
+            console.log(`Invalid appointments:\n${JSON.stringify(invalidAppointments, null, 2)}`);
+
+            // Cancel invalid appointments
+            for (const appointment of invalidAppointments) {
+                try {
+                    const currentDate = new Date();
+                    const startDate = new Date(appointment.start_date);
+                    const endDate = new Date(appointment.end_date);
+
+                    const start_date = this.convertToLocalISOString(startDate);
+                    const end_date = this.convertToLocalISOString(endDate);
+
+                    const payload = {
+                        start_date: start_date,
+                        end_date: end_date,
+                        status: "CANCELLED", // Set status to "CANCELLED"
+                        treatment: appointment.treatment || "Consultation",
+                    };
+
+                    console.log(`Cancelling appointment ${appointment.appointment_id} with payload:\n${JSON.stringify(payload, null, 2)}`);
+
+                    // Make the API call to update the appointment status
+                    const response = await axiosInstance.put(
+                        `/appointment/update/${appointment.appointment_id}`,
+                        payload,
+                        {
+                            headers: {
+                                "Content-Type": "application/json",
+                                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                            },
+                        }
+                    );
+
+                    console.log(`Appointment ${appointment.appointment_id} cancelled successfully:\n${JSON.stringify(response.data, null, 2)}`);
+                } catch (error) {
+                    console.error(`Error cancelling appointment ${appointment.appointment_id}:`, error.response?.data || error.message);
+                }
+            }
+        } catch (error) {
+            console.error("Error handling invalid appointments:", error.response?.data || error.message);
+        }
+    }
+
+
+    // Asynchronous method to fetch patients
+    async getPatients(doctorId) {
+        try {
+            const response = await axiosInstance.get(`/doctor/${doctorId}/doctor-patients`, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+                }
+            });
+
+            const patients = response.data;
+
+            console.log(`Patients fetched successfully:\n${JSON.stringify(patients, null, 2)}`);
+            return patients;
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    }
 
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
