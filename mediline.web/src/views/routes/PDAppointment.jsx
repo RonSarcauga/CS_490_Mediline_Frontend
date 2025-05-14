@@ -14,11 +14,14 @@ function PDAppointment() {
     const dummyData = dashboardLayoutViewModel.getUsers();
     const { data: appointments, isLoading, isError, error, } = PatApptViewModel.usePatientAppointments(currentUser.user_id);
     console.log(appointments)
-    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    //const patientData = dashboardLayoutViewModel.getPatientData(user.id);
-    //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
-    //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
-    //console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}`);
+        
+    const handleOpenModal = (modalId) => {
+        setActiveModal(modalId);
+    }
+
+    const handleCloseModal = () => {
+        setActiveModal(null);
+    }
 
     return (
         <Container
@@ -193,13 +196,16 @@ function PDAppointment() {
                                                                                     fitParent={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            <h5 className="font-3 text-neutral-600">DOCTOR</h5>
+                                                                                            <h5 className="font-3 text-neutral-600">{currentUser.role == "patient" ? "DOCTOR" :  "PATIENT" }</h5>
                                                                                             <ItemGroup
                                                                                                 customClass="align-items-center gap-2"
                                                                                                 axis={false}
                                                                                                 stretch={true}
                                                                                                 items={[
                                                                                                     <>
+                                                                                                        {currentUser.role == "patient" ?
+                                                                                                        (
+                                                                                                        <>
                                                                                                         <BaseIcon
                                                                                                             height="15px"
                                                                                                             width="15px"
@@ -211,7 +217,24 @@ function PDAppointment() {
                                                                                                                 <path d="M12 1.25C12.4142 1.25 12.75 1.58579 12.75 2V2.25143C12.8612 2.25311 12.9561 2.25675 13.0446 2.26458C14.8548 2.42465 16.2896 3.85953 16.4497 5.66968C16.4643 5.83512 16.4643 6.02256 16.4643 6.29785L16.4643 7.521C16.4643 11.3903 13.5202 14.5719 9.75001 14.9481V17.0001C9.75001 19.3473 11.6528 21.2501 14 21.2501H14.8824C16.2803 21.2501 17.4809 20.3981 17.9902 19.1822C18.03 19.0872 18.0578 18.9789 18.075 18.8547C16.8708 18.4647 16 17.3341 16 16C16 14.3431 17.3432 13 19 13C20.6569 13 22 14.3431 22 16C22 17.4603 20.9567 18.6768 19.5748 18.945C19.5472 19.2085 19.4887 19.4872 19.3738 19.7617C18.6391 21.5156 16.9058 22.7501 14.8824 22.7501H14C10.8244 22.7501 8.25001 20.1757 8.25001 17.0001V14.9495C4.3217 14.5722 1.25001 11.2625 1.25001 7.23529L1.25 6.29791C1.24997 6.02259 1.24995 5.83514 1.26458 5.66968C1.42465 3.85953 2.85954 2.42465 4.66969 2.26458C4.82536 2.25081 5.00051 2.25002 5.25001 2.24999V2C5.25001 1.58579 5.58579 1.25 6.00001 1.25C6.41422 1.25 6.75001 1.58579 6.75001 2V4C6.75001 4.41421 6.41422 4.75 6.00001 4.75C5.58579 4.75 5.25001 4.41421 5.25001 4V3.75002C4.9866 3.7502 4.88393 3.75148 4.80181 3.75875C3.71573 3.85479 2.85479 4.71572 2.75875 5.80181C2.75074 5.8924 2.75001 6.00802 2.75001 6.3369V7.23529C2.75001 10.6871 5.54823 13.4853 9.00001 13.4853C12.294 13.4853 14.9643 10.815 14.9643 7.521V6.3369C14.9643 6.00802 14.9636 5.8924 14.9555 5.80181C14.8595 4.71572 13.9986 3.85479 12.9125 3.75875C12.8702 3.755 12.8224 3.75285 12.75 3.75162V4C12.75 4.41421 12.4142 4.75 12 4.75C11.5858 4.75 11.25 4.41421 11.25 4V2C11.25 1.58579 11.5858 1.25 12 1.25Z" stroke="hsl(0, 0%, 50%)" stroke-width="0.8" fill="hsl(0, 0%, 50%)" />
                                                                                                             </g>
                                                                                                         </BaseIcon>
-                                                                                                        <p className="font-3 font-semibold text-neutral-600">Dr. {appointments[0].doctor_name}</p>
+                                                                                                        <p className="font-3 font-semibold text-neutral-600"> Dr. {appointments[0].doctor_name} </p>
+                                                                                                        </>
+                                                                                                        ) : (
+                                                                                                        <>
+                                                                                                        <BaseIcon
+                                                                                                            height="15px"
+                                                                                                            width="15px"
+                                                                                                            viewBox="-32 0 512 512"
+                                                                                                            fillColor="none">
+                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            <g id="SVGRepo_iconCarrier">
+                                                                                                                <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128m89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4"stroke="hsl(0, 0%, 50%)" stroke-width="0.8" fill="hsl(0, 0%, 50%)"></path>
+                                                                                                            </g>
+                                                                                                        </BaseIcon>
+                                                                                                        <p className="font-3 font-semibold text-neutral-600"> {appointments[0].patient_name} </p>
+                                                                                                        </>
+                                                                                                        )}
                                                                                                     </>
                                                                                                 ]}
                                                                                             />
