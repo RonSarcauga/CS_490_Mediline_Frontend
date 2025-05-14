@@ -219,7 +219,7 @@ const FindDoctorViewModel = {
 
     async fetchDoctors() {
         try {
-            const response = await axiosInstance.get("/doctor/", {
+            const response = await axiosInstance.get("/doctor/?sort_by=user_id&order_by=asc&page=1&per_page=1000", {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,

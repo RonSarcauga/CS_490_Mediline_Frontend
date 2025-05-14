@@ -61,6 +61,7 @@ function PDDiscussionForum() {
             formData.content,
             currentUser.user_id
         );
+        fetchData(); // Fetch the updated data
 
         if (post) {
             // Clear the form fields

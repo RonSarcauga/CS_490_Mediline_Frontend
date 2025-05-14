@@ -97,7 +97,8 @@ class DiscussionForumViewModel {
 
     async fetchPosts() {
         try {
-            const response = await axiosInstance.get("/social_media/", {
+
+            const response = await axiosInstance.get("/social_media/?sort_by=created_at&order_by=desc&page=1&per_page=1000", {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
