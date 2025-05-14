@@ -23,7 +23,7 @@ const Chatbox = ({ user, data, appointmentId, currentUser }) => {
     const socketRef = useRef(null);
 
     const [noteText, setNoteText] = useState('');
-    const [stars, setStars] = useState(0);
+    const [stars, setStars] = useState(10);
 
     const [activeModal, setActiveModal] = useState(null);
     const handleOpenModal = (modalId) => {
@@ -245,13 +245,24 @@ const Chatbox = ({ user, data, appointmentId, currentUser }) => {
                                                     className="overflow-y p-1 scrollable gap-3 p-5"
                                                     fitParent={true}
                                                     style={{
+                                                        minHeight: "300px", 
                                                         maxHeight: "300px", //hardcoded height
                                                         display: "flex",
                                                         flexDirection: "column",
                                                     }}
                                                 >
                                                     { isFinished ? (
+                                                        <>
                                                         <div className="text-center align-content-center" style={{ minHeight: "250px"}}>The meeting has ended.</div>
+                                                        <Container
+                                                            customClass={`bg-neutral-1100 py-2 br-sm text-center`}
+                                                            fitParent={true}
+                                                            isClickable={isConnected}
+                                                            onClick={() => navigate(`/dashboard/${currentUser.role}`)}
+                                                            content={[<p className="font-semibold text-primary-neutral-100">Return to home</p>]}
+                                                        />
+                                                        </>
+
                                                     ) : !isConnected ? (
                                                         <div className="text-center align-content-center" style={{ minHeight: "250px"}}>Meeting not joined.</div>
                                                     ) : messages.length === 0 ? (
@@ -488,26 +499,26 @@ const Chatbox = ({ user, data, appointmentId, currentUser }) => {
                                                             items={[
                                                                 <>
                                                                     {
-                                                                        <div className="star-rating">
+                                                                        <div className="star-rating text-center">
                                                                             {[...Array(10)].map((_, i) => {
-                                                                                const value = (i + 1) * 0.5;
+                                                                                const value = i + 1;
                                                                                 return (
-                                                                                    <span
-                                                                                        key={value}
-                                                                                        onClick={() => setStars(value)}
-                                                                                        style={{
-                                                                                            cursor: "pointer",
-                                                                                            color: value <= stars ? "gold" : "gray",
-                                                                                            fontSize: "24px",
-                                                                                            padding: "0 2px"
-                                                                                        }}
-                                                                                        title={`${value} Stars`}
-                                                                                    >
-                                                                                        {value % 1 === 0 ? '★' : '☆'}
-                                                                                    </span>
+                                                                                <span
+                                                                                    key={value}
+                                                                                    onClick={() => setStars(value)}
+                                                                                    style={{
+                                                                                    cursor: "pointer",
+                                                                                    color: value <= stars ? "gold" : "gray",
+                                                                                    fontSize: "24px",
+                                                                                    padding: "0 2px"
+                                                                                    }}
+                                                                                    title={`${value} Stars`}
+                                                                                >
+                                                                                    {value <= stars ? "★" : "☆"}
+                                                                                </span>
                                                                                 );
                                                                             })}
-                                                                        </div>
+                                                                            </div>
                                                                     }
                                                                 </>
                                                             ]}
@@ -528,7 +539,7 @@ const Chatbox = ({ user, data, appointmentId, currentUser }) => {
                                                                         isClickable={true}
                                                                         onClick={async () => {
                                                                             try {
-                                                                                await submitDoctorSurvey(doctorId, patientId, noteText, stars);
+                                                                                await submitDoctorSurvey(doctorId, patientId, patientName, stars);
                                                                                 alert("Thank you for your feedback!");
                                                                                 handleCloseModal();
                                                                             } catch (err) {

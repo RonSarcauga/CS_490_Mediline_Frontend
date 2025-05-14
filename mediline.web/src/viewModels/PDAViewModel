@@ -10,16 +10,16 @@ function authHeaders() {
   };
 }
 
-async function fetchApptData(patientId) {
-  const res = await axios.get(`/appointment/upcoming/${patientId}`, authHeaders());
+async function fetchApptData(apptId) {
+  const res = await axios.get(`/appointment/${apptId}`, authHeaders());
   return res.data;
 }
 
-function usePatientAppointments(userId) {
+function usePatientAppointments(apptId) {
   return useQuery({
-    queryKey: ['appointments', userId],
-    queryFn: () => fetchApptData(userId),
-    enabled: !!userId,
+    queryKey: ['appointments', apptId],
+    queryFn: () => fetchApptData(apptId),
+    enabled: !!apptId,
     staleTime: 0,
     refetchOnMount: true,
   });
@@ -43,7 +43,7 @@ export async function submitMedicalRecord(patientId, appointmentId, description)
     }
 }
 
-export async function submitDoctorSurvey(doctorId, patientId, comment, stars=5) {
+export async function submitDoctorSurvey(doctorId, patientId, comment, stars=10) {
     const token = localStorage.getItem("jwtToken");
     try {
         const response = await axios.post(
@@ -51,7 +51,7 @@ export async function submitDoctorSurvey(doctorId, patientId, comment, stars=5) 
             {
                 comment,
                 patient_id: patientId,
-                stars,
+                stars: stars/2.0,
             },
             {
                 headers: {
