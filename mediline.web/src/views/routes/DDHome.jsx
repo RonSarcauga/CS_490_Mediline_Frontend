@@ -5,6 +5,7 @@ import Container, { ItemGroup } from '../../components/General/Container';
 import DropdownMenu from '../../components/General/DropdownMenu';
 import { UserContext } from '../../context/UserProvider';
 import { dashboardLayoutViewModel } from '../../viewModels/DashboardLayoutViewModel';
+import { dpVM } from '../../viewModels/DPViewModel';
 import  DoctorDashboardViewModel  from '../../viewModels/DDViewModel'; 
 import Spinner from '../../components/General/Spinner';
 
@@ -12,6 +13,7 @@ import Spinner from '../../components/General/Spinner';
 function DDHome() {
     const [selectedDate, setSelectedDate] = useState(new Date().toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" }));
     const [patientsByDate, setPatientsByDate] = useState([]);
+    const [loading, setLoading] = useState(true);
     const { currentUser } = useContext(UserContext);
     const isoDate = new Date(selectedDate).toISOString().split('T')[0];
     //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
@@ -21,7 +23,6 @@ function DDHome() {
     //const patients = dashboardLayoutViewModel.getPatients(doctorData.licenseNumber);
     const days = dashboardLayoutViewModel.getCurrentWeekDays();
     const hours = Array.from({ length: 15 }, (_, i) => 8 + i);
-
     const { data, status, isLoading, isError, error } = DoctorDashboardViewModel.useDoctorHome(currentUser.user_id);
     //console.log('data:', data);
     //console.log(`isLoading: ${isLoading}`)
@@ -39,6 +40,22 @@ function DDHome() {
         }
     }, [patientsToday, onlyTodaysPatients]);
 
+    // Check and remove invalid appointments (hopefully)
+    useEffect(() => {
+        initializeData();
+    }, [currentUser.user_id]);
+
+    const initializeData = async () => {
+        try {
+            await dpVM.handleInvalidAppointments(currentUser.user_id);
+        } catch (error) {
+            console.error("Error handling invalid appointments:", error);
+        } finally {
+            // Set loading to false after the function completes
+            setLoading(false);
+        }
+    };
+    
     const navigate = useNavigate();
 
     const handleDateSelect = async (date) => {
@@ -53,7 +70,7 @@ function DDHome() {
     //console.log(`Appointments: ${JSON.stringify(dashboardLayoutViewModel.getAppointmentsByDate(user.id, selectedDate), null, 2)}`);
     //console.log(`Selected date: ${JSON.stringify(selectedDate, null, 2)}`);
     //console.log(`Patient: ${JSON.stringify(dashboardLayoutViewModel.getUsers().find(user => user.id === dashboardLayoutViewModel.getPatientByMRN(todaysAppointments[0].patientMRN).userId), null, 2)}`);
-    if (isLoading)
+    if (isLoading || loading)
         return <Container customClass="p-5 align-items-center justify-content-center" fitParent={true} content={[<Spinner size={64} />]} />;
     if (isError)   return <p>Error: {error.message}</p>;
     return (
