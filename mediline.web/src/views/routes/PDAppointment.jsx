@@ -14,11 +14,14 @@ function PDAppointment() {
     const dummyData = dashboardLayoutViewModel.getUsers();
     const { data: appointments, isLoading, isError, error, } = PatApptViewModel.usePatientAppointments(currentUser.user_id);
     console.log(appointments)
-    //const user = dashboardLayoutViewModel.getUsers().find(user => user.id === currentUser.user.id);
-    //const patientData = dashboardLayoutViewModel.getPatientData(user.id);
-    //const pastAppointments = dashboardLayoutViewModel.getPastAppointmentsSorted(user.id);
-    //const upcomingAppointments = dashboardLayoutViewModel.getUpcomingAppointmentsSorted(user.id);
-    //console.log(`User ${currentUser.user_id}: ${currentUser.firstName} ${currentUser.lastName} ${currentUser.dob}`);
+        
+    const handleOpenModal = (modalId) => {
+        setActiveModal(modalId);
+    }
+
+    const handleCloseModal = () => {
+        setActiveModal(null);
+    }
 
     return (
         <Container
@@ -64,14 +67,14 @@ function PDAppointment() {
                                                             items={[
                                                                 <>
                                                                     <ItemGroup
-                                                                        customClass="justify-content-space-between align-items-center justify-content-space-between"
+                                                                        customClass="justify-content-space-between align-items-center"
                                                                         fitParent={true}
                                                                         stretch={true}
                                                                         axis={false}
                                                                         items={[
                                                                             <>
                                                                                 <h1 className="font-6 font-semibold">Booking Information</h1>
-                                                                                <ItemGroup
+                                                                                {/*<ItemGroup
                                                                                     customClass="gap-3"
                                                                                     axis={false}
                                                                                     stretch={true}
@@ -86,7 +89,7 @@ function PDAppointment() {
                                                                                             />
                                                                                         </>
                                                                                     ]}
-                                                                                />
+                                                                                />*/}
                                                                             </>
                                                                         ]}
                                                                     />
@@ -101,91 +104,58 @@ function PDAppointment() {
                                                     </>
                                                 ]}
 
-                                                contentClass="px-6 pt-6 pb-3 align-items-center"
+                                                contentClass="px-6 pt-6 pb-3 align-items-center "
                                                 content={[
                                                     <>
-                                                        {
-                                                            currentUser.doctor !== null ? (
+                                                        {currentUser.doctor !== null ? (
                                                                 <>
                                                                     <ItemGroup
+                                                                        customClass="gap-30 justify-content-space-between pl-5 pr-10"
                                                                         axis={false}
+                                                                        stretch={true}
                                                                         fitParent={true}
-                                                                        style={{
-                                                                            gridAutoColumns: "300px 1fr",
-                                                                        }}
                                                                         items={[
                                                                             <>
                                                                                 <ItemGroup
-                                                                                    customClass="gap-6"
+                                                                                    customClass="gap-4"
                                                                                     axis={true}
                                                                                     stretch={true}
                                                                                     fitParent={true}
                                                                                     items={[
                                                                                         <>
+                                                                                            <h5 className="font-3 text-neutral-600">MEETING TIME</h5>
                                                                                             <ItemGroup
-                                                                                                customClass="gap-4"
+                                                                                                customClass="gap-3"
                                                                                                 axis={true}
                                                                                                 stretch={true}
                                                                                                 fitParent={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h5 className="font-3 text-neutral-600">MEETING TIME</h5>
                                                                                                         <ItemGroup
-                                                                                                            customClass="gap-3"
-                                                                                                            axis={true}
-                                                                                                            stretch={true}
+                                                                                                            customClass="gap-3 align-items-center"
                                                                                                             fitParent={true}
+                                                                                                            axis={false}
+                                                                                                            stretch={true}
                                                                                                             items={[
                                                                                                                 <>
                                                                                                                     <ItemGroup
-                                                                                                                        customClass="gap-15 align-items-center"
-                                                                                                                        fitParent={true}
+                                                                                                                        customClass="align-items-center gap-2"
                                                                                                                         axis={false}
                                                                                                                         stretch={true}
                                                                                                                         items={[
                                                                                                                             <>
-                                                                                                                                <ItemGroup
-                                                                                                                                    customClass="align-items-center gap-2"
-                                                                                                                                    axis={false}
-                                                                                                                                    stretch={true}
-                                                                                                                                    items={[
-                                                                                                                                        <>
-                                                                                                                                            <BaseIcon
-                                                                                                                                                height="15px"
-                                                                                                                                                width="15px"
-                                                                                                                                                viewBox="0 1 24 24"
-                                                                                                                                                fillColor="none">
-                                                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                                                                    <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                                </g>
-                                                                                                                                            </BaseIcon>
-                                                                                                                                            <p className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(appointments[0].start_date)}</p>
-                                                                                                                                        </>
-                                                                                                                                    ]}
-                                                                                                                                />
-                                                                                                                                <ItemGroup
-                                                                                                                                    customClass="align-items-center gap-2"
-                                                                                                                                    axis={false}
-                                                                                                                                    stretch={true}
-                                                                                                                                    items={[
-                                                                                                                                        <>
-                                                                                                                                            <BaseIcon
-                                                                                                                                                height="16px"
-                                                                                                                                                width="16px"
-                                                                                                                                                viewBox="0 1 24 24"
-                                                                                                                                                fillColor="none">
-                                                                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                                <g id="SVGRepo_iconCarrier">
-                                                                                                                                                    <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 50%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                                                                </g>
-                                                                                                                                            </BaseIcon>
-                                                                                                                                            <p className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.splitDateTime(appointments[0].start_date).time}</p>
-                                                                                                                                        </>
-                                                                                                                                    ]}
-                                                                                                                                />
+                                                                                                                                <BaseIcon
+                                                                                                                                    height="15px"
+                                                                                                                                    width="15px"
+                                                                                                                                    viewBox="0 1 24 24"
+                                                                                                                                    fillColor="none">
+                                                                                                                                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                                                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                    <g id="SVGRepo_iconCarrier">
+                                                                                                                                        <path d="M3 10H21M7 3V5M17 3V5M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="hsl(0, 0%, 50%)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                                                    </g>
+                                                                                                                                </BaseIcon>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.formatBirthDate(appointments[0].start_date)}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
@@ -196,42 +166,20 @@ function PDAppointment() {
                                                                                                                         items={[
                                                                                                                             <>
                                                                                                                                 <BaseIcon
-                                                                                                                                    height="15px"
-                                                                                                                                    width="15px"
-                                                                                                                                    viewBox="0 0 24 24"
+                                                                                                                                    height="16px"
+                                                                                                                                    width="16px"
+                                                                                                                                    viewBox="0 1 24 24"
                                                                                                                                     fillColor="none">
                                                                                                                                     <g id="SVGRepo_bgCarrier" stroke-width="0" />
                                                                                                                                     <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                     <g id="SVGRepo_iconCarrier">
-                                                                                                                                        <path d="M12 1.25C12.4142 1.25 12.75 1.58579 12.75 2V2.25143C12.8612 2.25311 12.9561 2.25675 13.0446 2.26458C14.8548 2.42465 16.2896 3.85953 16.4497 5.66968C16.4643 5.83512 16.4643 6.02256 16.4643 6.29785L16.4643 7.521C16.4643 11.3903 13.5202 14.5719 9.75001 14.9481V17.0001C9.75001 19.3473 11.6528 21.2501 14 21.2501H14.8824C16.2803 21.2501 17.4809 20.3981 17.9902 19.1822C18.03 19.0872 18.0578 18.9789 18.075 18.8547C16.8708 18.4647 16 17.3341 16 16C16 14.3431 17.3432 13 19 13C20.6569 13 22 14.3431 22 16C22 17.4603 20.9567 18.6768 19.5748 18.945C19.5472 19.2085 19.4887 19.4872 19.3738 19.7617C18.6391 21.5156 16.9058 22.7501 14.8824 22.7501H14C10.8244 22.7501 8.25001 20.1757 8.25001 17.0001V14.9495C4.3217 14.5722 1.25001 11.2625 1.25001 7.23529L1.25 6.29791C1.24997 6.02259 1.24995 5.83514 1.26458 5.66968C1.42465 3.85953 2.85954 2.42465 4.66969 2.26458C4.82536 2.25081 5.00051 2.25002 5.25001 2.24999V2C5.25001 1.58579 5.58579 1.25 6.00001 1.25C6.41422 1.25 6.75001 1.58579 6.75001 2V4C6.75001 4.41421 6.41422 4.75 6.00001 4.75C5.58579 4.75 5.25001 4.41421 5.25001 4V3.75002C4.9866 3.7502 4.88393 3.75148 4.80181 3.75875C3.71573 3.85479 2.85479 4.71572 2.75875 5.80181C2.75074 5.8924 2.75001 6.00802 2.75001 6.3369V7.23529C2.75001 10.6871 5.54823 13.4853 9.00001 13.4853C12.294 13.4853 14.9643 10.815 14.9643 7.521V6.3369C14.9643 6.00802 14.9636 5.8924 14.9555 5.80181C14.8595 4.71572 13.9986 3.85479 12.9125 3.75875C12.8702 3.755 12.8224 3.75285 12.75 3.75162V4C12.75 4.41421 12.4142 4.75 12 4.75C11.5858 4.75 11.25 4.41421 11.25 4V2C11.25 1.58579 11.5858 1.25 12 1.25Z" stroke="hsl(0, 0%, 50%)" stroke-width="0.8" fill="hsl(0, 0%, 50%)" />
+                                                                                                                                        <path d="M12 7V12H15M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="hsl(0, 0%, 50%)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
                                                                                                                                     </g>
                                                                                                                                 </BaseIcon>
-                                                                                                                                <p className="font-3 font-semibold text-neutral-600">Dr. {appointments[0].doctor_name}</p>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">{dashboardLayoutViewModel.splitDateTime(appointments[0].start_date).time}</p>
                                                                                                                             </>
                                                                                                                         ]}
                                                                                                                     />
-                                                                                                                </>
-                                                                                                            ]}
-                                                                                                        />
-                                                                                                    </>
-                                                                                                ]}
-                                                                                            />
-                                                                                            <ItemGroup
-                                                                                                customClass="gap-3"
-                                                                                                axis={true}
-                                                                                                stretch={true}
-                                                                                                fitParent={true}
-                                                                                                items={[
-                                                                                                    <>
-                                                                                                        <h5 className="font-3 text-neutral-600">TREATMENT</h5>
-                                                                                                        <ItemGroup
-                                                                                                            customClass="gap-3"
-                                                                                                            axis={true}
-                                                                                                            stretch={true}
-                                                                                                            fitParent={true}
-                                                                                                            items={[
-                                                                                                                <>
-                                                                                                                    <p className="font-3 font-semibold text-neutral-600">{appointments[0].treatment}</p>
                                                                                                                 </>
                                                                                                             ]}
                                                                                                         />
@@ -242,77 +190,152 @@ function PDAppointment() {
                                                                                     ]}
                                                                                 />
                                                                                 <ItemGroup
-                                                                                    customClass="gap-6"
+                                                                                    customClass="gap-3"
                                                                                     axis={true}
                                                                                     stretch={true}
                                                                                     fitParent={true}
                                                                                     items={[
                                                                                         <>
-                                                                                            {/*<ItemGroup
-                                                                                                customClass="gap-4"
+                                                                                            <h5 className="font-3 text-neutral-600">{currentUser.role == "patient" ? "DOCTOR" :  "PATIENT" }</h5>
+                                                                                            <ItemGroup
+                                                                                                customClass="align-items-center gap-2"
+                                                                                                axis={false}
+                                                                                                stretch={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        {currentUser.role == "patient" ?
+                                                                                                        (
+                                                                                                        <>
+                                                                                                        <BaseIcon
+                                                                                                            height="15px"
+                                                                                                            width="15px"
+                                                                                                            viewBox="0 0 24 24"
+                                                                                                            fillColor="none">
+                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            <g id="SVGRepo_iconCarrier">
+                                                                                                                <path d="M12 1.25C12.4142 1.25 12.75 1.58579 12.75 2V2.25143C12.8612 2.25311 12.9561 2.25675 13.0446 2.26458C14.8548 2.42465 16.2896 3.85953 16.4497 5.66968C16.4643 5.83512 16.4643 6.02256 16.4643 6.29785L16.4643 7.521C16.4643 11.3903 13.5202 14.5719 9.75001 14.9481V17.0001C9.75001 19.3473 11.6528 21.2501 14 21.2501H14.8824C16.2803 21.2501 17.4809 20.3981 17.9902 19.1822C18.03 19.0872 18.0578 18.9789 18.075 18.8547C16.8708 18.4647 16 17.3341 16 16C16 14.3431 17.3432 13 19 13C20.6569 13 22 14.3431 22 16C22 17.4603 20.9567 18.6768 19.5748 18.945C19.5472 19.2085 19.4887 19.4872 19.3738 19.7617C18.6391 21.5156 16.9058 22.7501 14.8824 22.7501H14C10.8244 22.7501 8.25001 20.1757 8.25001 17.0001V14.9495C4.3217 14.5722 1.25001 11.2625 1.25001 7.23529L1.25 6.29791C1.24997 6.02259 1.24995 5.83514 1.26458 5.66968C1.42465 3.85953 2.85954 2.42465 4.66969 2.26458C4.82536 2.25081 5.00051 2.25002 5.25001 2.24999V2C5.25001 1.58579 5.58579 1.25 6.00001 1.25C6.41422 1.25 6.75001 1.58579 6.75001 2V4C6.75001 4.41421 6.41422 4.75 6.00001 4.75C5.58579 4.75 5.25001 4.41421 5.25001 4V3.75002C4.9866 3.7502 4.88393 3.75148 4.80181 3.75875C3.71573 3.85479 2.85479 4.71572 2.75875 5.80181C2.75074 5.8924 2.75001 6.00802 2.75001 6.3369V7.23529C2.75001 10.6871 5.54823 13.4853 9.00001 13.4853C12.294 13.4853 14.9643 10.815 14.9643 7.521V6.3369C14.9643 6.00802 14.9636 5.8924 14.9555 5.80181C14.8595 4.71572 13.9986 3.85479 12.9125 3.75875C12.8702 3.755 12.8224 3.75285 12.75 3.75162V4C12.75 4.41421 12.4142 4.75 12 4.75C11.5858 4.75 11.25 4.41421 11.25 4V2C11.25 1.58579 11.5858 1.25 12 1.25Z" stroke="hsl(0, 0%, 50%)" stroke-width="0.8" fill="hsl(0, 0%, 50%)" />
+                                                                                                            </g>
+                                                                                                        </BaseIcon>
+                                                                                                        <p className="font-3 font-semibold text-neutral-600"> Dr. {appointments[0].doctor_name} </p>
+                                                                                                        </>
+                                                                                                        ) : (
+                                                                                                        <>
+                                                                                                        <BaseIcon
+                                                                                                            height="15px"
+                                                                                                            width="15px"
+                                                                                                            viewBox="-32 0 512 512"
+                                                                                                            fillColor="none">
+                                                                                                            <g id="SVGRepo_bgCarrier" stroke-width="0" />
+                                                                                                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
+                                                                                                            <g id="SVGRepo_iconCarrier">
+                                                                                                                <path d="M224 256c70.7 0 128-57.3 128-128S294.7 0 224 0 96 57.3 96 128s57.3 128 128 128m89.6 32h-16.7c-22.2 10.2-46.9 16-72.9 16s-50.6-5.8-72.9-16h-16.7C60.2 288 0 348.2 0 422.4V464c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48v-41.6c0-74.2-60.2-134.4-134.4-134.4"stroke="hsl(0, 0%, 50%)" stroke-width="0.8" fill="hsl(0, 0%, 50%)"></path>
+                                                                                                            </g>
+                                                                                                        </BaseIcon>
+                                                                                                        <p className="font-3 font-semibold text-neutral-600"> {appointments[0].patient_name} </p>
+                                                                                                        </>
+                                                                                                        )}
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                <ItemGroup
+                                                                                    customClass="gap-3"
+                                                                                    axis={true}
+                                                                                    stretch={true}
+                                                                                    fitParent={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h5 className="font-3 text-neutral-600">TREATMENT</h5>
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-3"
                                                                                                 axis={true}
                                                                                                 stretch={true}
                                                                                                 fitParent={true}
                                                                                                 items={[
                                                                                                     <>
-                                                                                                        <h5 className="font-3 text-neutral-600">PRE-APPOINTMENT CHECKLIST</h5>
-                                                                                                        <ItemGroup
-                                                                                                            customClass="gap-3"
-                                                                                                            axis={true}
-                                                                                                            stretch={true}
+                                                                                                        <p className="font-3 font-semibold text-neutral-600">{appointments[0].treatment}</p>
+                                                                                                    </>
+                                                                                                ]}
+                                                                                            />
+                                                                                        </>
+                                                                                    ]}
+                                                                                />
+                                                                                
+                                                                            </>
+                                                                        ]}
+                                                                    />
+                                                                    {/*<ItemGroup
+                                                                        customClass="gap-6"
+                                                                        axis={true}
+                                                                        stretch={true}
+                                                                        fitParent={true}
+                                                                        items={[
+                                                                            <>
+                                                                                {/*<ItemGroup
+                                                                                    customClass="gap-4"
+                                                                                    axis={true}
+                                                                                    stretch={true}
+                                                                                    fitParent={true}
+                                                                                    items={[
+                                                                                        <>
+                                                                                            <h5 className="font-3 text-neutral-600">PRE-APPOINTMENT CHECKLIST</h5>
+                                                                                            <ItemGroup
+                                                                                                customClass="gap-3"
+                                                                                                axis={true}
+                                                                                                stretch={true}
+                                                                                                fitParent={true}
+                                                                                                items={[
+                                                                                                    <>
+                                                                                                        {<ItemGroup
+                                                                                                            customClass="gap-6 align-items-center"
                                                                                                             fitParent={true}
+                                                                                                            axis={false}
+                                                                                                            stretch={true}
                                                                                                             items={[
                                                                                                                 <>
-                                                                                                                    {<ItemGroup
-                                                                                                                        customClass="gap-6 align-items-center"
-                                                                                                                        fitParent={true}
+                                                                                                                    <div className="bg-neutral-1100 b-5 outline-primary-neutral-300 br-lg" style={{ height: "11px", width: "11px" }}></div>
+                                                                                                                    <ItemGroup
+                                                                                                                        customClass="align-items-center gap-6"
                                                                                                                         axis={false}
                                                                                                                         stretch={true}
                                                                                                                         items={[
                                                                                                                             <>
-                                                                                                                                <div className="bg-neutral-1100 b-5 outline-primary-neutral-300 br-lg" style={{ height: "11px", width: "11px" }}></div>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">Check-In Form (Deprecated)</p>
                                                                                                                                 <ItemGroup
-                                                                                                                                    customClass="align-items-center gap-6"
-                                                                                                                                    axis={false}
-                                                                                                                                    stretch={true}
                                                                                                                                     items={[
                                                                                                                                         <>
-                                                                                                                                            <p className="font-3 font-semibold text-neutral-600">Check-In Form (Deprecated)</p>
-                                                                                                                                            <ItemGroup
-                                                                                                                                                items={[
-                                                                                                                                                    <>
-                                                                                                                                                        <h3 className={`text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br`}>Completed</h3>
-                                                                                                                                                    </>
-                                                                                                                                                ]}
-                                                                                                                                            />
+                                                                                                                                            <h3 className={`text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br`}>Completed</h3>
                                                                                                                                         </>
                                                                                                                                     ]}
                                                                                                                                 />
                                                                                                                             </>
                                                                                                                         ]}
-                                                                                                                    />}
+                                                                                                                    />
+                                                                                                                </>
+                                                                                                            ]}
+                                                                                                        />}
+                                                                                                        <ItemGroup
+                                                                                                            customClass="gap-6 align-items-center"
+                                                                                                            fitParent={true}
+                                                                                                            axis={false}
+                                                                                                            stretch={true}
+                                                                                                            items={[
+                                                                                                                <>
+                                                                                                                    <div className="bg-neutral-1100 b-5 outline-primary-neutral-300 br-lg" style={{ height: "11px", width: "11px" }}></div>
                                                                                                                     <ItemGroup
-                                                                                                                        customClass="gap-6 align-items-center"
-                                                                                                                        fitParent={true}
+                                                                                                                        customClass="align-items-center gap-6"
                                                                                                                         axis={false}
                                                                                                                         stretch={true}
                                                                                                                         items={[
                                                                                                                             <>
-                                                                                                                                <div className="bg-neutral-1100 b-5 outline-primary-neutral-300 br-lg" style={{ height: "11px", width: "11px" }}></div>
+                                                                                                                                <p className="font-3 font-semibold text-neutral-600">Weekly Survey</p>
                                                                                                                                 <ItemGroup
-                                                                                                                                    customClass="align-items-center gap-6"
-                                                                                                                                    axis={false}
-                                                                                                                                    stretch={true}
                                                                                                                                     items={[
                                                                                                                                         <>
-                                                                                                                                            <p className="font-3 font-semibold text-neutral-600">Weekly Survey</p>
-                                                                                                                                            <ItemGroup
-                                                                                                                                                items={[
-                                                                                                                                                    <>
-                                                                                                                                                        <h3 className={`text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br`}>Completed</h3>
-                                                                                                                                                    </>
-                                                                                                                                                ]}
-                                                                                                                                            />
+                                                                                                                                            <h3 className={`text-success-100 bg-success-500 font-semibold font-3 py-1 px-3 br`}>Completed</h3>
                                                                                                                                         </>
                                                                                                                                     ]}
                                                                                                                                 />
@@ -324,13 +347,13 @@ function PDAppointment() {
                                                                                                         />
                                                                                                     </>
                                                                                                 ]}
-                                                                                            />*/}
+                                                                                            />
                                                                                         </>
                                                                                     ]}
-                                                                                />
+                                                                                />}
                                                                             </>
                                                                         ]}
-                                                                    />
+                                                                    />*/}
                                                                 </>
                                                             ) : (
                                                                 <Container
@@ -347,63 +370,14 @@ function PDAppointment() {
                                                     </>
                                                 ]}
                                             />
-                                            <Container
-                                                customClass="gradient-light br-sm b-3 outline-neutral-1100 p-5"
-                                                fitParent={true}
-                                                header={[
-                                                    <>
-                                                        <Container
-                                                            customClass="bg-primary-dark-800 p-4 br-sm"
-                                                            fitParent={true}
-                                                            content={[
-                                                                <>
-                                                                    <ItemGroup
-                                                                        customClass="gap-4 px-1 align-items-center"
-                                                                        axis={false}
-                                                                        stretch={true}
-                                                                        items={[
-                                                                            <>
-                                                                                <Container
-                                                                                    customClass="align-items-center justify-content-center p-0"
-                                                                                    content={[
-                                                                                        <>
-                                                                                            <BaseIcon
-                                                                                                height="30px"
-                                                                                                width="30px"
-                                                                                                viewBox="0 0 24 24"
-                                                                                                fillColor="none">
-                                                                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                <g id="SVGRepo_iconCarrier"> <path d="M12.12 12.78C12.05 12.77 11.96 12.77 11.88 12.78C10.12 12.72 8.71997 11.28 8.71997 9.50998C8.71997 7.69998 10.18 6.22998 12 6.22998C13.81 6.22998 15.28 7.69998 15.28 9.50998C15.27 11.28 13.88 12.72 12.12 12.78Z" stroke="hsl(210, 20%, 45%)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                    <path d="M18.74 19.3801C16.96 21.0101 14.6 22.0001 12 22.0001C9.40001 22.0001 7.04001 21.0101 5.26001 19.3801C5.36001 18.4401 5.96001 17.5201 7.03001 16.8001C9.77001 14.9801 14.25 14.9801 16.97 16.8001C18.04 17.5201 18.64 18.4401 18.74 19.3801Z" stroke="hsl(210, 20%, 45%)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                    <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="hsl(210, 20%, 45%)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                                                                                </g>
-                                                                                            </BaseIcon>
-                                                                                        </>
-                                                                                    ]}
-                                                                                />
-                                                                                <h5 className="font-semibold font-5 text-primary-neutral-100">{currentUser.doctor ? ("Dr. "+appointments[0].doctor_name) : (appointments[0].patient_name)}</h5>
-                                                                            </>
-                                                                        ]}
-                                                                    />
-                                                                </>
-                                                            ]}
-                                                        />
-                                                    </>
-                                                ]}
-                                                contentClass="pt-4" //chat goes here
-                                                content={[
-                                                    <>
-                                                        <Chatbox
-                                                            user={currentUser.user_id}
-                                                            appointmentId={appointments[0].appointment_id}
-                                                            data={{
-                                                                patient: { name: appointments[0].patient_name, id: appointments[0].patient_id },
-                                                                doctor: { name: appointments[0].doctor_name, id: appointments[0].doctor_id }
-                                                            }}
-                                                        />
-                                                    </>
-                                                ]}
+                                            <Chatbox
+                                                currentUser={currentUser}
+                                                user={currentUser.user_id}
+                                                appointmentId={appointments[0].appointment_id}
+                                                data={{
+                                                    patient: {name: appointments[0].patient_name, id: appointments[0].patient_id},
+                                                    doctor: {name: appointments[0].doctor_name, id: appointments[0].doctor_id}
+                                                }}
                                             />
                                         </>
                                     ]}

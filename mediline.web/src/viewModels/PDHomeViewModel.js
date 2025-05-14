@@ -1,51 +1,6 @@
 import axiosInstance from '../assets/js/api';
 
 class PDHomeViewModel {
-    // Centralized data fetching function
-    //async fetchData(userId, doctor) {
-    //    try {
-    //        // Use Promise.all to fetch data concurrently
-    //        const [pastAppointments, upcomingAppointments, prescriptions] = await Promise.all([
-    //            this.getPastAppointments(userId), // Fetch past appointments
-    //            this.getUpcomingAppointments(userId), // Fetch upcoming appointments
-    //            this.getPrescriptions(userId), // Fetch prescriptions
-    //        ]);
-
-    //        let doctorInfo = null;
-
-    //        // Check if the doctor object is empty
-    //        if (doctor && Object.keys(doctor).length > 0) {
-    //            doctorInfo = await this.getUserInfo(doctor.doctor_id);
-    //        }
-
-    //        console.log(`Patient Dashboard Data:\n${JSON.stringify({
-    //            pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-    //            upcomingAppointments: upcomingAppointments || [],
-    //            doctorData: doctor || {},
-    //            doctorInfo: doctorInfo || {},
-    //            prescriptions: prescriptions || [],
-    //        }, null, 2)}`);
-
-    //        // Return the results as an object
-    //        return {
-    //            pastAppointments: pastAppointments || [], // Default to an empty array if null/undefined
-    //            upcomingAppointments: upcomingAppointments || [],
-    //            doctorData: doctor || {},
-    //            doctorInfo: doctorInfo || {},
-    //            prescriptions: prescriptions || [],
-    //        };
-    //    } catch (error) {
-    //        console.error("Error fetching data for Patient Dashboard:", error);
-    //        return {
-    //            pastAppointments: [],
-    //            upcomingAppointments: [],
-    //            doctor: {},
-    //            doctorInfo: {},
-    //            prescriptions: [],
-    //        };
-    //    }
-    //}
-
     // Asynchronous method to fetch user information
     async getUserInfo(id) {
         try {
@@ -403,25 +358,6 @@ class PDHomeViewModel {
         }
     }
 
-    //async getUpcomingAppointments(user_id) {
-    //    try {
-    //        const response = await axiosInstance.get(`/appointment/upcoming/${user_id}`, {
-    //            headers: {
-    //                "Content-Type": "application/json",
-    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-    //            }
-    //        });
-
-    //        console.log(`Upcoming appointments fetched:\n${JSON.stringify(response.data, null, 2)}`);
-
-    //        const appointments = response.data;
-
-    //        return appointments;
-    //    } catch (error) {
-    //        console.error(`No appointments on record: ${error.response?.data || error.message}`);
-    //    }
-    //}
-
     // Splits the date from time in a Date object
     splitDateTime(dateTime) {
         if (!dateTime || typeof dateTime !== "string") {
@@ -530,8 +466,11 @@ class PDHomeViewModel {
             const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
 
             // Format startDate and endDate to remove milliseconds
-            const formattedStartDate = startDate.toISOString().split(".")[0];
-            const formattedEndDate = endDate.toISOString().split(".")[0];
+            const formattedStartDate = this.convertToLocalISOString(startDate);
+            const formattedEndDate = this.convertToLocalISOString(endDate);
+
+            //const formattedStartDate = startDate.toISOString().split(".")[0];
+            //const formattedEndDate = endDate.toISOString().split(".")[0];
 
             // Fetch upcoming appointments for the user
             const upcomingAppointments = await this.getUpcomingAppointments(patientId);
@@ -575,7 +514,12 @@ class PDHomeViewModel {
         }
     }
 
-
+    // String that changes local time dates to ISO format
+    convertToLocalISOString(date) {
+        const offset = date.getTimezoneOffset() * 60000;
+        const localDate = new Date(date.getTime() - offset);
+        return localDate.toISOString().slice(0, -1);
+    }
 }
 
 export const pdHomeVM = new PDHomeViewModel();

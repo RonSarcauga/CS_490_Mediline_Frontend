@@ -4,9 +4,8 @@ class DPViewModel {
     async fetchData(patientId, userId) {
         try {
             // Use Promise.all to fetch data concurrently
-            const [patientData, appointmentRequests, pastAppointments, upcomingAppointments, forms] = await Promise.all([
+            const [patientData, pastAppointments, upcomingAppointments, forms] = await Promise.all([
                 this.getUserInfo(patientId),
-                this.handleAppointmentRequests(userId),
                 this.getPastAppointments(patientId), // Fetch past appointments
                 this.getUpcomingAppointments(patientId), // Fetch upcoming appointments
                 this.getForms(patientId),
@@ -19,6 +18,9 @@ class DPViewModel {
             if (patientData && patientData.pharmacy) {
                 pharmacyInfo = patientData.pharmacy;
             }
+
+            // Handle appointment requests immediately
+            this.handleAppointmentRequests(userId);
 
             const { activeMedications, pastMedications } = await this.getPrescriptions(userId, patientId);
 
@@ -64,6 +66,34 @@ class DPViewModel {
     }
 
     // Asynchronous method for automatically accepting/rejecting appointments as soon as a doctor logs in
+    //async handleAppointmentRequests(id) {
+    //    const doctor = await this.getDoctorData(id);
+    //    const acceptingPatients = doctor?.accepting_patients;
+
+    //    try {
+    //        const response = await axiosInstance.get(`/doctor/${id}/appointment_requests`, {
+    //            headers: {
+    //                "Content-Type": "application/json",
+    //                Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
+    //            }
+    //        });
+
+    //        const requests = response.data;
+
+    //        console.log(`Appointment requests have been handled successfully:\n${JSON.stringify(requests, null, 2)}`);
+
+    //        // Extract appointment IDs and process them concurrently
+    //        const appointmentPromises = requests.map((appointment) =>
+    //            this.handleAppointmentRequest(appointment, acceptingPatients)
+    //        );
+
+    //        // Wait for all appointment requests to be processed
+    //        await Promise.all(appointmentPromises);
+    //    } catch (error) {
+    //        console.error("Error handling appointment requests:", error);
+    //    }
+    //};
+
     async handleAppointmentRequests(id) {
         const doctor = await this.getDoctorData(id);
         const acceptingPatients = doctor?.accepting_patients;
@@ -72,31 +102,44 @@ class DPViewModel {
             const response = await axiosInstance.get(`/doctor/${id}/appointment_requests`, {
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`
-                }
+                    Authorization: `Bearer ${localStorage.getItem("jwtToken")}`,
+                },
             });
 
             const requests = response.data;
 
-            console.log(`Appointment requests have been handled successfully:\n${JSON.stringify(requests, null, 2)}`);
+            console.log(`Appointment requests fetched successfully:\n${JSON.stringify(requests, null, 2)}`);
 
-            // Extract appointment IDs and process them concurrently
-            const appointmentPromises = requests.map((appointment) =>
-                this.handleAppointmentRequest(appointment, acceptingPatients)
-            );
-
-            // Wait for all appointment requests to be processed
-            await Promise.all(appointmentPromises);
+            // Process each appointment request sequentially
+            for (const appointment of requests) {
+                try {
+                    await this.handleAppointmentRequest(appointment, acceptingPatients);
+                    console.log(`Successfully processed appointment ${appointment.appointment_id}`);
+                } catch (error) {
+                    console.error(`Error processing appointment ${appointment.appointment_id}:`, error.response?.data || error.message);
+                }
+            }
         } catch (error) {
-            console.error("Error handling appointment requests:", error);
+            console.error("Error fetching appointment requests:", error.response?.data || error.message);
         }
-    };
+    }
 
     async handleAppointmentRequest(appointment, acceptingPatients) {
         try {
-            const status = acceptingPatients ? "CONFIRMED" : "REJECTED";
+            const currentDate = new Date();
             const startDate = new Date(appointment.visit_time);
             const endDate = new Date(startDate.getTime() + 30 * 60 * 1000);
+
+            const localTime = new Date(appointment.visit_time).toLocaleString();
+
+            // Determine the status based on the visit_time
+            let status;
+            if (startDate < currentDate) {
+                // Mark as cancelled if the requested appointment date is in the past
+                status = "CANCELLED";
+            } else {
+                status = acceptingPatients ? "CONFIRMED" : "CANCELLED";
+            }
 
             const start_date = this.convertToLocalISOString(startDate);
             const end_date = this.convertToLocalISOString(endDate);
@@ -105,8 +148,8 @@ class DPViewModel {
             console.log(`Start Date: ${start_date}\nEnd Date: ${end_date}`);
 
             const payload = {
-                start_date: start_date.slice(0,-1),
-                end_date: end_date.slice(0,-1),
+                start_date: start_date,
+                end_date: end_date,
                 status: status,
                 treatment: "Consultation",
             }
@@ -324,7 +367,7 @@ class DPViewModel {
             // Returns the constant
             return appointments;
         } catch (error) {
-            console.error("Login failed:", error.response?.data || error.message);
+            console.error("Error fetching past appointments: ", error.response?.data || error.message);
         }
     }
 
@@ -495,14 +538,33 @@ class DPViewModel {
                 throw new Error(`Medication "${data.medication}" not found in the pharmacy inventory.`);
             }
 
+            // Helper function to extract numeric value from a string
+            const extractNumber = (input) => {
+                const match = input.match(/\d+/); // Match the first numeric value
+                return match ? parseInt(match[0], 10) : null; // Return the number or null if not found
+            };
+
+            // Extract numeric values from dosage and duration
+            const dosage = extractNumber(data.dosage);
+            const duration = extractNumber(data.duration);
+
+            if (!dosage || !duration) {
+                throw new Error("Invalid dosage or duration format. Please provide numeric values (e.g., '20 mg', '10 days').");
+            }
+
+            // Generate the taken_date in local time without the 'Z'
+            const takenDate = this.convertToLocalISOString(new Date());
+
             // Create the payload
             const payload = {
                 doctor_id: parseInt(userId),
                 medications: [
                     {
-                        dosage: parseInt(data.dosage),
+                        dosage: dosage,
                         instructions: data.instructions,
+                        duration: duration,
                         medication_id: parseInt(matchingInventory.medication_id),
+                        taken_date: takenDate,
                     },
                 ],
                 patient_id: parseInt(patientId),
