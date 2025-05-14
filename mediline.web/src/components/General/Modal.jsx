@@ -7,7 +7,8 @@ function Modal({
     onClose,
     title,
     children,
-    id
+    id,
+    disableOutsideClose = false // default is false
 })
 {
     // Modal only renders when it is open
@@ -17,9 +18,12 @@ function Modal({
     return createPortal(
         <div
             className="custom-modal-overlay"
-            onClick={onClose}
+            onClick={(e) => {
+                if (!disableOutsideClose) onClose();
+            }}
         >
-            <div className={`custom-modal-content ${customClass}`}
+            <div
+                className={`custom-modal-content ${customClass}`}
                 onClick={(e) => e.stopPropagation()}
             >
                 {title && <h2 className="custom-modal-title">{title}</h2>}

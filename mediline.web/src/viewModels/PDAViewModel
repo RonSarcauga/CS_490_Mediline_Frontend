@@ -10,19 +10,61 @@ function authHeaders() {
   };
 }
 
-async function fetchApptData(patientId) {
-  const res = await axios.get(`/appointment/upcoming/${patientId}`, authHeaders());
+async function fetchApptData(apptId) {
+  const res = await axios.get(`/appointment/${apptId}`, authHeaders());
   return res.data;
 }
 
-function usePatientAppointments(userId) {
+function usePatientAppointments(apptId) {
   return useQuery({
-    queryKey: ['appointments', userId],
-    queryFn: () => fetchApptData(userId),
-    enabled: !!userId,
+    queryKey: ['appointments', apptId],
+    queryFn: () => fetchApptData(apptId),
+    enabled: !!apptId,
     staleTime: 0,
     refetchOnMount: true,
   });
+}
+
+export async function submitMedicalRecord(patientId, appointmentId, description) {
+    const token = localStorage.getItem("jwtToken");
+    try {
+        const response = await axios.post(
+            `/medical_record/${patientId}/medical_history`,
+            {
+                appointment_id: appointmentId,
+                description
+            },
+            authHeaders()
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error submitting medical record:", error);
+        throw error;
+    }
+}
+
+export async function submitDoctorSurvey(doctorId, patientId, comment, stars=10) {
+    const token = localStorage.getItem("jwtToken");
+    try {
+        const response = await axios.post(
+            `/doctor/survey/${doctorId}`,
+            {
+                comment,
+                patient_id: patientId,
+                stars: stars/2.0,
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Error submitting doctor survey:", error);
+        throw error;
+    }
 }
 
 export const PatApptViewModel = {
