@@ -278,6 +278,7 @@ function PDProfile() {
         setLoading(true);
         console.log('Pharmacy Info:', data);
         overviewVM.updateInfo(currentUser.user_id, data);
+        fetchData(); 
         setLoading(false);
     };
 
